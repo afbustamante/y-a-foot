@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ear" name="y-a-foot-core:ear">
+    <output-path>$PROJECT_DIR$/y-a-foot-core/target</output-path>
+    <root id="archive" name="y-a-foot-core-1.0.0-SNAPSHOT.ear">
+      <element id="artifact" artifact-name="y-a-foot-core:ear exploded" />
+    </root>
+  </artifact>
+</component>
