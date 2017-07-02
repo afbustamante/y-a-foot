@@ -28,8 +28,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 ### Java template
-# Compiled class file
-*.class
 
 # Log file
 *.log
@@ -42,8 +40,6 @@ fabric.properties
 
 # Package Files #
 *.jar
-*.war
-*.ear
 *.zip
 *.tar.gz
 *.rar
@@ -71,3 +67,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+*.NavData

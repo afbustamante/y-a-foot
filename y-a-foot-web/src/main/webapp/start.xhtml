@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+                template="./resources/facelets/general.xhtml">
+
+    <ui:define name="content">
+        <h3><h:outputText value="#{messages['start.wish.text']}"/></h3>
+
+        <h:form>
+            <table>
+                <tr>
+                    <td>
+                        <h:commandButton action="/new_match"
+                                         value="#{messages['start.button.organise']}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h:commandButton action="#{startBean.joindreMatch}" value="#{messages['start.button.join']}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h:commandButton action="#{startBean.listerMatchs}" value="#{messages['start.button.list']}"/>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

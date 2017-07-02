@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                template="./resources/facelets/general.xhtml">
+
+    <ui:define name="content">
+        <h3><h:outputText value="#{messages['new.match.wish.text']}"/></h3>
+
+        <h:form>
+            <h:panelGrid style="width: 100%;" columns="2">
+                <h:outputLabel value="#{messages['new.match.date']}"/>
+                <ace:dateTimeEntry value="#{newMatchBean.dateMatch}" pattern="dd/MMM/yyyy" renderAsPopup="true" />
+
+                <h:outputLabel value="#{messages['new.match.players']}"/>
+
+                <h:outputLabel value="#{messages['new.match.place']}"/>
+
+                <h:inputText value="#{newMatchBean.nomSite}"/>
+                <h:button value="#{messages['new.match.place.find']}"/>
+
+                <h:inputHidden value="#{newMatchBean.latitudeSite}"/>
+                <h:inputHidden value="#{newMatchBean.longitudeSite}"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
