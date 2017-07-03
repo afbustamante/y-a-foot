@@ -4,6 +4,7 @@
 
 # User-specific stuff:
 .idea/
+*.iml
 
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml
@@ -68,3 +69,7 @@ dist/
 nbdist/
 .nb-gradle/
 *.NavData
+
+# Mac OS X
+*.DS_Store
+
