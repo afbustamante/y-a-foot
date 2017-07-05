@@ -10,13 +10,4 @@ import java.io.Serializable;
 @ManagedBean
 @RequestScoped
 public class StartBean implements Serializable {
-
-    public void organiserMatch() {
-    }
-
-    public void joindreMatch() {
-    }
-
-    public void listerMatchs() {
-    }
 }

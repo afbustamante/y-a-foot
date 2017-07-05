@@ -1,15 +1,25 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title><h:outputText value="#{messages['application.title']}" /></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
-    </h:head>
-    <h:body>
-        <h:outputText value="#{messages['application.title']}" />
-    </h:body>
+<h:head>
+    <title><h:outputText value="#{messages['application.title']}"/></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1"/>
+</h:head>
+<h:body>
+    <h:outputStylesheet library="css" name="default.css"/>
+    <h:outputStylesheet library="css" name="cssLayout.css"/>
+
+    <h2><h:outputText value="#{messages['application.title']}"/></h2>
+
+    <p>
+        <h:form>
+            <h:commandLink action="/start" value="#{messages['button.continue']}"/>
+        </h:form>
+    </p>
+</h:body>
 </html>
 

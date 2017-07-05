@@ -12,6 +12,7 @@
       <property name="hibernate.connection.autocommit" value="false"/>
       <property name="hibernate.current_session_context_class" value="jta"/>
       <property name="hibernate.transaction.auto_close_session" value="false"/>
+      <property name="hibernate.bytecode.use_reflection_optimizer" value="true" />
       <!--property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.WeblogicJtaPlatform"/-->
     </properties>
   </persistence-unit>

@@ -2,6 +2,8 @@ package net.andresbustamante.yafoot.web;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -9,7 +11,7 @@ import java.math.BigDecimal;
  */
 @ManagedBean
 @ViewScoped
-public class NewMatchBean {
+public class NewMatchBean implements Serializable {
 
     private String dateMatch;
     private String heureMatch;
@@ -18,6 +20,10 @@ public class NewMatchBean {
     private String nomSite;
     private BigDecimal latitudeSite;
     private BigDecimal longitudeSite;
+    private boolean optionCovoiturageActive;
+    private boolean optionInvitationPubliqueActive;
+    private String locale;
+    private String patternDate;
 
     public NewMatchBean() {
     }
@@ -76,5 +82,54 @@ public class NewMatchBean {
 
     public void setLongitudeSite(BigDecimal longitudeSite) {
         this.longitudeSite = longitudeSite;
+    }
+
+    public boolean isOptionCovoiturageActive() {
+        return optionCovoiturageActive;
+    }
+
+    public void setOptionCovoiturageActive(boolean optionCovoiturageActive) {
+        this.optionCovoiturageActive = optionCovoiturageActive;
+    }
+
+    public boolean isOptionInvitationPubliqueActive() {
+        return optionInvitationPubliqueActive;
+    }
+
+    public void setOptionInvitationPubliqueActive(boolean optionInvitationPubliqueActive) {
+        this.optionInvitationPubliqueActive = optionInvitationPubliqueActive;
+    }
+
+    public String getLocale() {
+        if (locale == null) {
+            locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale().getLanguage();
+        }
+        return locale;
+    }
+
+    public String getPatternDate() {
+        if (patternDate == null) {
+            switch (getLocale()) {
+                case "es":
+                case "fr":
+                    return "dd/MM/yyyy";
+                case "en":
+                    return "yyyy-MM-dd";
+                default:
+                    return "yyyy/MM/dd";
+            }
+        }
+        return patternDate;
+    }
+
+    public void setPatternDate(String patternDate) {
+        this.patternDate = patternDate;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public void creerNouveauMatch() {
     }
 }

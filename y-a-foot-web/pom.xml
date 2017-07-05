@@ -30,20 +30,24 @@
             <version>2.2.10</version>
         </dependency>
         <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces</artifactId>
-            <version>4.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.glassfish</groupId>
-                    <artifactId>javax.faces</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.richfaces.core</groupId>
+            <artifactId>richfaces-core-api</artifactId>
+            <version>4.3.7.Final</version>
         </dependency>
         <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces-ace</artifactId>
-            <version>4.0.0</version>
+            <groupId>org.richfaces.core</groupId>
+            <artifactId>richfaces-core-impl</artifactId>
+            <version>4.3.7.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.richfaces.ui</groupId>
+            <artifactId>richfaces-components-api</artifactId>
+            <version>4.3.7.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.richfaces.ui</groupId>
+            <artifactId>richfaces-components-ui</artifactId>
+            <version>4.3.7.Final</version>
         </dependency>
     </dependencies>
 
