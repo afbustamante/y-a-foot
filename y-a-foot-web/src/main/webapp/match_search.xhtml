@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                template="./resources/facelets/general.xhtml">
+
+    <ui:define name="content">
+        <h3><h:outputText value="#{messages['match.search.wish.text']}"/></h3>
+
+        <h:form>
+            <h:panelGrid style="width: 100%;" columns="3">
+                <h:outputLabel value="#{messages['match.search.code']}"/>
+                <h:inputText value="#{matchSearchBean.codeMatch}"/>
+                <a4j:commandButton action="#{matchSearchBean.chercherMatch}"
+                                   value="#{messages['match.search.button.search']}" execute="@form"
+                                   render="result"/>
+            </h:panelGrid>
+
+            <a4j:outputPanel id="result">
+                <h:panelGrid rendered="#{matchSearchBean.match != null}" columns="3" style="width: 100%;">
+                </h:panelGrid>
+            </a4j:outputPanel>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

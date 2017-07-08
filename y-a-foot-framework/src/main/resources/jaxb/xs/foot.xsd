@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://andresbustamante.net/y-a-foot" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="http://andresbustamante.net/y-a-foot" elementFormDefault="qualified"
+<xs:schema xmlns="http://andresbustamante.net/y-a-foot/xs" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://andresbustamante.net/y-a-foot/xs" elementFormDefault="qualified"
            attributeFormDefault="unqualified" version="1.0">
     <xs:element name="match">
         <xs:annotation>
@@ -77,8 +77,8 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="numeroTelephone" type="numeroTelephone" minOccurs="0"/>
-                <xs:element name="localisation" type="coordonneesGPS" minOccurs="0"/>
+                <xs:element name="numeroTelephone" type="numeroTelephoneType" minOccurs="0"/>
+                <xs:element name="localisation" type="coordonneesGPSType" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -103,8 +103,8 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="numeroTelephone" type="numeroTelephone"/>
-                <xs:element name="email" type="email"/>
+                <xs:element name="numeroTelephone" type="numeroTelephoneType"/>
+                <xs:element name="email" type="emailType"/>
                 <xs:element ref="voiture"/>
             </xs:sequence>
         </xs:complexType>
@@ -152,7 +152,7 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="coordonneesGPS">
+    <xs:complexType name="coordonneesGPSType">
         <xs:annotation>
             <xs:documentation>Coordonnées GPS</xs:documentation>
         </xs:annotation>
@@ -161,7 +161,7 @@
             <xs:element name="longitude" type="xs:decimal"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:simpleType name="numeroTelephone">
+    <xs:simpleType name="numeroTelephoneType">
         <xs:annotation>
             <xs:documentation>Numéro de téléphone</xs:documentation>
         </xs:annotation>
@@ -169,7 +169,7 @@
             <xs:maxLength value="14"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="email">
+    <xs:simpleType name="emailType">
         <xs:annotation>
             <xs:documentation>Adresse mail</xs:documentation>
         </xs:annotation>

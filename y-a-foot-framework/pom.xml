@@ -11,4 +11,46 @@
 
     <artifactId>y-a-foot-framework</artifactId>
 
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <schemaIncludes>
+                                <include>src/main/resources/jaxb/xs/*.xsd</include>
+                                <include>main/resources/jaxb/xs/*.xsd</include>
+                                <include>resources/jaxb/xs/*.xsd</include>
+                                <include>jaxb/xs/*.xsd</include>
+                            </schemaIncludes>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-foot-ws.episode</episodeFile>
+                            <generatePackage>net.andresbustamante.yafoot.xs</generatePackage>
+                        </configuration>
+                        <id>jaxb-generate-foot-ws</id>
+                    </execution>
+                </executions>
+                <configuration>
+                    <catalog>src/main/resources/jaxb/catalog.xml</catalog>
+                    <catalogResolver>org.jvnet.jaxb2.maven2.resolver.tools.ClasspathCatalogResolver</catalogResolver>
+                    <forceRegenerate>true</forceRegenerate>
+                    <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
+                    <verbose>true</verbose>
+                    <strict>false</strict>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
