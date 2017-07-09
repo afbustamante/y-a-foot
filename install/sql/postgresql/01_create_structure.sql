@@ -1,9 +1,9 @@
 --SET SEARCH_PATH TO yafoot;
 
-CREATE SEQUENCE s_joueur INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE;;
-CREATE SEQUENCE s_match INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE;;
-CREATE SEQUENCE s_site INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE;;
-CREATE SEQUENCE s_voiture INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE;;
+CREATE SEQUENCE s_joueur INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE;
+CREATE SEQUENCE s_match INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE;
+CREATE SEQUENCE s_site INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE;
+CREATE SEQUENCE s_voiture INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE;
 
 CREATE TABLE t_joueur (
   jou_id        INT4         NOT NULL,
@@ -11,6 +11,7 @@ CREATE TABLE t_joueur (
   jou_prenom    VARCHAR(255) NOT NULL,
   jou_telephone VARCHAR(16),
   jou_email     VARCHAR(255) NOT NULL,
+  jou_mdp       VARCHAR(64),
   PRIMARY KEY (jou_id)
 );
 
@@ -22,12 +23,13 @@ CREATE TABLE t_joueur_match (
 );
 
 CREATE TABLE t_match (
-  mat_id              INT4 NOT NULL,
-  mat_date            DATE NOT NULL,
+  mat_id              INT4        NOT NULL,
+  mat_date            DATE        NOT NULL,
+  mat_code            VARCHAR(12) NOT NULL,
   mat_description     TEXT,
   mat_num_joueurs_min INT4,
   mat_num_joueurs_max INT4,
-  mat_site_fk         INT4 NOT NULL,
+  mat_site_fk         INT4        NOT NULL,
   PRIMARY KEY (mat_id)
 );
 
@@ -47,8 +49,11 @@ CREATE TABLE t_voiture (
   PRIMARY KEY (voi_id)
 );
 
-CREATE INDEX i_joueur_email
+CREATE UNIQUE INDEX i_joueur_email
   ON t_joueur (jou_email);
+
+CREATE UNIQUE INDEX i_match_code
+  ON t_match (mat_code);
 
 ALTER TABLE t_joueur_match
   ADD CONSTRAINT FKt_joueur_m340160 FOREIGN KEY (jma_voiture_fk) REFERENCES t_voiture (voi_id);

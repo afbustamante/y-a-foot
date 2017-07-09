@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author andresbustamante
@@ -38,6 +39,11 @@ public class Match implements Serializable {
     @Column(name = "mat_date")
     @Temporal(TemporalType.DATE)
     private Date dateMatch;
+    @Basic(optional = false)
+    @NotNull
+    @Size(max = 12)
+    @Column(name = "mat_code")
+    private String code;
     @Column(name = "mat_description")
     private String description;
     @Column(name = "mat_num_joueurs_min")
@@ -76,6 +82,14 @@ public class Match implements Serializable {
 
     public void setDateMatch(Date matDate) {
         this.dateMatch = matDate;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getDescription() {

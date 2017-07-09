@@ -47,6 +47,9 @@ public class Joueur implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "jou_email")
     private String email;
+    @Size(max = 64)
+    @Column(name = "jou_mdp")
+    private String motDePasse;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "joueur")
     private List<JoueurMatch> matchs;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "chauffeur")
@@ -104,6 +107,14 @@ public class Joueur implements Serializable {
 
     public void setEmail(String jouEmail) {
         this.email = jouEmail;
+    }
+
+    public String getMotDePasse() {
+        return motDePasse;
+    }
+
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
     }
 
     public List<JoueurMatch> getMatchs() {
