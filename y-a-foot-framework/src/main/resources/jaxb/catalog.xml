@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="file:/Users/andresbustamante/Desktop/repositorios/y-a-foot/y-a-foot-framework/src/main/resources/jaxb/xs/foot.xsd" uri="src/main/resources/jaxb/xs/foot.xsd"/>
-</catalog>
