@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="AuthentificationUtilisateurWS"
+<wsdl:definitions name="InscriptionJoueursWS"
                   targetNamespace="http://andresbustamante.net/yafoot/ws"
                   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
                   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
@@ -9,71 +9,70 @@
     <wsdl:types>
         <xs:schema targetNamespace="http://andresbustamante.net/yafoot/ws"
                    xmlns:xs="http://www.w3.org/2001/XMLSchema">
-            <xs:import namespace="http://andresbustamante.net/yafoot/xs"
-                       schemaLocation="../xsd/foot.xsd"/>
-            <xs:element name="authentifierUtilisateur">
+            <xs:import namespace="http://andresbustamante.net/yafoot/xs" schemaLocation="../xsd/foot.xsd"/>
+            <xs:element name="inscrireJoueur">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element ref="yaf:utilisateur"/>
+                        <xs:element ref="yaf:joueur"/>
                         <xs:element ref="yaf:contexte"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="authentifierUtilisateurResponse">
+            <xs:element name="inscrireJoueurResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element ref="yaf:utilisateur"/>
+                        <xs:element name="inscrit" type="xs:boolean" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="recupererMdpOublie">
+            <xs:element name="actualiserJoueur">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="email" type="yaf:emailType"/>
+                        <xs:element ref="yaf:joueur"/>
                         <xs:element ref="yaf:contexte"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="recupererMdpOublieResponse">
+            <xs:element name="actualiserJoueurResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="mdpEnvoye" type="xs:boolean"/>
+                        <xs:element name="actualise" type="xs:boolean" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
             <xs:element name="messageException" type="xs:string"/>
         </xs:schema>
     </wsdl:types>
-    <wsdl:message name="authentifierUtilisateurRequest">
-        <wsdl:part name="input" element="tns:authentifierUtilisateur"/>
+    <wsdl:message name="inscrireJoueurRequest">
+        <wsdl:part name="input" element="tns:inscrireJoueur"/>
     </wsdl:message>
-    <wsdl:message name="authentifierUtilisateurResponse">
-        <wsdl:part name="output" element="tns:authentifierUtilisateurResponse"/>
+    <wsdl:message name="inscrireJoueurResponse">
+        <wsdl:part name="output" element="tns:inscrireJoueurResponse"/>
     </wsdl:message>
-    <wsdl:message name="recupererMdpOublieRequest">
-        <wsdl:part name="input" element="tns:recupererMdpOublie"/>
+    <wsdl:message name="actualiserJoueurRequest">
+        <wsdl:part name="input" element="tns:actualiserJoueur"/>
     </wsdl:message>
-    <wsdl:message name="recupererMdpOublieResponse">
-        <wsdl:part name="output" element="tns:recupererMdpOublieResponse"/>
+    <wsdl:message name="actualiserJoueurResponse">
+        <wsdl:part name="output" element="tns:actualiserJoueurResponse"/>
     </wsdl:message>
     <wsdl:message name="BDDException">
-        <wsdl:part name="ex" element="tns:messageException"/>
+        <wsdl:part name="exc" element="tns:messageException"/>
     </wsdl:message>
-    <wsdl:portType name="AuthentificationUtilisateurPortType">
-        <wsdl:operation name="authentifierUtilisateur">
-            <wsdl:input message="tns:authentifierUtilisateurRequest"/>
-            <wsdl:output message="tns:authentifierUtilisateurResponse"/>
+    <wsdl:portType name="InscriptionJoueursPortType">
+        <wsdl:operation name="inscrireJoueur">
+            <wsdl:input message="tns:inscrireJoueurRequest"/>
+            <wsdl:output message="tns:inscrireJoueurResponse"/>
             <wsdl:fault message="tns:BDDException" name="BDDException"/>
         </wsdl:operation>
-        <wsdl:operation name="recupererMdpOublie">
-            <wsdl:input message="tns:recupererMdpOublieRequest"/>
-            <wsdl:output message="tns:recupererMdpOublieResponse"/>
+        <wsdl:operation name="actualiserJoueur">
+            <wsdl:input message="tns:actualiserJoueurRequest"/>
+            <wsdl:output message="tns:actualiserJoueurResponse"/>
             <wsdl:fault message="tns:BDDException" name="BDDException"/>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:binding name="AuthentificationUtilisateurSoapBinding" type="tns:AuthentificationUtilisateurPortType">
+    <wsdl:binding name="InscriptionJoueursSoapBinding" type="tns:InscriptionJoueursPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <wsdl:operation name="authentifierUtilisateur">
+        <wsdl:operation name="inscrireJoueur">
             <soap:operation soapAction=""/>
             <wsdl:input>
                 <soap:body use="literal"/>
@@ -85,7 +84,7 @@
                 <soap:fault name="BDDException" use="literal"/>
             </wsdl:fault>
         </wsdl:operation>
-        <wsdl:operation name="recupererMdpOublie">
+        <wsdl:operation name="actualiserJoueur">
             <soap:operation soapAction=""/>
             <wsdl:input>
                 <soap:body use="literal"/>
@@ -98,12 +97,10 @@
             </wsdl:fault>
         </wsdl:operation>
     </wsdl:binding>
-    <wsdl:service name="AuthentificationUtilisateurService">
-        <wsdl:documentation>Service de authentification d'utilisateurs et de récupération de mots de passe oubliés
-        </wsdl:documentation>
-        <wsdl:port name="AuthentificationUtilisateurPort"
-                   binding="tns:AuthentificationUtilisateurSoapBinding">
-            <soap:address location="http://localhost:8180/y-a-foot-ws/AuthentificationUtilisateurService"/>
+    <wsdl:service name="InscriptionJoueursService">
+        <wsdl:documentation>Service de gestion des joueurs</wsdl:documentation>
+        <wsdl:port name="InscriptionJoueursPort" binding="tns:InscriptionJoueursSoapBinding">
+            <soap:address location="http://localhost:8180/y-a-foot-ws/InscriptionJoueursService"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

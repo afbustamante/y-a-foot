@@ -2,16 +2,7 @@ package net.andresbustamante.yafoot.model;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,12 +14,14 @@ import javax.validation.constraints.Size;
 @Table(name = "t_voiture")
 @NamedQueries({
     @NamedQuery(name = "Voiture.findAll", query = "SELECT v FROM Voiture v")})
+@SequenceGenerator(name = "s_voiture", sequenceName = "s_voiture", allocationSize = 1)
 public class Voiture implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "voi_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_voiture")
     private Integer id;
     @Size(max = 255)
     @Column(name = "voi_nom")

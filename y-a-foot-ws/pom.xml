@@ -31,6 +31,12 @@
             <version>1.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.andresbustamante</groupId>
+            <artifactId>y-a-foot-ejb</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -96,6 +102,19 @@
                             <staleFile>${project.build.directory}/jaxws/stale/authentification_utilisateur.stale</staleFile>
                         </configuration>
                         <id>wsimport-generate-authentification_utilisateur</id>
+                        <phase>generate-sources</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>${user.home}/workspaces/y-a-foot/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/inscription_joueurs.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <staleFile>${project.build.directory}/jaxws/stale/inscription_joueurs.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-gestion_joueurs</id>
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>

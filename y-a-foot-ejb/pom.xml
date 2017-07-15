@@ -20,6 +20,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>net.andresbustamante</groupId>
+            <artifactId>abframework</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.andresbustamante</groupId>
+            <artifactId>y-a-foot-framework</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.3.1.Final</version>

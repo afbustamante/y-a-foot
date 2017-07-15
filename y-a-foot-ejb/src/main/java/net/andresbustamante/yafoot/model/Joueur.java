@@ -2,15 +2,7 @@ package net.andresbustamante.yafoot.model;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -20,7 +12,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "t_joueur")
 @NamedQueries({
-        @NamedQuery(name = "Joueur.findAll", query = "SELECT j FROM Joueur j")})
+        @NamedQuery(name = "Joueur.findIdByEmail", query = "SELECT jou.id FROM Joueur jou WHERE jou.email = :email")})
+@SequenceGenerator(name = "s_joueur", sequenceName = "s_joueur", allocationSize = 1)
 public class Joueur implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,9 +21,8 @@ public class Joueur implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "jou_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_joueur")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "jou_nom")
     private String nom;
