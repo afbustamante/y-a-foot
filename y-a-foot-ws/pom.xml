@@ -117,6 +117,19 @@
                         <id>wsimport-generate-gestion_joueurs</id>
                         <phase>generate-sources</phase>
                     </execution>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>${user.home}/workspaces/y-a-foot/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/organisation_matchs.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <staleFile>${project.build.directory}/jaxws/stale/organisation_matchs.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-organisation_matchs</id>
+                        <phase>generate-sources</phase>
+                    </execution>
                 </executions>
                 <dependencies>
                     <dependency>
