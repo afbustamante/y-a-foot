@@ -24,15 +24,13 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
     private final Log log = LogFactory.getLog(GestionJoueursService.class);
 
     @Override
-    public Joueur inscrireJoueur(Joueur joueur, Contexte contexte) throws BDDException {
+    public void inscrireJoueur(Joueur joueur, Contexte contexte) throws BDDException {
         try {
             if (!joueurDAO.isJoueurInscrit(joueur.getEmail())) {
                 joueurDAO.save(joueur);
                 log.info("Nouveau joueur enregistré avec l'adresse " + joueur.getEmail());
-                return joueur;
             } else {
                 log.info("Rejet : Joueur existant avec l'adresse " + joueur.getEmail());
-                return null;
             }
         } catch (DatabaseException e) {
             throw new BDDException(e.getMessage());
@@ -40,7 +38,6 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
     }
 
     @Override
-    public Joueur actualiserJoueur(Joueur joueur, Contexte contexte) throws BDDException {
-        return null;
+    public void actualiserJoueur(Joueur joueur, Contexte contexte) throws BDDException {
     }
 }

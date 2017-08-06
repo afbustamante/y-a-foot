@@ -3,19 +3,7 @@ package net.andresbustamante.yafoot.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,7 +13,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "t_match")
 @NamedQueries({
-        @NamedQuery(name = "Match.findAll", query = "SELECT m FROM Match m")})
+        @NamedQuery(name = "Match.findIdByCode", query = "SELECT mat.id FROM Match mat WHERE mat.code = :codeMatch")})
+@SequenceGenerator(name = "s_match", sequenceName = "s_match", allocationSize = 1)
 public class Match implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,6 +22,7 @@ public class Match implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "mat_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_match")
     private Integer id;
     @Basic(optional = false)
     @NotNull
@@ -128,8 +118,8 @@ public class Match implements Serializable {
         return site;
     }
 
-    public void setSite(Site matSiteFk) {
-        this.site = matSiteFk;
+    public void setSite(Site site) {
+        this.site = site;
     }
 
     @Override

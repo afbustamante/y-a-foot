@@ -41,11 +41,11 @@ public class InscriptionJoueursWS extends TransactionalWebService {
 
         try {
             utx.begin();
-            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = gestionJoueursService.inscrireJoueur(creerJoueur
-                            (joueur),
+            Joueur nouveauJoueur = creerJoueur(joueur);
+            gestionJoueursService.inscrireJoueur(nouveauJoueur,
                     ContexteUtils.copierInfoContexte(contexte));
-            utx.commit();
             inscrit = (nouveauJoueur != null && nouveauJoueur.getId() != null);
+            utx.commit();
         } catch (net.andresbustamante.yafoot.exceptions.BDDException e) {
             throw new BDDException(e.getMessage(), e.getMessage());
         } catch (NotSupportedException | SystemException e) {

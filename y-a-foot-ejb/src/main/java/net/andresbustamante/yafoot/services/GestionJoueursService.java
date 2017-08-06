@@ -12,7 +12,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionJoueursService {
 
-    Joueur inscrireJoueur(Joueur joueur, Contexte contexte) throws BDDException;
+    void inscrireJoueur(Joueur joueur, Contexte contexte) throws BDDException;
 
-    Joueur actualiserJoueur(Joueur joueur, Contexte contexte) throws BDDException;
+    void actualiserJoueur(Joueur joueur, Contexte contexte) throws BDDException;
 }

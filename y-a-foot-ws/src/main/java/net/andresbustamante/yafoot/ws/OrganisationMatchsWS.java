@@ -1,14 +1,19 @@
 package net.andresbustamante.yafoot.ws;
 
+import net.andresbustamante.framework.web.TransactionalWebService;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.JoueurMatch;
 import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.model.Site;
+import net.andresbustamante.yafoot.services.GestionMatchsService;
+import net.andresbustamante.yafoot.util.ContexteUtils;
 import net.andresbustamante.yafoot.util.DateUtils;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.jws.WebService;
-import javax.transaction.UserTransaction;
+import javax.transaction.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +24,35 @@ import java.util.List;
         endpointInterface = "net.andresbustamante.yafoot.ws.OrganisationMatchsPortType",
         targetNamespace = "http://andresbustamante.net/yafoot/ws",
         wsdlLocation = "WEB-INF/wsdl/organisation_matchs.wsdl")
-public class OrganisationMatchsWS {
+public class OrganisationMatchsWS extends TransactionalWebService {
 
     @Resource
     private UserTransaction utx;
 
-    public boolean creerMatch(net.andresbustamante.yafoot.xs.Match match,
+    @EJB
+    private GestionMatchsService gestionMatchsService;
+
+    public String creerMatch(net.andresbustamante.yafoot.xs.Match match,
                               net.andresbustamante.yafoot.xs.Contexte contexte) throws BDDException {
-        Match nouveauMatch = creerMatch(match);
-        return false;
+        try {
+            utx.begin();
+            Match nouveauMatch = creerMatch(match);
+            gestionMatchsService.creerMatch(nouveauMatch, ContexteUtils.copierInfoContexte(contexte));
+            String codeMatch = nouveauMatch.getCode();
+            utx.commit();
+            return codeMatch;
+        }  catch (net.andresbustamante.yafoot.exceptions.BDDException e) {
+            throw new BDDException(e.getMessage(), e.getMessage());
+        } catch (NotSupportedException | SystemException e) {
+            rollbackTransaction(utx);
+            throw new BDDException("Erreur de BDD au moment de créer la transaction", e.getMessage(), e);
+        } catch (HeuristicMixedException | HeuristicRollbackException | RollbackException e) {
+            rollbackTransaction(utx);
+            throw new BDDException("Erreur de BDD au moment de confirmer la transaction", e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            rollbackTransaction(utx);
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     public boolean inscrireJoueurMatch(net.andresbustamante.yafoot.xs.Joueur joueur,
@@ -70,7 +95,24 @@ public class OrganisationMatchsWS {
             }
             match.setJoueursMatch(listeJoueurs);
         }
+
+        match.setSite(copierSite(matchXml.getSite()));
+
         return match;
+    }
+
+    private Site copierSite(net.andresbustamante.yafoot.xs.Site siteXml) {
+        if (siteXml != null) {
+            Site site = new Site();
+            site.setId(siteXml.getId());
+            site.setNom(siteXml.getNom());
+            site.setAdresse(siteXml.getAdresse());
+            site.setTelephone(siteXml.getNumeroTelephone());
+
+            // TODO Traiter les coordonnées GPS
+            return site;
+        }
+        return null;
     }
 
     private Joueur copierJoueur(net.andresbustamante.yafoot.xs.Joueur joueurXml) {
