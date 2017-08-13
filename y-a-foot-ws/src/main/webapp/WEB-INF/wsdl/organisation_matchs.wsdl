@@ -21,7 +21,7 @@
             <xs:element name="creerMatchResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="cree" type="xs:string" />
+                        <xs:element name="codeMatch" type="xs:string" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -30,7 +30,7 @@
                     <xs:sequence>
                         <xs:element ref="yaf:joueur"/>
                         <xs:element ref="yaf:match"/>
-                        <xs:element ref="yaf:voiture" />
+                        <xs:element ref="yaf:voiture" minOccurs="0" />
                         <xs:element ref="yaf:contexte"/>
                     </xs:sequence>
                 </xs:complexType>
@@ -179,7 +179,7 @@
     <wsdl:service name="OrganisationMatchsService">
         <wsdl:documentation>Service de planification et gestion des matchs</wsdl:documentation>
         <wsdl:port name="OrganisationMatchsPort" binding="tns:OrganisationMatchsSoapBinding">
-            <soap:address location="http://localhost:8180/y-a-foot-ws/OrganisationMatchsService"/>
+            <soap:address location="http://localhost:8080/y-a-foot-ws/OrganisationMatchsService"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

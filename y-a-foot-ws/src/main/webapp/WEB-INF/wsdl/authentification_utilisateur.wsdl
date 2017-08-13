@@ -103,7 +103,7 @@
         </wsdl:documentation>
         <wsdl:port name="AuthentificationUtilisateurPort"
                    binding="tns:AuthentificationUtilisateurSoapBinding">
-            <soap:address location="http://localhost:8180/y-a-foot-ws/AuthentificationUtilisateurService"/>
+            <soap:address location="http://localhost:8080/y-a-foot-ws/AuthentificationUtilisateurService"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

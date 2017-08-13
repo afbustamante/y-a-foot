@@ -45,7 +45,7 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element ref="site"/>
+                <xs:element ref="site" minOccurs="0"/>
                 <xs:element ref="joueurs" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>

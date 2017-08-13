@@ -1,10 +1,7 @@
 package net.andresbustamante.yafoot.ws;
 
 import net.andresbustamante.framework.web.TransactionalWebService;
-import net.andresbustamante.yafoot.model.Joueur;
-import net.andresbustamante.yafoot.model.JoueurMatch;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Site;
+import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
 import net.andresbustamante.yafoot.util.ContexteUtils;
 import net.andresbustamante.yafoot.util.DateUtils;
@@ -59,7 +56,27 @@ public class OrganisationMatchsWS extends TransactionalWebService {
                                        net.andresbustamante.yafoot.xs.Match match,
                                        net.andresbustamante.yafoot.xs.Voiture voiture,
                                        net.andresbustamante.yafoot.xs.Contexte contexte) throws BDDException {
-        return false;
+        try {
+            utx.begin();
+            Joueur joueurAInscrire = copierJoueur(joueur);
+            Match matchAImpacter = copierMatch(match);
+            Voiture voitureJoueur = copierVoiture(voiture);
+            gestionMatchsService.inscrireJoueurMatch(joueurAInscrire, matchAImpacter, voitureJoueur, ContexteUtils
+                    .copierInfoContexte(contexte));
+            utx.commit();
+            return true;
+        }  catch (net.andresbustamante.yafoot.exceptions.BDDException e) {
+            throw new BDDException(e.getMessage(), e.getMessage());
+        } catch (NotSupportedException | SystemException e) {
+            rollbackTransaction(utx);
+            throw new BDDException("Erreur de BDD au moment de créer la transaction", e.getMessage(), e);
+        } catch (HeuristicMixedException | HeuristicRollbackException | RollbackException e) {
+            rollbackTransaction(utx);
+            throw new BDDException("Erreur de BDD au moment de confirmer la transaction", e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            rollbackTransaction(utx);
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     public boolean desinscrireJoueurMatch(net.andresbustamante.yafoot.xs.Joueur joueur,
@@ -125,6 +142,27 @@ public class OrganisationMatchsWS extends TransactionalWebService {
             // TODO Traiter les voitures
         }
         return joueur;
+    }
+
+    private Voiture copierVoiture(net.andresbustamante.yafoot.xs.Voiture voitureXml) {
+        if (voitureXml != null) {
+            Voiture voiture = new Voiture();
+            voiture.setId(voitureXml.getId());
+            voiture.setNom(voitureXml.getNom());
+            return voiture;
+        }
+        return null;
+    }
+
+    private Match copierMatch(net.andresbustamante.yafoot.xs.Match matchXml) {
+        if (matchXml != null) {
+            Match match = new Match();
+            match.setId(matchXml.getId());
+            match.setCode(matchXml.getCode());
+            match.setDateMatch(DateUtils.transformer(matchXml.getDate()));
+            return match;
+        }
+        return null;
     }
 
 }

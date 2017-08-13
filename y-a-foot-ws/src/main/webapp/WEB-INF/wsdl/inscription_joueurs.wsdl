@@ -100,7 +100,7 @@
     <wsdl:service name="InscriptionJoueursService">
         <wsdl:documentation>Service de gestion des joueurs</wsdl:documentation>
         <wsdl:port name="InscriptionJoueursPort" binding="tns:InscriptionJoueursSoapBinding">
-            <soap:address location="http://localhost:8180/y-a-foot-ws/InscriptionJoueursService"/>
+            <soap:address location="http://localhost:8080/y-a-foot-ws/InscriptionJoueursService"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

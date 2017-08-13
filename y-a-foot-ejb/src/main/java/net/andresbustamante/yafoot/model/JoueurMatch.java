@@ -38,24 +38,24 @@ public class JoueurMatch implements Serializable {
         this.id = id;
     }
 
-    public JoueurMatch(int jmaMatchFk, int jmaJoueurFk) {
-        this.id = new IdJoueurMatch(jmaMatchFk, jmaJoueurFk);
+    public JoueurMatch(int idMatch, int idJoueur) {
+        this.id = new IdJoueurMatch(idMatch, idJoueur);
     }
 
     public IdJoueurMatch getId() {
         return id;
     }
 
-    public void setId(IdJoueurMatch idJoueurMatch) {
-        this.id = idJoueurMatch;
+    public void setId(IdJoueurMatch id) {
+        this.id = id;
     }
 
     public Voiture getVoiture() {
         return voiture;
     }
 
-    public void setVoiture(Voiture jmaVoitureFk) {
-        this.voiture = jmaVoitureFk;
+    public void setVoiture(Voiture voiture) {
+        this.voiture = voiture;
     }
 
     public Match getMatch() {
