@@ -12,8 +12,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "t_match")
-@NamedQueries({
-        @NamedQuery(name = "Match.findIdByCode", query = "SELECT mat.id FROM Match mat WHERE mat.code = :codeMatch")})
 @SequenceGenerator(name = "s_match", sequenceName = "s_match", allocationSize = 1)
 public class Match implements Serializable {
 
@@ -27,7 +25,7 @@ public class Match implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "mat_date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateMatch;
     @Basic(optional = false)
     @NotNull
@@ -131,7 +129,6 @@ public class Match implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Match)) {
             return false;
         }

@@ -1,21 +1,18 @@
 package net.andresbustamante.yafoot.model;
 
-import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
- *
  * @author andresbustamante
  */
 @Entity
 @Table(name = "t_voiture")
-@NamedQueries({
-    @NamedQuery(name = "Voiture.findAll", query = "SELECT v FROM Voiture v")})
 @SequenceGenerator(name = "s_voiture", sequenceName = "s_voiture", allocationSize = 1)
 public class Voiture implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -28,8 +25,6 @@ public class Voiture implements Serializable {
     private String nom;
     @Column(name = "voi_num_places")
     private Integer numPlaces;
-    @OneToMany(mappedBy = "voiture")
-    private List<JoueurMatch> passagers;
     @JoinColumn(name = "voi_chauffeur_fk", referencedColumnName = "jou_id")
     @ManyToOne(optional = false)
     private Joueur chauffeur;
@@ -65,14 +60,6 @@ public class Voiture implements Serializable {
         this.numPlaces = voiNumPlaces;
     }
 
-    public List<JoueurMatch> getPassagers() {
-        return passagers;
-    }
-
-    public void setPassagers(List<JoueurMatch> joueurMatchList) {
-        this.passagers = joueurMatchList;
-    }
-
     public Joueur getChauffeur() {
         return chauffeur;
     }
@@ -90,7 +77,6 @@ public class Voiture implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Voiture)) {
             return false;
         }
@@ -105,5 +91,5 @@ public class Voiture implements Serializable {
     public String toString() {
         return "net.andresbustamante.yafoot.model.Voiture[ voiId=" + id + " ]";
     }
-    
+
 }

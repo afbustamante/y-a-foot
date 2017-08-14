@@ -39,5 +39,29 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
 
     @Override
     public void actualiserJoueur(Joueur joueur, Contexte contexte) throws BDDException {
+        try {
+            Joueur joueurExistant = joueurDAO.load(joueur.getId());
+
+            if (joueurExistant != null) {
+                if (joueur.getPrenom() != null) {
+                    joueurExistant.setPrenom(joueur.getPrenom());
+                }
+                if (joueur.getNom() != null) {
+                    joueurExistant.setNom(joueur.getNom());
+                }
+                if (joueur.getTelephone() != null) {
+                    joueurExistant.setTelephone(joueur.getTelephone());
+                }
+                if (joueur.getMotDePasse() != null) {
+                    joueurExistant.setMotDePasse(joueur.getMotDePasse());
+                }
+                joueurDAO.update(joueurExistant);
+                log.info("Joueur mis à jour avec l'adresse " + joueur.getEmail());
+            } else {
+                log.info("Rejet : Joueur inexistant avec l'adresse " + joueur.getEmail());
+            }
+        } catch (DatabaseException e) {
+            throw new BDDException(e.getMessage());
+        }
     }
 }

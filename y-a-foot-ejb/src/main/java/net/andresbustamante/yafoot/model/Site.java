@@ -1,10 +1,9 @@
 package net.andresbustamante.yafoot.model;
 
-import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  *
@@ -31,8 +30,6 @@ public class Site implements Serializable {
     @Size(max = 16)
     @Column(name = "sit_telephone")
     private String telephone;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "site")
-    private List<Match> matchs;
 
     public Site() {
     }
@@ -45,40 +42,32 @@ public class Site implements Serializable {
         return id;
     }
 
-    public void setId(Integer sitId) {
-        this.id = sitId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public void setNom(String sitNom) {
-        this.nom = sitNom;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public String getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(String sitAdresse) {
-        this.adresse = sitAdresse;
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
 
     public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(String sitTelephone) {
-        this.telephone = sitTelephone;
-    }
-
-    public List<Match> getMatchs() {
-        return matchs;
-    }
-
-    public void setMatchs(List<Match> matchList) {
-        this.matchs = matchList;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     @Override
@@ -90,7 +79,6 @@ public class Site implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Site)) {
             return false;
         }

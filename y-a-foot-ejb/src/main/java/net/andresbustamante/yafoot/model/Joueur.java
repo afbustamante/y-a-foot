@@ -1,18 +1,16 @@
 package net.andresbustamante.yafoot.model;
 
-import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author andresbustamante
  */
 @Entity
 @Table(name = "t_joueur")
-@NamedQueries({
-        @NamedQuery(name = "Joueur.findIdByEmail", query = "SELECT jou.id FROM Joueur jou WHERE jou.email = :email")})
 @SequenceGenerator(name = "s_joueur", sequenceName = "s_joueur", allocationSize = 1)
 public class Joueur implements Serializable {
 
@@ -42,8 +40,6 @@ public class Joueur implements Serializable {
     @Size(max = 64)
     @Column(name = "jou_mdp")
     private String motDePasse;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "joueur")
-    private List<JoueurMatch> matchs;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "chauffeur")
     private List<Voiture> voitures;
 
@@ -109,14 +105,6 @@ public class Joueur implements Serializable {
         this.motDePasse = motDePasse;
     }
 
-    public List<JoueurMatch> getMatchs() {
-        return matchs;
-    }
-
-    public void setMatchs(List<JoueurMatch> joueurMatchList) {
-        this.matchs = joueurMatchList;
-    }
-
     public List<Voiture> getVoitures() {
         return voitures;
     }
@@ -134,7 +122,6 @@ public class Joueur implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Joueur)) {
             return false;
         }

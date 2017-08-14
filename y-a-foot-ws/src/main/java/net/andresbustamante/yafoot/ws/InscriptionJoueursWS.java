@@ -71,8 +71,28 @@ public class InscriptionJoueursWS extends TransactionalWebService {
     public boolean actualiserJoueur(net.andresbustamante.yafoot.xs.Joueur joueur,
                                     net.andresbustamante.yafoot.xs.Contexte contexte)
             throws BDDException {
-        // TODO Implement this method
-        return false;
+        boolean succes;
+
+        try {
+            utx.begin();
+            Joueur joueurMaj = copierJoueur(joueur);
+            gestionJoueursService.actualiserJoueur(joueurMaj,
+                    ContexteUtils.copierInfoContexte(contexte));
+            succes = (joueurMaj != null && joueurMaj.getId() != null);
+            utx.commit();
+        } catch (net.andresbustamante.yafoot.exceptions.BDDException e) {
+            throw new BDDException(e.getMessage(), e.getMessage());
+        } catch (NotSupportedException | SystemException e) {
+            rollbackTransaction(utx);
+            throw new BDDException("Erreur de BDD au moment de créer la transaction", e.getMessage(), e);
+        } catch (HeuristicMixedException | HeuristicRollbackException | RollbackException e) {
+            rollbackTransaction(utx);
+            throw new BDDException("Erreur de BDD au moment de confirmer la transaction", e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            rollbackTransaction(utx);
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        return succes;
     }
 
     /**
@@ -93,6 +113,22 @@ public class InscriptionJoueursWS extends TransactionalWebService {
             voiture.setChauffeur(joueur);
             joueur.setVoitures(Arrays.asList(voiture));
         }
+        return joueur;
+    }
+
+    /**
+     *
+     * @param joueurXml
+     * @return
+     */
+    private Joueur copierJoueur(net.andresbustamante.yafoot.xs.Joueur joueurXml) {
+        Joueur joueur = new Joueur();
+        joueur.setId(joueurXml.getId());
+        joueur.setEmail(joueurXml.getEmail());
+        joueur.setMotDePasse(joueurXml.getMotDePasse());
+        joueur.setNom(joueurXml.getNom());
+        joueur.setPrenom(joueurXml.getPrenom());
+        joueur.setTelephone(joueurXml.getNumeroTelephone());
         return joueur;
     }
 

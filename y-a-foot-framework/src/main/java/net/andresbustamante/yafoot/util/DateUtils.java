@@ -2,6 +2,7 @@ package net.andresbustamante.yafoot.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -17,7 +18,7 @@ import java.util.GregorianCalendar;
  */
 public class DateUtils {
 
-    public static final String FORMAT_DATE = "dd/MM/yyyy";
+    private static final String FORMAT_DATE = "dd/MM/yyyy";
 
     private static final Log log = LogFactory.getLog(DateUtils.class);
 
@@ -57,5 +58,13 @@ public class DateUtils {
         } catch (ParseException e) {
             return null;
         }
+    }
+
+    public static Date premiereMinuteDuJour(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        return (new DateTime(date).withMillisOfDay(0)).toDate();
     }
 }

@@ -27,9 +27,9 @@ public class JoueurDAOImpl extends JpaDAO<Joueur> implements JoueurDAO {
     @Override
     public boolean isJoueurInscrit(String email) throws BDDException {
         try {
-            Query consulta = getEntityManager().createNamedQuery("Joueur.findIdByEmail");
-            consulta.setParameter("email", email);
-            Object joueur = consulta.getSingleResult();
+            Query q = getEntityManager().createQuery("SELECT jou.id FROM Joueur jou WHERE jou.email = :email");
+            q.setParameter("email", email);
+            Object joueur = q.getSingleResult();
             return (joueur != null);
         } catch (NoResultException e) {
             return false;

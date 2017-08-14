@@ -24,7 +24,7 @@ CREATE TABLE t_joueur_match (
 
 CREATE TABLE t_match (
   mat_id              INT4        NOT NULL,
-  mat_date            DATE        NOT NULL,
+  mat_date            TIMESTAMP   NOT NULL,
   mat_code            VARCHAR(12) NOT NULL,
   mat_description     TEXT,
   mat_num_joueurs_min INT4,
