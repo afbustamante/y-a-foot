@@ -92,6 +92,16 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    <xs:element name="sites">
+        <xs:annotation>
+            <xs:documentation>Liste de sites</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="site" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
     <xs:element name="joueur">
         <xs:annotation>
             <xs:documentation>Joueur à inscrire pour un match</xs:documentation>

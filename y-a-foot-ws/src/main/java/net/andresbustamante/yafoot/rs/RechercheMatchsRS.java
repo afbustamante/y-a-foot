@@ -1,14 +1,14 @@
 package net.andresbustamante.yafoot.rs;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
-import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.model.Contexte;
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.JoueurMatch;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Site;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
 import net.andresbustamante.yafoot.util.DateUtils;
-import net.andresbustamante.yafoot.xs.*;
+import net.andresbustamante.yafoot.xs.Joueurs;
+import net.andresbustamante.yafoot.xs.Matchs;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
