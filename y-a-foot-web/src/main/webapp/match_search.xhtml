@@ -1,8 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:a4j="http://richfaces.org/a4j"
                 template="./resources/facelets/general.xhtml">
@@ -19,9 +21,30 @@
                                    render="result"/>
             </h:panelGrid>
 
-            <a4j:outputPanel id="result">
-                <h:panelGrid rendered="#{matchSearchBean.match != null}" columns="3" style="width: 100%;">
-                </h:panelGrid>
+            <a4j:outputPanel id="result" rendered="#{matchSearchBean.match != null}">
+                <fieldset>
+                    <legend><h:outputLabel value="#{messages['match.search.match.about']}"/></legend>
+                    <h:panelGrid rendered="#{matchSearchBean.match != null}" columns="3" style="width: 100%;">
+                        <h:outputLabel value="#{messages['match.search.result.when']}" />
+                        <h:outputText value="#{matchSearchBean.match.date.toGregorianCalendar}">
+                            <f:convertDateTime dateStyle="default" />
+                        </h:outputText>
+                        <h:outputText />
+
+                        <h:outputLabel value="#{messages['match.search.result.where']}" />
+                        <h:panelGrid columns="1">
+                            <h:outputText value="#{matchSearchBean.match.site.nom}" />
+                            <h:outputText value="#{matchSearchBean.match.site.adresse}" />
+                        </h:panelGrid>
+                        <h:outputText />
+
+                        <h:outputLabel value="#{messages['match.search.result.who']}" />
+                        <rich:list value="#{matchSearchBean.match.joueurs.joueur}" id="players" var="joueur">
+                            <h:outputText value="#{joueur.prenom}" />
+                        </rich:list>
+                        <h:outputText value="#{matchSearchBean.complementJoueurs}" />
+                    </h:panelGrid>
+                </fieldset>
             </a4j:outputPanel>
         </h:form>
 

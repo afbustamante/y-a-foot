@@ -5,7 +5,7 @@
     <display-name>Y'a foot</display-name>
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Production</param-value>
+        <param-value>Development</param-value>
     </context-param>
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -23,10 +23,12 @@
         <param-name>javax.faces.VALIDATE_EMPTY_FIELDS</param-name>
         <param-value>false</param-value>
     </context-param>
+    <!--
     <context-param>
         <param-name>org.apache.myfaces.LOG_WEB_CONTEXT_PARAMS</param-name>
         <param-value>false</param-value>
     </context-param>
+    -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
