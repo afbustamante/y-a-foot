@@ -97,7 +97,7 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>${user.home}/workspaces/y-a-foot/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/authentification_utilisateur.wsdl</wsdlFile>
+                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/authentification_utilisateur.wsdl</wsdlFile>
                             </wsdlFiles>
                             <staleFile>${project.build.directory}/jaxws/stale/authentification_utilisateur.stale</staleFile>
                         </configuration>
@@ -110,7 +110,7 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>${user.home}/workspaces/y-a-foot/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/inscription_joueurs.wsdl</wsdlFile>
+                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/inscription_joueurs.wsdl</wsdlFile>
                             </wsdlFiles>
                             <staleFile>${project.build.directory}/jaxws/stale/inscription_joueurs.stale</staleFile>
                         </configuration>
@@ -123,7 +123,7 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>${user.home}/workspaces/y-a-foot/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/organisation_matchs.wsdl</wsdlFile>
+                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/organisation_matchs.wsdl</wsdlFile>
                             </wsdlFiles>
                             <staleFile>${project.build.directory}/jaxws/stale/organisation_matchs.stale</staleFile>
                         </configuration>

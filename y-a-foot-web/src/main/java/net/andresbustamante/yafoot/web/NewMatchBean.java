@@ -21,6 +21,8 @@ public class NewMatchBean implements Serializable {
     private Integer numMinJoueurs;
     private Integer numMaxJoueurs;
     private String nomSite;
+    private String adresseSite;
+    private String telephoneSite;
     private BigDecimal latitudeSite;
     private BigDecimal longitudeSite;
     private boolean optionCovoiturageActive;
@@ -69,6 +71,22 @@ public class NewMatchBean implements Serializable {
 
     public void setNomSite(String nomSite) {
         this.nomSite = nomSite;
+    }
+
+    public String getAdresseSite() {
+        return adresseSite;
+    }
+
+    public void setAdresseSite(String adresseSite) {
+        this.adresseSite = adresseSite;
+    }
+
+    public String getTelephoneSite() {
+        return telephoneSite;
+    }
+
+    public void setTelephoneSite(String telephoneSite) {
+        this.telephoneSite = telephoneSite;
     }
 
     public BigDecimal getLatitudeSite() {

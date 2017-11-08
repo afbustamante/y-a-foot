@@ -29,7 +29,14 @@
                                    label="#{messages['new.match.players.max']}" labelPosition="top"/>
 
                     <ace:textEntry id="placeName" value="#{newMatchBean.nomSite}" maxlength="255"
-                                   label="#{messages['new.match.place']}" labelPosition="top"/>
+                                   label="#{messages['new.match.place.name']}" labelPosition="top"/>
+
+                    <ace:textAreaEntry id="placeAddress" value="#{newMatchBean.adresseSite}" maxlength="255"
+                                       rows="3" cols="80"
+                                       label="#{messages['new.match.place.address']}" labelPosition="top"/>
+
+                    <ace:textEntry id="placePhoneNumber" value="#{newMatchBean.telephoneSite}" maxlength="15"
+                                   label="#{messages['new.match.place.phone.number']}" labelPosition="top"/>
 
                     <!-- TODO Composant avec la cartographie pour la sélection du site -->
 

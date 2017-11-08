@@ -112,17 +112,42 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>
-                                    ${user.home}/workspaces/y-a-foot/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/authentification_utilisateur.wsdl
-                                </wsdlFile>
+                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/authentification_utilisateur.wsdl</wsdlFile>
                             </wsdlFiles>
                             <!-- TODO Utiliser wsdlLocation avec une adresse URL fixe sur Internet -->
-                            <wsdlLocation>http://localhost:8080/y-a-foot-ws/AuthentificationUtilisateurService?wsdl
-                            </wsdlLocation>
+                            <wsdlLocation>http://localhost:8080/y-a-foot-ws/AuthentificationUtilisateurService?wsdl</wsdlLocation>
                             <staleFile>${project.build.directory}/jaxws/stale/AuthentificationUtilisateurService.stale
                             </staleFile>
                         </configuration>
                         <id>wsimport-generate-AuthentificationUtilisateurService</id>
+                        <phase>generate-sources</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/organisation_matchs.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>http://localhost:8080/y-a-foot-ws/OrganisationMatchsService?wsdl</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/OrganisationMatchsService.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-OrganisationMatchsService</id>
+                        <phase>generate-sources</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/inscription_joueurs.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>http://localhost:8080/y-a-foot-ws/InscriptionJoueursService?wsdl</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/InscriptionJoueursService.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-InscriptionJoueursService</id>
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>
