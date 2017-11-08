@@ -94,7 +94,7 @@ public class OrganisationMatchsWS extends TransactionalWebService {
 
     private Match creerMatch(net.andresbustamante.yafoot.xs.Match matchXml) {
         Match match = new Match();
-        match.setDateMatch(DateUtils.transformer(matchXml.getDate()));
+        match.setDateMatch(matchXml.getDate().getTime());
         match.setDescription(matchXml.getDescription());
         match.setNumJoueursMin(matchXml.getNumJoueursMin());
         match.setNumJoueursMax(matchXml.getNumJoueursMax());
@@ -159,7 +159,7 @@ public class OrganisationMatchsWS extends TransactionalWebService {
             Match match = new Match();
             match.setId(matchXml.getId());
             match.setCode(matchXml.getCode());
-            match.setDateMatch(DateUtils.transformer(matchXml.getDate()));
+            match.setDateMatch(matchXml.getDate().getTime());
             return match;
         }
         return null;

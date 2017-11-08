@@ -6,11 +6,11 @@ import net.andresbustamante.yafoot.model.JoueurMatch;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Site;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
-import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.xs.Joueurs;
 import net.andresbustamante.yafoot.xs.Matchs;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -22,6 +22,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Web Service REST pour la recherche et consultation des matches
@@ -90,7 +91,8 @@ public class RechercheMatchsRS {
         net.andresbustamante.yafoot.xs.Match matchXml = new net.andresbustamante.yafoot.xs.Match();
         matchXml.setId(match.getId());
         matchXml.setCode(match.getCode());
-        matchXml.setDate(DateUtils.transformer(match.getDateMatch()));
+        // TODO Changer par locale en fonction du match
+        matchXml.setDate(new DateTime(match.getDateMatch()).toCalendar(Locale.FRANCE));
         matchXml.setDescription(match.getDescription());
         matchXml.setNumJoueursMin(match.getNumJoueursMin());
         matchXml.setNumJoueursMax(match.getNumJoueursMax());

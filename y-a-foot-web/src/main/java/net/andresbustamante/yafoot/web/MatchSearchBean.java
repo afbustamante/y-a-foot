@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.web;
 
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
+import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.util.MessagesProperties;
 import net.andresbustamante.yafoot.xs.Match;
 import org.apache.commons.logging.Log;
@@ -24,6 +25,7 @@ public class MatchSearchBean implements Serializable {
     private Match match;
     private String complementJoueurs;
     private Locale locale;
+    private String patternDate;
     private final Log log = LogFactory.getLog(MatchSearchBean.class);
 
     @Inject
@@ -72,5 +74,16 @@ public class MatchSearchBean implements Serializable {
             return match.getNumJoueursMax() - match.getJoueurs().getJoueur().size();
         }
         return null;
+    }
+
+    public String getPatternDate() {
+        if (patternDate == null) {
+            patternDate = DateUtils.getPatternDateHeure(locale.getLanguage());
+        }
+        return patternDate;
+    }
+
+    public void setPatternDate(String patternDate) {
+        this.patternDate = patternDate;
     }
 }

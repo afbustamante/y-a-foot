@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns="http://andresbustamante.net/yafoot/xs" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0"
            targetNamespace="http://andresbustamante.net/yafoot/xs" elementFormDefault="qualified"
            attributeFormDefault="unqualified" version="1.0">
+    <xs:annotation>
+        <xs:appinfo>
+            <jaxb:globalBindings>
+                <jaxb:javaType name="java.util.Calendar" xmlType="xs:dateTime"
+                               parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime"
+                               printMethod="javax.xml.bind.DatatypeConverter.printDateTime"/>
+            </jaxb:globalBindings>
+        </xs:appinfo>
+    </xs:annotation>
+
     <xs:element name="match">
         <xs:annotation>
             <xs:documentation>Match de foot</xs:documentation>
@@ -56,7 +67,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="match" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="match" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -98,7 +109,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="site" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="site" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -184,14 +195,14 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="utilisateur" type="utilisateurType" />
+    <xs:element name="utilisateur" type="utilisateurType"/>
     <xs:complexType name="utilisateurType">
         <xs:annotation>
             <xs:documentation>Utilisateur de l'application</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="id" type="xs:int" minOccurs="0"/>
-            <xs:element name="email" type="emailType" />
+            <xs:element name="email" type="emailType"/>
             <xs:element name="motDePasse" type="motDePasseType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>

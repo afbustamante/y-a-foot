@@ -1,10 +1,13 @@
 package net.andresbustamante.yafoot.web;
 
+import net.andresbustamante.yafoot.util.DateUtils;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author andresbustamante
@@ -13,7 +16,7 @@ import java.math.BigDecimal;
 @ViewScoped
 public class NewMatchBean implements Serializable {
 
-    private String dateMatch;
+    private Date dateMatch;
     private String heureMatch;
     private Integer numMinJoueurs;
     private Integer numMaxJoueurs;
@@ -28,11 +31,11 @@ public class NewMatchBean implements Serializable {
     public NewMatchBean() {
     }
 
-    public String getDateMatch() {
+    public Date getDateMatch() {
         return dateMatch;
     }
 
-    public void setDateMatch(String dateMatch) {
+    public void setDateMatch(Date dateMatch) {
         this.dateMatch = dateMatch;
     }
 
@@ -109,15 +112,7 @@ public class NewMatchBean implements Serializable {
 
     public String getPatternDate() {
         if (patternDate == null) {
-            switch (getLocale()) {
-                case "es":
-                case "fr":
-                    return "dd/MM/yyyy";
-                case "en":
-                    return "yyyy-MM-dd";
-                default:
-                    return "yyyy/MM/dd";
-            }
+            patternDate = DateUtils.getPatternDateHeure(getLocale());
         }
         return patternDate;
     }

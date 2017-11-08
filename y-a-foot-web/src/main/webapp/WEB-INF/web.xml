@@ -5,7 +5,7 @@
     <display-name>Y'a foot</display-name>
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
+        <param-value>Production</param-value>
     </context-param>
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -22,6 +22,10 @@
     <context-param>
         <param-name>javax.faces.VALIDATE_EMPTY_FIELDS</param-name>
         <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>org.icefaces.ace.theme</param-name>
+        <param-value>rime</param-value>
     </context-param>
     <!--
     <context-param>

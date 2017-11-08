@@ -6,6 +6,10 @@
     }
 }
 
+#page {
+    width: 100%;
+}
+
 #top {
     position: relative;
     background-color: #036fab;
@@ -37,8 +41,9 @@
 
 .center_content {
     position: relative;
-    background-color: #dddddd;
-    padding: 5px;
+    background-color: #ffffff;
+    padding: 5px 0px;
+    width: 100%;
 }
 
 .left_content {

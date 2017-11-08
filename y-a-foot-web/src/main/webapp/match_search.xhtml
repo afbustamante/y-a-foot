@@ -5,47 +5,51 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:rich="http://richfaces.org/rich"
-                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
                 template="./resources/facelets/general.xhtml">
 
     <ui:define name="content">
         <h3><h:outputText value="#{messages['match.search.wish.text']}"/></h3>
 
         <h:form>
-            <h:panelGrid style="width: 100%;" columns="3">
-                <h:outputLabel value="#{messages['match.search.code']}"/>
-                <h:inputText value="#{matchSearchBean.codeMatch}"/>
-                <a4j:commandButton action="#{matchSearchBean.chercherMatch}"
-                                   value="#{messages['match.search.button.search']}" execute="@form"
-                                   render="result"/>
-            </h:panelGrid>
+            <ace:panel id="search">
+                <h:panelGrid columns="1">
+                    <ace:textEntry label="#{messages['match.search.code']}" labelPosition="top"
+                                   value="#{matchSearchBean.codeMatch}"
+                                   required="true" requiredMessage="#{messages['match.search.code.required']}" />
 
-            <a4j:outputPanel id="result" rendered="#{matchSearchBean.match != null}">
-                <fieldset>
-                    <legend><h:outputLabel value="#{messages['match.search.match.about']}"/></legend>
-                    <h:panelGrid rendered="#{matchSearchBean.match != null}" columns="3" style="width: 100%;">
-                        <h:outputLabel value="#{messages['match.search.result.when']}" />
-                        <h:outputText value="#{matchSearchBean.match.date.toGregorianCalendar}">
-                            <f:convertDateTime dateStyle="default" />
-                        </h:outputText>
-                        <h:outputText />
+                    <ace:pushButton action="#{matchSearchBean.chercherMatch}"
+                                    value="#{messages['match.search.button.search']}">
+                        <ace:ajax execute="@form" render="@all"/>
+                    </ace:pushButton>
+                </h:panelGrid>
+            </ace:panel>
 
-                        <h:outputLabel value="#{messages['match.search.result.where']}" />
-                        <h:panelGrid columns="1">
-                            <h:outputText value="#{matchSearchBean.match.site.nom}" />
-                            <h:outputText value="#{matchSearchBean.match.site.adresse}" />
-                        </h:panelGrid>
-                        <h:outputText />
+            <h:messages/>
 
-                        <h:outputLabel value="#{messages['match.search.result.who']}" />
-                        <rich:list value="#{matchSearchBean.match.joueurs.joueur}" id="players" var="joueur">
-                            <h:outputText value="#{joueur.prenom}" />
-                        </rich:list>
-                        <h:outputText value="#{matchSearchBean.complementJoueurs}" />
+            <ace:panel id="result" header="#{messages['match.search.match.about']}"
+                       rendered="#{matchSearchBean.match != null}">
+                <h:panelGrid rendered="#{matchSearchBean.match != null}" columns="3" styleClass="form">
+                    <h:outputLabel value="#{messages['match.search.result.when']}"/>
+                    <h:outputText value="#{matchSearchBean.match.date.time}">
+                        <f:convertDateTime pattern="#{matchSearchBean.patternDate}" />
+                    </h:outputText>
+                    <h:outputText/>
+
+                    <h:outputLabel value="#{messages['match.search.result.where']}"/>
+                    <h:panelGrid columns="1">
+                        <h:outputText value="#{matchSearchBean.match.site.nom}"/>
+                        <h:outputText value="#{matchSearchBean.match.site.adresse}"/>
                     </h:panelGrid>
-                </fieldset>
-            </a4j:outputPanel>
+                    <h:outputText/>
+
+                    <h:outputLabel value="#{messages['match.search.result.who']}"/>
+                    <ace:list value="#{matchSearchBean.match.joueurs.joueur}" id="players" var="joueur">
+                        <h:outputText value="#{joueur.prenom}"/>
+                    </ace:list>
+                    <h:outputText value="#{matchSearchBean.complementJoueurs}"/>
+                </h:panelGrid>
+            </ace:panel>
         </h:form>
 
     </ui:define>
