@@ -4,11 +4,12 @@ import net.andresbustamante.framework.web.TransactionalWebService;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
 import net.andresbustamante.yafoot.util.ContexteUtils;
-import net.andresbustamante.yafoot.util.DateUtils;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.jws.WebService;
 import javax.transaction.*;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
         endpointInterface = "net.andresbustamante.yafoot.ws.OrganisationMatchsPortType",
         targetNamespace = "http://andresbustamante.net/yafoot/ws",
         wsdlLocation = "WEB-INF/wsdl/organisation_matchs.wsdl")
+@TransactionManagement(TransactionManagementType.BEAN)
 public class OrganisationMatchsWS extends TransactionalWebService {
 
     @Resource

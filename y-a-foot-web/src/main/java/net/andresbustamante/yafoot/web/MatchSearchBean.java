@@ -29,7 +29,7 @@ public class MatchSearchBean implements Serializable {
     private final Log log = LogFactory.getLog(MatchSearchBean.class);
 
     @Inject
-    protected RechercheMatchsUIService rechercheMatchsUIService;
+    private RechercheMatchsUIService rechercheMatchsUIService;
 
     public MatchSearchBean() {
         locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();

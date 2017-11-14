@@ -1,13 +1,24 @@
 package net.andresbustamante.yafoot.web;
 
+import net.andresbustamante.yafoot.uiservices.OrganisationMatchsUIService;
 import net.andresbustamante.yafoot.util.DateUtils;
+import net.andresbustamante.yafoot.util.MessagesProperties;
+import net.andresbustamante.yafoot.ws.BDDException;
+import net.andresbustamante.yafoot.xs.Match;
+import net.andresbustamante.yafoot.xs.Site;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author andresbustamante
@@ -20,6 +31,7 @@ public class NewMatchBean implements Serializable {
     private String heureMatch;
     private Integer numMinJoueurs;
     private Integer numMaxJoueurs;
+    private Integer idSite;
     private String nomSite;
     private String adresseSite;
     private String telephoneSite;
@@ -27,8 +39,13 @@ public class NewMatchBean implements Serializable {
     private BigDecimal longitudeSite;
     private boolean optionCovoiturageActive;
     private boolean optionInvitationPubliqueActive;
-    private String locale;
+    private Locale locale;
     private String patternDate;
+
+    private final Log log = LogFactory.getLog(NewMatchBean.class);
+
+    @Inject
+    private OrganisationMatchsUIService organisationMatchsUIService;
 
     public NewMatchBean() {
     }
@@ -63,6 +80,14 @@ public class NewMatchBean implements Serializable {
 
     public void setNumMaxJoueurs(Integer numMaxJoueurs) {
         this.numMaxJoueurs = numMaxJoueurs;
+    }
+
+    public Integer getIdSite() {
+        return idSite;
+    }
+
+    public void setIdSite(Integer idSite) {
+        this.idSite = idSite;
     }
 
     public String getNomSite() {
@@ -121,16 +146,16 @@ public class NewMatchBean implements Serializable {
         this.optionInvitationPubliqueActive = optionInvitationPubliqueActive;
     }
 
-    public String getLocale() {
+    public Locale getLocale() {
         if (locale == null) {
-            locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale().getLanguage();
+            locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
         }
         return locale;
     }
 
     public String getPatternDate() {
         if (patternDate == null) {
-            patternDate = DateUtils.getPatternDateHeure(getLocale());
+            patternDate = DateUtils.getPatternDateHeure(getLocale().getLanguage());
         }
         return patternDate;
     }
@@ -139,10 +164,42 @@ public class NewMatchBean implements Serializable {
         this.patternDate = patternDate;
     }
 
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
+    public String creerNouveauMatch() {
+        log.info("Nouvelle demande de création de match depuis " + getLocale().getDisplayCountry());
 
-    public void creerNouveauMatch() {
+        Calendar date = Calendar.getInstance(getLocale());
+        date.setTime(dateMatch);
+
+        Site site = new Site();
+        site.setId(idSite);
+        site.setNom(nomSite);
+        site.setAdresse(adresseSite);
+        site.setNumeroTelephone(telephoneSite);
+
+        Match match = new Match();
+        match.setNumJoueursMin(numMinJoueurs);
+        match.setNumJoueursMax(numMaxJoueurs);
+        match.setDate(date);
+        match.setSite(site);
+
+        try {
+            String code = organisationMatchsUIService.creerMatch(match);
+
+            FacesMessage facesMessage = new FacesMessage();
+            facesMessage.setSeverity(FacesMessage.SEVERITY_INFO);
+            facesMessage.setDetail(MessagesProperties.getValue("new.match.success", getLocale(), code));
+
+            facesMessage = new FacesMessage();
+            facesMessage.setSeverity(FacesMessage.SEVERITY_INFO);
+            facesMessage.setSummary(MessagesProperties.getValue("new.match.instructions", getLocale()));
+        } catch (BDDException e) {
+            log.error("Erreur lors de la création d'un match", e);
+            FacesMessage facesMessage = new FacesMessage();
+            facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+            facesMessage.setSummary(e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
+        }
+
+        return "start";
     }
 }
