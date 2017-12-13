@@ -4,12 +4,14 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ace="http://www.icefaces.org/icefaces/components"
-                template="./resources/facelets/general.xhtml">
+                template="../resources/facelets/general.xhtml">
 
     <ui:define name="content">
         <h3><h:outputText value="#{messages['new.match.wish.text']}"/></h3>
 
         <h:form>
+            <h:messages/>
+
             <ace:panel header="#{messages['new.match.details.title']}">
                 <h:panelGrid columns="1">
                     <ace:dateTimeEntry id="date" required="true" value="#{newMatchBean.dateMatch}"
@@ -54,8 +56,6 @@
                                         label="#{messages['new.match.option.open.invitations']}" labelPosition="right"/>
                 </h:panelGrid>
             </ace:panel>
-
-            <h:messages/>
 
             <ace:panel id="actions">
                 <h:panelGrid columns="2">

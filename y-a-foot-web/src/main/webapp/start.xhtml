@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
                 template="./resources/facelets/general.xhtml">
 
     <ui:define name="content">
@@ -13,18 +15,17 @@
             <table>
                 <tr>
                     <td>
-                        <h:commandButton action="/new_match"
-                                         value="#{messages['start.button.organise']}"/>
+                        <ace:linkButton href="matches/new_match.jsf" value="#{messages['start.button.organise']}"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <h:commandButton action="/match_search" value="#{messages['start.button.join']}"/>
+                        <ace:linkButton href="matches/match_search.jsf" value="#{messages['start.button.join']}"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <h:commandButton action="/match_list" value="#{messages['start.button.list']}"/>
+                        <ace:linkButton href="matches/match_list.jsf" value="#{messages['start.button.list']}"/>
                     </td>
                 </tr>
             </table>

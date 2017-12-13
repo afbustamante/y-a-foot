@@ -200,6 +200,6 @@ public class NewMatchBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
         }
 
-        return "start";
+        return "match_list";
     }
 }

@@ -5,6 +5,7 @@ import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
 import net.andresbustamante.yafoot.util.ContexteUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -122,13 +123,22 @@ public class OrganisationMatchsWS extends TransactionalWebService {
 
     private Site copierSite(net.andresbustamante.yafoot.xs.Site siteXml) {
         if (siteXml != null) {
-            Site site = new Site();
-            site.setId(siteXml.getId());
-            site.setNom(siteXml.getNom());
-            site.setAdresse(siteXml.getAdresse());
-            site.setTelephone(siteXml.getNumeroTelephone());
+            Site site = null;
 
-            // TODO Traiter les coordonnées GPS
+            if (siteXml.getId() != null) {
+                site = new Site();
+                site.setId(siteXml.getId());
+
+                // Mettre à jour les coordonnés du site avec les infos renseignées par le client
+                site.setNom(siteXml.getNom());
+                site.setAdresse(siteXml.getAdresse());
+                site.setTelephone(siteXml.getNumeroTelephone());
+            } else if (StringUtils.isNotEmpty(siteXml.getNom()) && StringUtils.isNotEmpty(siteXml.getAdresse())) {
+                site = new Site();
+                site.setNom(siteXml.getNom());
+                site.setAdresse(siteXml.getAdresse());
+                site.setTelephone(siteXml.getNumeroTelephone());
+            }
             return site;
         }
         return null;
