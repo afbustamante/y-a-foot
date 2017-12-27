@@ -38,6 +38,9 @@ public class Match implements Serializable {
     private Integer numJoueursMin;
     @Column(name = "mat_num_joueurs_max")
     private Integer numJoueursMax;
+    @JoinColumn(name = "mat_createur_fk", referencedColumnName = "jou_id")
+    @ManyToOne(optional = false)
+    private Joueur createur;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
     private List<JoueurMatch> joueursMatch;
     @JoinColumn(name = "mat_site_fk", referencedColumnName = "sit_id")
@@ -102,6 +105,14 @@ public class Match implements Serializable {
 
     public void setNumJoueursMax(Integer matNumJoueursMax) {
         this.numJoueursMax = matNumJoueursMax;
+    }
+
+    public Joueur getCreateur() {
+        return createur;
+    }
+
+    public void setCreateur(Joueur createur) {
+        this.createur = createur;
     }
 
     public List<JoueurMatch> getJoueursMatch() {

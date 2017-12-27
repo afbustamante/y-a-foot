@@ -64,4 +64,13 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
             throw new BDDException(e.getMessage());
         }
     }
+
+    @Override
+    public Joueur chercherJoueur(String email, Contexte contexte) throws BDDException {
+        try {
+            return joueurDAO.chercherParMail(email);
+        } catch (DatabaseException e) {
+            throw new BDDException(e.getMessage());
+        }
+    }
 }

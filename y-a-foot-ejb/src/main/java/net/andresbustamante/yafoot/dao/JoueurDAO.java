@@ -13,4 +13,6 @@ import javax.ejb.Local;
 public interface JoueurDAO extends DAO<Joueur> {
 
     boolean isJoueurInscrit(String email) throws BDDException;
+
+    Joueur chercherParMail(String email) throws BDDException;
 }

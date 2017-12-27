@@ -15,4 +15,6 @@ public interface GestionJoueursService {
     void inscrireJoueur(Joueur joueur, Contexte contexte) throws BDDException;
 
     void actualiserJoueur(Joueur joueur, Contexte contexte) throws BDDException;
+
+    Joueur chercherJoueur(String email, Contexte contexte) throws BDDException;
 }

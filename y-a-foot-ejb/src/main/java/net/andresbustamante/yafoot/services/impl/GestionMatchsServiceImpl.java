@@ -42,15 +42,17 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
     @Override
     public void creerMatch(Match match, Contexte contexte) throws BDDException {
         try {
-            String codeMatch;
-            boolean codeDejaUtilise;
-            do {
-                codeMatch = genererCodeMatch();
-                codeDejaUtilise = matchDAO.isCodeExistant(codeMatch);
-            } while (codeDejaUtilise);
+            // Chercher le createur du match
+            Joueur createur = joueurDAO.chercherParMail(contexte.getEmailUtilisateur());
 
-            match.setCode(codeMatch);
+            if (createur != null) {
+                match.setCreateur(createur);
+            }
 
+            // Générer le code du match
+            match.setCode(genererCodeMatch());
+
+            // Lier le match à son site
             if (match.getSite().getId() != null) {
                 Site siteExistant = siteDAO.load(match.getSite().getId());
 
@@ -67,6 +69,9 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
             matchDAO.save(match);
             log.info("Nouveau match enregistré avec l'ID " + match.getId());
+
+            // Inscrire le joueur au match
+            inscrireJoueurMatch(createur, match, null, contexte);
         } catch (DatabaseException e) {
             throw new BDDException(e.getMessage());
         }
@@ -106,7 +111,13 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
         }
     }
 
-    private String genererCodeMatch() {
-        return generateurCodes.generate(LONGUEUR_CODE);
+    private String genererCodeMatch() throws BDDException {
+        String codeMatch;
+        boolean codeDejaUtilise;
+        do {
+            codeMatch = generateurCodes.generate(LONGUEUR_CODE);
+            codeDejaUtilise = matchDAO.isCodeExistant(codeMatch);
+        } while (codeDejaUtilise);
+        return codeMatch;
     }
 }
