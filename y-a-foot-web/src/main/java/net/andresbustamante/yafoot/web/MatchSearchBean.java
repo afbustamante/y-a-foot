@@ -26,7 +26,7 @@ public class MatchSearchBean implements Serializable {
     private String complementJoueurs;
     private Locale locale;
     private String patternDate;
-    private final Log log = LogFactory.getLog(MatchSearchBean.class);
+    private transient final Log log = LogFactory.getLog(MatchSearchBean.class);
 
     @Inject
     private RechercheMatchsUIService rechercheMatchsUIService;

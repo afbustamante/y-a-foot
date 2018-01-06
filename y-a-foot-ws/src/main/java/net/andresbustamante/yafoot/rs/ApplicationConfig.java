@@ -19,6 +19,7 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(net.andresbustamante.yafoot.rs.RechercheJoueursRS.class);
         resources.add(net.andresbustamante.yafoot.rs.RechercheMatchsRS.class);
         resources.add(net.andresbustamante.yafoot.rs.RechercheSitesRS.class);
     }

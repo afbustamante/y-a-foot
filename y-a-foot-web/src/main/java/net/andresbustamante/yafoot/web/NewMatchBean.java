@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web;
 
 import net.andresbustamante.yafoot.uiservices.OrganisationMatchsUIService;
+import net.andresbustamante.yafoot.util.ConstantesWeb;
 import net.andresbustamante.yafoot.util.DateUtils;
-import net.andresbustamante.yafoot.util.MessagesProperties;
 import net.andresbustamante.yafoot.ws.BDDException;
 import net.andresbustamante.yafoot.xs.Match;
 import net.andresbustamante.yafoot.xs.Site;
@@ -42,7 +42,7 @@ public class NewMatchBean implements Serializable {
     private Locale locale;
     private String patternDate;
 
-    private final Log log = LogFactory.getLog(NewMatchBean.class);
+    private transient final Log log = LogFactory.getLog(NewMatchBean.class);
 
     @Inject
     private OrganisationMatchsUIService organisationMatchsUIService;
@@ -164,6 +164,10 @@ public class NewMatchBean implements Serializable {
         this.patternDate = patternDate;
     }
 
+    /**
+     *
+     * @return
+     */
     public String creerNouveauMatch() {
         log.info("Nouvelle demande de création de match depuis " + getLocale().getDisplayCountry());
 
@@ -183,15 +187,9 @@ public class NewMatchBean implements Serializable {
         match.setSite(site);
 
         try {
-            String code = organisationMatchsUIService.creerMatch(match);
-
-            FacesMessage facesMessage = new FacesMessage();
-            facesMessage.setSeverity(FacesMessage.SEVERITY_INFO);
-            facesMessage.setDetail(MessagesProperties.getValue("new.match.success", getLocale(), code));
-
-            facesMessage = new FacesMessage();
-            facesMessage.setSeverity(FacesMessage.SEVERITY_INFO);
-            facesMessage.setSummary(MessagesProperties.getValue("new.match.instructions", getLocale()));
+            String codeMatch = organisationMatchsUIService.creerMatch(match);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ConstantesWeb.CODE_MATCH,
+                    codeMatch);
         } catch (BDDException e) {
             log.error("Erreur lors de la création d'un match", e);
             FacesMessage facesMessage = new FacesMessage();
@@ -200,6 +198,6 @@ public class NewMatchBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
         }
 
-        return "match_list";
+        return "match_postcreation";
     }
 }

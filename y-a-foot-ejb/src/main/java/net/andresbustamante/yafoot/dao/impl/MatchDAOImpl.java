@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -64,9 +65,9 @@ public class MatchDAOImpl extends JpaDAO<Match> implements MatchDAO {
             q.setParameter("idJoueur", idJoueur);
             q.setParameter("dateAuPlusTot", dateAuPlusTot);
             List matchs = q.getResultList();
-            return (matchs != null) ? (List<Match>) matchs : null;
+            return (matchs != null) ? (List<Match>) matchs : Collections.<Match>emptyList();
         } catch (NoResultException e) {
-            return null;
+            return Collections.emptyList();
         }
     }
 

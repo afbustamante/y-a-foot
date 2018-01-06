@@ -1,26 +1,18 @@
 body {
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     font-size: 1em;
     font-family: Arial, Helvetica, sans-serif;
     color: #000000;
 }
 
-h1 {
-    border-bottom: 1px solid #AFAFAF;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-    color: #D20005;
-}
-
 a:link, a:visited {
-    color: #045491;
+    color: #336699;
     font-weight: bold;
     text-decoration: none;
 }
 
 a:link:hover, a:visited:hover {
-    color: #045491;
+    color: #336699;
     font-weight: bold;
     text-decoration: underline;
 }
@@ -40,4 +32,28 @@ input, textarea, button, select {
 
 .footer_text {
     font-size: 0.8em;
+}
+
+.match_preview {
+    border: thin solid #CCCCCC;
+    background-color: #FFFFF0;
+    padding: 5px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.match_instructions {
+    border: thin solid #CCCCCC;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.error {
+    color: #CC3333;
+}
+
+.messages {
+    border: thin solid #CCCCCC;
+    background-color: #FFFFF0;
 }
