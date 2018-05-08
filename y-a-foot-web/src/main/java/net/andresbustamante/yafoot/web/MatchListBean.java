@@ -1,9 +1,8 @@
 package net.andresbustamante.yafoot.web;
 
+import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
 import net.andresbustamante.yafoot.util.MatchComparator;
-import net.andresbustamante.yafoot.xs.Match;
-import net.andresbustamante.yafoot.xs.Matchs;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,8 +34,8 @@ public class MatchListBean implements Serializable {
 
     public List<Match> getMatches() {
         if (matches == null) {
-            Integer idJoueur = rechercheMatchsUIService.getContexte().getUtilisateur().getId();
-            matches = rechercheMatchsUIService.getMatchsJoueur(Matchs.class, String.valueOf(idJoueur)).getMatch();
+            Integer idJoueur = rechercheMatchsUIService.getContexte().getIdUtilisateur();
+            matches = Arrays.asList(rechercheMatchsUIService.getMatchsJoueur(String.valueOf(idJoueur)));
             Collections.sort(matches, new MatchComparator());
 
             if (CollectionUtils.isNotEmpty(matches)) {

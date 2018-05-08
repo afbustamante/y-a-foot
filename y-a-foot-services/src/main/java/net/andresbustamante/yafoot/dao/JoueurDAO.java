@@ -18,4 +18,6 @@ public interface JoueurDAO {
     void creerJoueur(@Param(ConstantesDaoUtils.JOUEUR) Joueur joueur) throws SQLException;
 
     void actualiserJoueur(@Param(ConstantesDaoUtils.JOUEUR) Joueur joueur) throws SQLException;
+
+    Joueur chercherJoueurParEmail(@Param(ConstantesDaoUtils.EMAIL) String email) throws SQLException;
 }

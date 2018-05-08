@@ -1,11 +1,11 @@
 package net.andresbustamante.yafoot.web;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.model.Site;
 import net.andresbustamante.yafoot.uiservices.OrganisationMatchsUIService;
 import net.andresbustamante.yafoot.util.ConstantesWeb;
 import net.andresbustamante.yafoot.util.DateUtils;
-import net.andresbustamante.yafoot.ws.BDDException;
-import net.andresbustamante.yafoot.xs.Match;
-import net.andresbustamante.yafoot.xs.Site;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -178,19 +178,19 @@ public class NewMatchBean implements Serializable {
         site.setId(idSite);
         site.setNom(nomSite);
         site.setAdresse(adresseSite);
-        site.setNumeroTelephone(telephoneSite);
+        site.setTelephone(telephoneSite);
 
         Match match = new Match();
         match.setNumJoueursMin(numMinJoueurs);
         match.setNumJoueursMax(numMaxJoueurs);
-        match.setDate(date);
+        match.setDateMatch(date.getTime());
         match.setSite(site);
 
         try {
             String codeMatch = organisationMatchsUIService.creerMatch(match);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ConstantesWeb.CODE_MATCH,
                     codeMatch);
-        } catch (BDDException e) {
+        } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
             FacesMessage facesMessage = new FacesMessage();
             facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);

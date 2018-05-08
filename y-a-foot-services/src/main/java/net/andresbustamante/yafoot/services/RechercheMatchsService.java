@@ -4,13 +4,11 @@ import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Match;
 
-import javax.ejb.Local;
 import java.util.List;
 
 /**
  * @author andresbustamante
  */
-@Local
 public interface RechercheMatchsService {
 
     /**

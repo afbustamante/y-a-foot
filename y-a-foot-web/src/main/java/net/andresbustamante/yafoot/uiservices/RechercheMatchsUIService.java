@@ -15,28 +15,20 @@ import java.text.MessageFormat;
  */
 public class RechercheMatchsUIService extends AbstractUIService {
 
-    private WebTarget webTarget;
-    private Client client;
-    private static final String BASE_URI = ConfigProperties.getValue("matchs.services.uri");
-
     public RechercheMatchsUIService() {
-        client = ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
     }
 
     public Match getMatchParCode(String codeMatch) throws ClientErrorException {
-        WebTarget resource = webTarget;
+        Client client = ClientBuilder.newClient();
+        WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
         resource = resource.path(MessageFormat.format("/code/{0}", codeMatch));
         return resource.request(MediaType.APPLICATION_JSON).get(Match.class);
     }
 
     public Match[] getMatchsJoueur(String idJoueur) throws ClientErrorException {
-        WebTarget resource = webTarget;
+        Client client = ClientBuilder.newClient();
+        WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
         resource = resource.path(MessageFormat.format("/joueur/{0}", idJoueur));
         return resource.request(MediaType.APPLICATION_JSON).get(Match[].class);
-    }
-
-    public void close() {
-        client.close();
     }
 }

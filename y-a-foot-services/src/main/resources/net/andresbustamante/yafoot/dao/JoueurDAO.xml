@@ -21,6 +21,19 @@
         WHERE jou.jou_id = #{id}
     </select>
 
+    <select id="chercherJoueurParEmail" resultType="Joueur">
+        SELECT
+            jou.jou_id                AS id,
+            jou.jou_nom               AS nom,
+            jou.jou_prenom            AS prenom,
+            jou.jou_email             AS email,
+            jou.jou_telephone         AS telephone,
+            jou.jou_date_creation     AS dateCreation,
+            jou.jou_date_derniere_maj AS dateDerniereMaj
+        FROM yafoot.t_joueur jou
+        WHERE jou.jou_email = #{email}
+    </select>
+
     <insert id="creerJoueur" useGeneratedKeys="true">
         <selectKey keyProperty="joueur.id" resultType="int" order="BEFORE">
             SELECT NEXTVAL('yafoot.s_joueur') AS id;

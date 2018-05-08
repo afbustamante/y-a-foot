@@ -28,7 +28,7 @@ public class RechercheSitesRS {
     private final Log log = LogFactory.getLog(RechercheSitesRS.class);
 
     @GetMapping(path = "/sites/recherche/joueur/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Site>> chercherSitesParNom(@PathVariable("id") Integer idJoueur) {
+    public ResponseEntity<List<Site>> getSitesJoueur(@PathVariable("id") Integer idJoueur) {
         try {
             List<Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur, new Contexte());
             return new ResponseEntity<>(sites, HttpStatus.OK);

@@ -1,10 +1,9 @@
 package net.andresbustamante.yafoot.uiservices;
 
+import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.util.ConfigProperties;
 import net.andresbustamante.yafoot.util.ConstantesWeb;
-import net.andresbustamante.yafoot.xs.Contexte;
-import net.andresbustamante.yafoot.xs.Joueur;
-import net.andresbustamante.yafoot.xs.UtilisateurType;
 
 import javax.faces.context.FacesContext;
 import javax.ws.rs.client.Client;
@@ -18,6 +17,8 @@ import java.text.MessageFormat;
  * @author andresbustamante
  */
 public abstract class AbstractUIService {
+
+    protected static final String BASE_URI = ConfigProperties.getValue("matchs.services.uri");
 
     private Contexte contexte;
 
@@ -33,38 +34,25 @@ public abstract class AbstractUIService {
                 if (user != null) {
                     String email = user.getName();
 
-                    UtilisateurType utilisateur = chargerUtilisateur(email);
+                    Joueur joueur = chercherJoueur(email);
+                    contexte = new Contexte();
 
-                    if (utilisateur != null) {
-                        contexte = new Contexte();
-                        contexte.setUtilisateur(utilisateur);
-                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(
-                                ConstantesWeb.CONTEXTE, contexte);
+                    if (joueur != null) {
+                        contexte.setEmailUtilisateur(joueur.getEmail());
+                        contexte.setIdUtilisateur(joueur.getId());
                     }
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(
+                            ConstantesWeb.CONTEXTE, contexte);
                 }
             }
         }
         return contexte;
     }
 
-    private UtilisateurType chargerUtilisateur(String email) {
-        UtilisateurType utilisateur = null;
-
-        Joueur joueur = chercherJoueur(email);
-
-        if (joueur != null) {
-            utilisateur = new UtilisateurType();
-            utilisateur.setEmail(email);
-            utilisateur.setId(joueur.getId());
-        }
-
-        return utilisateur;
-    }
-
     private Joueur chercherJoueur(String email) {
         Client client = ClientBuilder.newClient();
-        WebTarget webTarget = client.target(ConfigProperties.getValue("matchs.services.uri")).path(ConfigProperties
-                .getValue("recherche.joueurs.service.path")).path(MessageFormat.format("joueur/{0}", email));
-        return webTarget.request(MediaType.APPLICATION_XML).get(Joueur.class);
+        WebTarget resource = client.target(ConfigProperties.getValue("matchs.services.uri")).path(ConfigProperties
+                .getValue("recherche.joueurs.service.path")).path(MessageFormat.format("email/{0}", email));
+        return resource.request(MediaType.APPLICATION_JSON).get(Joueur.class);
     }
 }
