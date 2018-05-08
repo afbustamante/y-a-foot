@@ -12,7 +12,7 @@
 
 #top {
     position: relative;
-    background-color: #036fab;
+    background-color: #336699;
     color: white;
     padding: 5px;
     margin: 0px 0px 10px 0px;
@@ -20,40 +20,40 @@
 
 #bottom {
     position: relative;
-    background-color: #c2dfef;
+    background-color: #CCCCCC;
     padding: 5px;
     margin: 10px 0px 0px 0px;
 }
 
 #left {
     float: left;
-    background-color: #ece3a5;
+    background-color: #FFFFF0;
     padding: 5px;
     width: 150px;
 }
 
 #right {
     float: right;
-    background-color: #ece3a5;
+    background-color: #FFFFF0;
     padding: 5px;
     width: 150px;
 }
 
 .center_content {
     position: relative;
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     padding: 5px 0px;
     width: 100%;
 }
 
 .left_content {
-    background-color: #dddddd;
+    background-color: #FFFFF0;
     padding: 5px;
     margin-left: 170px;
 }
 
 .right_content {
-    background-color: #dddddd;
+    background-color: #FFFFF0;
     padding: 5px;
     margin: 0px 170px 0px 170px;
 }
