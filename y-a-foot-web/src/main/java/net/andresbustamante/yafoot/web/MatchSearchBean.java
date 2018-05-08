@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.web;
 
+import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
 import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.util.MessagesProperties;
-import net.andresbustamante.yafoot.xs.Match;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,7 +37,7 @@ public class MatchSearchBean implements Serializable {
 
     public void chercherMatch() {
         log.info("Recherche du match avec le code " + codeMatch);
-        match = rechercheMatchsUIService.getMatchParCode(Match.class, codeMatch);
+        match = rechercheMatchsUIService.getMatchParCode(codeMatch);
     }
 
     public String getCodeMatch() {
@@ -70,8 +70,8 @@ public class MatchSearchBean implements Serializable {
     }
 
     private Integer getNumPlacesDisponibles() {
-        if ((match != null) && (match.getNumJoueursMax() != null) && (match.getJoueurs() != null)) {
-            return match.getNumJoueursMax() - match.getJoueurs().getJoueur().size();
+        if ((match != null) && (match.getNumJoueursMax() != null) && (match.getInscriptions() != null)) {
+            return match.getNumJoueursMax() - match.getInscriptions().size();
         }
         return null;
     }

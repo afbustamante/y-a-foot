@@ -5,11 +5,17 @@ package net.andresbustamante.yafoot.model;
  */
 public class Contexte {
 
+    public static final String UTILISATEUR = "ctxUser";
+
     private Integer idUtilisateur;
     private String emailUtilisateur;
     private String[] rolesUtilisateur;
 
     public Contexte() {}
+
+    public Contexte(Integer idUtilisateur) {
+        this.idUtilisateur = idUtilisateur;
+    }
 
     public Integer getIdUtilisateur() {
         return idUtilisateur;

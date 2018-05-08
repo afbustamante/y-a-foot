@@ -61,8 +61,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <compilerArguments>
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
@@ -100,71 +100,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jvnet.jax-ws-commons</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/authentification_utilisateur.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <!-- TODO Utiliser wsdlLocation avec une adresse URL fixe sur Internet -->
-                            <wsdlLocation>http://localhost:8080/y-a-foot-ws/AuthentificationUtilisateurService?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/AuthentificationUtilisateurService.stale
-                            </staleFile>
-                        </configuration>
-                        <id>wsimport-generate-AuthentificationUtilisateurService</id>
-                        <phase>generate-sources</phase>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/organisation_matchs.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <wsdlLocation>http://localhost:8080/y-a-foot-ws/OrganisationMatchsService?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/OrganisationMatchsService.stale</staleFile>
-                        </configuration>
-                        <id>wsimport-generate-OrganisationMatchsService</id>
-                        <phase>generate-sources</phase>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>${project.parent.basedir}/y-a-foot-ws/src/main/webapp/WEB-INF/wsdl/inscription_joueurs.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <wsdlLocation>http://localhost:8080/y-a-foot-ws/InscriptionJoueursService?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/InscriptionJoueursService.stale</staleFile>
-                        </configuration>
-                        <id>wsimport-generate-InscriptionJoueursService</id>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml</groupId>
-                        <artifactId>webservices-api</artifactId>
-                        <version>2.0</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir>
-                    <xnocompile>true</xnocompile>
-                    <verbose>true</verbose>
-                    <extension>true</extension>
-                    <catalog>${basedir}/src/main/webapp/WEB-INF/jax-ws-catalog.xml</catalog>
-                </configuration>
             </plugin>
         </plugins>
     </build>

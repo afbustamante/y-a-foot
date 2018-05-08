@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.andresbustamante.yafoot.dao.JoueurDAO">
+    <select id="isJoueurInscrit" resultType="boolean">
+        SELECT COUNT(*)
+        FROM yafoot.t_joueur jou
+        WHERE jou.jou_email = #{email}
+    </select>
+
+    <select id="chercherJoueurParId" resultType="Joueur">
+        SELECT
+            jou.jou_id                AS id,
+            jou.jou_nom               AS nom,
+            jou.jou_prenom            AS prenom,
+            jou.jou_email             AS email,
+            jou.jou_telephone         AS telephone,
+            jou.jou_date_creation     AS dateCreation,
+            jou.jou_date_derniere_maj AS dateDerniereMaj
+        FROM yafoot.t_joueur jou
+        WHERE jou.jou_id = #{id}
+    </select>
+
+    <insert id="creerJoueur" useGeneratedKeys="true">
+        <selectKey keyProperty="joueur.id" resultType="int" order="BEFORE">
+            SELECT NEXTVAL('yafoot.s_joueur') AS id;
+        </selectKey>
+
+        INSERT INTO yafoot.t_joueur (jou_id, jou_nom, jou_prenom, jou_telephone, jou_email, jou_mdp, jou_date_creation)
+        VALUES
+        (#{joueur.id}, #{joueur.nom}, #{joueur.prenom}, #{joueur.telephone}, #{joueur.email}, #{joueur.motDePasse},
+        NOW())
+    </insert>
+
+    <update id="actualiserJoueur">
+        UPDATE yafoot.t_joueur jou
+        SET
+        <if test="joueur.nom != null">
+            jou.jou_nom = #{joueur.nom},
+        </if>
+        <if test="joueur.prenom != null">
+            jou.jou_prenom = #{joueur.prenom},
+        </if>
+        <if test="joueur.telephone != null">
+            jou.jou_telephone = #{joueur.telephone},
+        </if>
+        <if test="joueur.motDePasse != null">
+            jou.jou_mdp = #{joueur.motDePasse},
+        </if>
+        jou.jou_date_derniere_maj = NOW();
+    </update>
+</mapper>

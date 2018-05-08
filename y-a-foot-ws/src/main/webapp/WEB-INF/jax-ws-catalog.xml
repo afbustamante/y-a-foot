@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="file:/Users/andresbustamante/workspaces/y-a-foot/y-a-foot-ws/src/main/resources/wsdl/authentification_utilisateur.wsdl" uri="wsdl/authentification_utilisateur.wsdl"/>
-    <system systemId="file:/Users/andresbustamante/workspaces/y-a-foot/y-a-foot-ws/src/main/resources/wsdl/gestion_joueurs.wsdl" uri="wsdl/gestion_joueurs.wsdl"/>
-    <system systemId="file:/Users/andresbustamante/workspaces/y-a-foot/y-a-foot-ws/src/main/resources/xs/foot.xsd" uri="../xsd/foot.xsd"/>
-</catalog>
