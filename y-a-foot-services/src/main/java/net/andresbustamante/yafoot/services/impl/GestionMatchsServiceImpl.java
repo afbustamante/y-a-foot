@@ -54,6 +54,12 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
             match.setCode(codeMatch);
 
+            Joueur createur = joueurDAO.chercherJoueurParId(contexte.getIdUtilisateur());
+
+            if (createur != null) {
+                match.setCreateur(createur);
+            }
+
             if (match.getSite().getId() != null) {
                 Site siteExistant = siteDAO.chercherSiteParId(match.getSite().getId());
 
@@ -69,6 +75,8 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
             matchDAO.creerMatch(match);
             log.info("Nouveau match enregistré avec l'ID " + match.getId());
+
+            inscrireJoueurMatch(createur, match, null, contexte);
             return true;
         } catch (SQLException | DataAccessException e) {
             log.error("Erreur lors de la création d'un match", e);

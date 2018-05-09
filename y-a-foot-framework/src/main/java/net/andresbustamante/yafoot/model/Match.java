@@ -18,6 +18,7 @@ public class Match implements Serializable {
     private Integer numJoueursMax;
     private List<Inscription> inscriptions;
     private Site site;
+    private Joueur createur;
 
     public Match() {
     }
@@ -93,6 +94,14 @@ public class Match implements Serializable {
 
     public void setSite(Site site) {
         this.site = site;
+    }
+
+    public Joueur getCreateur() {
+        return createur;
+    }
+
+    public void setCreateur(Joueur createur) {
+        this.createur = createur;
     }
 
     @Override
