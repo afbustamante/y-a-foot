@@ -3,11 +3,13 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:ldap="http://www.springframework.org/schema/ldap"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+	http://www.springframework.org/schema/ldap http://www.springframework.org/schema/ldap/spring-ldap.xsd
 	http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
     <context:component-scan base-package="net.andresbustamante.yafoot"/>
@@ -32,4 +34,8 @@
 
     <mybatis:scan base-package="net.andresbustamante.yafoot.dao" factory-ref="sqlSessionFactory"/>
 
+    <!-- Configuration LDAP -->
+    <ldap:context-source url="${ldap.url}" username="${ldap.dn}" password="${ldap.password}" />
+
+    <ldap:ldap-template id="ldapTemplate" />
 </beans>

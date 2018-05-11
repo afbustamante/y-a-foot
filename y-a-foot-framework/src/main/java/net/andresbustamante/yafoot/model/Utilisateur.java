@@ -7,6 +7,9 @@ public abstract class Utilisateur implements Identifiable {
     protected Integer id;
     protected String email;
     protected String motDePasse;
+    protected String nom;
+    protected String prenom;
+    protected String telephone;
 
     public Utilisateur() {
     }
@@ -34,4 +37,29 @@ public abstract class Utilisateur implements Identifiable {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String jouNom) {
+        this.nom = jouNom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String jouPrenom) {
+        this.prenom = jouPrenom;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String jouTelephone) {
+        this.telephone = jouTelephone;
+    }
+
 }

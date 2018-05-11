@@ -1,0 +1,34 @@
+#version: 1
+dn: ou=yafoot,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: yafoot
+
+dn: ou=Users,ou=yafoot,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: Users
+
+dn: uid=admin,ou=Users,ou=yafoot,dc=andresbustamante,dc=net
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: Administrateur
+displayName: Administrateur
+sn:: U3lzdMOobWU=
+uid: admin
+userPassword:: e1NIQTI1Nn1RQkc2QXVVUkJNWjR3eHAycEVSSVd6anpobDVRVFluRG9LZ0xRN
+ XV4b2pjPQ==
+
+dn: ou=Roles,ou=yafoot,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: Roles
+
+dn: cn=JOUEUR,ou=Roles,ou=yafoot,dc=andresbustamante,dc=net
+objectClass: groupOfNames
+objectClass: top
+cn: JOUEUR
+member: uid=admin,ou=Users,ou=yafoot,dc=andresbustamante,dc=net
+
