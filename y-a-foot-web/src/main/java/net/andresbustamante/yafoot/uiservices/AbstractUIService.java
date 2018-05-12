@@ -52,7 +52,7 @@ public abstract class AbstractUIService {
     private Joueur chercherJoueur(String email) {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(ConfigProperties.getValue("matchs.services.uri")).path(ConfigProperties
-                .getValue("recherche.joueurs.service.path")).path(MessageFormat.format("email/{0}", email));
+                .getValue("recherche.joueurs.service.path")).path(MessageFormat.format("{0}/email", email));
         return resource.request(MediaType.APPLICATION_JSON).get(Joueur.class);
     }
 }

@@ -23,6 +23,7 @@ import java.sql.SQLException;
 @Service
 public class GestionMatchsServiceImpl implements GestionMatchsService {
 
+    private static final Integer NOUVEL_ID = -1;
     private static final Integer LONGUEUR_CODE = 10;
 
     private final RandomStringGenerator generateurCodes = new RandomStringGenerator.Builder().withinRange('A', 'Z').build();
@@ -60,7 +61,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
                 match.setCreateur(createur);
             }
 
-            if (match.getSite().getId() != null) {
+            if (match.getSite().getId() != null && !match.getSite().getId().equals(NOUVEL_ID)) {
                 Site siteExistant = siteDAO.chercherSiteParId(match.getSite().getId());
 
                 if (siteExistant != null) {

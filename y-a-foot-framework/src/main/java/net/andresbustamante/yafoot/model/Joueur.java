@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,6 +10,8 @@ import java.util.List;
 public class Joueur extends Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private Date dateCreation;
+    private Date dateDerniereMaj;
     private List<Voiture> voitures;
 
     public Joueur() {
@@ -23,6 +26,22 @@ public class Joueur extends Utilisateur implements Serializable {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Date getDateDerniereMaj() {
+        return dateDerniereMaj;
+    }
+
+    public void setDateDerniereMaj(Date dateDerniereMaj) {
+        this.dateDerniereMaj = dateDerniereMaj;
     }
 
     public List<Voiture> getVoitures() {

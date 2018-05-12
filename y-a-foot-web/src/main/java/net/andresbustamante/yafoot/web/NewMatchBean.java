@@ -6,6 +6,8 @@ import net.andresbustamante.yafoot.model.Site;
 import net.andresbustamante.yafoot.uiservices.OrganisationMatchsUIService;
 import net.andresbustamante.yafoot.util.ConstantesWeb;
 import net.andresbustamante.yafoot.util.DateUtils;
+import net.andresbustamante.yafoot.util.MessagesProperties;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,12 +15,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author andresbustamante
@@ -27,6 +30,10 @@ import java.util.Locale;
 @ViewScoped
 public class NewMatchBean implements Serializable {
 
+    private static final String OPTION_NOUVEAU_SITE = "0";
+    private static final Integer NOUVEL_ID = -1;
+
+    private Date maintenant;
     private Date dateMatch;
     private String heureMatch;
     private Integer numMinJoueurs;
@@ -41,6 +48,8 @@ public class NewMatchBean implements Serializable {
     private boolean optionInvitationPubliqueActive;
     private Locale locale;
     private String patternDate;
+    private List<SelectItem> itemsSites;
+    private boolean nouveauSite;
 
     private transient final Log log = LogFactory.getLog(NewMatchBean.class);
 
@@ -48,6 +57,16 @@ public class NewMatchBean implements Serializable {
     private OrganisationMatchsUIService organisationMatchsUIService;
 
     public NewMatchBean() {
+        nouveauSite = false;
+    }
+
+    public Date getMaintenant() {
+        if (maintenant == null) {
+            // TODO Obtenir la date en fonction de la TZ de l'utilisateur
+            maintenant = Calendar.getInstance(getLocale()).getTime();
+            return maintenant;
+        }
+        return maintenant;
     }
 
     public Date getDateMatch() {
@@ -164,12 +183,68 @@ public class NewMatchBean implements Serializable {
         this.patternDate = patternDate;
     }
 
+    public List<SelectItem> getItemsSites() {
+        if (itemsSites == null) {
+            itemsSites = new ArrayList<>();
+
+            try {
+                List<Site> sites = organisationMatchsUIService.chercherSites();
+
+                if (CollectionUtils.isNotEmpty(sites)) {
+                    for (Site site : sites) {
+                        itemsSites.add(new SelectItem(site.getId(), site.getNom(), site.getAdresse()));
+                    }
+                }
+            } catch (ApplicationException e) {
+                FacesMessage facesMessage = new FacesMessage();
+                facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+                facesMessage.setSummary(e.getMessage());
+                FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
+            }
+        }
+        return itemsSites;
+    }
+
+    public void siteChange(ValueChangeEvent event) {
+        Object value = event.getNewValue();
+        if (value != null) {
+            String valeur = value.toString();
+            nouveauSite = !valeur.isEmpty() && (valeur.equals(OPTION_NOUVEAU_SITE));
+        }
+    }
+
+    public boolean isNouveauSite() {
+        return nouveauSite;
+    }
+
+    public void afficherDialogNouveauSite(ActionEvent event) {
+        nouveauSite = true;
+    }
+
+    public void ajouterNouveauSite(ActionEvent event) {
+        SelectItem nouvelItemSite = new SelectItem(NOUVEL_ID, nomSite, adresseSite);
+        getItemsSites().add(nouvelItemSite);
+        fermerDialogNouveauSite(event);
+    }
+
+    public void fermerDialogNouveauSite(ActionEvent event) {
+        nouveauSite = false;
+    }
+
     /**
      *
      * @return
      */
     public String creerNouveauMatch() {
-        log.info("Nouvelle demande de création de match depuis " + getLocale().getDisplayCountry());
+        log.info("Nouvelle demande de création de match");
+
+        if (idSite == null ) {
+            FacesMessage facesMessage = new FacesMessage();
+            facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext.getCurrentInstance().addMessage(MessagesProperties.getValue("new.match.place.required",
+                    getLocale()), facesMessage);
+            return "new_match";
+        }
 
         Calendar date = Calendar.getInstance(getLocale());
         date.setTime(dateMatch);

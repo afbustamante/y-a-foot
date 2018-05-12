@@ -4,13 +4,14 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:f="http://java.sun.com/jsf/core"
                 template="../resources/facelets/general.xhtml">
 
     <ui:define name="content">
         <h3><h:outputText value="#{messages['new.match.wish.text']}"/></h3>
 
         <h:form>
-            <h:messages errorClass="error" styleClass="messages" />
+            <h:messages errorClass="error" styleClass="messages"/>
 
             <ace:panel header="#{messages['new.match.details.title']}">
                 <h:panelGrid columns="1">
@@ -19,31 +20,59 @@
                                        locale="#{newMatchBean.locale}" pattern="#{newMatchBean.patternDate}"
                                        showButtonPanel="true"
                                        renderAsPopup="true" style="width:200px" timeOnly="false"
-                                       readOnlyInputText="true"
+                                       readOnlyInputText="true" minDateTime="#{newMatchBean.maintenant}"
                                        requiredMessage="#{messages['new.match.date.required']}"/>
 
-                    <ace:textEntry id="playersMin" value="#{newMatchBean.numMinJoueurs}"
+                    <ace:textEntry id="playersMin" value="#{newMatchBean.numMinJoueurs}" required="true"
+                                   requiredMessage="#{messages['new.match.players.required']}"
                                    min="0" max="22" maxlength="2" size="5"
-                                   label="#{messages['new.match.players.min']}" labelPosition="top"/>
+                                   label="#{messages['new.match.players.min']}" labelPosition="top">
+                        <f:validateLongRange minimum="0"/>
+                    </ace:textEntry>
 
                     <ace:textEntry id="playersMax" value="#{newMatchBean.numMaxJoueurs}"
                                    min="0" max="22" maxlength="2" size="5"
-                                   label="#{messages['new.match.players.max']}" labelPosition="top"/>
+                                   label="#{messages['new.match.players.max']}" labelPosition="top">
+                        <f:validateLongRange minimum="0"/>
+                    </ace:textEntry>
 
-                    <ace:textEntry id="placeName" value="#{newMatchBean.nomSite}" maxlength="255"
-                                   label="#{messages['new.match.place.name']}" labelPosition="top"/>
+                    <ace:selectMenu id="place" value="#{newMatchBean.idSite}"
+                                    valueChangeListener="#{newMatchBean.siteChange}"
+                                    label="#{messages['new.match.place.name']}" labelPosition="top">
+                        <f:selectItem noSelectionOption="true" itemValue="" itemLabel=""/>
+                        <f:selectItems value="#{newMatchBean.itemsSites}"/>
+                        <f:selectItem noSelectionOption="true" itemValue="0"
+                                      itemLabel="#{messages['new.match.place.new']}"/>
 
-                    <ace:textAreaEntry id="placeAddress" value="#{newMatchBean.adresseSite}" maxlength="255"
-                                       rows="3" cols="80"
-                                       label="#{messages['new.match.place.address']}" labelPosition="top"/>
+                        <ace:ajax execute="@this" render="@all" />
+                    </ace:selectMenu>
 
-                    <ace:textEntry id="placePhoneNumber" value="#{newMatchBean.telephoneSite}" maxlength="15"
-                                   label="#{messages['new.match.place.phone.number']}" labelPosition="top"/>
-
-                    <!-- TODO Composant avec la cartographie pour la sélection du site -->
-
-                    <h:inputHidden value="#{newMatchBean.latitudeSite}"/>
-                    <h:inputHidden value="#{newMatchBean.longitudeSite}"/>
+                    <ace:dialog id="dialogNewPlace" header="#{messages['new.match.place.new']}" width="400"
+                                visible="#{newMatchBean.nouveauSite}" closable="false" modal="true" draggable="false"
+                                showEffect="clip" hideEffect="fade">
+                        <h:form>
+                            <h:panelGrid columns="1">
+                                <ace:textEntry id="placeName" value="#{newMatchBean.nomSite}" maxlength="255"
+                                               label="#{messages['new.match.place.name']}" labelPosition="top"/>
+                                <ace:textAreaEntry id="placeAddress" value="#{newMatchBean.adresseSite}" maxlength="255"
+                                                   rows="3" cols="40"
+                                                   label="#{messages['new.match.place.address']}" labelPosition="top"/>
+                                <ace:textEntry id="placePhoneNumber" value="#{newMatchBean.telephoneSite}"
+                                               maxlength="15"
+                                               label="#{messages['new.match.place.phone.number']}" labelPosition="top"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <ace:pushButton id="submitSite" value="#{messages['button.continue']}"
+                                                actionListener="#{newMatchBean.ajouterNouveauSite}">
+                                    <ace:ajax execute="@form" render="@all" />
+                                </ace:pushButton>
+                                <ace:pushButton id="cancelSite" value="#{messages['button.cancel']}"
+                                                actionListener="#{newMatchBean.fermerDialogNouveauSite}">
+                                    <ace:ajax execute="@form" render="@all" />
+                                </ace:pushButton>
+                            </h:panelGrid>
+                        </h:form>
+                    </ace:dialog>
                 </h:panelGrid>
             </ace:panel>
 

@@ -11,5 +11,11 @@ import java.sql.SQLException;
  */
 public interface VoitureDAO {
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     Voiture chercherVoitureParId(@Param(ConstantesDaoUtils.ID) Integer id) throws SQLException;
 }

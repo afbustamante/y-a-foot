@@ -17,8 +17,8 @@
                 <ace:tabPane id="matchesToPlayTabSet" label="#{messages['match.list.to.play']}">
                     <ui:repeat value="#{matchListBean.matches}" var="match">
                         <h:panelGrid columns="2" styleClass="match_preview">
-                            <h:outputText value="#{match.date.time}">
-                                <f:convertDateTime dateStyle="full" timeStyle="short" type="both" timeZone="#{match.date.timeZone}" />
+                            <h:outputText value="#{match.dateMatch.time}">
+                                <f:convertDateTime dateStyle="full" timeStyle="short" type="both" />
                             </h:outputText>
                             <h:outputLink value="#">
                                 <h:outputText value="#{messages['match.list.detail']}" />
@@ -34,7 +34,7 @@
                                 <h:outputText value="#{messages['match.list.leave']}" />
                             </h:outputLink>
 
-                            <h:outputText value="#{match.joueurs.joueur.size()} #{messages['match.list.players.actual']}" />
+                            <h:outputText value="#{match.inscriptions.size()} #{messages['match.list.players.actual']}" />
                             <h:outputLink value="#" />
                         </h:panelGrid>
                     </ui:repeat>

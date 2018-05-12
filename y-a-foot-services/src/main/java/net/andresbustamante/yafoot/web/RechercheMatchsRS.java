@@ -46,12 +46,12 @@ public class RechercheMatchsRS {
     }
 
     @GetMapping(path = "/matchs/recherche/joueur/{idJoueur}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Match>> getMatchsJoueur(@PathVariable("idJoueur") Integer idJoueur) {
+    public ResponseEntity<Match[]> getMatchsJoueur(@PathVariable("idJoueur") Integer idJoueur) {
         try {
             List<Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur, new Contexte());
 
-            return (matchs != null) ? new ResponseEntity<>(matchs, HttpStatus.OK) :
-                    new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return (matchs != null) ? new ResponseEntity<>(matchs.toArray(new Match[]{}), HttpStatus.OK) :
+                    new ResponseEntity<>(new Match[]{}, HttpStatus.OK);
         } catch (BDDException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

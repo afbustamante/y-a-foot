@@ -28,10 +28,15 @@ public class RechercheSitesRS {
     private final Log log = LogFactory.getLog(RechercheSitesRS.class);
 
     @GetMapping(path = "/sites/recherche/joueur/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Site>> getSitesJoueur(@PathVariable("id") Integer idJoueur) {
+    public ResponseEntity<Site[]> getSitesJoueur(@PathVariable("id") Integer idJoueur) {
         try {
             List<Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur, new Contexte());
-            return new ResponseEntity<>(sites, HttpStatus.OK);
+
+            if (sites != null) {
+                return new ResponseEntity<>(sites.toArray(new Site[]{}), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new Site[]{}, HttpStatus.OK);
+            }
         } catch (BDDException e) {
             log.error("Erreur lors de la recherche de sites par joueur", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

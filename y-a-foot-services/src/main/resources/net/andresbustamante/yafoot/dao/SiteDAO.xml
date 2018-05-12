@@ -3,7 +3,7 @@
 
 <mapper namespace="net.andresbustamante.yafoot.dao.SiteDAO">
     <select id="chercherSitesPourJoueur" resultType="Site">
-        SELECT
+        SELECT DISTINCT
             sit.sit_id        AS id,
             sit.sit_nom       AS nom,
             sit.sit_adresse   AS adresse,
