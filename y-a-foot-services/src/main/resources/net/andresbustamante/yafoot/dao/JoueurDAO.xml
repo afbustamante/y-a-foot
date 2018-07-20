@@ -45,17 +45,22 @@
     </insert>
 
     <update id="actualiserJoueur">
-        UPDATE yafoot.t_joueur jou
+        UPDATE yafoot.t_joueur
         SET
         <if test="joueur.nom != null">
-            jou.jou_nom = #{joueur.nom},
+            jou_nom = #{joueur.nom},
         </if>
         <if test="joueur.prenom != null">
-            jou.jou_prenom = #{joueur.prenom},
+            jou_prenom = #{joueur.prenom},
         </if>
         <if test="joueur.telephone != null">
-            jou.jou_telephone = #{joueur.telephone},
+            jou_telephone = #{joueur.telephone},
         </if>
-        jou.jou_date_derniere_maj = NOW();
+        jou_date_derniere_maj = NOW();
     </update>
+
+    <delete id="supprimerJoueur">
+        DELETE FROM yafoot.t_joueur
+        WHERE jou_id = #{joueur.id}
+    </delete>
 </mapper>

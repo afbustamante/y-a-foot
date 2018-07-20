@@ -21,11 +21,12 @@ public class Joueur extends Utilisateur implements Serializable {
         this.id = id;
     }
 
-    public Joueur(Integer id, String nom, String prenom, String email) {
+    public Joueur(Integer id, String nom, String prenom, String email, String telephone) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
+        this.telephone = telephone;
     }
 
     public Date getDateCreation() {
