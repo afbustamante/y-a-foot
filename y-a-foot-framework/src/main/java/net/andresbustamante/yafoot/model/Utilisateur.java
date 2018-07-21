@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.model;
 
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
-public abstract class Utilisateur implements Identifiable {
+public class Utilisateur implements Identifiable {
 
     protected Integer id;
     protected String email;
@@ -12,6 +12,14 @@ public abstract class Utilisateur implements Identifiable {
     protected String telephone;
 
     public Utilisateur() {
+    }
+
+    public Utilisateur(String email, String motDePasse, String nom, String prenom, String telephone) {
+        this.email = email;
+        this.motDePasse = motDePasse;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.telephone = telephone;
     }
 
     public Integer getId() {

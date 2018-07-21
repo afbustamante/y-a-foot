@@ -32,3 +32,9 @@ objectClass: top
 cn: JOUEUR
 member: uid=admin,ou=Users,ou=yafoot,dc=andresbustamante,dc=net
 
+dn: cn=ADMINISTRATEUR,ou=Roles,ou=yafoot,dc=andresbustamante,dc=net
+objectClass: groupOfNames
+objectClass: top
+cn: ADMINISTRATEUR
+member: uid=admin,ou=Users,ou=yafoot,dc=andresbustamante,dc=net
+
