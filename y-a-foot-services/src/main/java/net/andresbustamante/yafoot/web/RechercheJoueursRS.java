@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.web;
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
-import net.andresbustamante.yafoot.services.GestionJoueursService;
+import net.andresbustamante.yafoot.services.RechercheJoueursService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RechercheJoueursRS {
 
     @Autowired
-    private GestionJoueursService gestionJoueursService;
+    private RechercheJoueursService rechercheJoueursService;
 
     private transient final Log log = LogFactory.getLog(RechercheJoueursRS.class);
 
@@ -31,7 +31,7 @@ public class RechercheJoueursRS {
         Contexte contexte = new Contexte();
 
         try {
-            Joueur joueur = gestionJoueursService.chercherJoueur(email, contexte);
+            Joueur joueur = rechercheJoueursService.chercherJoueur(email, contexte);
 
             if (joueur != null) {
                 return new ResponseEntity<>(joueur, HttpStatus.OK);
