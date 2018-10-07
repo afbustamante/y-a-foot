@@ -41,26 +41,43 @@
 
   <build>
     <plugins>
-      <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <compilerArguments>
-            <endorseddirs>${endorsed.dir}</endorseddirs>
-          </compilerArguments>
-        </configuration>
-      </plugin>
-      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>${maven-war-plugin.version}</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <version>${maven-jaxb2-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>jaxb-generate-foot-xsd</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <schemaIncludes>
+                <include>foot.xsd</include>
+              </schemaIncludes>
+              <bindingIncludes>
+                <include>foot.xjb</include>
+              </bindingIncludes>
+              <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-foot.episode</episodeFile>
+              <!--generatePackage>net.andresbustamante.yafoot.model.xs</generatePackage-->
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
+          <bindingDirectory>${basedir}/src/main/resources/xjb</bindingDirectory>
+          <forceRegenerate>true</forceRegenerate>
+          <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
+          <verbose>true</verbose>
+          <strict>false</strict>
         </configuration>
       </plugin>
     </plugins>

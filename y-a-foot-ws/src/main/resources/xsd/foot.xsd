@@ -1,244 +1,234 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns="http://andresbustamante.net/yafoot/xs" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0"
-           targetNamespace="http://andresbustamante.net/yafoot/xs" elementFormDefault="qualified"
+<xs:schema xmlns="http://andresbustamante.net/yafoot/model/xs" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://andresbustamante.net/yafoot/model/xs" elementFormDefault="qualified"
            attributeFormDefault="unqualified" version="1.0">
-    <xs:annotation>
-        <xs:appinfo>
-            <jaxb:globalBindings>
-                <jaxb:javaType name="java.util.Calendar" xmlType="xs:dateTime"
-                               parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime"
-                               printMethod="javax.xml.bind.DatatypeConverter.printDateTime"/>
-            </jaxb:globalBindings>
-        </xs:appinfo>
-    </xs:annotation>
 
-    <xs:element name="match">
-        <xs:annotation>
-            <xs:documentation>Match de foot</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="id" minOccurs="0">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:int">
-                            <xs:minExclusive value="0"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="code" minOccurs="0">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:maxLength value="12"/>
-                            <xs:minLength value="10"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="date" type="xs:dateTime"/>
-                <xs:element name="description" minOccurs="0">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:maxLength value="255"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="numJoueursMin" minOccurs="0">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:int">
-                            <xs:minInclusive value="0"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="numJoueursMax" minOccurs="0">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:int">
-                            <xs:minInclusive value="0"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element ref="site" minOccurs="0"/>
-                <xs:element ref="joueurs" minOccurs="0"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="matchs">
-        <xs:annotation>
-            <xs:documentation>Liste de matchs de foot</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="match" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="site">
-        <xs:annotation>
-            <xs:documentation>Site du match</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="id" minOccurs="0">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:int">
-                            <xs:minExclusive value="0"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="nom">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:maxLength value="255"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="adresse">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:maxLength value="255"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="numeroTelephone" type="numeroTelephoneType" minOccurs="0"/>
-                <xs:element name="localisation" type="coordonneesGPSType" minOccurs="0"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="sites">
-        <xs:annotation>
-            <xs:documentation>Liste de sites</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="site" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="joueur">
-        <xs:annotation>
-            <xs:documentation>Joueur à inscrire pour un match</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:complexContent>
-                <xs:extension base="utilisateurType">
-                    <xs:sequence>
-                        <xs:element name="nom" minOccurs="0">
-                            <xs:simpleType>
-                                <xs:restriction base="xs:string">
-                                    <xs:maxLength value="255"/>
-                                </xs:restriction>
-                            </xs:simpleType>
-                        </xs:element>
-                        <xs:element name="prenom">
-                            <xs:simpleType>
-                                <xs:restriction base="xs:string">
-                                    <xs:maxLength value="255"/>
-                                </xs:restriction>
-                            </xs:simpleType>
-                        </xs:element>
-                        <xs:element name="numeroTelephone" type="numeroTelephoneType" minOccurs="0"/>
-                        <xs:element ref="voiture" minOccurs="0"/>
-                    </xs:sequence>
-                </xs:extension>
-            </xs:complexContent>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="joueurs">
-        <xs:annotation>
-            <xs:documentation>Joueurs d'un match</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="joueur" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="voiture">
-        <xs:annotation>
-            <xs:documentation>Voiture d'un des joueurs pour se rendre au match</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="id" type="xs:int" minOccurs="0"/>
-                <xs:element name="nom" type="xs:string"/>
-                <xs:element name="numPlaces" type="xs:int"/>
-                <xs:element ref="passagers" minOccurs="0"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="voitures">
-        <xs:annotation>
-            <xs:documentation>Liste de voitures</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="voiture" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="passagers">
-        <xs:annotation>
-            <xs:documentation>Passagers d'une voiture pour un match</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="joueur" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="contexte">
-        <xs:annotation>
-            <xs:documentation>Contexte de l'utilisateur réalisant des actions sur l'application</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="utilisateur" type="utilisateurType"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="utilisateur" type="utilisateurType"/>
-    <xs:complexType name="utilisateurType">
-        <xs:annotation>
-            <xs:documentation>Utilisateur de l'application</xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element name="id" type="xs:int" minOccurs="0"/>
-            <xs:element name="email" type="emailType"/>
-            <xs:element name="motDePasse" type="motDePasseType" minOccurs="0"/>
-        </xs:sequence>
+  <xs:element name="match">
+    <xs:annotation>
+      <xs:documentation>Match de foot</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minExclusive value="0"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="code" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="12"/>
+              <xs:minLength value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="date" type="xs:dateTime"/>
+        <xs:element name="description" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="255"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="numJoueursMin" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minInclusive value="0"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="numJoueursMax" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minInclusive value="0"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element ref="site" minOccurs="0"/>
+        <xs:element ref="joueurs" minOccurs="0"/>
+      </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="coordonneesGPSType">
-        <xs:annotation>
-            <xs:documentation>Coordonnées GPS</xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element name="latitude" type="xs:decimal"/>
-            <xs:element name="longitude" type="xs:decimal"/>
-        </xs:sequence>
+  </xs:element>
+  <xs:element name="matchs">
+    <xs:annotation>
+      <xs:documentation>Liste de matchs de foot</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="match" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
     </xs:complexType>
-    <xs:simpleType name="numeroTelephoneType">
-        <xs:annotation>
-            <xs:documentation>Numéro de téléphone</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:maxLength value="14"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="emailType">
-        <xs:annotation>
-            <xs:documentation>Adresse mail</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:maxLength value="255"/>
-            <xs:pattern value="^[A-Za-z0-9_\.\-]+\@[A-Za-z0-9_\.\-]+\.[A-Za-z]+$"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="motDePasseType">
-        <xs:annotation>
-            <xs:documentation>Mot de passe crypté en SHA-256</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:maxLength value="64"/>
-            <xs:pattern value="[A-Za-z0-9]{64}"/>
-        </xs:restriction>
-    </xs:simpleType>
+  </xs:element>
+  <xs:element name="site">
+    <xs:annotation>
+      <xs:documentation>Site du match</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minExclusive value="0"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="nom">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="255"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="adresse">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="255"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="numeroTelephone" type="numeroTelephoneType" minOccurs="0"/>
+        <xs:element name="localisation" type="coordonneesGPS" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sites">
+    <xs:annotation>
+      <xs:documentation>Liste de sites</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="site" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="joueur">
+    <xs:annotation>
+      <xs:documentation>Joueur à inscrire pour un match</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="utilisateur">
+          <xs:sequence>
+            <xs:element name="nom" minOccurs="0">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="prenom">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:maxLength value="255"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="numeroTelephone" type="numeroTelephoneType" minOccurs="0"/>
+            <xs:element ref="voiture" minOccurs="0"/>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="joueurs">
+    <xs:annotation>
+      <xs:documentation>Joueurs d'un match</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="joueur" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="voiture">
+    <xs:annotation>
+      <xs:documentation>Voiture d'un des joueurs pour se rendre au match</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:int" minOccurs="0"/>
+        <xs:element name="nom" type="xs:string"/>
+        <xs:element name="numPlaces" type="xs:int"/>
+        <xs:element ref="passagers" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="voitures">
+    <xs:annotation>
+      <xs:documentation>Liste de voitures</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="voiture" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="passagers">
+    <xs:annotation>
+      <xs:documentation>Passagers d'une voiture pour un match</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="joueur" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="contexte">
+    <xs:annotation>
+      <xs:documentation>Contexte de l'utilisateur réalisant des actions sur l'application</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="utilisateur" type="utilisateur"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="utilisateur" type="utilisateur"/>
+  <xs:complexType name="utilisateur">
+    <xs:annotation>
+      <xs:documentation>Utilisateur de l'application</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="id" type="xs:int" minOccurs="0"/>
+      <xs:element name="email" type="emailType"/>
+      <xs:element name="motDePasse" type="motDePasseType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="coordonneesGPS">
+    <xs:annotation>
+      <xs:documentation>Coordonnées GPS</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="latitude" type="xs:decimal"/>
+      <xs:element name="longitude" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="numeroTelephoneType">
+    <xs:annotation>
+      <xs:documentation>Numéro de téléphone</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="14"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="emailType">
+    <xs:annotation>
+      <xs:documentation>Adresse mail</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="255"/>
+      <xs:pattern value="^[A-Za-z0-9_\.\-]+\@[A-Za-z0-9_\.\-]+\.[A-Za-z]+$"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="motDePasseType">
+    <xs:annotation>
+      <xs:documentation>Mot de passe crypté en SHA-256</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="64"/>
+      <xs:pattern value="[A-Za-z0-9]{64}"/>
+    </xs:restriction>
+  </xs:simpleType>
 </xs:schema>
