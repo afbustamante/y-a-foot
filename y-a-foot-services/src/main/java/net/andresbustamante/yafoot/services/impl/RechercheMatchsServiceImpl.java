@@ -6,7 +6,6 @@ import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
 import net.andresbustamante.yafoot.util.DateUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,7 @@ public class RechercheMatchsServiceImpl implements RechercheMatchsService {
         try {
             if (idJoueur != null && idJoueur > 0) {
                 // Chercher les matchs programmés pour le joueur depuis ce matin
-                Date date = DateUtils.premiereMinuteDuJour(DateTime.now().toDate());
+                Date date = DateUtils.premiereMinuteDuJour(new Date());
                 return matchDAO.chercherMatchsParJoueur(idJoueur, date);
             } else {
                 return Collections.emptyList();
