@@ -52,3 +52,9 @@ leurs matchs entre collègues, amis, camarades, etc.
             </login-module>
         </authentication>
     </security-domain>
+
+### Déploiement de l'application
+
+Afin de bien déployer `y-a-foot`, il faut déployer les artifacts suivants :
+ * `y-a-foot-ws` (backend) en tant qu'application Web (WAR)
+ * `y-a-foot-web` (frontend) en tant qu'application Web (WAR)
