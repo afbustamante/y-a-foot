@@ -23,8 +23,6 @@ public class DateUtils {
 
     private static final Log log = LogFactory.getLog(DateUtils.class);
 
-    private static final DateFormat formatDate = new SimpleDateFormat(FORMAT_DATE);
-
     public static XMLGregorianCalendar transformer(Date date) {
         if (date == null) {
             return null;
@@ -50,11 +48,13 @@ public class DateUtils {
     }
 
     public static String formater(Date date) {
+        DateFormat formatDate = new SimpleDateFormat(FORMAT_DATE);
         return (date != null) ? formatDate.format(date) : "";
     }
 
     public static Date transformer(String texte) {
         try {
+            DateFormat formatDate = new SimpleDateFormat(FORMAT_DATE);
             return (texte != null) ? formatDate.parse(texte) : null;
         } catch (ParseException e) {
             return null;
