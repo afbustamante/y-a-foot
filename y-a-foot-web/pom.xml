@@ -39,6 +39,10 @@
       <groupId>org.icefaces</groupId>
       <artifactId>icefaces-ace</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.icefaces.ace-themes</groupId>
+      <artifactId>ace-redmond</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

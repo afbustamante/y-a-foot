@@ -78,7 +78,7 @@ public class MatchSearchBean implements Serializable {
 
     public String getPatternDate() {
         if (patternDate == null) {
-            patternDate = DateUtils.getPatternDateHeure(locale.getLanguage());
+            patternDate = DateUtils.getPatternDate(locale.getLanguage());
         }
         return patternDate;
     }

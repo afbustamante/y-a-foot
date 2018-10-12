@@ -174,7 +174,7 @@ public class NewMatchBean implements Serializable {
 
     public String getPatternDate() {
         if (patternDate == null) {
-            patternDate = DateUtils.getPatternDateHeure(getLocale().getLanguage());
+            patternDate = DateUtils.getPatternDate(getLocale().getLanguage());
         }
         return patternDate;
     }

@@ -156,6 +156,11 @@
         <artifactId>icefaces-ace</artifactId>
         <version>${icefaces.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.icefaces.ace-themes</groupId>
+        <artifactId>ace-redmond</artifactId>
+        <version>${icefaces.version}</version>
+      </dependency>
 
       <!-- JUnit -->
       <dependency>

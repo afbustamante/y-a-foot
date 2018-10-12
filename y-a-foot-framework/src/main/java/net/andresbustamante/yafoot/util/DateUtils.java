@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static net.andresbustamante.yafoot.util.LocaleUtils.*;
+
 /**
  * @author andresbustamante
  */
@@ -22,6 +24,8 @@ public class DateUtils {
     private static final String FORMAT_DATE = "dd/MM/yyyy";
 
     private static final Log log = LogFactory.getLog(DateUtils.class);
+
+    private DateUtils() {}
 
     public static XMLGregorianCalendar transformer(Date date) {
         if (date == null) {
@@ -61,19 +65,35 @@ public class DateUtils {
         }
     }
 
-    public static String getPatternDateHeure(String langue) {
+    public static String getPatternDate(String langue) {
         if (langue == null) {
-            return "yyyy/MM/dd H:mm";
+            return "yyyy/MM/dd";
         }
 
         switch (langue) {
-            case "es":
-            case "fr":
-                return "dd/MM/yyyy H:mm";
-            case "en":
-                return "yyyy-MM-dd h:mm a";
+            case ESPAGNOL:
+            case FRANCAIS:
+                return "dd/MM/yyyy";
+            case ANGLAIS:
+                return "yyyy-MM-dd";
             default:
-                return "yyyy/MM/dd H:mm";
+                return "yyyy/MM/dd";
+        }
+    }
+
+    public static String getPatternHeure(String langue) {
+        if (langue == null) {
+            return "H:mm";
+        }
+
+        switch (langue) {
+            case ESPAGNOL:
+            case FRANCAIS:
+                return "H:mm";
+            case ANGLAIS:
+                return "h:mm a";
+            default:
+                return "H:mm";
         }
     }
 

@@ -25,7 +25,7 @@
     </context-param>
     <context-param>
         <param-name>org.icefaces.ace.theme</param-name>
-        <param-value>rime</param-value>
+        <param-value>redmond</param-value>
     </context-param>
     <!--
     <context-param>

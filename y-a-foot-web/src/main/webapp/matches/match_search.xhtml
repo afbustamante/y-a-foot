@@ -44,7 +44,7 @@
                     <h:outputText/>
 
                     <h:outputLabel value="#{messages['match.search.result.who']}"/>
-                    <ace:list value="#{matchSearchBean.match.joueurs.joueur}" id="players" var="joueur">
+                    <ace:list value="#{matchSearchBean.match.inscriptions.inscription.joueur}" id="players" var="joueur">
                         <h:outputText value="#{joueur.prenom}"/>
                     </ace:list>
                     <h:outputText value="#{matchSearchBean.complementJoueurs}"/>
