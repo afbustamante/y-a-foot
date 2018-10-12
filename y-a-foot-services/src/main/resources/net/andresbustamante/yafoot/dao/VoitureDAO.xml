@@ -3,7 +3,7 @@
 
 <mapper namespace="net.andresbustamante.yafoot.dao.VoitureDAO">
     
-    <select id="chercherVoitureParId" resultType="Voiture">
+    <select id="chercherVoitureParId" resultType="net.andresbustamante.yafoot.model.Voiture">
         
     </select>
 </mapper>

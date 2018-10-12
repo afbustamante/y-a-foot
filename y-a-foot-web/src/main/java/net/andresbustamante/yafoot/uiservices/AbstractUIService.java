@@ -1,7 +1,8 @@
 package net.andresbustamante.yafoot.uiservices;
 
-import net.andresbustamante.yafoot.model.Contexte;
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.xs.Contexte;
+import net.andresbustamante.yafoot.model.xs.Joueur;
+import net.andresbustamante.yafoot.model.xs.Utilisateur;
 import net.andresbustamante.yafoot.util.ConfigProperties;
 import net.andresbustamante.yafoot.util.ConstantesWeb;
 
@@ -38,8 +39,10 @@ public abstract class AbstractUIService {
                     contexte = new Contexte();
 
                     if (joueur != null) {
-                        contexte.setEmailUtilisateur(joueur.getEmail());
-                        contexte.setIdUtilisateur(joueur.getId());
+                        Utilisateur u = new Utilisateur();
+                        u.setId(joueur.getId());
+                        u.setEmail(joueur.getEmail());
+                        contexte.setUtilisateur(u);
                     }
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(
                             ConstantesWeb.CONTEXTE, contexte);

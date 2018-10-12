@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Site;
+import net.andresbustamante.yafoot.model.xs.Match;
+import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.uiservices.OrganisationMatchsUIService;
 import net.andresbustamante.yafoot.util.ConstantesWeb;
 import net.andresbustamante.yafoot.util.DateUtils;
@@ -253,12 +253,12 @@ public class NewMatchBean implements Serializable {
         site.setId(idSite);
         site.setNom(nomSite);
         site.setAdresse(adresseSite);
-        site.setTelephone(telephoneSite);
+        site.setNumeroTelephone(telephoneSite);
 
         Match match = new Match();
         match.setNumJoueursMin(numMinJoueurs);
         match.setNumJoueursMax(numMaxJoueurs);
-        match.setDateMatch(date.getTime());
+        match.setDate(date);
         match.setSite(site);
 
         try {

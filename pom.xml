@@ -21,9 +21,9 @@
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <maven-war-plugin.version>2.3</maven-war-plugin.version>
+    <maven-war-plugin.version>3.2.0</maven-war-plugin.version>
     <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
-    <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-jaxb2-plugin.version>0.13.3</maven-jaxb2-plugin.version>
 
     <javaee-web-api.version>7.0</javaee-web-api.version>
@@ -42,6 +42,7 @@
     <commons-logging.version>1.2</commons-logging.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
     <postgresql.version>42.2.2</postgresql.version>
+    <mapstruct.version>1.2.0.Final</mapstruct.version>
   </properties>
 
   <dependencyManagement>
@@ -138,6 +139,11 @@
         <artifactId>commons-logging</artifactId>
         <version>${commons-logging.version}</version>
       </dependency>
+      <dependency>
+        <groupId>commons-dbcp</groupId>
+        <artifactId>commons-dbcp</artifactId>
+        <version>${commons-dbcp.version}</version>
+      </dependency>
 
       <!-- ICEFaces -->
       <dependency>
@@ -150,20 +156,24 @@
         <artifactId>icefaces-ace</artifactId>
         <version>${icefaces.version}</version>
       </dependency>
+
+      <!-- JUnit -->
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
       </dependency>
+
+      <!-- Autres -->
       <dependency>
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>${postgresql.version}</version>
       </dependency>
       <dependency>
-        <groupId>commons-dbcp</groupId>
-        <artifactId>commons-dbcp</artifactId>
-        <version>${commons-dbcp.version}</version>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct-jdk8</artifactId>
+        <version>${mapstruct.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

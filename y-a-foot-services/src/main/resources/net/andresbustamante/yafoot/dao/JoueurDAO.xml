@@ -8,7 +8,7 @@
         WHERE jou.jou_email = #{email}
     </select>
 
-    <select id="chercherJoueurParId" resultType="Joueur">
+    <select id="chercherJoueurParId" resultType="net.andresbustamante.yafoot.model.Joueur">
         SELECT
             jou.jou_id                AS id,
             jou.jou_nom               AS nom,
@@ -21,7 +21,7 @@
         WHERE jou.jou_id = #{id}
     </select>
 
-    <select id="chercherJoueurParEmail" resultType="Joueur">
+    <select id="chercherJoueurParEmail" resultType="net.andresbustamante.yafoot.model.Joueur">
         SELECT
             jou.jou_id                AS id,
             jou.jou_nom               AS nom,

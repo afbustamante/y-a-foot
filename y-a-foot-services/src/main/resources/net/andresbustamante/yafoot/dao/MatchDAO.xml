@@ -47,7 +47,7 @@
         WHERE jma.jma_joueur_fk = #{id} AND mat.mat_date > #{date}
     </select>
 
-    <select id="chercherMatchParId" resultType="Match">
+    <select id="chercherMatchParId" resultType="net.andresbustamante.yafoot.model.Match">
         SELECT
             mat.mat_id              AS id,
             mat.mat_code            AS code,
@@ -87,19 +87,19 @@
         WHERE jma.jma_joueur_fk = #{joueur.id} AND jma.jma_match_fk = #{match.id}
     </select>
 
-    <resultMap id="matchComplet" type="Match">
+    <resultMap id="matchComplet" type="net.andresbustamante.yafoot.model.Match">
         <id property="id" column="id"/>
         <result property="code" column="code"/>
         <result property="dateMatch" column="dateMatch"/>
         <result property="description" column="description"/>
         <result property="numJoueursMin" column="numJoueursMin"/>
         <result property="numJoueursMax" column="numJoueursMax"/>
-        <association property="site" javaType="Site">
+        <association property="site" javaType="net.andresbustamante.yafoot.model.Site">
             <result column="idSite" property="id"/>
             <result column="nomSite" property="nom"/>
             <result column="adresseSite" property="adresse"/>
             <result column="telephoneSite" property="telephone"/>
-            <association property="localisation" javaType="Coordonnees">
+            <association property="localisation" javaType="net.andresbustamante.yafoot.model.Coordonnees">
                 <result column="latitudeSite" property="latitude"/>
                 <result column="longitudeSite" property="longitude"/>
             </association>

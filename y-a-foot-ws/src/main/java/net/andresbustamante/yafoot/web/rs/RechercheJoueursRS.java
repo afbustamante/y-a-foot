@@ -1,8 +1,9 @@
-package net.andresbustamante.yafoot.web;
+package net.andresbustamante.yafoot.web.rs;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.web.mappers.JoueurMapper;
+import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.services.RechercheJoueursService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,10 +32,10 @@ public class RechercheJoueursRS {
         Contexte contexte = new Contexte();
 
         try {
-            Joueur joueur = rechercheJoueursService.chercherJoueur(email, contexte);
+            net.andresbustamante.yafoot.model.Joueur joueur = rechercheJoueursService.chercherJoueur(email, contexte);
 
             if (joueur != null) {
-                return new ResponseEntity<>(joueur, HttpStatus.OK);
+                return new ResponseEntity<>(JoueurMapper.INSTANCE.toJoueurDTO(joueur), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

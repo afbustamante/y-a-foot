@@ -47,7 +47,7 @@
           </xs:simpleType>
         </xs:element>
         <xs:element ref="site" minOccurs="0"/>
-        <xs:element ref="joueurs" minOccurs="0"/>
+        <xs:element ref="inscriptions" minOccurs="0"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -186,6 +186,26 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="utilisateur" type="utilisateur"/>
+  <xs:element name="inscription">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation>Inscription pour un match</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="idMatch" type="xs:int" />
+        <xs:element name="idJoueur" type="xs:int" />
+        <xs:element ref="joueur" />
+        <xs:element ref="voiture" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inscriptions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="inscription" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:complexType name="utilisateur">
     <xs:annotation>
       <xs:documentation>Utilisateur de l'application</xs:documentation>

@@ -1,9 +1,11 @@
-package net.andresbustamante.yafoot.web;
+package net.andresbustamante.yafoot.web.rs;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
-import net.andresbustamante.yafoot.model.Site;
+import net.andresbustamante.yafoot.model.xs.Sites;
 import net.andresbustamante.yafoot.services.RechercheSitesService;
+import net.andresbustamante.yafoot.web.mappers.SiteMapper;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,20 @@ public class RechercheSitesRS {
     private final Log log = LogFactory.getLog(RechercheSitesRS.class);
 
     @GetMapping(path = "/sites/recherche/joueur/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Site[]> getSitesJoueur(@PathVariable("id") Integer idJoueur) {
+    public ResponseEntity<Sites> getSitesJoueur(@PathVariable("id") Integer idJoueur) {
         try {
-            List<Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur, new Contexte());
+            List<net.andresbustamante.yafoot.model.Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur,
+                    new Contexte());
 
-            if (sites != null) {
-                return new ResponseEntity<>(sites.toArray(new Site[]{}), HttpStatus.OK);
+            if (CollectionUtils.isNotEmpty(sites)) {
+                Sites result = new Sites();
+
+                for (net.andresbustamante.yafoot.model.Site site : sites) {
+                    result.getSite().add(SiteMapper.INSTANCE.toSiteDTO(site));
+                }
+                return new ResponseEntity<>(result, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(new Site[]{}, HttpStatus.OK);
+                return new ResponseEntity<>(new Sites(), HttpStatus.OK);
             }
         } catch (BDDException e) {
             log.error("Erreur lors de la recherche de sites par joueur", e);

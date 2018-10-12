@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.uiservices;
 
-import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.model.xs.Match;
+import net.andresbustamante.yafoot.model.xs.Matchs;
 import net.andresbustamante.yafoot.util.ConfigProperties;
 
 import javax.ws.rs.ClientErrorException;
@@ -25,10 +26,10 @@ public class RechercheMatchsUIService extends AbstractUIService {
         return resource.request(MediaType.APPLICATION_JSON).get(Match.class);
     }
 
-    public Match[] getMatchsJoueur(String idJoueur) throws ClientErrorException {
+    public Matchs getMatchsJoueur(String idJoueur) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
         resource = resource.path(MessageFormat.format("/joueur/{0}", idJoueur));
-        return resource.request(MediaType.APPLICATION_JSON).get(Match[].class);
+        return resource.request(MediaType.APPLICATION_JSON).get(Matchs.class);
     }
 }

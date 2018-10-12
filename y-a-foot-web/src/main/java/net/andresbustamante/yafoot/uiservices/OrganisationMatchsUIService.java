@@ -1,8 +1,9 @@
 package net.andresbustamante.yafoot.uiservices;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Site;
+import net.andresbustamante.yafoot.model.xs.Match;
+import net.andresbustamante.yafoot.model.xs.Site;
+import net.andresbustamante.yafoot.model.xs.Sites;
 import net.andresbustamante.yafoot.util.ConfigProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,11 +30,11 @@ public class OrganisationMatchsUIService extends AbstractUIService {
         try {
             Client client = ClientBuilder.newClient();
             WebTarget webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.sites.service.path"));
-            Site[] sites = webTarget.path(MessageFormat.format("/joueur/{0}",
-                    getContexte().getIdUtilisateur())).request(MediaType.APPLICATION_JSON).get(Site[].class);
+            Sites sites = webTarget.path(MessageFormat.format("/joueur/{0}",
+                    getContexte().getUtilisateur().getId())).request(MediaType.APPLICATION_JSON).get(Sites.class);
 
             if (sites != null) {
-                return Arrays.asList(sites);
+                return sites.getSite();
             }
             return Collections.emptyList();
         } catch (ResponseProcessingException ex) {

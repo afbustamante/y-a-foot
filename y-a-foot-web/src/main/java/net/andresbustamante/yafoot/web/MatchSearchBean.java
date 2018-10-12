@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.web;
 
-import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
 import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.util.MessagesProperties;
@@ -71,7 +71,7 @@ public class MatchSearchBean implements Serializable {
 
     private Integer getNumPlacesDisponibles() {
         if ((match != null) && (match.getNumJoueursMax() != null) && (match.getInscriptions() != null)) {
-            return match.getNumJoueursMax() - match.getInscriptions().size();
+            return match.getNumJoueursMax() - match.getInscriptions().getInscription().size();
         }
         return null;
     }

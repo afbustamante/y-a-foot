@@ -1,9 +1,10 @@
-package net.andresbustamante.yafoot.web;
+package net.andresbustamante.yafoot.web.rs;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
-import net.andresbustamante.yafoot.model.Contexte;
-import net.andresbustamante.yafoot.model.Inscription;
-import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.web.mappers.InscriptionMapper;
+import net.andresbustamante.yafoot.web.mappers.MatchMapper;
+import net.andresbustamante.yafoot.model.xs.Inscription;
+import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
 import net.andresbustamante.yafoot.util.ContexteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class OrganisationMatchsRS {
     @PostMapping(path = "/matchs/gestion", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> creerMatch(@RequestBody Match match, @RequestHeader HttpHeaders headers) {
         try {
-            Contexte contexte = ContexteUtils.getContexte(headers);
-            boolean isMatchCree = gestionMatchsService.creerMatch(match, contexte);
+            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(headers);
+            boolean isMatchCree = gestionMatchsService.creerMatch(MatchMapper.INSTANCE.toMatchBean(match), contexte);
 
             if (isMatchCree) {
                 MultiValueMap<String, String> headersResponse = new LinkedMultiValueMap<>();
@@ -46,9 +47,10 @@ public class OrganisationMatchsRS {
     public ResponseEntity<Boolean> inscrireJoueurMatch(@RequestBody Inscription inscription,
                                                        @RequestHeader HttpHeaders headers) {
         try {
-            Contexte contexte = ContexteUtils.getContexte(headers);
-            boolean succes = gestionMatchsService.inscrireJoueurMatch(inscription.getJoueur(), inscription.getMatch(),
-                    inscription.getVoiture(), contexte);
+            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(headers);
+            net.andresbustamante.yafoot.model.Inscription ins = InscriptionMapper.INSTANCE.toInscriptionBean(inscription);
+            boolean succes = gestionMatchsService.inscrireJoueurMatch(ins.getJoueur(), ins.getMatch(),
+                    ins.getVoiture(), contexte);
 
             return (succes) ? new ResponseEntity<>(true, HttpStatus.CREATED) :
                     new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);

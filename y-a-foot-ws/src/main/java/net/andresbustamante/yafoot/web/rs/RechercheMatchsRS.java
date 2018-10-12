@@ -1,9 +1,12 @@
-package net.andresbustamante.yafoot.web;
+package net.andresbustamante.yafoot.web.rs;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
-import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.web.mappers.MatchMapper;
+import net.andresbustamante.yafoot.model.xs.Match;
+import net.andresbustamante.yafoot.model.xs.Matchs;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +38,10 @@ public class RechercheMatchsRS {
     @GetMapping(path = "/matchs/recherche/code/{codeMatch}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Match> getMatchParCode(@PathVariable("codeMatch") String codeMatch) {
         try {
-            Match match = rechercheMatchsService.chercherMatchParCode(codeMatch, new Contexte());
+            net.andresbustamante.yafoot.model.Match match = rechercheMatchsService.chercherMatchParCode(codeMatch,
+                    new Contexte());
 
-            return (match != null) ? new ResponseEntity<>(match, HttpStatus.OK) :
+            return (match != null) ? new ResponseEntity<>(MatchMapper.INSTANCE.toMatchDTO(match), HttpStatus.OK) :
                     new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (BDDException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
@@ -46,12 +50,21 @@ public class RechercheMatchsRS {
     }
 
     @GetMapping(path = "/matchs/recherche/joueur/{idJoueur}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Match[]> getMatchsJoueur(@PathVariable("idJoueur") Integer idJoueur) {
+    public ResponseEntity<Matchs> getMatchsJoueur(@PathVariable("idJoueur") Integer idJoueur) {
         try {
-            List<Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur, new Contexte());
+            List<net.andresbustamante.yafoot.model.Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur,
+                    new Contexte());
 
-            return (matchs != null) ? new ResponseEntity<>(matchs.toArray(new Match[]{}), HttpStatus.OK) :
-                    new ResponseEntity<>(new Match[]{}, HttpStatus.OK);
+            if (CollectionUtils.isNotEmpty(matchs)) {
+                Matchs result = new Matchs();
+
+                for (net.andresbustamante.yafoot.model.Match m : matchs) {
+                    result.getMatch().add(MatchMapper.INSTANCE.toMatchDTO(m));
+                }
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new Matchs(), HttpStatus.OK);
+            }
         } catch (BDDException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
