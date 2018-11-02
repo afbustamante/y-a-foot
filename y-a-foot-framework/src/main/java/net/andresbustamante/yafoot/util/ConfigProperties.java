@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.util;
 
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -14,6 +15,10 @@ public class ConfigProperties {
      * @return
      */
     public static String getValue(String key) {
-        return BUNDLE.getString(key);
+        try {
+            return BUNDLE.getString(key);
+        } catch (MissingResourceException e) {
+            return null;
+        }
     }
 }

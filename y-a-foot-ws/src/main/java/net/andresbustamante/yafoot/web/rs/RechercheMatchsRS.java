@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
  * @author andresbustamante
  */
 @RestController
+@RequestMapping("/matchs/recherche")
 public class RechercheMatchsRS {
 
     @Autowired
@@ -35,7 +37,7 @@ public class RechercheMatchsRS {
     public RechercheMatchsRS() {
     }
 
-    @GetMapping(path = "/matchs/recherche/code/{codeMatch}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/code/{codeMatch}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Match> getMatchParCode(@PathVariable("codeMatch") String codeMatch) {
         try {
             net.andresbustamante.yafoot.model.Match match = rechercheMatchsService.chercherMatchParCode(codeMatch,
@@ -49,7 +51,7 @@ public class RechercheMatchsRS {
         }
     }
 
-    @GetMapping(path = "/matchs/recherche/joueur/{idJoueur}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/joueur/{idJoueur}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Matchs> getMatchsJoueur(@PathVariable("idJoueur") Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur,

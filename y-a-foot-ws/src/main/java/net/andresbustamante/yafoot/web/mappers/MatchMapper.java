@@ -12,12 +12,14 @@ public interface MatchMapper {
     MatchMapper INSTANCE = Mappers.getMapper(MatchMapper.class);
 
     @Mappings({
-            @Mapping(source = "match.inscriptions.inscription", target = "inscriptions")
+            @Mapping(source = "match.inscriptions.inscription", target = "inscriptions"),
+            @Mapping(source = "match.date", target = "dateMatch")
     })
     Match toMatchBean(net.andresbustamante.yafoot.model.xs.Match match);
 
     @Mappings({
-            @Mapping(source = "match.inscriptions", target = "inscriptions.inscription")
+            @Mapping(source = "match.inscriptions", target = "inscriptions.inscription"),
+            @Mapping(source = "match.dateMatch", target = "date")
     })
     net.andresbustamante.yafoot.model.xs.Match toMatchDTO(Match match);
 }

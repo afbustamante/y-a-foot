@@ -11,7 +11,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public class MatchListBean implements Serializable {
         if (matches == null) {
             Integer idJoueur = rechercheMatchsUIService.getContexte().getUtilisateur().getId();
             matches = rechercheMatchsUIService.getMatchsJoueur(String.valueOf(idJoueur)).getMatch();
-            Collections.sort(matches, new MatchComparator());
+            matches.sort(new MatchComparator());
 
             if (CollectionUtils.isNotEmpty(matches)) {
                 log.info(matches.size() + " matches trouvés pour le joueur " + idJoueur);

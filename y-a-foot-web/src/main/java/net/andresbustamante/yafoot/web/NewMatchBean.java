@@ -16,11 +16,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -30,7 +30,6 @@ import java.util.*;
 @ViewScoped
 public class NewMatchBean implements Serializable {
 
-    private static final String OPTION_NOUVEAU_SITE = "0";
     private static final Integer NOUVEL_ID = -1;
 
     private Date maintenant;
@@ -205,14 +204,6 @@ public class NewMatchBean implements Serializable {
         return itemsSites;
     }
 
-    public void siteChange(ValueChangeEvent event) {
-        Object value = event.getNewValue();
-        if (value != null) {
-            String valeur = value.toString();
-            nouveauSite = !valeur.isEmpty() && (valeur.equals(OPTION_NOUVEAU_SITE));
-        }
-    }
-
     public boolean isNouveauSite() {
         return nouveauSite;
     }
@@ -246,8 +237,13 @@ public class NewMatchBean implements Serializable {
             return "new_match";
         }
 
+        String[] heureMinute = heureMatch.split(DateUtils.SEPARATEUR_HEURE);
+        LocalTime heure = LocalTime.of(Integer.valueOf(heureMinute[0]), Integer.valueOf(heureMinute[1]));
+
         Calendar date = Calendar.getInstance(getLocale());
         date.setTime(dateMatch);
+        date.set(Calendar.HOUR_OF_DAY, heure.getHour());
+        date.set(Calendar.MINUTE, heure.getMinute());
 
         Site site = new Site();
         site.setId(idSite);

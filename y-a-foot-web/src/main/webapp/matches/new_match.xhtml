@@ -14,45 +14,57 @@
             <h:messages errorClass="error" styleClass="messages"/>
 
             <ace:panel header="#{messages['new.match.details.title']}">
-                <h:panelGrid columns="1">
+                <h:panelGrid columns="3">
+                    <h:outputLabel id="lblDate" for="date" value="#{messages['new.match.date']}" />
                     <ace:dateTimeEntry id="date" required="true" value="#{newMatchBean.dateMatch}"
-                                       label="#{messages['new.match.date']}" labelPosition="top"
                                        locale="#{newMatchBean.locale}" pattern="#{newMatchBean.patternDate}"
                                        showButtonPanel="true"
                                        renderAsPopup="true" style="width:200px"
                                        readOnlyInputText="true" minDateTime="#{newMatchBean.maintenant}"
+                                       requiredIndicator="*" indicatorPosition="labelRight"
                                        requiredMessage="#{messages['new.match.date.required']}"/>
-                    <ace:maskedEntry id="time" value="#{newMatchBean.heureMatch}" mask="99:99"
-                                     label="#{messages['new.match.time']}" labelPosition="top" size="5"
+                    <h:outputText value="" />
+
+                    <h:outputLabel id="lblTime" for="time" value="#{messages['new.match.time']}" />
+                    <ace:maskedEntry id="time" value="#{newMatchBean.heureMatch}" mask="99:99" size="5"
+                                     requiredIndicator="*" indicatorPosition="labelRight"
                                      requiredMessage="#{messages['new.match.time.required']}"
                                      validatorMessage="#{messages['new.match.time.invalid']}">
                         <f:validateRegex pattern="^(00|[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9])$" />
-                    </ace:maskedEntry>                    
+                    </ace:maskedEntry>
+                    <h:outputText value="" />
+
+                    <h:outputLabel id="lblPlayersMin" for="playersMin" value="#{messages['new.match.players.min']}" />
                     <ace:textEntry id="playersMin" value="#{newMatchBean.numMinJoueurs}" required="true"
+                                   requiredIndicator="*" indicatorPosition="labelRight"
                                    requiredMessage="#{messages['new.match.players.required']}"
-                                   min="0" max="22" maxlength="2" size="5"
-                                   label="#{messages['new.match.players.min']}" labelPosition="top">
+                                   min="0" max="22" maxlength="2" size="5">
                         <f:validateLongRange minimum="0"/>
                     </ace:textEntry>
+                    <h:outputText value="" />
 
+                    <h:outputLabel id="lblPlayersMax" for="playersMax" value="#{messages['new.match.players.max']}" />
                     <ace:textEntry id="playersMax" value="#{newMatchBean.numMaxJoueurs}"
-                                   min="0" max="22" maxlength="2" size="5"
-                                   label="#{messages['new.match.players.max']}" labelPosition="top">
+                                   min="0" max="22" maxlength="2" size="5">
                         <f:validateLongRange minimum="0"/>
                     </ace:textEntry>
+                    <h:outputText value="" />
 
-                    <ace:selectMenu id="place" value="#{newMatchBean.idSite}"
-                                    valueChangeListener="#{newMatchBean.siteChange}"
-                                    label="#{messages['new.match.place.name']}" labelPosition="top">
+                    <h:outputLabel id="lblPlace" for="place" value="#{messages['new.match.place.name']}" />
+                    <ace:selectMenu id="place" value="#{newMatchBean.idSite}" required="true"
+                                    requiredIndicator="*" indicatorPosition="labelRight"
+                                    requiredMessage="#{messages['new.match.place.required']}">
                         <f:selectItem noSelectionOption="true" itemValue="" itemLabel=""/>
                         <f:selectItems value="#{newMatchBean.itemsSites}"/>
-                        <f:selectItem noSelectionOption="true" itemValue="0"
-                                      itemLabel="#{messages['new.match.place.new']}"/>
-
-                        <ace:ajax execute="@this" render="@all" />
                     </ace:selectMenu>
+                    <ace:menuButton value="#{messages['button.more']}">
+                        <ace:menuItem id="btnAddPlace" value="#{messages['new.match.place.new']}" icon="ui-icon ui-icon-plusthick"
+                                      actionListener="#{newMatchBean.afficherDialogNouveauSite}">
+                            <ace:ajax event="activate" execute="@this" render="dialogNewPlace" />
+                        </ace:menuItem>
+                    </ace:menuButton>
 
-                    <ace:dialog id="dialogNewPlace" header="#{messages['new.match.place.new']}" width="400"
+                    <ace:dialog id="dialogNewPlace" header="#{messages['new.match.place.new']}" width="500"
                                 visible="#{newMatchBean.nouveauSite}" closable="false" modal="true" draggable="false"
                                 showEffect="clip" hideEffect="fade">
                         <h:form>

@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author andresbustamante
  */
 @RestController
+@RequestMapping("/joueurs/recherche")
 public class RechercheJoueursRS {
 
     @Autowired
@@ -27,7 +29,7 @@ public class RechercheJoueursRS {
 
     private transient final Log log = LogFactory.getLog(RechercheJoueursRS.class);
 
-    @GetMapping(path = "/joueurs/recherche/{email}/email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{email}/email", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Joueur> chercherJoueurParEmail(@PathVariable("email") String email) {
         Contexte contexte = new Contexte();
 

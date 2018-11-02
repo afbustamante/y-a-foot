@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author andresbustamante
  */
 @RestController
+@RequestMapping("/sites/recherche")
 public class RechercheSitesRS {
 
     @Autowired
@@ -29,7 +31,7 @@ public class RechercheSitesRS {
 
     private final Log log = LogFactory.getLog(RechercheSitesRS.class);
 
-    @GetMapping(path = "/sites/recherche/joueur/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/joueur/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Sites> getSitesJoueur(@PathVariable("id") Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur,
