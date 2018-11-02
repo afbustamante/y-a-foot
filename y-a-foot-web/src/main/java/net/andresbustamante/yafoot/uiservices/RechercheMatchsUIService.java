@@ -23,13 +23,13 @@ public class RechercheMatchsUIService extends AbstractUIService {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
         resource = resource.path(MessageFormat.format("/code/{0}", codeMatch));
-        return resource.request(MediaType.APPLICATION_JSON).get(Match.class);
+        return resource.request(MediaType.APPLICATION_XML).get(Match.class);
     }
 
     public Matchs getMatchsJoueur(String idJoueur) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
         resource = resource.path(MessageFormat.format("/joueur/{0}", idJoueur));
-        return resource.request(MediaType.APPLICATION_JSON).get(Matchs.class);
+        return resource.request(MediaType.APPLICATION_XML).get(Matchs.class);
     }
 }

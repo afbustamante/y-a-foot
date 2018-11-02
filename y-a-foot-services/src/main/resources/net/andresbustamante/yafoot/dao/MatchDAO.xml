@@ -95,14 +95,24 @@
         <result property="numJoueursMin" column="numJoueursMin"/>
         <result property="numJoueursMax" column="numJoueursMax"/>
         <association property="site" javaType="net.andresbustamante.yafoot.model.Site">
-            <result column="idSite" property="id"/>
+            <id column="idSite" property="id"/>
             <result column="nomSite" property="nom"/>
             <result column="adresseSite" property="adresse"/>
             <result column="telephoneSite" property="telephone"/>
-            <association property="localisation" javaType="net.andresbustamante.yafoot.model.Coordonnees">
+            <association property="localisation" javaType="net.andresbustamante.yafoot.model.CoordonneesGPS">
                 <result column="latitudeSite" property="latitude"/>
                 <result column="longitudeSite" property="longitude"/>
             </association>
         </association>
+        <collection property="inscriptions" javaType="net.andresbustamante.yafoot.model.Inscription">
+            <association property="joueur" javaType="net.andresbustamante.yafoot.model.Joueur">
+                <id column="idJoueur" property="id" />
+                <result column="prenomJoueur" property="prenom" />
+            </association>
+            <association property="voiture" javaType="net.andresbustamante.yafoot.model.Voiture">
+                <id column="idVoiture" property="id" />
+                <result column="numPlacesVoiture" property="numPlaces" />
+            </association>
+        </collection>
     </resultMap>
 </mapper>

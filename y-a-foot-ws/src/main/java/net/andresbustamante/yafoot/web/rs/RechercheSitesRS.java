@@ -31,7 +31,7 @@ public class RechercheSitesRS {
 
     private final Log log = LogFactory.getLog(RechercheSitesRS.class);
 
-    @GetMapping(path = "/joueur/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/joueur/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Sites> getSitesJoueur(@PathVariable("id") Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur,

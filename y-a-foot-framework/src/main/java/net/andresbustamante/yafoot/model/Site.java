@@ -15,7 +15,7 @@ public class Site implements Localisable, Serializable {
     private String nom;
     private String adresse;
     private String telephone;
-    private Coordonnees localisation;
+    private CoordonneesGPS localisation;
 
     public Site() {
     }
@@ -57,12 +57,12 @@ public class Site implements Localisable, Serializable {
     }
 
     @Override
-    public Coordonnees getLocalisation() {
+    public CoordonneesGPS getLocalisation() {
         return localisation;
     }
 
     @Override
-    public void setLocalisation(Coordonnees localisation) {
+    public void setLocalisation(CoordonneesGPS localisation) {
         this.localisation = localisation;
     }
 

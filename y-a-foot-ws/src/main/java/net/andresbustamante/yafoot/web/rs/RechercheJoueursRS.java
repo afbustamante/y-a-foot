@@ -29,7 +29,7 @@ public class RechercheJoueursRS {
 
     private transient final Log log = LogFactory.getLog(RechercheJoueursRS.class);
 
-    @GetMapping(path = "/{email}/email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{email}/email", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Joueur> chercherJoueurParEmail(@PathVariable("email") String email) {
         Contexte contexte = new Contexte();
 

@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.model.api;
 
-import net.andresbustamante.yafoot.model.Coordonnees;
+import net.andresbustamante.yafoot.model.CoordonneesGPS;
 
 public interface Localisable {
     
-    Coordonnees getLocalisation();
+    CoordonneesGPS getLocalisation();
 
-    void setLocalisation(Coordonnees coordonnees);
+    void setLocalisation(CoordonneesGPS coordonneesGPS);
 }

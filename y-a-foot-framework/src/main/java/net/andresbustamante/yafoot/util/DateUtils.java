@@ -1,8 +1,5 @@
 package net.andresbustamante.yafoot.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,8 +17,6 @@ public class DateUtils {
     public static final String SEPARATEUR_HEURE = ":";
 
     private static final String FORMAT_DATE = "dd/MM/yyyy";
-
-    private static final Log log = LogFactory.getLog(DateUtils.class);
 
     private DateUtils() {}
 
@@ -55,6 +50,7 @@ public class DateUtils {
         }
     }
 
+    /*
     public static String getPatternHeure(String langue) {
         if (langue == null) {
             return "H:mm";
@@ -70,6 +66,7 @@ public class DateUtils {
                 return "H:mm";
         }
     }
+    */
 
     public static Date premiereMinuteDuJour(Date date) {
         if (date == null) {
@@ -82,5 +79,15 @@ public class DateUtils {
                 withHour(0).withMinute(0).withSecond(0);
 
         return Date.from(dateTime.atZone(calendar.getTimeZone().toZoneId()).toInstant());
+    }
+
+    public static LocalDateTime toLocalDateTime(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+
+        return LocalDateTime.ofInstant(date.toInstant(), calendar.getTimeZone().toZoneId());
     }
 }
