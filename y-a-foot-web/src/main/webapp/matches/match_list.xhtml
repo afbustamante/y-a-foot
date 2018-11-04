@@ -15,29 +15,34 @@
 
             <ace:tabSet id="matchsTabSet" clientSide="false">
                 <ace:tabPane id="matchesToPlayTabSet" label="#{messages['match.list.to.play']}">
-                    <ui:repeat value="#{matchListBean.matches}" var="match">
-                        <h:panelGrid columns="2" styleClass="match_preview">
-                            <h:outputText value="#{match.date.time}">
-                                <f:convertDateTime dateStyle="full" timeStyle="short" type="both" />
-                            </h:outputText>
-                            <h:outputLink value="#">
-                                <h:outputText value="#{messages['match.list.detail']}" />
-                            </h:outputLink>
+                    <ace:list value="#{matchListBean.matches}" var="match">
+                        <h:panelGrid columns="2" styleClass="match_preview" >
+                            <h:panelGrid columns="1">
+                                <h:outputText value="#{match.date.time}">
+                                    <f:convertDateTime dateStyle="full" timeStyle="short" type="both" />
+                                </h:outputText>
 
-                            <h:outputText value="#{match.site.nom}" />
-                            <h:outputLink value="#">
-                                <h:outputText value="#{messages['match.list.cancel']}" />
-                            </h:outputLink>
+                                <h:outputText value="#{match.site.nom}" />
 
-                            <h:outputText value="#{match.numJoueursMin} #{messages['match.list.players.expected']}" />
-                            <h:outputLink value="#">
-                                <h:outputText value="#{messages['match.list.leave']}" />
-                            </h:outputLink>
+                                <h:outputText value="#{match.numJoueursMin} #{messages['match.list.players.expected']}" />
 
-                            <h:outputText value="#{match.inscriptions.inscription.size()} #{messages['match.list.players.actual']}" />
-                            <h:outputLink value="#" />
+                                <h:outputText value="#{match.inscriptions.inscription.size()} #{messages['match.list.players.actual']}" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <ace:menuButton value="#{messages['button.more']}">
+                                    <ace:menuItem id="btnMoreDetails" value="#{messages['match.list.detail']}" icon="ui-icon ui-icon-search"
+                                                  action="/matches/match_search">
+                                    </ace:menuItem>
+                                    <ace:menuItem id="btnCancelMatch" value="#{messages['match.list.cancel']}" icon="ui-icon ui-icon-cancel"
+                                                  action="/matches/match_search">
+                                    </ace:menuItem>
+                                    <ace:menuItem id="btnLeaveMatch" value="#{messages['match.list.leave']}" icon="ui-icon ui-icon-close"
+                                                  action="/matches/match_search">
+                                    </ace:menuItem>
+                                </ace:menuButton>
+                            </h:panelGrid>
                         </h:panelGrid>
-                    </ui:repeat>
+                    </ace:list>
                 </ace:tabPane>
             </ace:tabSet>
         </h:form>

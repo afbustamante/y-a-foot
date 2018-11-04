@@ -59,8 +59,7 @@ public class IdInscription implements Serializable {
 
     @Override
     public String toString() {
-        return "net.andresbustamante.yafoot.model.IdInscription[ jmaMatchFk=" + idMatch + ", jmaJoueurFk=" +
-                idJoueur + " ]";
+        return "IdInscription [ idMatch=" + idMatch + ", idJoueur=" + idJoueur + " ]";
     }
 
 }

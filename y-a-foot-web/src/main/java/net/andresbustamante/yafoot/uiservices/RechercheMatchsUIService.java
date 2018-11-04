@@ -19,14 +19,14 @@ public class RechercheMatchsUIService extends AbstractUIService {
     public RechercheMatchsUIService() {
     }
 
-    public Match getMatchParCode(String codeMatch) throws ClientErrorException {
+    public Match chercherMatchParCode(String codeMatch) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
         resource = resource.path(MessageFormat.format("/code/{0}", codeMatch));
         return resource.request(MediaType.APPLICATION_XML).get(Match.class);
     }
 
-    public Matchs getMatchsJoueur(String idJoueur) throws ClientErrorException {
+    public Matchs chercherMatchsJoueur(String idJoueur) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
         resource = resource.path(MessageFormat.format("/joueur/{0}", idJoueur));

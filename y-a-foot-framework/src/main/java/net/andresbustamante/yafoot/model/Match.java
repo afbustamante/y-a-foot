@@ -125,7 +125,7 @@ public class Match implements Serializable {
 
     @Override
     public String toString() {
-        return "net.andresbustamante.yafoot.model.Match[ matId=" + id + " ]";
+        return "Match [ id=" + id + " ]";
     }
 
 }

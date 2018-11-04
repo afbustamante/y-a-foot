@@ -13,15 +13,16 @@
 
         <h:form>
             <ace:panel id="search">
-                <h:panelGrid columns="1">
-                    <ace:textEntry label="#{messages['match.search.code']}" labelPosition="top"
-                                   value="#{matchSearchBean.codeMatch}"
+                <h:panelGrid columns="2">
+                    <f:facet name = "footer">
+                        <ace:pushButton action="#{matchSearchBean.chercherMatch}"
+                                        value="#{messages['match.search.button.search']}">
+                            <ace:ajax execute="@form" render="@all"/>
+                        </ace:pushButton>
+                    </f:facet>
+                    <h:outputLabel for="txtCode" value="#{messages['match.search.code']}" />
+                    <ace:textEntry id="txtCode" value="#{matchSearchBean.codeMatch}"
                                    required="true" requiredMessage="#{messages['match.search.code.required']}" />
-
-                    <ace:pushButton action="#{matchSearchBean.chercherMatch}"
-                                    value="#{messages['match.search.button.search']}">
-                        <ace:ajax execute="@form" render="@all"/>
-                    </ace:pushButton>
                 </h:panelGrid>
             </ace:panel>
 
@@ -44,8 +45,8 @@
                     <h:outputText/>
 
                     <h:outputLabel value="#{messages['match.search.result.who']}"/>
-                    <ace:list value="#{matchSearchBean.match.inscriptions.inscription.joueur}" id="players" var="joueur">
-                        <h:outputText value="#{joueur.prenom}"/>
+                    <ace:list value="#{matchSearchBean.match.inscriptions.inscription}" id="players" var="ins">
+                        <h:outputText value="#{ins.joueur.prenom}"/>
                     </ace:list>
                     <h:outputText value="#{matchSearchBean.complementJoueurs}"/>
                 </h:panelGrid>

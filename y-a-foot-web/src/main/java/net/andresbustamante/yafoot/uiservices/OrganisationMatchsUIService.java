@@ -26,6 +26,12 @@ public class OrganisationMatchsUIService extends AbstractUIService {
     public OrganisationMatchsUIService() {
     }
 
+    /**
+     * Charger la liste de sites disponibles pour l'utilisateur connecté
+     *
+     * @return Liste de sites trouvés dans l'historique de l'utilisateur connecté
+     * @throws ApplicationException
+     */
     public List<Site> chercherSites() throws ApplicationException {
         try {
             Client client = ClientBuilder.newClient();

@@ -78,7 +78,7 @@ public class Inscription implements Serializable {
 
     @Override
     public String toString() {
-        return "net.andresbustamante.yafoot.model.Inscription[ id=" + id + " ]";
+        return "Inscription [ id=" + id + " ]";
     }
 
 }

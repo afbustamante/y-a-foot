@@ -37,7 +37,7 @@ public class MatchSearchBean implements Serializable {
 
     public void chercherMatch() {
         log.info("Recherche du match avec le code " + codeMatch);
-        match = rechercheMatchsUIService.getMatchParCode(codeMatch);
+        match = rechercheMatchsUIService.chercherMatchParCode(codeMatch);
     }
 
     public String getCodeMatch() {

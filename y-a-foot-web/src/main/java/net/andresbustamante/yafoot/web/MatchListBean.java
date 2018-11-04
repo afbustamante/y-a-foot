@@ -33,7 +33,7 @@ public class MatchListBean implements Serializable {
     public List<Match> getMatches() {
         if (matches == null) {
             Integer idJoueur = rechercheMatchsUIService.getContexte().getUtilisateur().getId();
-            matches = rechercheMatchsUIService.getMatchsJoueur(String.valueOf(idJoueur)).getMatch();
+            matches = rechercheMatchsUIService.chercherMatchsJoueur(String.valueOf(idJoueur)).getMatch();
             matches.sort(new MatchComparator());
 
             if (CollectionUtils.isNotEmpty(matches)) {

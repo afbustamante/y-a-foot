@@ -21,9 +21,16 @@
             sit.sit_adresse         AS adresseSite,
             sit.sit_telephone       AS telephoneSite,
             sit.sit_latitude        AS latitudeSite,
-            sit.sit_longitude       AS longitudeSite
+            sit.sit_longitude       AS longitudeSite,
+            jma.jma_joueur_fk       AS idJoueur,
+            jou.jou_prenom          AS prenomJoueur,
+            voi.voi_id              AS idVoiture,
+            voi.voi_num_places      AS numPlacesVoiture
         FROM yafoot.t_match mat
             JOIN yafoot.t_site sit ON mat.mat_site_fk = sit.sit_id
+            LEFT JOIN yafoot.t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
+            LEFT JOIN yafoot.t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
+            LEFT JOIN yafoot.t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
         WHERE mat.mat_code = #{code}
     </select>
 
@@ -40,10 +47,16 @@
             sit.sit_adresse         AS adresseSite,
             sit.sit_telephone       AS telephoneSite,
             sit.sit_latitude        AS latitudeSite,
-            sit.sit_longitude       AS longitudeSite
+            sit.sit_longitude       AS longitudeSite,
+            jma.jma_joueur_fk       AS idJoueur,
+            jou.jou_prenom          AS prenomJoueur,
+            voi.voi_id              AS idVoiture,
+            voi.voi_num_places      AS numPlacesVoiture
         FROM yafoot.t_match mat
             JOIN yafoot.t_site sit ON mat.mat_site_fk = sit.sit_id
             JOIN yafoot.t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
+            LEFT JOIN yafoot.t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
+            LEFT JOIN yafoot.t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
         WHERE jma.jma_joueur_fk = #{id} AND mat.mat_date > #{date}
     </select>
 
@@ -104,7 +117,9 @@
                 <result column="longitudeSite" property="longitude"/>
             </association>
         </association>
-        <collection property="inscriptions" javaType="net.andresbustamante.yafoot.model.Inscription">
+        <collection property="inscriptions" ofType="net.andresbustamante.yafoot.model.Inscription">
+            <result column="id" property="id.idMatch" />
+            <result column="idJoueur" property="id.idJoueur" />
             <association property="joueur" javaType="net.andresbustamante.yafoot.model.Joueur">
                 <id column="idJoueur" property="id" />
                 <result column="prenomJoueur" property="prenom" />
