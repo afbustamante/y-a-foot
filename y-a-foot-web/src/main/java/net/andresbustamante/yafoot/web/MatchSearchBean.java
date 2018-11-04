@@ -7,12 +7,15 @@ import net.andresbustamante.yafoot.util.MessagesProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.annotation.security.RolesAllowed;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Locale;
+
+import static net.andresbustamante.yafoot.security.Roles.JOUEUR;
 
 /**
  * @author andresbustamante
@@ -35,6 +38,7 @@ public class MatchSearchBean implements Serializable {
         locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     }
 
+    @RolesAllowed(JOUEUR)
     public void chercherMatch() {
         log.info("Recherche du match avec le code " + codeMatch);
         match = rechercheMatchsUIService.chercherMatchParCode(codeMatch);

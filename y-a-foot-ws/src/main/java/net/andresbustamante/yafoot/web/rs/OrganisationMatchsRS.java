@@ -39,7 +39,7 @@ public class OrganisationMatchsRS {
                 MultiValueMap<String, String> headersResponse = new LinkedMultiValueMap<>();
                 String location = MessageFormat.format(ConfigProperties.getValue(
                         "recherche.matchs.code.service.path"), m.getCode());
-                headersResponse.add("Location", location);
+                headersResponse.add(HttpHeaders.LOCATION, location);
                 return new ResponseEntity<>(m.getCode(), headersResponse, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);

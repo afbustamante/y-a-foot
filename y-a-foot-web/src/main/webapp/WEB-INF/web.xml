@@ -51,7 +51,7 @@
         <welcome-file>start.jsf</welcome-file>
     </welcome-file-list>
     <security-constraint>
-        <display-name>Nouveau match</display-name>
+        <display-name>Gestion des matchs</display-name>
         <web-resource-collection>
             <web-resource-name>Gestion des matchs</web-resource-name>
             <description>Pages pour la gestion des matchs</description>

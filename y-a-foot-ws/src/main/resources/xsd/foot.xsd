@@ -48,6 +48,7 @@
         </xs:element>
         <xs:element ref="site" minOccurs="0"/>
         <xs:element ref="inscriptions" minOccurs="0"/>
+        <xs:element name="createur" type="utilisateur" minOccurs="0" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -244,11 +245,10 @@
   </xs:simpleType>
   <xs:simpleType name="motDePasseType">
     <xs:annotation>
-      <xs:documentation>Mot de passe crypté en SHA-256</xs:documentation>
+      <xs:documentation>Mot de passe crypté en SHA-1</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-      <xs:maxLength value="64"/>
-      <xs:pattern value="[A-Za-z0-9]{64}"/>
+      <xs:pattern value="[A-Za-z0-9=]{0,64}"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

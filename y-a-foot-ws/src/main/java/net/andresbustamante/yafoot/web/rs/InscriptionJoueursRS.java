@@ -1,14 +1,15 @@
 package net.andresbustamante.yafoot.web.rs;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
-import net.andresbustamante.yafoot.web.mappers.ContexteMapper;
-import net.andresbustamante.yafoot.web.mappers.JoueurMapper;
 import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.services.GestionJoueursService;
+import net.andresbustamante.yafoot.util.ConfigProperties;
 import net.andresbustamante.yafoot.util.ContexteUtils;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
+import net.andresbustamante.yafoot.web.mappers.ContexteMapper;
+import net.andresbustamante.yafoot.web.mappers.JoueurMapper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.MessageFormat;
+
 /**
+ * Service REST de gestion des inscriptions des joueurs dans l'application
+ *
  * @author andresbustamante
  */
 @RestController
@@ -36,13 +41,16 @@ public class InscriptionJoueursRS {
     @PostMapping(path = "/joueurs/gestion", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> inscrireJoueur(@RequestBody Joueur joueur) {
         try {
+            log.info("Demande de création d'un nouveau joueur avec l'adresse " + joueur.getEmail());
             net.andresbustamante.yafoot.model.Joueur nouveauJoueur = JoueurMapper.INSTANCE.toJoueurBean(joueur);
             boolean inscrit = gestionJoueursService.inscrireJoueur(nouveauJoueur,
                     ContexteMapper.INSTANCE.toContexteBean(new Contexte()));
 
             if (inscrit) {
                 MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-                headers.add("Location", nouveauJoueur.getId().toString());
+                String location = MessageFormat.format(ConfigProperties.getValue(
+                        "recherche.joueurs.email.service.path"), joueur.getEmail());
+                headers.add(HttpHeaders.LOCATION, location);
                 return new ResponseEntity<>(true, headers, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);

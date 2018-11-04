@@ -11,6 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.annotation.security.RolesAllowed;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -22,6 +23,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.*;
+
+import static net.andresbustamante.yafoot.security.Roles.JOUEUR;
 
 /**
  * @author andresbustamante
@@ -182,6 +185,7 @@ public class NewMatchBean implements Serializable {
         this.patternDate = patternDate;
     }
 
+    @RolesAllowed(JOUEUR)
     public List<SelectItem> getItemsSites() {
         if (itemsSites == null) {
             itemsSites = new ArrayList<>();
@@ -226,15 +230,15 @@ public class NewMatchBean implements Serializable {
      *
      * @return
      */
+    @RolesAllowed(JOUEUR)
     public String creerNouveauMatch() {
         log.info("Nouvelle demande de création de match");
 
         if (idSite == null ) {
-            FacesMessage facesMessage = new FacesMessage();
-            facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
-            FacesContext.getCurrentInstance().addMessage(MessagesProperties.getValue("new.match.place.required",
-                    getLocale()), facesMessage);
-            return "new_match";
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    MessagesProperties.getValue("new.match.place.required", getLocale()), null);
+            FacesContext.getCurrentInstance().addMessage("place", facesMessage);
+            return null;
         }
 
         String[] heureMinute = heureMatch.split(DateUtils.SEPARATEUR_HEURE);
@@ -261,14 +265,12 @@ public class NewMatchBean implements Serializable {
             String codeMatch = organisationMatchsUIService.creerMatch(match);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ConstantesWeb.CODE_MATCH,
                     codeMatch);
+            return ConstantesWeb.SUCCES;
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
-            FacesMessage facesMessage = new FacesMessage();
-            facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
-            facesMessage.setSummary(e.getMessage());
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage(), e.getMessage());
             FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
+            return null;
         }
-
-        return "match_postcreation";
     }
 }

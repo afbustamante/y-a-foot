@@ -4,16 +4,40 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
 
-    <application>
-        <locale-config>
-            <default-locale>en</default-locale>
-            <supported-locale>en</supported-locale>
-            <supported-locale>fr</supported-locale>
-            <supported-locale>es</supported-locale>
-        </locale-config>
-        <resource-bundle>
-            <base-name>messages</base-name>
-            <var>messages</var>
-        </resource-bundle>
-    </application>
+  <application>
+    <locale-config>
+      <default-locale>en</default-locale>
+      <supported-locale>en</supported-locale>
+      <supported-locale>fr</supported-locale>
+      <supported-locale>es</supported-locale>
+    </locale-config>
+    <resource-bundle>
+      <base-name>messages</base-name>
+      <var>messages</var>
+    </resource-bundle>
+  </application>
+
+  <!-- Règles de navigation -->
+  <navigation-rule>
+    <from-view-id>/players/new_player.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>success</from-outcome>
+      <to-view-id>/start.xhtml</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>error</from-outcome>
+      <to-view-id>/players/new_player.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+    <from-view-id>/matches/new_match.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>success</from-outcome>
+      <to-view-id>/matches/match_postcreation.xhtml</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>error</from-outcome>
+      <to-view-id>/matches/new_match.xhtml</to-view-id>
+    </navigation-case>
+  </navigation-rule>
 </faces-config>

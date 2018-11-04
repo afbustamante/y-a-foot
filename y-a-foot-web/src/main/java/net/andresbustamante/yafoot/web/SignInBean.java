@@ -3,6 +3,9 @@ package net.andresbustamante.yafoot.web;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.uiservices.InscriptionJoueursUIService;
+import net.andresbustamante.yafoot.util.ConstantesWeb;
+import net.andresbustamante.yafoot.util.MessagesProperties;
+import net.andresbustamante.yafoot.util.SecuriteUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -39,21 +42,29 @@ public class SignInBean implements Serializable {
                 nouveauJoueur.setNom(nom);
                 nouveauJoueur.setPrenom(prenom);
                 nouveauJoueur.setEmail(email);
-                nouveauJoueur.setMotDePasse(motDePasse1);
+                nouveauJoueur.setMotDePasse(SecuriteUtils.crypterMotDePasse(motDePasse1));
 
-                inscriptionJoueursUIService.creerNouveauCompteJoueur(nouveauJoueur);
-                return "start";
+                boolean succes = inscriptionJoueursUIService.creerNouveauCompteJoueur(nouveauJoueur);
+
+                if (succes) {
+                    FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            MessagesProperties.getValue("sign.in.successful",
+                                    FacesContext.getCurrentInstance().getExternalContext().getRequestLocale()), null);
+                    FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+                    return ConstantesWeb.SUCCES;
+                } else {
+                    return ConstantesWeb.ECHEC;
+                }
             } else {
-                FacesMessage facesMessage = new FacesMessage();
-                facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
-                FacesContext.getCurrentInstance().addMessage("sign.in.password.confirmation.does.not.match", facesMessage);
-                return null;
+                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        MessagesProperties.getValue("sign.in.password.confirmation.does.not.match",
+                                FacesContext.getCurrentInstance().getExternalContext().getRequestLocale()), null);
+                FacesContext.getCurrentInstance().addMessage("password2", facesMessage);
+                return ConstantesWeb.ECHEC;
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un joueur", e);
-            FacesMessage facesMessage = new FacesMessage();
-            facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
-            facesMessage.setSummary(e.getMessage());
+            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null);
             FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
             return null;
         }

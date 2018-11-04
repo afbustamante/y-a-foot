@@ -13,13 +13,14 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.security.Principal;
 import java.text.MessageFormat;
+import java.util.Locale;
 
 /**
  * @author andresbustamante
  */
 public abstract class AbstractUIService {
 
-    protected static final String BASE_URI = ConfigProperties.getValue("matchs.services.uri");
+    protected static final String BASE_URI = ConfigProperties.getValue("rest.services.uri");
 
     private Contexte contexte;
 
@@ -52,9 +53,13 @@ public abstract class AbstractUIService {
         return contexte;
     }
 
+    protected Locale getLocaleUtilisateur() {
+        return FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+    }
+
     private Joueur chercherJoueur(String email) {
         Client client = ClientBuilder.newClient();
-        WebTarget resource = client.target(ConfigProperties.getValue("matchs.services.uri")).path(ConfigProperties
+        WebTarget resource = client.target(BASE_URI).path(ConfigProperties
                 .getValue("recherche.joueurs.service.path")).path(MessageFormat.format("{0}/email", email));
         return resource.request(MediaType.APPLICATION_XML).get(Joueur.class);
     }

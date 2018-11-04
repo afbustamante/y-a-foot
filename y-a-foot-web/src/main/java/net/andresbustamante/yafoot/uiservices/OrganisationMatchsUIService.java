@@ -20,7 +20,6 @@ import java.util.List;
  */
 public class OrganisationMatchsUIService extends AbstractUIService {
 
-    private static final String BASE_URI = ConfigProperties.getValue("matchs.services.uri");
     private final Log log = LogFactory.getLog(OrganisationMatchsUIService.class);
 
     public OrganisationMatchsUIService() {

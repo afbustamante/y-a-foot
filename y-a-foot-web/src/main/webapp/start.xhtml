@@ -10,22 +10,22 @@
         <h3><h:outputText value="#{messages['start.wish.text']}"/></h3>
 
         <h:form>
-            <h:messages />
+            <h:messages styleClass="messages" />
             
             <table>
                 <tr>
                     <td>
-                        <ace:linkButton href="matches/new_match.jsf" value="#{messages['start.button.organise']}"/>
+                        <ace:linkButton href="#{application.contextPath}/matches/new_match.jsf" value="#{messages['start.button.organise']}"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ace:linkButton href="matches/match_search.jsf" value="#{messages['start.button.join']}"/>
+                        <ace:linkButton href="#{application.contextPath}/matches/match_search.jsf" value="#{messages['start.button.join']}"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ace:linkButton href="matches/match_list.jsf" value="#{messages['start.button.list']}"/>
+                        <ace:linkButton href="#{application.contextPath}/matches/match_list.jsf" value="#{messages['start.button.list']}"/>
                     </td>
                 </tr>
             </table>
