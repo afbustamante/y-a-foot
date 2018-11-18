@@ -46,14 +46,23 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <filters>
+      <filter>${basedir}/src/main/filters/filter.properties</filter>
+      <filter>${basedir}/src/main/filters/filter-${env}.properties</filter>
+    </filters>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin.version}</version>
         <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
           <annotationProcessorPaths>
             <path>
               <groupId>org.mapstruct</groupId>
@@ -66,7 +75,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>${maven-war-plugin.version}</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
@@ -74,7 +82,6 @@
       <plugin>
         <groupId>org.jvnet.jaxb2.maven2</groupId>
         <artifactId>maven-jaxb2-plugin</artifactId>
-        <version>${maven-jaxb2-plugin.version}</version>
         <executions>
           <execution>
             <id>jaxb-generate-foot-xsd</id>
