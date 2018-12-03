@@ -29,6 +29,7 @@
     <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-jaxb2-plugin.version>0.13.3</maven-jaxb2-plugin.version>
+    <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
 
     <javaee-web-api.version>7.0</javaee-web-api.version>
     <spring.version>4.3.21.RELEASE</spring.version>
@@ -250,6 +251,12 @@
           <groupId>org.jvnet.jaxb2.maven2</groupId>
           <artifactId>maven-jaxb2-plugin</artifactId>
           <version>${maven-jaxb2-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>${tomcat7-maven-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
