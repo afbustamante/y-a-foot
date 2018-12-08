@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+  <Realm className="org.apache.catalina.realm.JNDIRealm"
+         connectionURL="ldap://192.168.56.102:389"
+         userPattern="uid={0},ou=Users,ou=yafoot,dc=andresbustamante,dc=net"
+         roleBase="ou=Roles,ou=yafoot,dc=andresbustamante,dc=net"
+         roleName="cn"
+         roleSearch="(member={0})"
+         roleSearchAsUser="true"
+         commonRole="UTILISATEUR"/>
+</Context>
