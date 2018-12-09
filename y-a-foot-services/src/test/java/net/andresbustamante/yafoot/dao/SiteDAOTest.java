@@ -1,14 +1,13 @@
 package net.andresbustamante.yafoot.dao;
 
+import net.andresbustamante.yafoot.config.JdbcTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/META-INF/applicationContext.xml")
+@ContextConfiguration(classes = JdbcTestConfig.class)
 public class SiteDAOTest {
 
     @Test

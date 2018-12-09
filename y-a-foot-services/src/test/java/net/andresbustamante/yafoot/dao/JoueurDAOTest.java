@@ -1,5 +1,7 @@
 package net.andresbustamante.yafoot.dao;
 
+import net.andresbustamante.yafoot.config.JdbcTestConfig;
+import net.andresbustamante.yafoot.config.MyBatisConfig;
 import net.andresbustamante.yafoot.model.Joueur;
 import org.junit.After;
 import org.junit.Before;
@@ -12,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/META-INF/applicationContext.xml")
+@ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisConfig.class})
 public class JoueurDAOTest {
 
     private static final String EMAIL = "john.doe@email.com";
