@@ -1,21 +1,14 @@
 package net.andresbustamante.yafoot.dao;
 
-import net.andresbustamante.yafoot.config.JdbcTestConfig;
-import net.andresbustamante.yafoot.config.MyBatisConfig;
 import net.andresbustamante.yafoot.model.Joueur;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisConfig.class})
-public class JoueurDAOTest {
+public class JoueurDAOTest extends AbstractDAOTest {
 
     private static final String EMAIL = "john.doe@email.com";
     private static final String AUTRE_TELEPHONE = "0423456789";

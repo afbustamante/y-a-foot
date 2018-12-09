@@ -48,6 +48,7 @@
     <commons-dbcp.version>1.4</commons-dbcp.version>
     <postgresql.version>42.2.2</postgresql.version>
     <mapstruct.version>1.2.0.Final</mapstruct.version>
+    <flyway-core.version>5.2.4</flyway-core.version>
   </properties>
 
   <dependencyManagement>
@@ -179,6 +180,11 @@
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>${postgresql.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+        <version>${flyway-core.version}</version>
       </dependency>
       <dependency>
         <groupId>org.mapstruct</groupId>
