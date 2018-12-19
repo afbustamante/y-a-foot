@@ -23,13 +23,13 @@ import java.util.List;
  * @author andresbustamante
  */
 @RestController
-@RequestMapping("/sites/recherche")
-public class RechercheSitesRS {
+@RequestMapping("/sites")
+public class SitesController {
 
     @Autowired
     private RechercheSitesService rechercheSitesService;
 
-    private final Log log = LogFactory.getLog(RechercheSitesRS.class);
+    private final Log log = LogFactory.getLog(SitesController.class);
 
     @GetMapping(path = "/joueur/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Sites> getSitesJoueur(@PathVariable("id") Integer idJoueur) {

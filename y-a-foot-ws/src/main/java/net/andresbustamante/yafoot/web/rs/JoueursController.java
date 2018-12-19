@@ -4,6 +4,7 @@ import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.services.GestionJoueursService;
+import net.andresbustamante.yafoot.services.RechercheJoueursService;
 import net.andresbustamante.yafoot.util.ConfigProperties;
 import net.andresbustamante.yafoot.util.ContexteUtils;
 import net.andresbustamante.yafoot.web.mappers.ContexteMapper;
@@ -27,18 +28,22 @@ import java.text.MessageFormat;
  * @author andresbustamante
  */
 @RestController
-public class InscriptionJoueursRS {
+@RequestMapping("/joueurs")
+public class JoueursController {
 
     @Autowired
     private GestionJoueursService gestionJoueursService;
 
-    private final Log log = LogFactory.getLog(InscriptionJoueursRS.class);
+    @Autowired
+    private RechercheJoueursService rechercheJoueursService;
+
+    private final Log log = LogFactory.getLog(JoueursController.class);
 
     /**
      * @param joueur
      * @return
      */
-    @PostMapping(path = "/joueurs/gestion", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> inscrireJoueur(@RequestBody Joueur joueur) {
         try {
             log.info("Demande de création d'un nouveau joueur avec l'adresse " + joueur.getEmail());
@@ -66,7 +71,7 @@ public class InscriptionJoueursRS {
      * @param headers
      * @return
      */
-    @PutMapping(path = "/joueurs/gestion", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> actualiserJoueur(@RequestBody Joueur joueur,
                                                     @RequestHeader HttpHeaders headers) {
         try {
@@ -76,6 +81,24 @@ public class InscriptionJoueursRS {
                     HttpStatus.BAD_REQUEST);
         } catch (BDDException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/{email}/email", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Joueur> chercherJoueurParEmail(@PathVariable("email") String email) {
+        net.andresbustamante.yafoot.model.Contexte contexte = new net.andresbustamante.yafoot.model.Contexte();
+
+        try {
+            net.andresbustamante.yafoot.model.Joueur joueur = rechercheJoueursService.chercherJoueur(email, contexte);
+
+            if (joueur != null) {
+                return new ResponseEntity<>(JoueurMapper.INSTANCE.toJoueurDTO(joueur), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (BDDException e) {
+            log.error("Erreur lors de la recherche d'un utilisateur", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

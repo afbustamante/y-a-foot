@@ -2,6 +2,11 @@ package net.andresbustamante.yafoot.web.rs;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.xs.Inscription;
+import net.andresbustamante.yafoot.services.GestionMatchsService;
+import net.andresbustamante.yafoot.util.ConfigProperties;
+import net.andresbustamante.yafoot.util.ContexteUtils;
+import net.andresbustamante.yafoot.web.mappers.InscriptionMapper;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;
@@ -10,14 +15,15 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -26,15 +32,18 @@ import java.util.List;
  * @author andresbustamante
  */
 @RestController
-@RequestMapping("/matchs/recherche")
-public class RechercheMatchsRS {
+@RequestMapping("/matchs")
+public class MatchsController {
 
     @Autowired
     private RechercheMatchsService rechercheMatchsService;
 
-    private final Log log = LogFactory.getLog(RechercheMatchsRS.class);
+    @Autowired
+    private GestionMatchsService gestionMatchsService;
 
-    public RechercheMatchsRS() {
+    private final Log log = LogFactory.getLog(MatchsController.class);
+
+    public MatchsController() {
     }
 
     @GetMapping(path = "/code/{codeMatch}", produces = MediaType.APPLICATION_XML_VALUE)
@@ -73,4 +82,31 @@ public class RechercheMatchsRS {
         }
     }
 
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> creerMatch(@RequestBody Match match, @RequestHeader HttpHeaders headers) {
+        try {
+            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(headers);
+            net.andresbustamante.yafoot.model.Match m = MatchMapper.INSTANCE.toMatchBean(match);
+            boolean isMatchCree = gestionMatchsService.creerMatch(m, contexte);
+
+            if (isMatchCree) {
+                MultiValueMap<String, String> headersResponse = new LinkedMultiValueMap<>();
+                String location = MessageFormat.format(ConfigProperties.getValue(
+                        "recherche.matchs.code.service.path"), m.getCode());
+                headersResponse.add(HttpHeaders.LOCATION, location);
+                return new ResponseEntity<>(m.getCode(), headersResponse, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+            }
+        } catch (BDDException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(path = "/annulation", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> annulerMatch(@RequestBody Match match,
+                                                @RequestHeader HttpHeaders headers) {
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
+    }
 }

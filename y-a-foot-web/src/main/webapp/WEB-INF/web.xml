@@ -27,12 +27,10 @@
         <param-name>org.icefaces.ace.theme</param-name>
         <param-value>redmond</param-value>
     </context-param>
-    <!--
     <context-param>
-        <param-name>org.apache.myfaces.LOG_WEB_CONTEXT_PARAMS</param-name>
-        <param-value>false</param-value>
+        <param-name>org.icefaces.connectionLostRedirectURI</param-name>
+        <param-value>/</param-value>
     </context-param>
-    -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
