@@ -55,3 +55,11 @@ input, textarea, button, select {
     border: thin solid #CCCCCC;
     background-color: #FFFFF0;
 }
+
+.actions {
+    width: 100%;
+}
+
+.actions td {
+    text-align: center;
+}

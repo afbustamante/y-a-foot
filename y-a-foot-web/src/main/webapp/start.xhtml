@@ -12,18 +12,25 @@
         <h:form>
             <h:messages styleClass="messages" />
             
-            <table>
+            <table class="actions">
+                <tr>
+                    <td>
+                        <h:graphicImage value="/resources/img/32x32/appointment-new.png" />
+                    </td>
+                    <td>
+                        <h:graphicImage value="/resources/img/32x32/system-search.png" />
+                    </td>
+                    <td>
+                        <h:graphicImage value="/resources/img/32x32/x-office-calendar.png" />
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <ace:linkButton href="#{application.contextPath}/matches/new_match.jsf" value="#{messages['start.button.organise']}"/>
                     </td>
-                </tr>
-                <tr>
                     <td>
                         <ace:linkButton href="#{application.contextPath}/matches/match_search.jsf" value="#{messages['start.button.join']}"/>
                     </td>
-                </tr>
-                <tr>
                     <td>
                         <ace:linkButton href="#{application.contextPath}/matches/match_list.jsf" value="#{messages['start.button.list']}"/>
                     </td>
