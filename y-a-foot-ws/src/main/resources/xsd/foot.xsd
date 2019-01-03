@@ -49,6 +49,8 @@
         <xs:element ref="site" minOccurs="0"/>
         <xs:element ref="inscriptions" minOccurs="0"/>
         <xs:element name="createur" type="utilisateur" minOccurs="0" />
+        <xs:element name="covoiturageActif" type="xs:boolean"/>
+        <xs:element name="partageActif" type="xs:boolean"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

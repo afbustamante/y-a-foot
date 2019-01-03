@@ -260,6 +260,8 @@ public class NewMatchBean implements Serializable {
         match.setNumJoueursMax(numMaxJoueurs);
         match.setDate(date);
         match.setSite(site);
+        match.setCovoiturageActif(optionCovoiturageActive);
+        match.setPartageActif(optionInvitationPubliqueActive);
 
         try {
             String codeMatch = organisationMatchsUIService.creerMatch(match);

@@ -16,6 +16,8 @@
             mat.mat_description     AS description,
             mat.mat_num_joueurs_min AS numJoueursMin,
             mat.mat_num_joueurs_max AS numJoueursMax,
+            mat.mat_covoiturage_actif AS covoiturageActif,
+            mat.mat_partage_actif   AS partageActif,
             sit.sit_id              AS idSite,
             sit.sit_nom             AS nomSite,
             sit.sit_adresse         AS adresseSite,
@@ -42,6 +44,8 @@
             mat.mat_description     AS description,
             mat.mat_num_joueurs_min AS numJoueursMin,
             mat.mat_num_joueurs_max AS numJoueursMax,
+            mat.mat_covoiturage_actif AS covoiturageActif,
+            mat.mat_partage_actif   AS partageActif,
             sit.sit_id              AS idSite,
             sit.sit_nom             AS nomSite,
             sit.sit_adresse         AS adresseSite,
@@ -68,6 +72,8 @@
             mat.mat_description     AS description,
             mat.mat_num_joueurs_min AS numJoueursMin,
             mat.mat_num_joueurs_max AS numJoueursMax,
+            mat.mat_covoiturage_actif AS covoiturageActif,
+            mat.mat_partage_actif   AS partageActif,
             sit.sit_id              AS idSite,
             sit.sit_nom             AS nomSite,
             sit.sit_adresse         AS adresseSite,
@@ -85,8 +91,8 @@
         </selectKey>
 
         INSERT INTO yafoot.t_match (mat_id, mat_date, mat_description, mat_num_joueurs_min, mat_num_joueurs_max,
-        mat_site_fk, mat_code, mat_date_creation) VALUES (#{match.id}, #{match.dateMatch}, #{match.description},
-        #{match.numJoueursMin}, #{match.numJoueursMax}, #{match.site.id}, #{match.code}, NOW())
+        mat_site_fk, mat_code, mat_date_creation, mat_covoiturage_actif, mat_partage_actif) VALUES (#{match.id}, #{match.dateMatch}, #{match.description},
+        #{match.numJoueursMin}, #{match.numJoueursMax}, #{match.site.id}, #{match.code}, NOW(), #{match.covoiturageActif}, #{match.partageActif})
     </insert>
 
     <insert id="inscrireJoueurMatch">
@@ -107,6 +113,8 @@
         <result property="description" column="description"/>
         <result property="numJoueursMin" column="numJoueursMin"/>
         <result property="numJoueursMax" column="numJoueursMax"/>
+        <result property="covoiturageActif" column="covoiturageActif"/>
+        <result property="partageActif" column="partageActif"/>
         <association property="site" javaType="net.andresbustamante.yafoot.model.Site">
             <id column="idSite" property="id"/>
             <result column="nomSite" property="nom"/>

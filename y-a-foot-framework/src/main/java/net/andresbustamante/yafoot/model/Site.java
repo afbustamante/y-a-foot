@@ -24,6 +24,13 @@ public class Site implements Localisable, Serializable {
         this.id = id;
     }
 
+    public Site(String nom, String adresse, String telephone, CoordonneesGPS localisation) {
+        this.nom = nom;
+        this.adresse = adresse;
+        this.telephone = telephone;
+        this.localisation = localisation;
+    }
+
     public Integer getId() {
         return id;
     }

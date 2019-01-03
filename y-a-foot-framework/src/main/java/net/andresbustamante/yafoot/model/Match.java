@@ -19,6 +19,8 @@ public class Match implements Serializable {
     private List<Inscription> inscriptions;
     private Site site;
     private Utilisateur createur;
+    private boolean covoiturageActif;
+    private boolean partageActif;
 
     public Match() {
     }
@@ -102,6 +104,22 @@ public class Match implements Serializable {
 
     public void setCreateur(Utilisateur createur) {
         this.createur = createur;
+    }
+
+    public boolean isCovoiturageActif() {
+        return covoiturageActif;
+    }
+
+    public void setCovoiturageActif(boolean covoiturageActif) {
+        this.covoiturageActif = covoiturageActif;
+    }
+
+    public boolean isPartageActif() {
+        return partageActif;
+    }
+
+    public void setPartageActif(boolean partageActif) {
+        this.partageActif = partageActif;
     }
 
     @Override
