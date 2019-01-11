@@ -6,4 +6,10 @@
     <select id="chercherVoitureParId" resultType="net.andresbustamante.yafoot.model.Voiture">
         
     </select>
+
+    <insert id="enregistrerVoiture" useGeneratedKeys="true">
+        <selectKey keyProperty="voiture.id" resultType="int" order="BEFORE">
+            SELECT NEXTVAL('yafoot.s_voiture') AS id;
+        </selectKey>
+    </insert>
 </mapper>

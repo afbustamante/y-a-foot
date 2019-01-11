@@ -98,13 +98,17 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
             if (voiture != null) {
                 voitureExistante = voitureDAO.chercherVoitureParId(voiture.getId());
+
+                if (voitureExistante == null) {
+                    // Enregistrer la voiture en base
+                    voitureDAO.enregistrerVoiture(voiture);
+                }
             }
 
             boolean isJoueurExistant = (joueurDAO.chercherJoueurParId(joueur.getId()) != null);
             boolean isMatchExistant = (matchDAO.chercherMatchParId(match.getId()) != null);
 
-            if (isJoueurExistant && isMatchExistant && (!matchDAO.isJoueurInscritMatch(joueur, match)) && (
-                    (voiture == null) || (voitureExistante != null))) {
+            if (isJoueurExistant && isMatchExistant && (!matchDAO.isJoueurInscritMatch(joueur, match))) {
                 matchDAO.inscrireJoueurMatch(joueur, match, voiture);
                 log.info("Joueur inscrit au match");
                 return true;

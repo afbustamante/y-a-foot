@@ -21,4 +21,12 @@ public interface VoitureDAO {
      * @throws SQLException
      */
     Voiture chercherVoitureParId(@Param(ConstantesDaoUtils.ID) Integer id) throws SQLException;
+
+    /**
+     * Créer une nouvelle voiture en base de données
+     *
+     * @param voiture Voiture à enregistrer
+     * @throws SQLException
+     */
+    void enregistrerVoiture(@Param(ConstantesDaoUtils.VOITURE) Voiture voiture) throws SQLException;
 }
