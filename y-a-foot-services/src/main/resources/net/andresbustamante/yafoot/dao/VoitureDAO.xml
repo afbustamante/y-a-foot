@@ -2,14 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.andresbustamante.yafoot.dao.VoitureDAO">
-    
+
     <select id="chercherVoitureParId" resultType="net.andresbustamante.yafoot.model.Voiture">
-        
+
     </select>
 
     <insert id="enregistrerVoiture" useGeneratedKeys="true">
         <selectKey keyProperty="voiture.id" resultType="int" order="BEFORE">
-            SELECT NEXTVAL('yafoot.s_voiture') AS id;
+            SELECT NEXTVAL('s_voiture') AS id;
         </selectKey>
+
+        INSERT INTO t_voiture (voi_id, voi_nom, voi_num_places, voi_chauffeur_fk)
+        VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.numPlaces}, #{voiture.chauffeur.id})
     </insert>
 </mapper>

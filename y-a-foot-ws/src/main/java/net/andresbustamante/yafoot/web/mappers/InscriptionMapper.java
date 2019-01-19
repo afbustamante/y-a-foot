@@ -6,13 +6,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = {JoueurMapper.class, VoitureMapper.class})
 public interface InscriptionMapper {
 
     InscriptionMapper INSTANCE = Mappers.getMapper(InscriptionMapper.class);
 
     @Mappings({
             @Mapping(source = "idMatch", target = "id.idMatch"),
+            @Mapping(source = "idMatch", target = "match.id"),
             @Mapping(source = "idJoueur", target = "id.idJoueur")
     })
     Inscription toInscriptionBean(net.andresbustamante.yafoot.model.xs.Inscription inscription);

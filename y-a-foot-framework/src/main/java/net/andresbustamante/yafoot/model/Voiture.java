@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author andresbustamante
@@ -11,7 +12,8 @@ public class Voiture implements Serializable {
     private Integer id;
     private String nom;
     private Integer numPlaces;
-    private Joueur chauffeur;
+    private Utilisateur chauffeur;
+    private List<Joueur> passagers;
 
     public Voiture() {
     }
@@ -24,32 +26,40 @@ public class Voiture implements Serializable {
         return id;
     }
 
-    public void setId(Integer voiId) {
-        this.id = voiId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public void setNom(String voiNom) {
-        this.nom = voiNom;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public Integer getNumPlaces() {
         return numPlaces;
     }
 
-    public void setNumPlaces(Integer voiNumPlaces) {
-        this.numPlaces = voiNumPlaces;
+    public void setNumPlaces(Integer numPlaces) {
+        this.numPlaces = numPlaces;
     }
 
-    public Joueur getChauffeur() {
+    public Utilisateur getChauffeur() {
         return chauffeur;
     }
 
-    public void setChauffeur(Joueur voiChauffeurFk) {
-        this.chauffeur = voiChauffeurFk;
+    public void setChauffeur(Utilisateur chauffeur) {
+        this.chauffeur = chauffeur;
+    }
+
+    public List<Joueur> getPassagers() {
+        return passagers;
+    }
+
+    public void setPassagers(List<Joueur> passagers) {
+        this.passagers = passagers;
     }
 
     @Override

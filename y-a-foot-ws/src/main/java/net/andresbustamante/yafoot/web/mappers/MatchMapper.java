@@ -6,7 +6,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = {VoitureMapper.class})
 public interface MatchMapper {
 
     MatchMapper INSTANCE = Mappers.getMapper(MatchMapper.class);

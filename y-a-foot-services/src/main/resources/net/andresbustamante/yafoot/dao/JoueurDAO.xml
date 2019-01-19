@@ -4,7 +4,7 @@
 <mapper namespace="net.andresbustamante.yafoot.dao.JoueurDAO">
     <select id="isJoueurInscrit" resultType="boolean">
         SELECT COUNT(*)
-        FROM yafoot.t_joueur jou
+        FROM t_joueur jou
         WHERE jou.jou_email = #{email}
     </select>
 
@@ -17,7 +17,7 @@
             jou.jou_telephone         AS telephone,
             jou.jou_date_creation     AS dateCreation,
             jou.jou_date_derniere_maj AS dateDerniereMaj
-        FROM yafoot.t_joueur jou
+        FROM t_joueur jou
         WHERE jou.jou_id = #{id}
     </select>
 
@@ -30,22 +30,22 @@
             jou.jou_telephone         AS telephone,
             jou.jou_date_creation     AS dateCreation,
             jou.jou_date_derniere_maj AS dateDerniereMaj
-        FROM yafoot.t_joueur jou
+        FROM t_joueur jou
         WHERE jou.jou_email = #{email}
     </select>
 
     <insert id="creerJoueur" useGeneratedKeys="true">
         <selectKey keyProperty="joueur.id" resultType="int" order="BEFORE">
-            SELECT NEXTVAL('yafoot.s_joueur') AS id;
+            SELECT NEXTVAL('s_joueur') AS id;
         </selectKey>
 
-        INSERT INTO yafoot.t_joueur (jou_id, jou_nom, jou_prenom, jou_telephone, jou_email, jou_date_creation)
+        INSERT INTO t_joueur (jou_id, jou_nom, jou_prenom, jou_telephone, jou_email, jou_date_creation)
         VALUES
         (#{joueur.id}, #{joueur.nom}, #{joueur.prenom}, #{joueur.telephone}, #{joueur.email}, NOW())
     </insert>
 
     <update id="actualiserJoueur">
-        UPDATE yafoot.t_joueur
+        UPDATE t_joueur
         SET
         <if test="joueur.nom != null">
             jou_nom = #{joueur.nom},
@@ -60,7 +60,7 @@
     </update>
 
     <delete id="supprimerJoueur">
-        DELETE FROM yafoot.t_joueur
+        DELETE FROM t_joueur
         WHERE jou_id = #{joueur.id}
     </delete>
 </mapper>

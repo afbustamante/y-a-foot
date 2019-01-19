@@ -8,9 +8,9 @@
             sit.sit_nom       AS nom,
             sit.sit_adresse   AS adresse,
             sit.sit_telephone AS telephone
-        FROM yafoot.t_site sit
-            JOIN yafoot.t_match mat ON sit.sit_id = mat.mat_site_fk
-            JOIN yafoot.t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
+        FROM t_site sit
+            JOIN t_match mat ON sit.sit_id = mat.mat_site_fk
+            JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
         WHERE jma.jma_joueur_fk = #{joueur}
     </select>
 
@@ -20,16 +20,16 @@
             sit.sit_nom       AS nom,
             sit.sit_adresse   AS adresse,
             sit.sit_telephone AS telephone
-        FROM yafoot.t_site sit
+        FROM t_site sit
         WHERE sit.sit_id = #{id}
     </select>
 
     <insert id="creerSite" useGeneratedKeys="true">
         <selectKey keyProperty="site.id" resultType="int" order="BEFORE">
-            SELECT NEXTVAL('yafoot.s_site') AS id;
+            SELECT NEXTVAL('s_site') AS id;
         </selectKey>
 
-        INSERT INTO yafoot.t_site (sit_id, sit_nom, sit_adresse, sit_telephone)
+        INSERT INTO t_site (sit_id, sit_nom, sit_adresse, sit_telephone)
         VALUES (#{site.id}, #{site.nom}, #{site.adresse}, #{site.telephone})
     </insert>
 </mapper>

@@ -40,10 +40,4 @@ public class InscriptionsController {
         }
     }
 
-    @DeleteMapping(path = "/{idMatch}/{idJoueur}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> desinscrireJoueurMatch(@PathVariable Long idMatch, @PathVariable Long idJoueur,
-                                                          @RequestHeader HttpHeaders headers) {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
-    }
 }

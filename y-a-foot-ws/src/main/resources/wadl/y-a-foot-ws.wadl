@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://wadl.dev.java.net/2009/02"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             xmlns:yaf="http://andresbustamante.net/yafoot/model/xs">
+  <doc xml:lang="fr" title="Services REST - Y'a foot !"/>
+  <grammars>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://andresbustamante.net/yafoot/model/xs" schemaLocation="../xsd/foot.xsd"/>
+    </xs:schema>
+  </grammars>
+  <resources base="http://localhost:8080/y-a-foot-ws">
+    <resource path="/inscriptions" id="InscriptionsController">
+      <resource path="">
+        <method name="POST" id="inscrireJoueurMatch">
+          <request>
+            <representation mediaType="application/json" element="yaf:inscription"/>
+            <representation mediaType="application/xml" element="yaf:inscription"/>
+          </request>4
+          <response status="200">
+            <representation mediaType="application/json" element="xs:boolean"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="">
+        <method name="DELETE">
+          <request>
+            <representation mediaType="application/json" element="yaf:inscription"/>
+            <representation mediaType="application/xml" element="yaf:inscription"/>
+          </request>
+          <response status="200">
+            <representation mediaType="application/json" element="xs:boolean"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/matchs" id="MatchsController">
+      <resource path="/{codeMatch}">
+        <method name="GET">
+          <request>
+            <param name="codeMatch" style="template"/>
+          </request>
+          <response status="200">
+            <representation mediaType="application/xml" element="yaf:match"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+  </resources>
+</application>

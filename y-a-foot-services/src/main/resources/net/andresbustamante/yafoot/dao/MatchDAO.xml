@@ -4,7 +4,7 @@
 <mapper namespace="net.andresbustamante.yafoot.dao.MatchDAO">
     <select id="isCodeExistant" resultType="boolean">
         SELECT COUNT(*)
-        FROM yafoot.t_match mat
+        FROM t_match mat
         WHERE mat.mat_code = #{code}
     </select>
 
@@ -28,11 +28,11 @@
             jou.jou_prenom          AS prenomJoueur,
             voi.voi_id              AS idVoiture,
             voi.voi_num_places      AS numPlacesVoiture
-        FROM yafoot.t_match mat
-            JOIN yafoot.t_site sit ON mat.mat_site_fk = sit.sit_id
-            LEFT JOIN yafoot.t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
-            LEFT JOIN yafoot.t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
-            LEFT JOIN yafoot.t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
+        FROM t_match mat
+            JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
+            LEFT JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
+            LEFT JOIN t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
+            LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
         WHERE mat.mat_code = #{code}
     </select>
 
@@ -56,11 +56,11 @@
             jou.jou_prenom          AS prenomJoueur,
             voi.voi_id              AS idVoiture,
             voi.voi_num_places      AS numPlacesVoiture
-        FROM yafoot.t_match mat
-            JOIN yafoot.t_site sit ON mat.mat_site_fk = sit.sit_id
-            JOIN yafoot.t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
-            LEFT JOIN yafoot.t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
-            LEFT JOIN yafoot.t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
+        FROM t_match mat
+            JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
+            JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
+            LEFT JOIN t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
+            LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
         WHERE jma.jma_joueur_fk = #{id} AND mat.mat_date > #{date}
     </select>
 
@@ -80,29 +80,37 @@
             sit.sit_telephone       AS telephoneSite,
             sit.sit_latitude        AS latitudeSite,
             sit.sit_longitude       AS longitudeSite
-        FROM yafoot.t_match mat
-            JOIN yafoot.t_site sit ON mat.mat_site_fk = sit.sit_id
+        FROM t_match mat
+            JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
         WHERE mat.mat_id = #{id}
     </select>
 
     <insert id="creerMatch" useGeneratedKeys="true">
         <selectKey keyProperty="match.id" resultType="int" order="BEFORE">
-            SELECT NEXTVAL('yafoot.s_match') AS id;
+            SELECT NEXTVAL('s_match') AS id;
         </selectKey>
 
-        INSERT INTO yafoot.t_match (mat_id, mat_date, mat_description, mat_num_joueurs_min, mat_num_joueurs_max,
+        INSERT INTO t_match (mat_id, mat_date, mat_description, mat_num_joueurs_min, mat_num_joueurs_max,
         mat_site_fk, mat_code, mat_date_creation, mat_covoiturage_actif, mat_partage_actif) VALUES (#{match.id}, #{match.dateMatch}, #{match.description},
         #{match.numJoueursMin}, #{match.numJoueursMax}, #{match.site.id}, #{match.code}, NOW(), #{match.covoiturageActif}, #{match.partageActif})
     </insert>
 
     <insert id="inscrireJoueurMatch">
-        INSERT INTO yafoot.t_joueur_match (jma_match_fk, jma_joueur_fk, jma_voiture_fk)
-        VALUES (#{match.id}, #{joueur.id}, #{voiture.id})
+        <choose>
+            <when test="voiture == null">
+                INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk)
+                VALUES (#{match.id}, #{joueur.id})
+            </when>
+            <otherwise>
+                INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk, jma_voiture_fk)
+                VALUES (#{match.id}, #{joueur.id}, #{voiture.id})
+            </otherwise>
+        </choose>
     </insert>
 
     <select id="isJoueurInscritMatch" resultType="boolean">
         SELECT COUNT(*)
-        FROM yafoot.t_joueur_match jma
+        FROM t_joueur_match jma
         WHERE jma.jma_joueur_fk = #{joueur.id} AND jma.jma_match_fk = #{match.id}
     </select>
 
