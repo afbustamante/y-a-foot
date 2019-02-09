@@ -6,13 +6,11 @@ import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.uiservices.OrganisationMatchsUIService;
 import net.andresbustamante.yafoot.util.ConstantesWeb;
 import net.andresbustamante.yafoot.util.DateUtils;
-import net.andresbustamante.yafoot.util.MessagesProperties;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.annotation.security.RolesAllowed;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -31,7 +29,7 @@ import static net.andresbustamante.yafoot.security.Roles.JOUEUR;
  */
 @ManagedBean
 @ViewScoped
-public class NewMatchBean implements Serializable {
+public class NewMatchBean extends AbstractFacesBean implements Serializable {
 
     private static final Integer NOUVEL_ID = -1;
 
@@ -199,10 +197,7 @@ public class NewMatchBean implements Serializable {
                     }
                 }
             } catch (ApplicationException e) {
-                FacesMessage facesMessage = new FacesMessage();
-                facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
-                facesMessage.setSummary(e.getMessage());
-                FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
+                ajouterMessageErreur(e.getMessage(), null, null);
             }
         }
         return itemsSites;
@@ -235,9 +230,7 @@ public class NewMatchBean implements Serializable {
         log.info("Nouvelle demande de création de match");
 
         if (idSite == null ) {
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    MessagesProperties.getValue("new.match.place.required", getLocale()), null);
-            FacesContext.getCurrentInstance().addMessage("place", facesMessage);
+            ajouterMessageErreur("new.match.place.required", null, null);
             return null;
         }
 
@@ -270,8 +263,7 @@ public class NewMatchBean implements Serializable {
             return ConstantesWeb.SUCCES;
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage(), e.getMessage());
-            FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
+            ajouterMessageErreur(e.getMessage(), null, null);
             return null;
         }
     }

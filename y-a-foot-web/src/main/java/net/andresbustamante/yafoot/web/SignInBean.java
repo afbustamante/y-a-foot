@@ -4,21 +4,18 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.uiservices.InscriptionJoueursUIService;
 import net.andresbustamante.yafoot.util.ConstantesWeb;
-import net.andresbustamante.yafoot.util.MessagesProperties;
 import net.andresbustamante.yafoot.util.SecuriteUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.Serializable;
 
 @ManagedBean
 @ViewScoped
-public class SignInBean implements Serializable {
+public class SignInBean extends AbstractFacesBean implements Serializable {
 
     private String prenom;
     private String nom;
@@ -47,25 +44,18 @@ public class SignInBean implements Serializable {
                 boolean succes = inscriptionJoueursUIService.creerNouveauCompteJoueur(nouveauJoueur);
 
                 if (succes) {
-                    FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            MessagesProperties.getValue("sign.in.successful",
-                                    FacesContext.getCurrentInstance().getExternalContext().getRequestLocale()), null);
-                    FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+                    ajouterMessageInfo("sign.in.successful", null, null);
                     return ConstantesWeb.SUCCES;
                 } else {
                     return ConstantesWeb.ECHEC;
                 }
             } else {
-                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        MessagesProperties.getValue("sign.in.password.confirmation.does.not.match",
-                                FacesContext.getCurrentInstance().getExternalContext().getRequestLocale()), null);
-                FacesContext.getCurrentInstance().addMessage("password2", facesMessage);
+                ajouterMessageErreur("sign.in.password.confirmation.does.not.match", null, null);
                 return ConstantesWeb.ECHEC;
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un joueur", e);
-            FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null);
-            FacesContext.getCurrentInstance().addMessage(e.getMessage(), facesMessage);
+            ajouterMessageErreur(e.getMessage(), null, null);
             return null;
         }
     }

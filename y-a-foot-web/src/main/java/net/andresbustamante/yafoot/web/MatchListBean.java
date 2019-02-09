@@ -18,7 +18,7 @@ import java.util.List;
  */
 @ManagedBean
 @RequestScoped
-public class MatchListBean implements Serializable {
+public class MatchListBean extends AbstractFacesBean implements Serializable {
 
     private List<Match> matches;
 

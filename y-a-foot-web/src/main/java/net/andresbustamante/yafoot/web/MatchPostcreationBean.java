@@ -5,13 +5,14 @@ import net.andresbustamante.yafoot.util.ConstantesWeb;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
 /**
  * @author andresbustamante
  */
 @ManagedBean
 @ViewScoped
-public class MatchPostcreationBean {
+public class MatchPostcreationBean extends AbstractFacesBean implements Serializable {
 
     private String codeMatch;
 

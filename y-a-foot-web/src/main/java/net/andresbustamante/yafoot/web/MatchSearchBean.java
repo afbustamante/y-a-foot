@@ -1,7 +1,11 @@
 package net.andresbustamante.yafoot.web;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.model.xs.Match;
+import net.andresbustamante.yafoot.uiservices.InscriptionMatchsUIService;
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
+import net.andresbustamante.yafoot.util.ConstantesWeb;
 import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.util.MessagesProperties;
 import org.apache.commons.logging.Log;
@@ -11,6 +15,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Locale;
@@ -22,7 +27,7 @@ import static net.andresbustamante.yafoot.security.Roles.JOUEUR;
  */
 @ManagedBean
 @ViewScoped
-public class MatchSearchBean implements Serializable {
+public class MatchSearchBean extends AbstractFacesBean implements Serializable {
 
     private String codeMatch;
     private Match match;
@@ -30,9 +35,15 @@ public class MatchSearchBean implements Serializable {
     private Locale locale;
     private String patternDate;
     private transient final Log log = LogFactory.getLog(MatchSearchBean.class);
+    private boolean inscriptionPossible = false;
+    private boolean validationRequise = false;
+    private String optionInscription;
 
     @Inject
     private RechercheMatchsUIService rechercheMatchsUIService;
+
+    @Inject
+    private InscriptionMatchsUIService inscriptionMatchsUIService;
 
     public MatchSearchBean() {
         locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
@@ -42,6 +53,49 @@ public class MatchSearchBean implements Serializable {
     public void chercherMatch() {
         log.info("Recherche du match avec le code " + codeMatch);
         match = rechercheMatchsUIService.chercherMatchParCode(codeMatch);
+    }
+
+    public void afficherDialogValidation(ActionEvent event) {
+        validationRequise = true;
+    }
+
+    public void fermerDialogValidation(ActionEvent event) {
+        validationRequise = false;
+    }
+
+    @RolesAllowed(JOUEUR)
+    public String validerInscription() {
+        fermerDialogValidation(null);
+
+        if (optionInscription != null) {
+            try {
+                switch (optionInscription) {
+                    case "OK_WITH_CAR":
+                        // TODO Implémenter le service de mise d'inscription avec voiture
+                    case "OK_WITHOUT_CAR":
+                        // TODO Implémenter le service d'orientation vers les joueurs avec voitures
+                    case "OK_OTHER":
+                        boolean inscrit = inscriptionMatchsUIService.inscrireJoueurMatch(match,null);
+
+                        if (inscrit) {
+                            ajouterMessageInfo("match.join.success.summary.text", "match.join.success.detail.text", null);
+                            return ConstantesWeb.SUCCES;
+                        } else {
+                            ajouterMessageErreur("match.join.error.summary.text", "match.join.error.detail.text", null);
+                            return ConstantesWeb.ECHEC;
+                        }
+                    default:
+                        return ConstantesWeb.ECHEC;
+                }
+            } catch (ApplicationException e) {
+                // Afficher l'exception
+                log.error("Erreur lors de l'inscription : " + e.getCause());
+                return ConstantesWeb.ECHEC;
+            }
+        } else {
+            log.error("Pas d'option valide pour finaliser l'inscription");
+            return ConstantesWeb.ECHEC;
+        }
     }
 
     public String getCodeMatch() {
@@ -78,6 +132,48 @@ public class MatchSearchBean implements Serializable {
             return match.getNumJoueursMax() - match.getInscriptions().getInscription().size();
         }
         return null;
+    }
+
+    /**
+     * Vérifie si un joueur est éligible pour s'inscrire à un match
+     *
+     * @return Booléan indiquant si le match a l'option de partage de code actif et le joueur n'est pas encore inscrit
+     */
+    public boolean isInscriptionPossible() {
+        // L'inscription est possible si le match a l'option de partage de code actif et que le joueur n'est pas encore inscrit
+        if (match != null && match.isPartageActif()) {
+            inscriptionPossible = true;
+
+            for (Inscription ins : match.getInscriptions().getInscription()) {
+                if (ins.getJoueur().getEmail().equals(getNomUtilisateurActif())) {
+                    // Le joueur est déjà inscrit au match
+                    inscriptionPossible = false;
+                }
+            }
+        } else {
+            inscriptionPossible = false;
+        }
+        return inscriptionPossible;
+    }
+
+    public void setInscriptionPossible(boolean inscriptionPossible) {
+        this.inscriptionPossible = inscriptionPossible;
+    }
+
+    public boolean isValidationRequise() {
+        return validationRequise;
+    }
+
+    public void setValidationRequise(boolean validationRequise) {
+        this.validationRequise = validationRequise;
+    }
+
+    public String getOptionInscription() {
+        return optionInscription;
+    }
+
+    public void setOptionInscription(String optionInscription) {
+        this.optionInscription = optionInscription;
     }
 
     public String getPatternDate() {

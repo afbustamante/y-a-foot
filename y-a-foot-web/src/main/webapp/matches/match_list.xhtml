@@ -11,7 +11,7 @@
         <h:form>
             <h3><h:outputText value="#{messages['match.list.title']}"/></h3>
 
-            <h:messages/>
+            <h:messages styleClass="messages" errorClass="error" infoClass="info" />
 
             <ace:tabSet id="matchsTabSet" clientSide="false">
                 <ace:tabPane id="matchesToPlayTabSet" label="#{messages['match.list.to.play']}">

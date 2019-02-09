@@ -47,6 +47,10 @@ input, textarea, button, select {
     margin-bottom: 10px;
 }
 
+.info {
+    font-weight: bold;
+}
+
 .error {
     color: #CC3333;
 }
@@ -57,9 +61,13 @@ input, textarea, button, select {
 }
 
 .actions {
-    width: 100%;
+    border: none;
 }
 
 .actions td {
     text-align: center;
+}
+
+.panel {
+    margin-bottom: 10px;
 }

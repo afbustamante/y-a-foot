@@ -12,28 +12,29 @@
         <h3><h:outputText value="#{messages['match.search.wish.text']}"/></h3>
 
         <h:form>
-            <ace:panel id="search">
-                <h:panelGrid columns="2">
-                    <f:facet name = "footer">
-                        <ace:pushButton action="#{matchSearchBean.chercherMatch}"
-                                        value="#{messages['match.search.button.search']}">
-                            <ace:ajax execute="@form" render="@all"/>
-                        </ace:pushButton>
-                    </f:facet>
-                    <h:outputLabel for="txtCode" value="#{messages['match.search.code']}" />
+            <ace:panel id="search" styleClass="panel">
+                <h:panelGrid columns="1">
                     <ace:textEntry id="txtCode" value="#{matchSearchBean.codeMatch}"
-                                   required="true" requiredMessage="#{messages['match.search.code.required']}" />
+                                   label="#{messages['match.search.code']}" labelPosition="left"
+                                   required="true" requiredMessage="#{messages['match.search.code.required']}"/>
                 </h:panelGrid>
             </ace:panel>
 
-            <h:messages/>
+            <ace:panel id="actionsRecherche" styleClass="actions">
+                <ace:pushButton action="#{matchSearchBean.chercherMatch}"
+                                value="#{messages['match.search.button.search']}">
+                    <ace:ajax execute="@form" render="@all"/>
+                </ace:pushButton>
+            </ace:panel>
 
-            <ace:panel id="result" header="#{messages['match.search.match.about']}"
+            <h:messages styleClass="messages" errorClass="error" infoClass="info" />
+
+            <ace:panel id="result" header="#{messages['match.search.match.about']}" styleClass="panel"
                        rendered="#{matchSearchBean.match != null}">
                 <h:panelGrid rendered="#{matchSearchBean.match != null}" columns="3" styleClass="form">
                     <h:outputLabel value="#{messages['match.search.result.when']}"/>
                     <h:outputText value="#{matchSearchBean.match.date.time}">
-                        <f:convertDateTime pattern="#{matchSearchBean.patternDate}" />
+                        <f:convertDateTime pattern="#{matchSearchBean.patternDate}"/>
                     </h:outputText>
                     <h:outputText/>
 
@@ -51,7 +52,47 @@
                     <h:outputText value="#{matchSearchBean.complementJoueurs}"/>
                 </h:panelGrid>
             </ace:panel>
+
+            <ace:panel id="actionsMatch" styleClass="actions" rendered="#{matchSearchBean.match != null}">
+                <h:panelGrid columns="1">
+                    <ace:pushButton value="#{messages['match.search.button.join']}" type="button"
+                                    rendered="#{matchSearchBean.inscriptionPossible}"
+                                    actionListener="#{matchSearchBean.afficherDialogValidation}">
+                        <ace:ajax event="activate" execute="@all" render="dialog1" />
+                    </ace:pushButton>
+                </h:panelGrid>
+            </ace:panel>
         </h:form>
+
+        <ace:dialog id="dialog1" header="#{messages['dialog.confirmation.title']}" width="500"
+                    visible="#{matchSearchBean.inscriptionPossible and matchSearchBean.validationRequise}"
+                    closable="false" modal="true" draggable="false"
+                    showEffect="clip" hideEffect="fade">
+            <h:form>
+                <h:panelGrid columns="1">
+                    <h:outputText value="#{messages['match.join.confirmation.dialog.text']}"/>
+
+                    <ace:radioButtons value="#{matchSearchBean.optionInscription}" labelPosition="right">
+                        <f:selectItem itemLabel="#{messages['match.join.confirmation.dialog.ok.with.car']}"
+                                      itemValue="OK_WITH_CAR"/>
+                        <f:selectItem itemLabel="#{messages['match.join.confirmation.dialog.ok.without.car']}"
+                                      itemValue="OK_WITHOUT_CAR"/>
+                        <f:selectItem itemLabel="#{messages['match.join.confirmation.dialog.ok.other']}"
+                                      itemValue="OK_OTHER"/>
+                    </ace:radioButtons>
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    <ace:pushButton id="submitSite" value="#{messages['button.continue']}" type=""
+                                    action="#{matchSearchBean.validerInscription}">
+                        <ace:ajax execute="@form" render="@all" />
+                    </ace:pushButton>
+                    <ace:pushButton id="cancelSite" value="#{messages['button.cancel']}"
+                                    actionListener="#{matchSearchBean.fermerDialogValidation}">
+                        <ace:ajax execute="@form" render="@all" />
+                    </ace:pushButton>
+                </h:panelGrid>
+            </h:form>
+        </ace:dialog>
 
     </ui:define>
 

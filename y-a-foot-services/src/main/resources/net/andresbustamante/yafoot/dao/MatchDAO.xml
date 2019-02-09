@@ -26,6 +26,7 @@
             sit.sit_longitude       AS longitudeSite,
             jma.jma_joueur_fk       AS idJoueur,
             jou.jou_prenom          AS prenomJoueur,
+            jou.jou_email           AS emailJoueur,
             voi.voi_id              AS idVoiture,
             voi.voi_num_places      AS numPlacesVoiture
         FROM t_match mat
@@ -54,6 +55,7 @@
             sit.sit_longitude       AS longitudeSite,
             jma.jma_joueur_fk       AS idJoueur,
             jou.jou_prenom          AS prenomJoueur,
+            jou.jou_email           AS emailJoueur,
             voi.voi_id              AS idVoiture,
             voi.voi_num_places      AS numPlacesVoiture
         FROM t_match mat
@@ -139,6 +141,7 @@
             <association property="joueur" javaType="net.andresbustamante.yafoot.model.Joueur">
                 <id column="idJoueur" property="id" />
                 <result column="prenomJoueur" property="prenom" />
+                <result column="emailJoueur" property="email" />
             </association>
             <association property="voiture" javaType="net.andresbustamante.yafoot.model.Voiture">
                 <id column="idVoiture" property="id" />
