@@ -2,16 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>y-a-foot</artifactId>
+    <artifactId>y-a-foot-ihm</artifactId>
     <groupId>net.andresbustamante</groupId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>y-a-foot-web</artifactId>
+  <artifactId>y-a-foot-ihm-jsf</artifactId>
   <packaging>war</packaging>
 
-  <name>y-a-foot-web</name>
+  <name>y-a-foot-ihm-jsf</name>
 
   <properties>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -119,22 +119,12 @@
           </execution>
         </executions>
         <configuration>
-          <schemaDirectory>${project.parent.basedir}/y-a-foot-ws/src/main/resources/xsd</schemaDirectory>
-          <bindingDirectory>${project.parent.basedir}/y-a-foot-ws/src/main/resources/xjb</bindingDirectory>
+          <schemaDirectory>${project.parent.parent.basedir}/y-a-foot-ws/src/main/resources/xsd</schemaDirectory>
+          <bindingDirectory>${project.parent.parent.basedir}/y-a-foot-ws/src/main/resources/xjb</bindingDirectory>
           <forceRegenerate>true</forceRegenerate>
           <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
           <verbose>true</verbose>
           <strict>false</strict>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>${tomcat7-maven-plugin.version}</version>
-        <configuration>
-          <url>http://localhost:8180/manager/text</url>
-          <server>tomcat</server>
-          <path>/</path>
         </configuration>
       </plugin>
     </plugins>
