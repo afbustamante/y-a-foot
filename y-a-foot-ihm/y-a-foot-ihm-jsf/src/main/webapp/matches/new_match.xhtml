@@ -105,8 +105,8 @@
 
             <ace:panel id="actions" styleClass="actions">
                 <h:panelGrid columns="2">
-                    <h:commandButton action="#{newMatchBean.creerNouveauMatch}" value="#{messages['button.continue']}"/>
-                    <h:commandButton action="/start" value="#{messages['button.cancel']}"/>
+                    <ace:pushButton action="#{newMatchBean.creerNouveauMatch}" value="#{messages['button.continue']}"/>
+                    <ace:pushButton action="/start" value="#{messages['button.cancel']}"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>

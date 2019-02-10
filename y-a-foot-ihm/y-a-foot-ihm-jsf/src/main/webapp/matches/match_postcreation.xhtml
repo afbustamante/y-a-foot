@@ -18,9 +18,9 @@
                 <p><h:outputText value="#{messages['new.match.instructions']}" /></p>
             </ace:panel>
 
-            <ace:panel id="actions">
+            <ace:panel id="actions" styleClass="actions">
                 <h:panelGrid columns="2">
-                    <h:commandButton action="/matches/match_list" value="#{messages['new.match.button.see.matches.list']}"/>
+                    <ace:pushButton action="/matches/match_list" value="#{messages['new.match.button.see.matches.list']}"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>

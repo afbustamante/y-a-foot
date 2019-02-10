@@ -13,10 +13,6 @@
 
             <ace:panel header="#{messages['sign.in.title']}">
                 <h:panelGrid columns="2">
-                    <f:facet name="footer">
-                        <h:commandButton action="#{signInBean.creerNouveauJoueur}" value="#{messages['button.continue']}"/>
-                    </f:facet>
-
                     <h:outputLabel id="lblFirstName" for="firstName" value="#{messages['sign.in.first.name']}" />
                     <ace:textEntry id="firstName" value="#{signInBean.prenom}" required="true"
                                    requiredIndicator="*" indicatorPosition="labelRight"
@@ -61,6 +57,9 @@
                 </h:panelGrid>
             </ace:panel>
 
+            <ace:panel styleClass="actions">
+                <ace:pushButton action="#{signInBean.creerNouveauJoueur}" value="#{messages['button.continue']}"/>
+            </ace:panel>
         </h:form>
     </ui:define>
 </ui:composition>
