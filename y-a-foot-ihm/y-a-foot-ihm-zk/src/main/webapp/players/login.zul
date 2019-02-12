@@ -1,0 +1,43 @@
+<?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<window apply="net.andresbustamante.yafoot.web.controllers.AuthentificationController">
+  <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
+  <div id="top">
+    <toolbar id="toolbar" align="end">
+      <toolbarbutton id="btnHome" image="/images/32x32/go-home.png"/>
+    </toolbar>
+  </div>
+  <div id="content">
+    <vlayout>
+      <grid>
+        <auxhead>
+          <auxheader label="${c:l('login.title.text')}" colspan="2" rowspan="1"/>
+        </auxhead>
+        <columns>
+          <column align="right" hflex="min"/>
+          <column/>
+        </columns>
+        <rows>
+          <row>
+            <cell sclass="row-title">${c:l('login.username')}</cell>
+            <cell>
+              <textbox id="txtUsername" width="300px" constraint="no empty: ${c:l('login.username.required')}"/>
+            </cell>
+          </row>
+          <row>
+            <cell sclass="row-title">${c:l('login.password')}</cell>
+            <cell>
+              <textbox id="txtPassword" width="300px" type="password" constraint="no empty: ${c:l('login.password.required')}"/>
+            </cell>
+          </row>
+        </rows>
+      </grid>
+    </vlayout>
+    <separator />
+    <hlayout>
+      <button id="btnValidate" label="${c:l('login.validate')}" image="/images/22x22/go-next.png"/>
+      <button id="btnSignIn" label="${c:l('login.new.user')}" image="/images/22x22/start-here.png" href="/players/signin.zul" />
+    </hlayout>
+  </div>
+</window>

@@ -21,7 +21,7 @@
           </response>
         </method>
       </resource>
-      <resource path="">
+      <resource path="/{id}">
         <method name="DELETE">
           <request>
             <representation mediaType="application/json" element="yaf:inscription"/>
