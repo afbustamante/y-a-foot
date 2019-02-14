@@ -40,6 +40,7 @@
     <spring-dao.version>2.0.8</spring-dao.version>
     <spring-ldap-core.version>2.3.2.RELEASE</spring-ldap-core.version>
     <spring-data-commons.version>2.0.12.RELEASE</spring-data-commons.version>
+    <spring-security.version>5.0.8.RELEASE</spring-security.version>
     <jackson-databind.version>2.9.8</jackson-databind.version>
 
     <!-- ICEFaces -->
@@ -129,6 +130,26 @@
         <groupId>org.springframework.data</groupId>
         <artifactId>spring-data-commons</artifactId>
         <version>${spring-data-commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-ldap</artifactId>
+        <version>${spring-security.version}</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>

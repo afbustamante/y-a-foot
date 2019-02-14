@@ -1,0 +1,6 @@
+<?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<window apply="net.andresbustamante.yafoot.web.controllers.CreationMatchController">
+  <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
+</window>
