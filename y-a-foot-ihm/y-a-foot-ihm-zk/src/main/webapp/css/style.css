@@ -1,0 +1,8 @@
+/* Styles des messages */
+.msg-info {
+    font-weight: bold;
+}
+
+.msg-error {
+    color: #CC3333;
+}

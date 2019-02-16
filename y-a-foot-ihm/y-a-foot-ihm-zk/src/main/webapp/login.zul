@@ -5,7 +5,7 @@
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <div id="top">
     <toolbar id="toolbar" align="end">
-      <toolbarbutton id="btnHome" image="/images/32x32/go-home.png"/>
+      <toolbarbutton id="btnHome" image="/images/32x32/go-home.png" href="/"/>
     </toolbar>
   </div>
   <div id="content">
@@ -33,6 +33,9 @@
                          constraint="no empty: ${c:l('login.password.required')}"/>
               </cell>
             </row>
+            <row if="${not empty param.error}">
+              <cell sclass="msg-error" colspan="2">${c:l('login.fail.text')}</cell>
+            </row>
           </rows>
         </grid>
       </vlayout>
@@ -40,7 +43,7 @@
       <hlayout>
         <button id="btnValidate" type="submit" label="${c:l('login.validate')}" image="/images/22x22/go-next.png"/>
         <button id="btnSignIn" type="button" label="${c:l('login.new.user')}" image="/images/22x22/start-here.png"
-                href="/players/signin.zul"/>
+                href="/signin.zul"/>
       </hlayout>
 
       <zk if="${param['redirect-after-login'] ne null}">
