@@ -1,3 +1,4 @@
+<?page title="${c:l('application.title')}"?>
 <?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
@@ -55,7 +56,7 @@
     <separator />
     <hlayout>
       <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
-      <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" />
+      <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/login.zul" />
     </hlayout>
   </div>
 </window>

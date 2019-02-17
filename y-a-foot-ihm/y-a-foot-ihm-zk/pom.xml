@@ -13,7 +13,13 @@
   <packaging>war</packaging>
 
   <dependencies>
-    <!-- javax -->
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-framework</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
+    <!-- Java EE / javax -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
