@@ -23,31 +23,31 @@
           <row>
             <cell sclass="row-title">${c:l('sign.in.first.name')}</cell>
             <cell>
-              <textbox id="txtFirstName" width="300px" constraint="no empty: ${c:l('sign.in.first.name.required')}"/>
+              <textbox id="txtFirstName" width="50%" constraint="no empty: ${c:l('sign.in.first.name.required')}"/>
             </cell>
           </row>
           <row>
             <cell sclass="row-title">${c:l('sign.in.surname')}</cell>
             <cell>
-              <textbox id="txtSurname" width="300px" constraint="no empty: ${c:l('sign.in.surname.required')}"/>
+              <textbox id="txtSurname" width="50%" constraint="no empty: ${c:l('sign.in.surname.required')}"/>
             </cell>
           </row>
           <row>
             <cell sclass="row-title">${c:l('sign.in.email')}</cell>
             <cell>
-              <textbox id="txtEmail" width="300px" constraint="no empty: ${c:l('sign.in.email.required')}"/>
+              <textbox id="txtEmail" width="50%" constraint="no empty: ${c:l('sign.in.email.required')}"/>
             </cell>
           </row>
           <row>
             <cell sclass="row-title">${c:l('sign.in.password')}</cell>
             <cell>
-              <textbox id="txtPassword1" width="300px" type="password" constraint="no empty: ${c:l('sign.in.password.required')}"/>
+              <textbox id="txtPassword1" width="50%" type="password" constraint="no empty: ${c:l('sign.in.password.required')}"/>
             </cell>
           </row>
           <row>
             <cell sclass="row-title">${c:l('sign.in.password.confirmation')}</cell>
             <cell>
-              <textbox id="txtPassword2" width="300px" type="password" constraint="no empty: ${c:l('sign.in.password.required')}"/>
+              <textbox id="txtPassword2" width="50%" type="password" constraint="no empty: ${c:l('sign.in.password.required')}"/>
             </cell>
           </row>
         </rows>
