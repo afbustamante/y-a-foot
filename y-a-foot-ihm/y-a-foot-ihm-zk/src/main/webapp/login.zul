@@ -1,4 +1,6 @@
 <?page title="${c:l('application.title')}"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1.0"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1"?>
 <?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
@@ -24,13 +26,13 @@
             <row>
               <cell sclass="row-title">${c:l('login.username')}</cell>
               <cell>
-                <textbox id="username" name="username" width="300px" constraint="no empty: ${c:l('login.username.required')}"/>
+                <textbox id="username" name="username" width="50%" constraint="no empty: ${c:l('login.username.required')}"/>
               </cell>
             </row>
             <row>
               <cell sclass="row-title">${c:l('login.password')}</cell>
               <cell>
-                <textbox id="password" name="password" width="300px" type="password"
+                <textbox id="password" name="password" width="50%" type="password"
                          constraint="no empty: ${c:l('login.password.required')}"/>
               </cell>
             </row>
