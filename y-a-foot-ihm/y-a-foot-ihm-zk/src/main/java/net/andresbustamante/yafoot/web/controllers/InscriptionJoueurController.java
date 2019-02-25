@@ -14,6 +14,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Messagebox;
@@ -41,7 +42,7 @@ public class InscriptionJoueurController extends SelectorComposer<Component> {
     @Wire
     private Textbox txtEmail;
 
-    @Autowired
+    @WireVariable
     private InscriptionJoueursUIService inscriptionJoueursUIService;
 
     @Listen("onClick = #btnContinue")
