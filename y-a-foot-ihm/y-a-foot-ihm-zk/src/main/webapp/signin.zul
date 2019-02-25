@@ -57,8 +57,8 @@
     </vlayout>
     <separator />
     <hlayout>
-      <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
       <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/login.zul" />
+      <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
     </hlayout>
   </div>
 </window>
