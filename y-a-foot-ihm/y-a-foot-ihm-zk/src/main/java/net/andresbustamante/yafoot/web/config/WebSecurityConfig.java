@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] ZK_RESOURCES = {"/zkau/web/**/js/**", "/zkau/web/**/zul/css/**", "/zkau/web/**/img/**"};
+    private static final String[] ZK_POST = {"/zkau"};
     private static final String[] WEB_RESOURCES = {"/css/**", "/images/**", "/favicon.ico"};
     private static final String REMOVE_DESKTOP_REGEX = "/zkau\\?dtid=.*&cmd_0=rmDesktop&.*";
 
@@ -66,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, ZK_RESOURCES).permitAll()
+                .antMatchers(HttpMethod.POST, ZK_POST).permitAll()
                 .antMatchers(WEB_RESOURCES).permitAll()
                 .regexMatchers(HttpMethod.GET, REMOVE_DESKTOP_REGEX).permitAll()
                 .antMatchers("/", "/start.zul", "/signin.zul", "/login.zul").permitAll()
