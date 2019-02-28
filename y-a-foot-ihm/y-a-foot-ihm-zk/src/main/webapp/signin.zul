@@ -43,22 +43,24 @@
           <row>
             <cell sclass="row-title">${c:l('sign.in.password')}</cell>
             <cell>
-              <textbox id="txtPassword1" width="50%" type="password" constraint="no empty: ${c:l('sign.in.password.required')}"/>
+              <textbox id="txtPassword1" width="50%" type="password"
+                       constraint="no empty: ${c:l('sign.in.password.required')}"/>
             </cell>
           </row>
           <row>
             <cell sclass="row-title">${c:l('sign.in.password.confirmation')}</cell>
             <cell>
-              <textbox id="txtPassword2" width="50%" type="password" constraint="no empty: ${c:l('sign.in.password.required')}"/>
+              <textbox id="txtPassword2" width="50%" type="password"
+                       constraint="no empty: ${c:l('sign.in.password.required')}"/>
             </cell>
           </row>
         </rows>
       </grid>
+      <separator/>
+      <hlayout>
+        <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/login.zul"/>
+        <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
+      </hlayout>
     </vlayout>
-    <separator />
-    <hlayout>
-      <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/login.zul" />
-      <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
-    </hlayout>
   </div>
 </window>

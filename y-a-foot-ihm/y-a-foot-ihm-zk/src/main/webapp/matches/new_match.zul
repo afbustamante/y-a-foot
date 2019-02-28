@@ -6,12 +6,66 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window apply="net.andresbustamante.yafoot.web.controllers.CreationMatchController">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
-  <toolbar id="toolbar" align="end">
-    <toolbarbutton id="btnHome" image="/images/32x32/go-home.png" href="/"
-                   tooltiptext="${c:l('button.home')}"/>
-    <toolbarbutton id="btnProfile" image="/images/32x32/system-users.png"
-                   tooltiptext="${c:l('button.profile')}"/>
-    <toolbarbutton id="btnLogOut" image="/images/32x32/system-log-out.png" href="/logout"
-                   tooltiptext="${c:l('button.logout')}"/>
-  </toolbar>
+  <div id="top">
+    <toolbar id="toolbar" align="end">
+      <toolbarbutton id="btnHome" image="/images/32x32/go-home.png" href="/"
+                     tooltiptext="${c:l('button.home')}"/>
+      <toolbarbutton id="btnProfile" image="/images/32x32/system-users.png"
+                     tooltiptext="${c:l('button.profile')}"/>
+      <toolbarbutton id="btnLogOut" image="/images/32x32/system-log-out.png" href="/logout"
+                     tooltiptext="${c:l('button.logout')}"/>
+    </toolbar>
+  </div>
+  <div id="content">
+    <vlayout>
+      <label value="${c:l('new.match.wish.text')}"/>
+      <separator/>
+      <grid>
+        <auxhead>
+          <auxheader label="${c:l('new.match.details.title')}" colspan="2" rowspan="1"/>
+        </auxhead>
+        <columns>
+          <column align="right" hflex="min"/>
+          <column/>
+        </columns>
+        <rows>
+          <row>
+            <cell>${c:l('new.match.date')}</cell>
+            <cell>
+              <datebox id="txtDateMatch" constraint="no empty" format="yyyy/MM/dd H:mm" width="50%"/>
+            </cell>
+          </row>
+          <row>
+            <cell>${c:l('new.match.players.min')}</cell>
+            <cell>
+              <spinner id="txtNbMinJoeurs" constraint="no empty, no negative" width="50%"/>
+            </cell>
+          </row>
+          <row>
+            <cell>${c:l('new.match.players.max')}</cell>
+            <cell>
+              <spinner id="txtNbMaxJoeurs" constraint="no negative" width="50%"/>
+            </cell>
+          </row>
+          <row>
+            <cell>${c:l('new.match.place.name')}</cell>
+            <cell>
+              <combobox id="cbbSite" autodrop="true" width="50%">
+                <template name="model">
+                  <comboitem label="${each}"/>
+                </template>
+              </combobox>
+              <button id="btnNouveauSite" tooltiptext="${c:l('new.match.place.new')}"
+                      image="/images/22x22/list-add.png"/>
+            </cell>
+          </row>
+        </rows>
+      </grid>
+      <separator/>
+      <hlayout>
+        <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/login.zul"/>
+        <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
+      </hlayout>
+    </vlayout>
+  </div>
 </window>
