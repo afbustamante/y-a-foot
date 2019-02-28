@@ -2,13 +2,17 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.model.xs.Site;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.*;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * @author andresbustamante
@@ -37,5 +41,14 @@ public class CreationMatchController extends SelectorComposer<Component> {
         super.doAfterCompose(comp);
 
         cbbSite.setModel(sitesModel);
+    }
+
+    @Listen("onClick = #btnNouveauSite")
+    public void afficherDialogCreationSite() {
+        Map<String, Object> arguments = new WeakHashMap<>();
+        arguments.put("sitesModel", sitesModel);
+        String template = "/sites/new_site_dialog.zul";
+        Window window = (Window) Executions.createComponents(template, this.getSelf(), arguments);
+        window.doModal();
     }
 }

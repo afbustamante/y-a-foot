@@ -1,0 +1,37 @@
+<window id="winNouveauSite" title="${c:l('new.match.place.new')}"
+        width="500px" border="normal"
+        apply="net.andresbustamante.yafoot.web.controllers.AjoutSiteController">
+  <vlayout>
+    <grid>
+      <columns>
+        <column align="right" hflex="min"/>
+        <column/>
+      </columns>
+      <rows>
+        <row>
+          <cell>${c:l('new.match.place.name')}</cell>
+          <cell>
+            <textbox id="tbxNomSite" width="90%" constraint="no empty"/>
+          </cell>
+        </row>
+        <row>
+          <cell>${c:l('new.match.place.address')}</cell>
+          <cell>
+            <textbox id="tbxAdresseSite" width="90%" multiline="true" constraint="no empty"/>
+          </cell>
+        </row>
+        <row>
+          <cell>${c:l('new.match.place.phone.number')}</cell>
+          <cell>
+            <textbox id="tbxTelephoneSite" width="90%"/>
+          </cell>
+        </row>
+      </rows>
+    </grid>
+    <separator/>
+    <hbox>
+      <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" />
+      <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
+    </hbox>
+  </vlayout>
+</window>

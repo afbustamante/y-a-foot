@@ -55,8 +55,8 @@
                   <comboitem label="${each}"/>
                 </template>
               </combobox>
-              <button id="btnNouveauSite" tooltiptext="${c:l('new.match.place.new')}"
-                      image="/images/22x22/list-add.png"/>
+              <button id="btnNouveauSite" label="${c:l('new.match.place.new')}" image="/images/22x22/list-add.png"
+                      tooltiptext="${c:l('new.match.place.new')}"/>
             </cell>
           </row>
         </rows>
