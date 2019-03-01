@@ -7,30 +7,20 @@
 <?taglib uri="http://www.zkoss.org/zkspring/security" prefix="sec"?>
 <window apply="net.andresbustamante.yafoot.web.controllers.AccueilController">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
-  <div id="top">
-    <toolbar id="toolbar" align="end">
-      <toolbarbutton id="btnHome" image="/images/32x32/go-home.png" href="/"
-                     tooltiptext="${c:l('button.home')}"/>
-      <toolbarbutton id="btnProfile" image="/images/32x32/system-users.png"
-                     if="${sec:getAuthentication('credentials') ne ''}"
-                     tooltiptext="${c:l('button.profile')}"/>
-      <toolbarbutton id="btnLogOut" image="/images/32x32/system-log-out.png" href="/logout"
-                     if="${sec:getAuthentication('credentials') ne ''}" tooltiptext="${c:l('button.logout')}"/>
-    </toolbar>
-  </div>
+  <include src="/zul/top.zul" />
   <div id="content">
     <vbox width="100%">
       <label value="${c:l('start.wish.text')}"/>
       <separator />
       <button id="btnOrganise" label="${c:l('start.button.organise')}"
               href="/matches/new_match.zul"
-              image="/images/32x32/appointment-new.png"/>
+              image="/images/22x22/appointment-new.png"/>
       <button id="btnJoin" label="${c:l('start.button.join')}"
               href="/matches/match_search.zul"
-              image="/images/32x32/system-search.png"/>
+              image="/images/22x22/system-search.png"/>
       <button id="btnList" label="${c:l('start.button.list')}"
               href="/matches/match_list.zul"
-              image="/images/32x32/x-office-calendar.png"/>
+              image="/images/22x22/office-calendar.png"/>
     </vbox>
   </div>
 </window>

@@ -6,11 +6,7 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window xmlns:h="native">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
-  <div id="top">
-    <toolbar id="toolbar" align="end">
-      <toolbarbutton id="btnHome" image="/images/32x32/go-home.png" href="/"/>
-    </toolbar>
-  </div>
+  <include src="/zul/top.zul" />
   <div id="content">
     <h:form action="/login" method="POST">
       <vlayout>
@@ -44,7 +40,7 @@
         </grid>
         <separator/>
         <hlayout>
-          <button id="btnSignIn" type="button" label="${c:l('login.new.user')}" image="/images/22x22/start-here.png"
+          <button id="btnSignIn" type="button" label="${c:l('login.new.user')}" image="/images/22x22/contact-new.png"
                   href="/signin.zul"/>
           <button id="btnValidate" type="submit" label="${c:l('login.validate')}" image="/images/22x22/go-next.png"/>
         </hlayout>

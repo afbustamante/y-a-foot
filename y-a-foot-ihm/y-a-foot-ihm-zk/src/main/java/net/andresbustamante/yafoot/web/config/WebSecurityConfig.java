@@ -17,7 +17,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @PropertySource("classpath:config.properties")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] ZK_RESOURCES = {"/zkau/web/**/js/**", "/zkau/web/**/zul/css/**", "/zkau/web/**/img/**"};
+    private static final String[] ZK_RESOURCES = {"/zkau/web/**/js/**", "/zkau/web/**/zul/css/**",
+            "/zkau/web/**/img/**", "/zul/**"};
     private static final String[] ZK_POST = {"/zkau"};
     private static final String[] WEB_RESOURCES = {"/css/**", "/images/**", "/favicon.ico"};
     private static final String REMOVE_DESKTOP_REGEX = "/zkau\\?dtid=.*&cmd_0=rmDesktop&.*";
