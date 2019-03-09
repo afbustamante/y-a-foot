@@ -1,12 +1,10 @@
-package net.andresbustamante.yafoot.web.rs;
+package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
-import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
 import net.andresbustamante.yafoot.util.ConfigProperties;
-import net.andresbustamante.yafoot.util.ContexteUtils;
-import net.andresbustamante.yafoot.web.mappers.InscriptionMapper;
+import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;

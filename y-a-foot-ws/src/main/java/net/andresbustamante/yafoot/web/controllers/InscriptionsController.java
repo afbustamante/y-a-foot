@@ -1,9 +1,9 @@
-package net.andresbustamante.yafoot.web.rs;
+package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
-import net.andresbustamante.yafoot.util.ContexteUtils;
+import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import net.andresbustamante.yafoot.web.mappers.InscriptionMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.web.rs;
+package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.xs.Contexte;
@@ -6,7 +6,7 @@ import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.services.GestionJoueursService;
 import net.andresbustamante.yafoot.services.RechercheJoueursService;
 import net.andresbustamante.yafoot.util.ConfigProperties;
-import net.andresbustamante.yafoot.util.ContexteUtils;
+import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import net.andresbustamante.yafoot.web.mappers.ContexteMapper;
 import net.andresbustamante.yafoot.web.mappers.JoueurMapper;
 import org.apache.commons.logging.Log;

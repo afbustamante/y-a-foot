@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.util;
+package net.andresbustamante.yafoot.web.util;
 
 import net.andresbustamante.yafoot.model.Contexte;
 import org.springframework.http.HttpHeaders;

@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.web.rs;
+package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
