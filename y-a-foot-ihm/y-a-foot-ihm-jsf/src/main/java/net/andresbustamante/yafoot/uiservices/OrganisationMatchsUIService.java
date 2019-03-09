@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,8 +34,8 @@ public class OrganisationMatchsUIService extends AbstractUIService {
         try {
             Client client = ClientBuilder.newClient();
             WebTarget webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.sites.service.path"));
-            Sites sites = webTarget.path(MessageFormat.format(ConfigProperties.getValue("recherche.sites.joueur.service.path"),
-                    getContexte().getUtilisateur().getId())).request(MediaType.APPLICATION_XML).get(Sites.class);
+            Sites sites = webTarget.queryParam("idJoueur", getContexte().getUtilisateur().getId()).request(
+                    MediaType.APPLICATION_XML).get(Sites.class);
 
             return (sites != null) ? sites.getSite() : Collections.emptyList();
         } catch (ResponseProcessingException ex) {

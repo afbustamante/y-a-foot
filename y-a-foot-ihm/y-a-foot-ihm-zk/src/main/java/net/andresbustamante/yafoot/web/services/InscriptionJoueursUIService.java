@@ -42,4 +42,14 @@ public class InscriptionJoueursUIService extends AbstractUIService {
         String mdp = joueur.getMotDePasse();
         joueur.setMotDePasse(SecuriteUtils.crypterMotDePasse(mdp));
     }
+
+    @Override
+    protected String getServerUrl() {
+        return restServerUrl;
+    }
+
+    @Override
+    protected String getJoueursPath() {
+        return gestionJoueursPath;
+    }
 }

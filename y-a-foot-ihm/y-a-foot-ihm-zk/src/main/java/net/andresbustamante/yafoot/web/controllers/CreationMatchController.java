@@ -1,16 +1,18 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.model.xs.Site;
+import net.andresbustamante.yafoot.web.services.OrganisationMatchsUIService;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.*;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -34,12 +36,19 @@ public class CreationMatchController extends SelectorComposer<Component> {
     @Wire
     private Combobox cbbSite;
 
-    private ListModel<Site> sitesModel = new ListModelArray<>(new ArrayList<>());
+    @WireVariable
+    private OrganisationMatchsUIService organisationMatchsUIService;
+
+    private List<Site> sites;
+
+    private ListModel<Site> sitesModel;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
+        sites = organisationMatchsUIService.chercherSites();
+        sitesModel = new ListModelArray<>(sites);
         cbbSite.setModel(sitesModel);
     }
 

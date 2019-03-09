@@ -13,39 +13,45 @@
       <separator/>
       <grid>
         <auxhead>
-          <auxheader label="${c:l('new.match.details.title')}" colspan="2" rowspan="1"/>
+          <auxheader label="${c:l('new.match.details.title')}" colspan="3" rowspan="1"/>
         </auxhead>
         <columns>
           <column align="right" hflex="min"/>
+          <column width="50%"/>
           <column/>
         </columns>
         <rows>
           <row>
             <cell>${c:l('new.match.date')}</cell>
             <cell>
-              <datebox id="txtDateMatch" constraint="no empty" format="yyyy/MM/dd H:mm" width="50%"/>
+              <datebox id="txtDateMatch" constraint="no empty" format="yyyy/MM/dd H:mm" width="90%"/>
             </cell>
+            <cell/>
           </row>
           <row>
             <cell>${c:l('new.match.players.min')}</cell>
             <cell>
-              <spinner id="txtNbMinJoeurs" constraint="no empty, no negative" width="50%"/>
+              <spinner id="txtNbMinJoeurs" constraint="no empty, no negative" width="90%"/>
             </cell>
+            <cell/>
           </row>
           <row>
             <cell>${c:l('new.match.players.max')}</cell>
             <cell>
-              <spinner id="txtNbMaxJoeurs" constraint="no negative" width="50%"/>
+              <spinner id="txtNbMaxJoeurs" constraint="no negative" width="90%"/>
             </cell>
+            <cell/>
           </row>
           <row>
             <cell>${c:l('new.match.place.name')}</cell>
             <cell>
-              <combobox id="cbbSite" autodrop="true" width="50%">
+              <combobox id="cbbSite" autodrop="true" width="90%">
                 <template name="model">
-                  <comboitem label="${each}"/>
+                  <comboitem label="${each.nom}" value="${each.id}" tooltiptext="${each.adresse}"/>
                 </template>
               </combobox>
+            </cell>
+            <cell>
               <button id="btnNouveauSite" label="${c:l('new.match.place.new')}" image="/images/22x22/list-add.png"
                       tooltiptext="${c:l('new.match.place.new')}"/>
             </cell>

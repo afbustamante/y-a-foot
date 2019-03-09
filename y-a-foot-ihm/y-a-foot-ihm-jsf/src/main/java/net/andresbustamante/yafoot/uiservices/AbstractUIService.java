@@ -36,9 +36,9 @@ public abstract class AbstractUIService {
                     String email = user.getName();
 
                     Joueur joueur = chercherJoueur(email);
-                    contexte = new Contexte();
 
                     if (joueur != null) {
+                        contexte = new Contexte();
                         contexte.setUtilisateur(joueur);
                     }
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(
