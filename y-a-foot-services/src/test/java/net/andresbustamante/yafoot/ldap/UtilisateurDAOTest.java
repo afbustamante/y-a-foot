@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.ldap;
 
-import net.andresbustamante.yafoot.config.LdapConfiguration;
+import net.andresbustamante.yafoot.config.LdapConfig;
+import net.andresbustamante.yafoot.config.LdapTestConfig;
 import net.andresbustamante.yafoot.model.Utilisateur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.util.ConstantesLdapUtils;
@@ -10,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,8 +23,7 @@ import static org.junit.Assert.*;
  * @author andresbustamante
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {LdapConfiguration.class})
-@PropertySource("classpath:config.properties")
+@ContextConfiguration(classes = {LdapTestConfig.class, LdapConfig.class})
 public class UtilisateurDAOTest {
 
     private static final Utilisateur USR_TEST = new Utilisateur("test@email.com", "password", "TEST",

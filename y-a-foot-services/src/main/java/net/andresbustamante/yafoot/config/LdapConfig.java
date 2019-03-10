@@ -7,7 +7,7 @@ import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 
 @Configuration
-public class LdapConfiguration {
+public class LdapConfig {
 
     @Value("${ldap.url}")
     private String url;

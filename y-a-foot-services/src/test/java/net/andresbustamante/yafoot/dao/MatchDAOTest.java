@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -65,7 +66,7 @@ public class MatchDAOTest extends AbstractDAOTest {
         Date maintenant = Calendar.getInstance().getTime();
 
         Match match = new Match();
-        match.setCode("TEST");
+        match.setCode("C-" + (Instant.now().toEpochMilli() / 1000));
         match.setDateMatch(maintenant);
         match.setNumJoueursMin(10);
         match.setNumJoueursMax(12);
