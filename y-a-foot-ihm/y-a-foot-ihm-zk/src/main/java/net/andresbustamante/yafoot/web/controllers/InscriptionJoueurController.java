@@ -5,7 +5,6 @@ import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.web.services.InscriptionJoueursUIService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;

@@ -119,7 +119,16 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void inscrireJoueurMatch() throws Exception {
+    public void inscrireJoueurMatchSansVoiture() throws Exception {
+        // Given
+        Joueur joueur = joueurDAO.chercherJoueurParId(1);
+        Match match = matchDAO.chercherMatchParId(2);
+
+        // When
+        matchDAO.inscrireJoueurMatch(joueur, match, null);
+
+        // Then
+        assertTrue(matchDAO.isJoueurInscritMatch(joueur, match));
     }
 
     @Test

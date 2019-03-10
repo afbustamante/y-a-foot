@@ -1,18 +1,63 @@
 package net.andresbustamante.yafoot.dao;
 
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import net.andresbustamante.yafoot.model.Site;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
+import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+@DatabaseSetup(value = "classpath:datasets/matchsDataset.xml")
+@DatabaseTearDown(value = "classpath:datasets/matchsDataset.xml", type = DELETE_ALL)
 public class SiteDAOTest extends AbstractDAOTest {
 
+    @Autowired
+    private SiteDAO siteDAO;
+
     @Test
-    public void chercherSiteParNom() throws Exception {
+    public void chercherSitesParJoueur() throws Exception {
+        // Given
+        Integer idJoueur = 1;
+
+        // When
+        List<Site> sites = siteDAO.chercherSitesPourJoueur(idJoueur);
+
+        // Then
+        assertNotNull(sites);
+        assertEquals(1, sites.size());
+        assertEquals(1, sites.get(0).getId().intValue());
+        assertEquals("1234567890", sites.get(0).getTelephone());
     }
 
     @Test
     public void chercherSiteParId() throws Exception {
+        // Given
+        // When
+        Site site = siteDAO.chercherSiteParId(1);
+
+        // Then
+        assertNotNull(site);
+        assertEquals("1234567890", site.getTelephone());
+        assertEquals("9 Rue du sport", site.getAdresse());
+        assertEquals("Foot-à-5 de la ville", site.getNom());
     }
 
     @Test
     public void creerSite() throws Exception {
+        // Given
+        Site nouveauSite = new Site("Nouveau site", "123 Rue du site", "0412345678", null);
+
+        // When
+        siteDAO.creerSite(nouveauSite);
+
+        // Then
+        assertNotNull(nouveauSite.getId());
+        assertTrue(nouveauSite.getId() > 0);
     }
 }

@@ -2,7 +2,9 @@ package net.andresbustamante.yafoot.model;
 
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
-public class Utilisateur implements Identifiable {
+import java.io.Serializable;
+
+public class Utilisateur implements Serializable, Identifiable {
 
     protected Integer id;
     protected String email;
