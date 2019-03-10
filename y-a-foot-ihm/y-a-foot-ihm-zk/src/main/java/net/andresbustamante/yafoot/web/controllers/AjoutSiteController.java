@@ -28,7 +28,7 @@ public class AjoutSiteController extends SelectorComposer<Component> {
     @Wire
     private Textbox tbxTelephoneSite;
     @Wire
-    private ListModel<Site> sitesModel;
+    private transient ListModel<Site> sitesModel;
 
     @Listen("onClick = #btnContinue")
     public void ajouterSite() {

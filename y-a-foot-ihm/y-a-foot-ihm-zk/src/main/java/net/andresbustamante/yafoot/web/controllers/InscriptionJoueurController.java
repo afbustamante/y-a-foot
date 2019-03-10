@@ -24,7 +24,7 @@ import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_ACCUEIL;
 @VariableResolver(DelegatingVariableResolver.class)
 public class InscriptionJoueurController extends SelectorComposer<Component> {
 
-    private final Log log = LogFactory.getLog(InscriptionJoueursUIService.class);
+    private final transient Log log = LogFactory.getLog(InscriptionJoueursUIService.class);
 
     @Wire
     private Textbox txtFirstName;
@@ -42,7 +42,7 @@ public class InscriptionJoueurController extends SelectorComposer<Component> {
     private Textbox txtEmail;
 
     @WireVariable
-    private InscriptionJoueursUIService inscriptionJoueursUIService;
+    private transient InscriptionJoueursUIService inscriptionJoueursUIService;
 
     @Listen("onClick = #btnContinue")
     public void enregistrerUtilisateur() {

@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class OrganisationMatchsUIService extends AbstractUIService {
 
-    private final Log log = LogFactory.getLog(OrganisationMatchsUIService.class);
+    private final transient Log log = LogFactory.getLog(OrganisationMatchsUIService.class);
 
     @Value("${rest.services.uri}")
     private String restServerUrl;

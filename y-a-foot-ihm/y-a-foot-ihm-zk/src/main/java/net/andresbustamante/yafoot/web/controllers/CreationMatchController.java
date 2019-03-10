@@ -37,7 +37,7 @@ public class CreationMatchController extends SelectorComposer<Component> {
     private Combobox cbbSite;
 
     @WireVariable
-    private OrganisationMatchsUIService organisationMatchsUIService;
+    private transient OrganisationMatchsUIService organisationMatchsUIService;
 
     private List<Site> sites;
 
