@@ -1,13 +1,18 @@
 package net.andresbustamante.yafoot.dao;
 
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.model.Joueur;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
+
+import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
 import static org.junit.Assert.*;
 
+@DatabaseSetup(value = "classpath:datasets/joueursDataset.xml")
+@DatabaseTearDown(value = "classpath:datasets/joueursDataset.xml", type = DELETE_ALL)
 public class JoueurDAOTest extends AbstractDAOTest {
 
     private static final String EMAIL = "john.doe@email.com";
@@ -16,23 +21,10 @@ public class JoueurDAOTest extends AbstractDAOTest {
     private static final String AUTRE_PRENOM = "Alan";
     private static final String NOUVEL_EMAIL = "nonInscrit@email.com";
 
-    private static final Joueur JOHN_DOE = new Joueur(null, "Doe", "John", EMAIL, "01234656789");
+    private static final Joueur JOHN_DOE = new Joueur(1, "Doe", "John", EMAIL, "01234656789");
 
     @Autowired
-    JoueurDAO joueurDAO;
-
-    @Before
-    public void setUp() throws Exception {
-        // Insérer un joueur de test
-        joueurDAO.creerJoueur(JOHN_DOE);
-    }
-
-    @After
-    public void clean() throws Exception {
-        // Supprimer les joueurs créés lors de l'exécution du test
-        joueurDAO.supprimerJoueur(JOHN_DOE);
-        joueurDAO.supprimerJoueur(getNouveauJoueur());
-    }
+    private JoueurDAO joueurDAO;
 
     @Test
     public void creerJoueur() throws Exception {
@@ -42,8 +34,6 @@ public class JoueurDAOTest extends AbstractDAOTest {
         // Vérifier que le joueur à un identifiant de base de données attribué
         assertNotNull(joueur.getId());
         assertTrue(joueur.getId() > 0);
-
-        joueurDAO.supprimerJoueur(joueur);
     }
 
     @Test
@@ -69,6 +59,7 @@ public class JoueurDAOTest extends AbstractDAOTest {
         assertNotNull(joueur1.getEmail());
         assertEquals(JOHN_DOE.getTelephone(), joueur1.getTelephone());
         assertNotNull(joueur1.getDateCreation());
+        assertEquals(LocalDateTime.of(2019, 1, 2, 12, 34, 56), joueur1.getDateCreation());
     }
 
     @Test
@@ -113,24 +104,14 @@ public class JoueurDAOTest extends AbstractDAOTest {
         assertEquals(AUTRE_NOM, joueur1.getNom());
         assertNotNull(joueur1.getPrenom());
         assertEquals(AUTRE_PRENOM, joueur1.getPrenom());
-
-        // Remettre les informations telles qu'elles étaient avant
-        joueur1.setNom(nom);
-        joueur1.setPrenom(prenom);
-        joueur1.setTelephone(telephone);
-        joueurDAO.actualiserJoueur(joueur1);
     }
 
     @Test
     public void supprimerJoueur() throws Exception {
         // Chercher le joueur à supprimer
-        Joueur joueur = getNouveauJoueur();
-        String email = joueur.getEmail();
-        joueurDAO.creerJoueur(joueur);
-        assertNotNull(joueur.getId());
+        joueurDAO.supprimerJoueur(JOHN_DOE);
 
-        joueurDAO.supprimerJoueur(joueur);
-        joueur = joueurDAO.chercherJoueurParEmail(email);
+        Joueur joueur = joueurDAO.chercherJoueurParEmail(EMAIL);
 
         // Le joueur n'existe plus
         assertNull(joueur);

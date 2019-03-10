@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -10,8 +10,8 @@ import java.util.List;
 public class Joueur extends Utilisateur implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Date dateCreation;
-    private Date dateDerniereMaj;
+    private LocalDateTime dateCreation;
+    private LocalDateTime dateDerniereMaj;
     private List<Voiture> voitures;
 
     public Joueur() {
@@ -29,19 +29,19 @@ public class Joueur extends Utilisateur implements Serializable {
         this.telephone = telephone;
     }
 
-    public Date getDateCreation() {
+    public LocalDateTime getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(Date dateCreation) {
+    public void setDateCreation(LocalDateTime dateCreation) {
         this.dateCreation = dateCreation;
     }
 
-    public Date getDateDerniereMaj() {
+    public LocalDateTime getDateDerniereMaj() {
         return dateDerniereMaj;
     }
 
-    public void setDateDerniereMaj(Date dateDerniereMaj) {
+    public void setDateDerniereMaj(LocalDateTime dateDerniereMaj) {
         this.dateDerniereMaj = dateDerniereMaj;
     }
 
