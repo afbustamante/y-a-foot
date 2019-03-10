@@ -8,7 +8,7 @@
       <xs:import namespace="http://andresbustamante.net/yafoot/model/xs" schemaLocation="../xsd/foot.xsd"/>
     </xs:schema>
   </grammars>
-  <resources base="http://localhost:8080/y-a-foot-ws">
+  <resources base="/">
     <resource path="/inscriptions" id="InscriptionsController">
       <resource path="">
         <method name="POST" id="inscrireJoueurMatch">

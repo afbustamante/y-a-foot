@@ -43,6 +43,7 @@
     <spring-data-commons.version>2.0.12.RELEASE</spring-data-commons.version>
     <spring-security.version>5.0.8.RELEASE</spring-security.version>
     <jackson-databind.version>2.9.8</jackson-databind.version>
+    <spring-boot.version>2.0.5.RELEASE</spring-boot.version>
 
     <!-- ICEFaces -->
     <icefaces.version>4.1.1</icefaces.version>
@@ -180,6 +181,36 @@
         <version>${jackson-databind.version}</version>
       </dependency>
 
+      <!-- Spring Boot -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+
       <!-- MyBatis -->
       <dependency>
         <groupId>org.mybatis</groupId>
@@ -189,6 +220,11 @@
       <dependency>
         <groupId>org.mybatis</groupId>
         <artifactId>mybatis-spring</artifactId>
+        <version>${mybatis-spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mybatis.spring.boot</groupId>
+        <artifactId>mybatis-spring-boot-starter</artifactId>
         <version>${mybatis-spring.version}</version>
       </dependency>
 
@@ -391,6 +427,12 @@
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>
           <version>${tomcat7-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring-boot.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

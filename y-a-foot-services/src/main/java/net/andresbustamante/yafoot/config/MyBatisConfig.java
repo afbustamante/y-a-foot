@@ -25,7 +25,7 @@ public class MyBatisConfig {
         return transactionManager;
     }
 
-    @Bean
+    @Bean("sqlSessionFactory")
     public SqlSessionFactoryBean sqlSessionFactory() {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
