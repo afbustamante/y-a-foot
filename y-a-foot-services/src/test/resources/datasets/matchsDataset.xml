@@ -15,4 +15,7 @@
   <t_match mat_id="2" mat_date="2019-10-02 19:10:00" mat_code="QWERTY-1234" mat_description="Mon match dans le futur"
            mat_num_joueurs_min="8" mat_num_joueurs_max="12" mat_site_fk="2" mat_createur_fk="2" mat_date_creation="2019-01-02"/>
 
+  <t_joueur_match jma_match_fk="1" jma_joueur_fk="1" />
+  <t_joueur_match jma_match_fk="2" jma_joueur_fk="2" />
+  <t_joueur_match jma_match_fk="2" jma_joueur_fk="3" />
 </dataset>

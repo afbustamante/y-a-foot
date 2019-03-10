@@ -7,7 +7,7 @@ import net.andresbustamante.yafoot.util.ConstantesDaoUtils;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -40,7 +40,7 @@ public interface MatchDAO {
      * @return
      */
     List<Match> chercherMatchsParJoueur(@Param(ConstantesDaoUtils.ID) Integer idJoueur,
-                                        @Param(ConstantesDaoUtils.DATE) Date dateInitiale)
+                                        @Param(ConstantesDaoUtils.DATE) ZonedDateTime dateInitiale)
             throws SQLException;
 
     /**

@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.*;
+import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
 import static org.junit.Assert.*;
@@ -60,10 +61,35 @@ public class MatchDAOTest extends AbstractDAOTest {
 
     @Test
     public void chercherMatchsParJoueur() throws Exception {
+        // Given
+        Integer idJoueur = 1;
+        LocalDateTime date = LocalDate.of(2018, 10, 2).atStartOfDay();
+        ZonedDateTime dateInitiale = ZonedDateTime.of(date, ZoneId.systemDefault());
+
+        // When
+        List<Match> matchs = matchDAO.chercherMatchsParJoueur(idJoueur, dateInitiale);
+
+        // Then
+        assertNotNull(matchs);
+        assertEquals(1 ,matchs.size());
+        assertNotNull(matchs.get(0));
+        assertEquals("AZERTY-1234", matchs.get(0).getCode());
+        assertTrue(matchs.get(0).getDateMatch().isAfter(dateInitiale));
     }
 
     @Test
     public void chercherMatchParId() throws Exception {
+        // Given
+        Integer idMatch = 1;
+
+        // When
+        Match match = matchDAO.chercherMatchParId(1);
+
+        //Then
+        assertNotNull(match);
+        assertEquals("AZERTY-1234", match.getCode());
+        assertNotNull(match.getSite());
+        assertEquals(1, match.getSite().getId().intValue());
     }
 
     @Test
@@ -98,5 +124,17 @@ public class MatchDAOTest extends AbstractDAOTest {
 
     @Test
     public void isJoueurInscritMatch() throws Exception {
+        // Given
+        Joueur joueurInscrit = joueurDAO.chercherJoueurParId(1);
+        Joueur joueurNonInscrit = joueurDAO.chercherJoueurParId(2);
+        Match match = matchDAO.chercherMatchParId(1);
+
+        // When
+        boolean test1 = matchDAO.isJoueurInscritMatch(joueurInscrit, match);
+        boolean test2 = matchDAO.isJoueurInscritMatch(joueurNonInscrit, match);
+
+        // Then
+        assertTrue(test1);
+        assertFalse(test2);
     }
 }

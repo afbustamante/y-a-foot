@@ -66,7 +66,7 @@
         WHERE jma.jma_joueur_fk = #{id} AND mat.mat_date > #{date}
     </select>
 
-    <select id="chercherMatchParId" resultType="net.andresbustamante.yafoot.model.Match">
+    <select id="chercherMatchParId" resultMap="matchComplet">
         SELECT
             mat.mat_id              AS id,
             mat.mat_code            AS code,

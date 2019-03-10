@@ -5,13 +5,14 @@ import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
-import net.andresbustamante.yafoot.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +42,8 @@ public class RechercheMatchsServiceImpl implements RechercheMatchsService {
         try {
             if (idJoueur != null && idJoueur > 0) {
                 // Chercher les matchs programmés pour le joueur depuis ce matin
-                Date date = DateUtils.premiereMinuteDuJour(new Date());
+                LocalDateTime dateLocale = LocalDate.now(contexte.getTimeZone()).atStartOfDay();
+                ZonedDateTime date = ZonedDateTime.of(dateLocale, contexte.getTimeZone());
                 return matchDAO.chercherMatchsParJoueur(idJoueur, date);
             } else {
                 return Collections.emptyList();

@@ -1,5 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
+import java.time.ZoneId;
+
 /**
  * @author andresbustamante
  */
@@ -9,7 +11,7 @@ public class Contexte {
 
     private Integer idUtilisateur;
     private String emailUtilisateur;
-    private String[] rolesUtilisateur;
+    private ZoneId timeZone;
 
     public Contexte() {}
 
@@ -33,11 +35,11 @@ public class Contexte {
         this.emailUtilisateur = emailUtilisateur;
     }
 
-    public String[] getRolesUtilisateur() {
-        return rolesUtilisateur;
+    public ZoneId getTimeZone() {
+        return timeZone;
     }
 
-    public void setRolesUtilisateur(String[] rolesUtilisateur) {
-        this.rolesUtilisateur = rolesUtilisateur;
+    public void setTimeZone(ZoneId timeZone) {
+        this.timeZone = timeZone;
     }
 }
