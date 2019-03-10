@@ -1,17 +1,18 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.services.GestionJoueursService;
 import net.andresbustamante.yafoot.services.RechercheJoueursService;
-import net.andresbustamante.yafoot.util.ConfigProperties;
 import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import net.andresbustamante.yafoot.web.mappers.ContexteMapper;
 import net.andresbustamante.yafoot.web.mappers.JoueurMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +38,9 @@ public class JoueursController {
     @Autowired
     private RechercheJoueursService rechercheJoueursService;
 
+    @Value("${recherche.joueurs.email.service.path}")
+    private String pathRechercheJoueursParAdresseMail;
+
     private final Log log = LogFactory.getLog(JoueursController.class);
 
     /**
@@ -53,8 +57,7 @@ public class JoueursController {
 
             if (inscrit) {
                 MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-                String location = MessageFormat.format(ConfigProperties.getValue(
-                        "recherche.joueurs.email.service.path"), joueur.getEmail());
+                String location = MessageFormat.format(pathRechercheJoueursParAdresseMail, joueur.getEmail());
                 headers.add(HttpHeaders.LOCATION, location);
                 return new ResponseEntity<>(true, headers, HttpStatus.CREATED);
             } else {
@@ -82,6 +85,9 @@ public class JoueursController {
         } catch (BDDException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (ApplicationException e) {
+            log.error("Erreur lors de la récupération des information du contexte", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

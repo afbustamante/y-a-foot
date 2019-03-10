@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
@@ -47,7 +48,11 @@ public class InscriptionsController {
                 return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
             }
         } catch (BDDException e) {
+            log.error("Erreur de base de données", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (ApplicationException e) {
+            log.error("Erreur lors de la récupération des information du contexte", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
