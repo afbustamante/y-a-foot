@@ -6,23 +6,19 @@ import net.andresbustamante.yafoot.web.services.InscriptionJoueursUIService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.annotation.Listen;
-import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
 import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_ACCUEIL;
 
-@VariableResolver(DelegatingVariableResolver.class)
-public class InscriptionJoueurController extends SelectorComposer<Component> {
+public class InscriptionJoueurController extends AbstractController {
 
     private final transient Log log = LogFactory.getLog(InscriptionJoueursUIService.class);
 
@@ -44,7 +40,7 @@ public class InscriptionJoueurController extends SelectorComposer<Component> {
     @WireVariable
     private transient InscriptionJoueursUIService inscriptionJoueursUIService;
 
-    @Listen("onClick = #btnContinue")
+    @Listen(Events.ON_CLICK + " = #btnContinue")
     public void enregistrerUtilisateur() {
         String prenom = txtFirstName.getValue();
         String nom = txtSurname.getValue();

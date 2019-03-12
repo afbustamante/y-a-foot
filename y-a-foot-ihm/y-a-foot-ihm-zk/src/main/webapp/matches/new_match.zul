@@ -24,21 +24,21 @@
           <row>
             <cell>${c:l('new.match.date')}</cell>
             <cell>
-              <datebox id="txtDateMatch" constraint="no empty" format="yyyy/MM/dd H:mm" width="90%"/>
+              <datebox id="dtbDateMatch" constraint="no empty" format="yyyy/MM/dd H:mm" width="90%"/>
             </cell>
             <cell/>
           </row>
           <row>
             <cell>${c:l('new.match.players.min')}</cell>
             <cell>
-              <spinner id="txtNbMinJoeurs" constraint="no empty, no negative" width="90%"/>
+              <spinner id="spbNbMinJoueurs" constraint="no empty, no negative" width="90%"/>
             </cell>
             <cell/>
           </row>
           <row>
             <cell>${c:l('new.match.players.max')}</cell>
             <cell>
-              <spinner id="txtNbMaxJoeurs" constraint="no negative" width="90%"/>
+              <spinner id="spbNbMaxJoueurs" constraint="no negative" width="90%"/>
             </cell>
             <cell/>
           </row>

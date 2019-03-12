@@ -1,12 +1,9 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.model.xs.Site;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.annotation.Listen;
-import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
@@ -14,8 +11,7 @@ import org.zkoss.zul.Window;
 /**
  * @author andresbustamante
  */
-@VariableResolver(DelegatingVariableResolver.class)
-public class AjoutSiteController extends SelectorComposer<Component> {
+public class AjoutSiteController extends AbstractController {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,12 +26,12 @@ public class AjoutSiteController extends SelectorComposer<Component> {
     @Wire
     private transient ListModel<Site> sitesModel;
 
-    @Listen("onClick = #btnContinue")
+    @Listen(Events.ON_CLICK + " = #btnContinue")
     public void ajouterSite() {
         fermerDialog();
     }
 
-    @Listen("onClick = #btnCancel")
+    @Listen(Events.ON_CLICK + " = #btnCancel")
     public void fermerDialog() {
         winNouveauSite.detach();
     }
