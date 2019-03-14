@@ -22,7 +22,7 @@ public class RechercheMatchsUIService extends AbstractUIService {
     public Match chercherMatchParCode(String codeMatch) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
-        resource = resource.path(MessageFormat.format("/code/{0}", codeMatch));
+        resource = resource.path(MessageFormat.format("/{0}", codeMatch));
         return resource.request(MediaType.APPLICATION_XML).get(Match.class);
     }
 

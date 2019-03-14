@@ -1,0 +1,31 @@
+<?page title="${c:l('application.title')}"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1.0"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1"?>
+<?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<window apply="net.andresbustamante.yafoot.web.controllers.RechercheMatchsJoueurController">
+  <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
+  <include src="/zul/top.zul" />
+  <div id="content">
+    <vlayout>
+      <label value="${c:l('match.list.title')}" />
+      <separator/>
+      <tabbox>
+        <tabs>
+          <tab id="tabMatchesToPlay" label="${c:l('match.list.to.play')}" />
+          <tab id="tabMatchesPlayed" label="${c:l('match.list.played')}" />
+          <tab id="tabCancelledMatches" label="${c:l('match.list.cancelled')}" />
+        </tabs>
+        <tabpanels>
+          <tabpanel>
+          </tabpanel>
+          <tabpanel>
+          </tabpanel>
+          <tabpanel>
+          </tabpanel>
+        </tabpanels>
+      </tabbox>
+    </vlayout>
+  </div>
+</window>

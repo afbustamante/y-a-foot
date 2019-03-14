@@ -48,7 +48,7 @@ public class MatchsController {
     public MatchsController() {
     }
 
-    @GetMapping(path = "/code/{codeMatch}", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(path = "/{codeMatch}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Match> getMatchParCode(@PathVariable("codeMatch") String codeMatch) {
         try {
             net.andresbustamante.yafoot.model.Match match = rechercheMatchsService.chercherMatchParCode(codeMatch,

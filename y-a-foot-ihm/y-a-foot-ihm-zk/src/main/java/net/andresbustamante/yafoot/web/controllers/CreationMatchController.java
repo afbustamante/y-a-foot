@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -18,6 +19,9 @@ import org.zkoss.zul.*;
 
 import java.util.Calendar;
 import java.util.*;
+
+import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_ACCUEIL;
+import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_LISTE_MATCHS;
 
 /**
  * @author andresbustamante
@@ -88,7 +92,10 @@ public class CreationMatchController extends AbstractController {
 
             String codeMatch = organisationMatchsUIService.creerMatch(match);
 
-            Clients.showNotification(Labels.getLabel("new.match.success", codeMatch), true);
+            EventListener<Messagebox.ClickEvent> clickListener = event -> Executions.sendRedirect(PAGE_LISTE_MATCHS);
+            Messagebox.show(Labels.getLabel("new.match.success", new String[]{codeMatch}),
+                    Labels.getLabel("dialog.information.title"),
+                    new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION, clickListener);
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
             Clients.showNotification(Labels.getLabel("application.exception.text", e.getMessage()), true);

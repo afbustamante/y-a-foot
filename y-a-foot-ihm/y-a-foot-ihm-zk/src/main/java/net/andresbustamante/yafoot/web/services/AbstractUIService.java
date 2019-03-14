@@ -52,7 +52,8 @@ public abstract class AbstractUIService {
     private Joueur chercherJoueur(String email) {
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<Joueur> response = restTemplate.getForEntity(getServerUrl() + getJoueursPath() + MessageFormat.format("/{0}/email", email), Joueur.class);
+        String url = getServerUrl() + getJoueursPath() + MessageFormat.format("/{0}/email", email);
+        ResponseEntity<Joueur> response = restTemplate.getForEntity(url, Joueur.class);
         return response.getBody();
     }
 }

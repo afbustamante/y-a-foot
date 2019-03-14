@@ -1,0 +1,88 @@
+<?page title="${c:l('application.title')}"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1.0"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1"?>
+<?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<window apply="net.andresbustamante.yafoot.web.controllers.RechercheMatchController">
+  <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
+  <include src="/zul/top.zul"/>
+  <div id="content">
+    <vlayout>
+      <label value="${c:l('match.search.wish.text')}"/>
+      <separator/>
+      <grid>
+        <columns>
+          <column width="30%"/>
+          <column width="30%"/>
+          <column width="40%"/>
+        </columns>
+        <rows>
+          <row>
+            <cell>
+              ${c:l('match.search.code')}
+              <!--button id="btnAideCodeMatch" image="/images/22x22/help-browser.png" /-->
+            </cell>
+            <cell>
+              <textbox id="txbCode" constraint="no empty" width="90%"/>
+            </cell>
+            <cell>
+              <button id="btnSearch" label="${c:l('match.search.button.search')}"
+                      image="/images/22x22/system-search.png"/>
+            </cell>
+          </row>
+        </rows>
+      </grid>
+      <separator/>
+      <grid id="grdMatchDetail">
+        <auxhead>
+          <auxheader label="${c:l('match.search.match.about')}" colspan="3" rowspan="1"/>
+        </auxhead>
+        <rows>
+          <row>
+            <cell>
+              <label value="${c:l('match.search.result.when')}"/>
+            </cell>
+            <cell>
+              <label id="lblDate" multiline="true"/>
+            </cell>
+            <cell/>
+          </row>
+          <row>
+            <cell>
+              <label value="${c:l('match.search.result.where')}"/>
+            </cell>
+            <cell>
+              <label id="lblPlace" multiline="true"/>
+            </cell>
+            <cell>
+              <button id="btnViewMap" label="${c:l('match.search.result.map')}"
+                      image="/images/22x22/system-search.png"/>
+            </cell>
+          </row>
+          <row>
+            <cell>
+              <label value="${c:l('match.search.result.who')}"/>
+            </cell>
+            <cell>
+              <listbox id="lsbPlayers" emptyMessage="${c:l('match.search.result.who')}">
+                <template name="model">
+                  <listitem>
+                    <listcell label="${each.joueur.prenom}" />
+                  </listitem>
+                </template>
+              </listbox>
+            </cell>
+            <cell>
+              <label id="lblSpotsAvailable"/>
+            </cell>
+          </row>
+        </rows>
+      </grid>
+      <separator/>
+      <hlayout>
+        <button id="btnJoin" label="${c:l('match.search.button.join')}" image="/images/22x22/go-next.png"/>
+      </hlayout>
+    </vlayout>
+  </div>
+</window>

@@ -46,6 +46,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
             ResponseEntity<Sites> response = restTemplate.getForEntity(builder.toUriString(), Sites.class);
             return (response.getBody() != null) ? response.getBody().getSite() : Collections.emptyList();
         } catch (RestClientException e) {
+            log.error("Erreur lors de la recherche des sites pour un joueur", e);
             throw new ApplicationException(e.getMessage());
         }
     }
