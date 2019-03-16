@@ -75,6 +75,7 @@
     <flyway-core.version>5.2.4</flyway-core.version>
     <slf4j-api.version>1.7.25</slf4j-api.version>
     <javassist.version>3.21.0-GA</javassist.version>
+    <logback.version>1.2.3</logback.version>
   </properties>
 
   <dependencyManagement>
@@ -267,6 +268,11 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
       </dependency>
 
       <!-- ICEFaces -->

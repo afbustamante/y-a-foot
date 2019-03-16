@@ -4,8 +4,8 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.web.services.OrganisationMatchsUIService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -20,7 +20,6 @@ import org.zkoss.zul.*;
 import java.util.Calendar;
 import java.util.*;
 
-import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_ACCUEIL;
 import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_LISTE_MATCHS;
 
 /**
@@ -29,7 +28,7 @@ import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_LISTE_MATCHS;
 public class CreationMatchController extends AbstractController {
 
     private static final long serialVersionUID = 1L;
-    private final Log log = LogFactory.getLog(CreationMatchController.class);
+    private final transient Logger log = LoggerFactory.getLogger(CreationMatchController.class);
 
     @Wire
     private Datebox dtbDateMatch;

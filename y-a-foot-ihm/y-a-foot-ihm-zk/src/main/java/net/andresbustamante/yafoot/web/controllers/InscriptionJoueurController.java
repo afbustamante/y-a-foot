@@ -3,8 +3,8 @@ package net.andresbustamante.yafoot.web.controllers;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.web.services.InscriptionJoueursUIService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.EventListener;
@@ -20,7 +20,7 @@ import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_ACCUEIL;
 
 public class InscriptionJoueurController extends AbstractController {
 
-    private final transient Log log = LogFactory.getLog(InscriptionJoueursUIService.class);
+    private final transient Logger log = LoggerFactory.getLogger(InscriptionJoueursUIService.class);
 
     @Wire
     private Textbox txtFirstName;

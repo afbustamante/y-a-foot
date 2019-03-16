@@ -4,8 +4,8 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.model.xs.Sites;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class OrganisationMatchsUIService extends AbstractUIService {
 
-    private final transient Log log = LogFactory.getLog(OrganisationMatchsUIService.class);
+    private final transient Logger log = LoggerFactory.getLogger(OrganisationMatchsUIService.class);
 
     @Value("${rest.services.uri}")
     private String restServerUrl;

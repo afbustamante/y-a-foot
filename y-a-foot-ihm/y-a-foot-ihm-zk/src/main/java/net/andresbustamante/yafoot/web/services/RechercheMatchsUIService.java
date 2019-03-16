@@ -3,8 +3,8 @@ package net.andresbustamante.yafoot.web.services;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.text.MessageFormat;
 @Service
 public class RechercheMatchsUIService extends AbstractUIService {
 
-    private final transient Log log = LogFactory.getLog(RechercheMatchsUIService.class);
+    private final transient Logger log = LoggerFactory.getLogger(RechercheMatchsUIService.class);
 
     @Value("${rest.services.uri}")
     private String restServerUrl;

@@ -10,6 +10,6 @@
         <setting name="defaultFetchSize" value="100"/>
         <setting name="safeRowBoundsEnabled" value="false"/>
         <setting name="mapUnderscoreToCamelCase" value="false"/>
-        <setting name="logImpl" value="COMMONS_LOGGING"/>
+        <setting name="logImpl" value="SLF4J"/>
     </settings>
 </configuration>

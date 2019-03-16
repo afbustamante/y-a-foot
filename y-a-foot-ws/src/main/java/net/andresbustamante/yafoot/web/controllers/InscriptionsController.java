@@ -4,10 +4,10 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
-import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import net.andresbustamante.yafoot.web.mappers.InscriptionMapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import net.andresbustamante.yafoot.web.util.ContexteUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class InscriptionsController {
     @Autowired
     private GestionMatchsService gestionMatchsService;
 
-    private final Log log = LogFactory.getLog(InscriptionsController.class);
+    private final Logger log = LoggerFactory.getLogger(InscriptionsController.class);
 
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> inscrireJoueurMatch(@RequestBody Inscription inscription,

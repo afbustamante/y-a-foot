@@ -6,11 +6,11 @@ import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.services.GestionJoueursService;
 import net.andresbustamante.yafoot.services.RechercheJoueursService;
-import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import net.andresbustamante.yafoot.web.mappers.ContexteMapper;
 import net.andresbustamante.yafoot.web.mappers.JoueurMapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import net.andresbustamante.yafoot.web.util.ContexteUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +41,7 @@ public class JoueursController {
     @Value("${recherche.joueurs.email.service.path}")
     private String pathRechercheJoueursParAdresseMail;
 
-    private final Log log = LogFactory.getLog(JoueursController.class);
+    private final Logger log = LoggerFactory.getLogger(JoueursController.class);
 
     /**
      * @param joueur

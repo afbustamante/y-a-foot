@@ -3,15 +3,15 @@ package net.andresbustamante.yafoot.web.controllers;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.Contexte;
-import net.andresbustamante.yafoot.services.GestionMatchsService;
-import net.andresbustamante.yafoot.web.util.ContexteUtils;
-import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;
+import net.andresbustamante.yafoot.services.GestionMatchsService;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
+import net.andresbustamante.yafoot.web.mappers.MatchMapper;
+import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -43,7 +43,7 @@ public class MatchsController {
     @Value("${recherche.matchs.code.service.path}")
     private String pathRechercheMatchsParCode;
 
-    private final Log log = LogFactory.getLog(MatchsController.class);
+    private final Logger log = LoggerFactory.getLogger(MatchsController.class);
 
     public MatchsController() {
     }

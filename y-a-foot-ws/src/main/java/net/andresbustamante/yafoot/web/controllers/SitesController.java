@@ -6,15 +6,15 @@ import net.andresbustamante.yafoot.model.xs.Sites;
 import net.andresbustamante.yafoot.services.RechercheSitesService;
 import net.andresbustamante.yafoot.web.mappers.SiteMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class SitesController {
     @Autowired
     private RechercheSitesService rechercheSitesService;
 
-    private final Log log = LogFactory.getLog(SitesController.class);
+    private final Logger log = LoggerFactory.getLogger(SitesController.class);
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Sites> getSitesJoueur(@RequestParam("idJoueur") Integer idJoueur) {

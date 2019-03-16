@@ -1,18 +1,18 @@
 package net.andresbustamante.yafoot.aop;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class LoggingAspect {
 
-    private final Log log = LogFactory.getLog(LoggingAspect.class);
+    private final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Pointcut("execution(* net.andresbustamante.yafoot.services.impl.*ServiceImpl.*(..))")
     public void filtrerServicesMetier() {

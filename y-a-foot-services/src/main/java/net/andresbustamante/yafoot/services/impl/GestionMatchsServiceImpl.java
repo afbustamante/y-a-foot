@@ -7,9 +7,9 @@ import net.andresbustamante.yafoot.dao.VoitureDAO;
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.text.RandomStringGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
     private final RandomStringGenerator generateurCodes = new RandomStringGenerator.Builder().withinRange('A', 'Z').build();
 
-    private static final Log log = LogFactory.getLog(GestionMatchsService.class);
+    private static final Logger log = LoggerFactory.getLogger(GestionMatchsService.class);
 
     @Autowired
     private MatchDAO matchDAO;

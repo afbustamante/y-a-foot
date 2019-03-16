@@ -2,11 +2,10 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Inscription;
-import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -16,7 +15,6 @@ import org.zkoss.zul.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -26,7 +24,7 @@ import java.util.Locale;
  */
 public class RechercheMatchController extends AbstractController {
 
-    private final Log log = LogFactory.getLog(RechercheMatchController.class);
+    private final transient Logger log = LoggerFactory.getLogger(RechercheMatchController.class);
 
     private Match match;
 
