@@ -9,50 +9,57 @@ import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.text.MessageFormat;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 /**
  * Web Service REST pour la gestion des inscriptions aux matches
  *
  * @author andresbustamante
  */
-@RestController
-@RequestMapping("/inscriptions")
-public class InscriptionsController {
+@Path("/inscriptions")
+public class InscriptionsController extends AbstractController {
 
     @Autowired
     private GestionMatchsService gestionMatchsService;
 
     private final Logger log = LoggerFactory.getLogger(InscriptionsController.class);
 
-    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> inscrireJoueurMatch(@RequestBody Inscription inscription,
-                                                       @RequestHeader HttpHeaders headers) {
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response inscrireJoueurMatch(Inscription inscription,
+                                        @Context HttpServletRequest request) {
         log.info("Traitement de nouvelle demande d'inscription");
 
         try {
-            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(headers);
+            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
             net.andresbustamante.yafoot.model.Inscription ins = InscriptionMapper.INSTANCE.toInscriptionBean(inscription);
             boolean succes = gestionMatchsService.inscrireJoueurMatch(ins.getJoueur(), ins.getMatch(),
                     ins.getVoiture(), contexte);
 
             if (succes) {
                 log.info("Le joueur a ete inscrit");
-                return new ResponseEntity<>(true, HttpStatus.CREATED);
+                String location = MessageFormat.format("/joueurs/{0}", ins.getJoueur().getEmail());
+                return Response.created(getLocationURI(location)).build();
             } else {
                 log.warn("Le joueur n'a pas pu etre inscrit");
-                return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+                return Response.status(BAD_REQUEST).build();
             }
         } catch (BDDException e) {
             log.error("Erreur de base de données", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.serverError().build();
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des information du contexte", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return Response.status(BAD_REQUEST).build();
         }
     }
 

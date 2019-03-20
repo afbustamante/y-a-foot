@@ -22,10 +22,10 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     @Autowired
     private LdapTemplate ldapTemplate;
 
-    @Value("${ldap.users.dn}")
+    @Value("${ldap.config.users.dn}")
     private String dnUtilisateurs;
 
-    @Value("${ldap.roles.dn}")
+    @Value("${ldap.config.roles.dn}")
     private String dnRoles;
 
     @Override

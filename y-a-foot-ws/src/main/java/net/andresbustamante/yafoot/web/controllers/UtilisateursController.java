@@ -1,26 +1,18 @@
 package net.andresbustamante.yafoot.web.controllers;
 
-import net.andresbustamante.yafoot.model.xs.Utilisateur;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 /**
  * @author andresbustamante
  */
-@RestController
-@RequestMapping("/utilisateurs")
+@Path("/utilisateurs")
 public class UtilisateursController {
 
-    @PostMapping(path = "/authentification")
-    public void authentifierUtilisateur(@RequestBody Utilisateur utilisateur) {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
-    }
-
-    @PostMapping(path = "/recuperationMotDePasse")
-    public boolean recupererMdpOublie(@RequestBody String email) {
+    @PUT
+    @Path("/{email}/recuperationMotDePasse")
+    public boolean recupererMdpOublie(@PathParam("email") String email) {
         //TODO implement this method
         throw new UnsupportedOperationException("Not implemented yet.");
     }

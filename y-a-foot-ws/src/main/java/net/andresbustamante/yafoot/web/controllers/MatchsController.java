@@ -14,25 +14,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 import java.util.List;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 /**
  * Web Service REST pour la recherche et consultation des matches
  *
  * @author andresbustamante
  */
-@RestController
-@RequestMapping("/matchs")
-public class MatchsController {
+@Path("/matchs")
+public class MatchsController extends AbstractController {
 
     @Autowired
     private RechercheMatchsService rechercheMatchsService;
@@ -48,22 +48,25 @@ public class MatchsController {
     public MatchsController() {
     }
 
-    @GetMapping(path = "/{codeMatch}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Match> getMatchParCode(@PathVariable("codeMatch") String codeMatch) {
+    @GET
+    @Path("/{codeMatch}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getMatchParCode(@PathParam("codeMatch") String codeMatch) {
         try {
             net.andresbustamante.yafoot.model.Match match = rechercheMatchsService.chercherMatchParCode(codeMatch,
                     new Contexte());
 
-            return (match != null) ? new ResponseEntity<>(MatchMapper.INSTANCE.toMatchDTO(match), HttpStatus.OK) :
-                    new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return (match != null) ? Response.ok(MatchMapper.INSTANCE.toMatchDTO(match)).build() :
+                    Response.status(NOT_FOUND).build();
         } catch (BDDException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.serverError().build();
         }
     }
 
-    @GetMapping(path = "/joueur/{idJoueur}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Matchs> getMatchsJoueur(@PathVariable("idJoueur") Integer idJoueur) {
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getMatchsJoueur(@QueryParam("idJoueur") Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur,
                     new Contexte());
@@ -74,43 +77,43 @@ public class MatchsController {
                 for (net.andresbustamante.yafoot.model.Match m : matchs) {
                     result.getMatch().add(MatchMapper.INSTANCE.toMatchDTO(m));
                 }
-                return new ResponseEntity<>(result, HttpStatus.OK);
+                return Response.ok(result).build();
             } else {
-                return new ResponseEntity<>(new Matchs(), HttpStatus.OK);
+                return Response.ok(new Matchs()).build();
             }
         } catch (BDDException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.serverError().build();
         }
     }
 
-    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> creerMatch(@RequestBody Match match, @RequestHeader HttpHeaders headers) {
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response creerMatch(Match match, @Context HttpServletRequest request) {
         try {
-            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(headers);
+            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
             net.andresbustamante.yafoot.model.Match m = MatchMapper.INSTANCE.toMatchBean(match);
             boolean isMatchCree = gestionMatchsService.creerMatch(m, contexte);
 
             if (isMatchCree) {
-                MultiValueMap<String, String> headersResponse = new LinkedMultiValueMap<>();
                 String location = MessageFormat.format(pathRechercheMatchsParCode, m.getCode());
-                headersResponse.add(HttpHeaders.LOCATION, location);
-                return new ResponseEntity<>(m.getCode(), headersResponse, HttpStatus.CREATED);
+                return Response.created(getLocationURI(location)).build();
             } else {
-                return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+                return Response.status(BAD_REQUEST).build();
             }
         } catch (BDDException e) {
             log.error("Erreur lors de la création d'un match", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.serverError().build();
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des information du contexte", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return Response.status(BAD_REQUEST).build();
         }
     }
 
-    @PutMapping(path = "/annulation", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> annulerMatch(@RequestBody Match match,
-                                                @RequestHeader HttpHeaders headers) {
+    @PUT
+    @Path("/{idMatch}/annulation")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response annulerMatch(Match match, @Context HttpServletRequest request) {
         //TODO implement this method
         throw new UnsupportedOperationException("Not implemented yet.");
     }

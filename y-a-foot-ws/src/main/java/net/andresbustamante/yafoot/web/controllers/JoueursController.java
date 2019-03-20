@@ -13,24 +13,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 /**
  * Service REST de gestion des inscriptions des joueurs dans l'application
  *
  * @author andresbustamante
  */
-@RestController
-@RequestMapping("/joueurs")
-public class JoueursController {
+@Path("/joueurs")
+public class JoueursController extends AbstractController {
 
     @Autowired
     private GestionJoueursService gestionJoueursService;
@@ -47,8 +47,9 @@ public class JoueursController {
      * @param joueur
      * @return
      */
-    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> inscrireJoueur(@RequestBody Joueur joueur) {
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response inscrireJoueur(Joueur joueur) {
         try {
             log.info("Demande de création d'un nouveau joueur avec l'adresse " + joueur.getEmail());
             net.andresbustamante.yafoot.model.Joueur nouveauJoueur = JoueurMapper.INSTANCE.toJoueurBean(joueur);
@@ -56,56 +57,56 @@ public class JoueursController {
                     ContexteMapper.INSTANCE.toContexteBean(new Contexte()));
 
             if (inscrit) {
-                MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
                 String location = MessageFormat.format(pathRechercheJoueursParAdresseMail, joueur.getEmail());
-                headers.add(HttpHeaders.LOCATION, location);
-                return new ResponseEntity<>(true, headers, HttpStatus.CREATED);
+                return Response.created(getLocationURI(location)).build();
             } else {
-                return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+                return Response.status(BAD_REQUEST).build();
             }
         } catch (BDDException e) {
             log.error("Erreur lors de l'inscription d'un joueur", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.serverError().build();
         }
     }
 
     /**
      * @param joueur
-     * @param headers
+     * @param request
      * @return
      */
-    @PutMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> actualiserJoueur(@RequestBody Joueur joueur,
-                                                    @RequestHeader HttpHeaders headers) {
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response actualiserJoueur(Joueur joueur,
+                                                    @Context HttpServletRequest request) {
         try {
-            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(headers);
+            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
             boolean succes = gestionJoueursService.actualiserJoueur(JoueurMapper.INSTANCE.toJoueurBean(joueur), contexte);
-            return (succes) ? new ResponseEntity<>(true, HttpStatus.ACCEPTED) : new ResponseEntity<>(false,
-                    HttpStatus.BAD_REQUEST);
+            return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
         } catch (BDDException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.serverError().build();
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des information du contexte", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return Response.status(BAD_REQUEST).build();
         }
     }
 
-    @GetMapping(path = "/{email}/email", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<Joueur> chercherJoueurParEmail(@PathVariable("email") String email) {
+    @GET
+    @Path("/{email}/email")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response chercherJoueurParEmail(@PathParam("email") String email) {
         net.andresbustamante.yafoot.model.Contexte contexte = new net.andresbustamante.yafoot.model.Contexte();
 
         try {
             net.andresbustamante.yafoot.model.Joueur joueur = rechercheJoueursService.chercherJoueur(email, contexte);
 
             if (joueur != null) {
-                return new ResponseEntity<>(JoueurMapper.INSTANCE.toJoueurDTO(joueur), HttpStatus.OK);
+                return Response.ok(JoueurMapper.INSTANCE.toJoueurDTO(joueur)).build();
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return Response.status(NOT_FOUND).build();
             }
         } catch (BDDException e) {
             log.error("Erreur lors de la recherche d'un utilisateur", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.serverError().build();
         }
     }
 }
