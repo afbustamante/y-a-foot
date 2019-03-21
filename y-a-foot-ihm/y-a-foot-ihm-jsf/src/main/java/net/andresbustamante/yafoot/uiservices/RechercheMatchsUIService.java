@@ -29,7 +29,7 @@ public class RechercheMatchsUIService extends AbstractUIService {
     public Matchs chercherMatchsJoueur(String idJoueur) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
-        resource = resource.path(MessageFormat.format("/joueur/{0}", idJoueur));
+        resource = resource.queryParam("idJoueur", idJoueur);
         return resource.request(MediaType.APPLICATION_XML).get(Matchs.class);
     }
 }

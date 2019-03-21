@@ -55,8 +55,9 @@ public class OrganisationMatchsUIService extends AbstractUIService {
         try {
             Client client = ClientBuilder.newClient();
             WebTarget webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("gestion.matchs.service.path"));
-            return webTarget.request(MediaType.APPLICATION_JSON).header(Contexte.UTILISATEUR,
-                    getContexte().getUtilisateur().getId()).post(Entity.json(match), String.class);
+            String location = webTarget.request(MediaType.APPLICATION_JSON).header(Contexte.UTILISATEUR,
+                    getContexte().getUtilisateur().getId()).post(Entity.json(match)).getLocation().getPath();
+            return location.substring(location.lastIndexOf("/"));
         } catch (ResponseProcessingException ex) {
             log.error("Erreur lors de la création du match", ex);
             throw new ApplicationException("Erreur lors de la recherche des sites : " + ex.getMessage());
