@@ -21,10 +21,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
+import java.time.ZoneId;
 import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static net.andresbustamante.yafoot.model.Contexte.TIMEZONE;
+import static net.andresbustamante.yafoot.model.Contexte.UTILISATEUR;
 
 /**
  * Web Service REST pour la recherche et consultation des matches
@@ -51,10 +54,11 @@ public class MatchsController extends AbstractController {
     @GET
     @Path("/{codeMatch}")
     @Produces(MediaType.APPLICATION_XML)
-    public Response getMatchParCode(@PathParam("codeMatch") String codeMatch) {
+    public Response getMatchParCode(@PathParam("codeMatch") String codeMatch,
+                                    @HeaderParam(UTILISATEUR) Integer idUtilisateur) {
         try {
             net.andresbustamante.yafoot.model.Match match = rechercheMatchsService.chercherMatchParCode(codeMatch,
-                    new Contexte());
+                    new Contexte(idUtilisateur));
 
             return (match != null) ? Response.ok(MatchMapper.INSTANCE.toMatchDTO(match)).build() :
                     Response.status(NOT_FOUND).build();
@@ -66,10 +70,15 @@ public class MatchsController extends AbstractController {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Response getMatchsJoueur(@QueryParam("idJoueur") Integer idJoueur) {
+    public Response getMatchsJoueur(@QueryParam("idJoueur") Integer idJoueur,
+                                    @HeaderParam(UTILISATEUR) Integer idUtilisateur,
+                                    @HeaderParam(TIMEZONE) String timezone) {
         try {
+            Contexte ctx = new Contexte(idUtilisateur);
+            ctx.setTimeZone(ZoneId.of(timezone));
+
             List<net.andresbustamante.yafoot.model.Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur,
-                    new Contexte());
+                    ctx);
 
             if (CollectionUtils.isNotEmpty(matchs)) {
                 Matchs result = new Matchs();

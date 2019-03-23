@@ -50,6 +50,23 @@ public class DateUtils {
         }
     }
 
+    public static String getPatternDateHeure(String langue) {
+        if (langue == null) {
+            return "yyyy/MM/dd H:mm";
+        }
+
+        switch (langue) {
+            case ESPAGNOL:
+                return "dd/MM/yyyy H:mm";
+            case FRANCAIS:
+                return "dd/MM/yyyy H'h'mm";
+            case ANGLAIS:
+                return "yyyy-MM-dd h:mm a";
+            default:
+                return "yyyy/MM/dd H:mm";
+        }
+    }
+
     public static Date premiereMinuteDuJour(Date date) {
         if (date == null) {
             return null;

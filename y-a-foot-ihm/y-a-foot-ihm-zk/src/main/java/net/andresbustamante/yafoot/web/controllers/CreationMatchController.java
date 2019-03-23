@@ -7,7 +7,6 @@ import net.andresbustamante.yafoot.web.services.OrganisationMatchsUIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -52,19 +51,21 @@ public class CreationMatchController extends AbstractController {
     private ListModel<Site> sitesModel;
 
     @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
+    protected void init() {
+        try {
+            sites = organisationMatchsUIService.chercherSites();
 
-        sites = organisationMatchsUIService.chercherSites();
+            if (sites != null) {
+                sitesModel = new ListModelArray<>(sites);
+                cbbSite.setModel(sitesModel);
+                mapSites = new TreeMap<>();
 
-        if (sites != null) {
-            sitesModel = new ListModelArray<>(sites);
-            cbbSite.setModel(sitesModel);
-            mapSites = new TreeMap<>();
-
-            for (Site site : sites) {
-                mapSites.put(site.getId(), site);
+                for (Site site : sites) {
+                    mapSites.put(site.getId(), site);
+                }
             }
+        } catch (ApplicationException e) {
+            // TODO Afficher message d'erreur
         }
     }
 

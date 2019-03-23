@@ -10,4 +10,5 @@ public class ConstantesWeb {
     public static final String SUCCES = "success";
     public static final String ECHEC = "error";
 
+    public static final String DATE_FORMAT = "dateFormat";
 }

@@ -8,6 +8,7 @@ import java.time.ZoneId;
 public class Contexte {
 
     public static final String UTILISATEUR = "ctxUser";
+    public static final String TIMEZONE = "tz";
 
     private Integer idUtilisateur;
     private String emailUtilisateur;

@@ -68,4 +68,8 @@ public class InscriptionJoueurController extends AbstractController {
             Clients.showNotification(Labels.getLabel("application.exception.text", e.getMessage()), true);
         }
     }
+
+    @Override
+    protected void init() {
+    }
 }

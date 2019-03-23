@@ -6,23 +6,53 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window apply="net.andresbustamante.yafoot.web.controllers.RechercheMatchsJoueurController">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
-  <include src="/zul/top.zul" />
+  <include src="/zul/top.zul"/>
   <div id="content">
     <vlayout>
-      <label value="${c:l('match.list.title')}" />
+      <label value="${c:l('match.list.title')}"/>
       <separator/>
       <tabbox>
         <tabs>
-          <tab id="tabMatchesToPlay" label="${c:l('match.list.to.play')}" />
-          <tab id="tabMatchesPlayed" label="${c:l('match.list.played')}" />
-          <tab id="tabCancelledMatches" label="${c:l('match.list.cancelled')}" />
+          <tab id="tabMatchesToPlay" label="${c:l('match.list.to.play')}"/>
+          <tab id="tabMatchesPlayed" label="${c:l('match.list.played')}"/>
         </tabs>
         <tabpanels>
-          <tabpanel>
+          <tabpanel id="tbpMatchesToPlay">
+            <listbox id="lbxMatchesToPlay">
+              <template name="model">
+                <listitem>
+                  <listcell>
+                    <grid>
+                      <columns>
+                        <column width="60%"/>
+                        <column/>
+                      </columns>
+                      <rows>
+                        <row>
+                          <cell>${each.texteDate}</cell>
+                          <cell>${each.texteJoueursActuels}</cell>
+                        </row>
+                        <row>
+                          <cell colspan="2">${each.site.nom}</cell>
+                        </row>
+                        <row>
+                          <cell colspan="2">${each.site.adresse}</cell>
+                        </row>
+                      </rows>
+                    </grid>
+                  </listcell>
+                </listitem>
+              </template>
+            </listbox>
           </tabpanel>
-          <tabpanel>
-          </tabpanel>
-          <tabpanel>
+          <tabpanel id="tbpPlayedMatches">
+            <listbox id="lbxPlayedMatches">
+              <template name="model">
+                <listitem>
+                  <listcell></listcell>
+                </listitem>
+              </template>
+            </listbox>
           </tabpanel>
         </tabpanels>
       </tabbox>

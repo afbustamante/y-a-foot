@@ -6,12 +6,17 @@ import net.andresbustamante.yafoot.web.util.ConstantesWeb;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 
+import static net.andresbustamante.yafoot.model.Contexte.TIMEZONE;
+import static net.andresbustamante.yafoot.model.Contexte.UTILISATEUR;
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 /**
@@ -48,6 +53,13 @@ public abstract class AbstractUIService {
     protected abstract String getServerUrl();
 
     protected abstract String getJoueursPath();
+
+    protected MultiValueMap<String, String> getHeadersMap() {
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.put(UTILISATEUR, Collections.singletonList(getContexte().getUtilisateur().getId().toString()));
+        headers.put(TIMEZONE, Collections.singletonList("CET")); // TODO Injecter la timezone à partir de la session
+        return headers;
+    }
 
     private Joueur chercherJoueur(String email) {
         RestTemplate restTemplate = new RestTemplate();

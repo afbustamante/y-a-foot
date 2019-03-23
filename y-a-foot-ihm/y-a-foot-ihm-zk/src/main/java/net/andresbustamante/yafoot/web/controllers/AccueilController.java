@@ -6,4 +6,8 @@ package net.andresbustamante.yafoot.web.controllers;
 public class AccueilController extends AbstractController {
 
     private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void init() {
+    }
 }

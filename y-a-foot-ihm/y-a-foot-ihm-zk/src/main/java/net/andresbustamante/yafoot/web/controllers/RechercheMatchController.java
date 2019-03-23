@@ -6,7 +6,6 @@ import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -47,8 +46,7 @@ public class RechercheMatchController extends AbstractController {
     private RechercheMatchsUIService rechercheMatchsUIService;
 
     @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
+    protected void init() {
         grdMatchDetail.setVisible(false);
     }
 
