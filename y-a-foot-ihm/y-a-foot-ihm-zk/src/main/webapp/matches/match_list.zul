@@ -19,27 +19,19 @@
         <tabpanels>
           <tabpanel id="tbpMatchesToPlay">
             <listbox id="lbxMatchesToPlay">
+              <listhead>
+                <listheader label="${c:l('match.list.title.date')}" sort="auto" />
+                <listheader label="${c:l('match.list.title.place')}" sort="auto" />
+                <listheader label="${c:l('match.list.title.players')}" sort="auto" />
+              </listhead>
               <template name="model">
                 <listitem>
+                  <listcell>${each.texteDate}</listcell>
                   <listcell>
-                    <grid>
-                      <columns>
-                        <column width="60%"/>
-                        <column/>
-                      </columns>
-                      <rows>
-                        <row>
-                          <cell>${each.texteDate}</cell>
-                          <cell>${each.texteJoueursActuels}</cell>
-                        </row>
-                        <row>
-                          <cell colspan="2">${each.site.nom}</cell>
-                        </row>
-                        <row>
-                          <cell colspan="2">${each.site.adresse}</cell>
-                        </row>
-                      </rows>
-                    </grid>
+                    <label value="${each.site.nom}&#10;${each.site.adresse}" multiline="true" />
+                  </listcell>
+                  <listcell>
+                    <label value="${each.texteJoueursActuels}&#10;${each.texteJoueursAttendus}" multiline="true" />
                   </listcell>
                 </listitem>
               </template>
@@ -47,9 +39,20 @@
           </tabpanel>
           <tabpanel id="tbpPlayedMatches">
             <listbox id="lbxPlayedMatches">
+              <listhead>
+                <listheader label="${c:l('match.list.title.date')}" sort="auto" />
+                <listheader label="${c:l('match.list.title.place')}" sort="auto" />
+                <listheader label="${c:l('match.list.title.players')}" sort="auto" />
+              </listhead>
               <template name="model">
                 <listitem>
-                  <listcell></listcell>
+                  <listcell>${each.texteDate}</listcell>
+                  <listcell>
+                    <label value="${each.site.nom}&#10;${each.site.adresse}" multiline="true" />
+                  </listcell>
+                  <listcell>
+                    <label value="${each.texteJoueursActuels}&#10;${each.texteJoueursAttendus}" multiline="true" />
+                  </listcell>
                 </listitem>
               </template>
             </listbox>
