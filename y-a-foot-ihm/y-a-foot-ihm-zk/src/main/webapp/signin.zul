@@ -4,7 +4,8 @@
 <?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
-<window apply="net.andresbustamante.yafoot.web.controllers.InscriptionJoueurController">
+<window apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.InscriptionJoueurViewModel')">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul" />
   <div id="content">

@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.web.controllers;
+package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Inscription;
@@ -6,11 +6,12 @@ import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.select.annotation.Listen;
-import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zul.*;
+import org.zkoss.zul.ListModel;
+import org.zkoss.zul.ListModelArray;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,39 +22,29 @@ import java.util.Locale;
 /**
  * @author andresbustamante
  */
-public class RechercheMatchController extends AbstractController {
+public class RechercheMatchViewModel extends AbstractViewModel {
 
-    private final transient Logger log = LoggerFactory.getLogger(RechercheMatchController.class);
+    private final transient Logger log = LoggerFactory.getLogger(RechercheMatchViewModel.class);
 
     private Match match;
 
-    @Wire
-    private Grid grdMatchDetail;
+    private String code;
 
-    @Wire
-    private Textbox txbCode;
+    private boolean matchFound;
 
-    @Wire
-    private Label lblDate;
-
-    @Wire
-    private Label lblPlace;
-
-    @Wire
-    private Listbox lsbPlayers;
+    private ListModel<Inscription> inscriptionsListModel;
 
     @WireVariable
     private RechercheMatchsUIService rechercheMatchsUIService;
 
-    @Override
-    protected void init() {
-        grdMatchDetail.setVisible(false);
+    @Init
+    public void init() {
+        matchFound = false;
     }
 
-    @Listen(Events.ON_CLICK + "= #btnSearch")
+    @Command
+    @NotifyChange({"matchFound", "match", "inscriptionsListModel"})
     public void chercherMatch() {
-        String code = txbCode.getValue();
-
         try {
             Match match = rechercheMatchsUIService.chercherMatchParCode(code);
 
@@ -65,20 +56,36 @@ public class RechercheMatchController extends AbstractController {
                 String texteDate = dateFormat.format(match.getDate().getTime()) + NL +
                         heureFormat.format(match.getDate().getTime());
 
-                grdMatchDetail.setVisible(true);
-                lblDate.setValue(texteDate);
-                lblPlace.setValue(match.getSite().getNom() + NL + match.getSite().getAdresse());
+                matchFound = true;
 
                 List<Inscription> inscriptions = (match.getInscriptions().getInscription() != null) ?
                         match.getInscriptions().getInscription() : Collections.emptyList();
-                ListModel<Inscription> inscriptionsListModel = new ListModelArray<>(inscriptions);
-
-                lsbPlayers.setModel(inscriptionsListModel);
+                inscriptionsListModel = new ListModelArray<>(inscriptions);
             } else {
-                grdMatchDetail.setVisible(false);
+                matchFound = false;
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la recherche d'un match", e);
         }
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Match getMatch() {
+        return match;
+    }
+
+    public boolean isMatchFound() {
+        return matchFound;
+    }
+
+    public ListModel<Inscription> getInscriptionsListModel() {
+        return inscriptionsListModel;
     }
 }

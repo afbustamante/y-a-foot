@@ -4,7 +4,8 @@
 <?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
-<window apply="net.andresbustamante.yafoot.web.controllers.RechercheMatchsJoueurController">
+<window apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.RechercheMatchsJoueurViewModel')">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul"/>
   <div id="content">
@@ -18,7 +19,7 @@
         </tabs>
         <tabpanels>
           <tabpanel id="tbpMatchesToPlay">
-            <listbox id="lbxMatchesToPlay">
+            <listbox id="lbxMatchesToPlay" model="@bind(vm.matchsAJouerListModel)">
               <listhead>
                 <listheader label="${c:l('match.list.title.date')}" sort="auto" />
                 <listheader label="${c:l('match.list.title.place')}" sort="auto" />
@@ -26,19 +27,21 @@
               </listhead>
               <template name="model">
                 <listitem>
-                  <listcell>${each.texteDate}</listcell>
                   <listcell>
-                    <label value="${each.site.nom}&#10;${each.site.adresse}" multiline="true" />
+                    <label value="@load(each.texteDate)"/>
                   </listcell>
                   <listcell>
-                    <label value="${each.texteJoueursActuels}&#10;${each.texteJoueursAttendus}" multiline="true" />
+                    <label value="@load(each.site.nom)&#10;@load(each.site.adresse)" multiline="true" />
+                  </listcell>
+                  <listcell>
+                    <label value="@load(each.texteJoueursActuels)&#10;@load(each.texteJoueursAttendus)" multiline="true" />
                   </listcell>
                 </listitem>
               </template>
             </listbox>
           </tabpanel>
           <tabpanel id="tbpPlayedMatches">
-            <listbox id="lbxPlayedMatches">
+            <listbox id="lbxPlayedMatches" model="@bind(vm.matchsJouesListModel)">
               <listhead>
                 <listheader label="${c:l('match.list.title.date')}" sort="auto" />
                 <listheader label="${c:l('match.list.title.place')}" sort="auto" />
@@ -46,12 +49,14 @@
               </listhead>
               <template name="model">
                 <listitem>
-                  <listcell>${each.texteDate}</listcell>
                   <listcell>
-                    <label value="${each.site.nom}&#10;${each.site.adresse}" multiline="true" />
+                    <label value="@load(each.texteDate)"/>
                   </listcell>
                   <listcell>
-                    <label value="${each.texteJoueursActuels}&#10;${each.texteJoueursAttendus}" multiline="true" />
+                    <label value="@load(each.site.nom)&#10;@load(each.site.adresse)" multiline="true" />
+                  </listcell>
+                  <listcell>
+                    <label value="@load(each.texteJoueursActuels)&#10;@load(each.texteJoueursAttendus)" multiline="true" />
                   </listcell>
                 </listitem>
               </template>

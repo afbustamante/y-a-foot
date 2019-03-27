@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.web.controllers;
+package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
@@ -6,17 +6,18 @@ import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.web.services.OrganisationMatchsUIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.Init;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.select.annotation.Listen;
-import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.*;
+import org.zkoss.zul.ListModel;
+import org.zkoss.zul.ListModelArray;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Window;
 
-import java.util.Calendar;
 import java.util.*;
 
 import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_LISTE_MATCHS;
@@ -24,22 +25,17 @@ import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_LISTE_MATCHS;
 /**
  * @author andresbustamante
  */
-public class CreationMatchController extends AbstractController {
+public class CreationMatchViewModel extends AbstractViewModel {
 
-    private static final long serialVersionUID = 1L;
-    private final transient Logger log = LoggerFactory.getLogger(CreationMatchController.class);
+    private Date date;
 
-    @Wire
-    private Datebox dtbDateMatch;
+    private Integer nbMinJoueurs;
 
-    @Wire
-    private Spinner spbNbMinJoueurs;
+    private Integer nbMaxJoueurs;
 
-    @Wire
-    private Spinner spbNbMaxJoueurs;
+    private Site site;
 
-    @Wire
-    private Combobox cbbSite;
+    private final transient Logger log = LoggerFactory.getLogger(CreationMatchViewModel.class);
 
     @WireVariable
     private transient OrganisationMatchsUIService organisationMatchsUIService;
@@ -48,16 +44,15 @@ public class CreationMatchController extends AbstractController {
 
     private Map<Integer, Site> mapSites;
 
-    private ListModel<Site> sitesModel;
+    private ListModel<Site> sitesListModel;
 
-    @Override
-    protected void init() {
+    @Init
+    public void init() {
         try {
             sites = organisationMatchsUIService.chercherSites();
 
             if (sites != null) {
-                sitesModel = new ListModelArray<>(sites);
-                cbbSite.setModel(sitesModel);
+                sitesListModel = new ListModelArray<>(sites);
                 mapSites = new TreeMap<>();
 
                 for (Site site : sites) {
@@ -69,26 +64,26 @@ public class CreationMatchController extends AbstractController {
         }
     }
 
-    @Listen(Events.ON_CLICK + " = #btnNouveauSite")
+    @Command
     public void afficherDialogCreationSite() {
         Map<String, Object> arguments = new WeakHashMap<>();
-        arguments.put("sitesModel", sitesModel);
+        arguments.put("sitesListModel", sitesListModel);
         String template = "/sites/new_site_dialog.zul";
-        Window window = (Window) Executions.createComponents(template, this.getSelf(), arguments);
+        Window window = (Window) Executions.createComponents(template, null, arguments);
         window.doModal();
     }
 
-    @Listen(Events.ON_CLICK + " = #btnContinue")
+    @Command
     public void creerMatch() {
         try {
             Calendar dateMatch = Calendar.getInstance();
-            dateMatch.setTime(dtbDateMatch.getValue());
+            dateMatch.setTime(date);
 
             Match match = new Match();
             match.setDate(dateMatch);
-            match.setNumJoueursMin(spbNbMinJoueurs.getValue());
-            match.setNumJoueursMax(spbNbMaxJoueurs.getValue());
-            match.setSite(mapSites.get(Integer.valueOf(cbbSite.getSelectedItem().getValue())));
+            match.setNumJoueursMin(nbMinJoueurs);
+            match.setNumJoueursMax(nbMaxJoueurs);
+            match.setSite(site);
 
             String codeMatch = organisationMatchsUIService.creerMatch(match);
 
@@ -100,5 +95,41 @@ public class CreationMatchController extends AbstractController {
             log.error("Erreur lors de la création d'un match", e);
             Clients.showNotification(Labels.getLabel("application.exception.text", e.getMessage()), true);
         }
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Integer getNbMinJoueurs() {
+        return nbMinJoueurs;
+    }
+
+    public void setNbMinJoueurs(Integer nbMinJoueurs) {
+        this.nbMinJoueurs = nbMinJoueurs;
+    }
+
+    public Integer getNbMaxJoueurs() {
+        return nbMaxJoueurs;
+    }
+
+    public void setNbMaxJoueurs(Integer nbMaxJoueurs) {
+        this.nbMaxJoueurs = nbMaxJoueurs;
+    }
+
+    public Site getSite() {
+        return site;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
+    }
+
+    public ListModel<Site> getSitesListModel() {
+        return sitesListModel;
     }
 }

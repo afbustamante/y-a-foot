@@ -5,7 +5,7 @@
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <?taglib uri="http://www.zkoss.org/zkspring/security" prefix="sec"?>
-<window apply="net.andresbustamante.yafoot.web.controllers.AccueilController">
+<window>
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul" />
   <div id="content">

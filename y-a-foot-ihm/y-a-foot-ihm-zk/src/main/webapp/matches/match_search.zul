@@ -4,7 +4,8 @@
 <?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
-<window apply="net.andresbustamante.yafoot.web.controllers.RechercheMatchController">
+<window apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.RechercheMatchViewModel')">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul"/>
   <div id="content">
@@ -27,14 +28,15 @@
               <textbox id="txbCode" constraint="no empty" width="90%"/>
             </cell>
             <cell>
-              <button id="btnSearch" label="${c:l('match.search.button.search')}"
+              <button id="btnSearch" onClick="@command('chercherMatch')"
+                      label="${c:l('match.search.button.search')}"
                       image="/images/22x22/system-search.png"/>
             </cell>
           </row>
         </rows>
       </grid>
       <separator/>
-      <grid id="grdMatchDetail">
+      <grid id="grdMatchDetail" visible="@load(vm.matchFound)">
         <auxhead>
           <auxheader label="${c:l('match.search.match.about')}" colspan="3" rowspan="1"/>
         </auxhead>

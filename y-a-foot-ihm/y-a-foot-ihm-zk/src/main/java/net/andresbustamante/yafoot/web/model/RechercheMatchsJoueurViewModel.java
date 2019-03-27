@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.web.controllers;
+package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
@@ -6,12 +6,11 @@ import net.andresbustamante.yafoot.model.xs.Matchs;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
 import net.andresbustamante.yafoot.web.vo.MatchVO;
+import org.zkoss.bind.annotation.Init;
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
-import org.zkoss.zul.Listbox;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,25 +19,19 @@ import java.util.List;
 /**
  * @author andresbustamante
  */
-public class RechercheMatchsJoueurController extends AbstractController {
+public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
 
     private List<MatchVO> matchsAJouer;
     private List<MatchVO> matchsJoues;
 
-    private ListModel<MatchVO> listModelMatchsAJouer;
-    private ListModel<MatchVO> listModelMatchsJoues;
+    private ListModel<MatchVO> matchsAJouerListModel;
+    private ListModel<MatchVO> matchsJouesListModel;
 
     @WireVariable
     private RechercheMatchsUIService rechercheMatchsUIService;
 
-    @Wire
-    private Listbox lbxMatchesToPlay;
-
-    @Wire
-    private Listbox lbxPlayedMatches;
-
-    @Override
-    protected void init() {
+    @Init
+    public void init() {
         try {
             Matchs matchs = rechercheMatchsUIService.chercherMatchsJoueur();
 
@@ -60,13 +53,18 @@ public class RechercheMatchsJoueurController extends AbstractController {
                 }
             }
 
-            listModelMatchsAJouer = new ListModelArray<>(matchsAJouer);
-            listModelMatchsJoues = new ListModelArray<>(matchsJoues);
-
-            lbxMatchesToPlay.setModel(listModelMatchsAJouer);
-            lbxPlayedMatches.setModel(listModelMatchsJoues);
+            matchsAJouerListModel = new ListModelArray<>(matchsAJouer);
+            matchsJouesListModel = new ListModelArray<>(matchsJoues);
         } catch (ApplicationException e) {
             // TODO Afficher message d'erreur
         }
+    }
+
+    public ListModel<MatchVO> getMatchsAJouerListModel() {
+        return matchsAJouerListModel;
+    }
+
+    public ListModel<MatchVO> getMatchsJouesListModel() {
+        return matchsJouesListModel;
     }
 }

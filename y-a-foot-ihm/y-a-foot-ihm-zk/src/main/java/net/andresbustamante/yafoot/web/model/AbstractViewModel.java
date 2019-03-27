@@ -1,12 +1,10 @@
-package net.andresbustamante.yafoot.web.controllers;
+package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.web.util.ConstantesWeb;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 
@@ -18,11 +16,10 @@ import java.util.Locale;
  * @author andresbustamante
  */
 @VariableResolver(DelegatingVariableResolver.class)
-public abstract class AbstractController extends SelectorComposer<Component> {
+public abstract class AbstractViewModel {
 
     protected static final String NL = "\n";
 
-    private static final long serialVersionUID = 1L;
     private static final String ACCEPT_LANGUAGE = "Accept-Language";
     private static final String SEPARATEUR_ACCEPT_LANGUAGE = ",";
 
@@ -45,12 +42,5 @@ public abstract class AbstractController extends SelectorComposer<Component> {
         }
     }
 
-    protected abstract void init();
-
-    @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
-
-        init();
-    }
+    public abstract void init();
 }

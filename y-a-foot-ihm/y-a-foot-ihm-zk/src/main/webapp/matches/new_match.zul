@@ -4,7 +4,8 @@
 <?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
-<window apply="net.andresbustamante.yafoot.web.controllers.CreationMatchController">
+<window apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.CreationMatchViewModel')">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul" />
   <div id="content">
@@ -24,35 +25,40 @@
           <row>
             <cell>${c:l('new.match.date')}</cell>
             <cell>
-              <datebox id="dtbDateMatch" constraint="no empty" format="yyyy/MM/dd H:mm" width="90%"/>
+              <datebox id="dtbDateMatch" value="@save(vm.date)"
+                       constraint="no empty" format="yyyy/MM/dd H:mm" width="90%"/>
             </cell>
             <cell/>
           </row>
           <row>
             <cell>${c:l('new.match.players.min')}</cell>
             <cell>
-              <spinner id="spbNbMinJoueurs" constraint="no empty, no negative" width="90%"/>
+              <spinner id="spbNbMinJoueurs" value="@save(vm.nbMinJoueurs)"
+                       constraint="no empty, no negative" width="90%"/>
             </cell>
             <cell/>
           </row>
           <row>
             <cell>${c:l('new.match.players.max')}</cell>
             <cell>
-              <spinner id="spbNbMaxJoueurs" constraint="no negative" width="90%"/>
+              <spinner id="spbNbMaxJoueurs" value="@save(vm.nbMaxPlayers)"
+                       constraint="no negative" width="90%"/>
             </cell>
             <cell/>
           </row>
           <row>
             <cell>${c:l('new.match.place.name')}</cell>
             <cell>
-              <combobox id="cbbSite" autodrop="true" width="90%">
+              <combobox id="cbbSite" model="@bind(vm.sitesListModel)" selectedItem="@save(vm.site)"
+                        autodrop="true" width="90%">
                 <template name="model">
-                  <comboitem label="${each.nom}" value="${each.id}" tooltiptext="${each.adresse}"/>
+                  <comboitem label="@bind(each.nom)" value="@bind(each.id)" tooltiptext="@bind(each.adresse)"/>
                 </template>
               </combobox>
             </cell>
             <cell>
               <button id="btnNouveauSite" label="${c:l('new.match.place.new')}" image="/images/22x22/list-add.png"
+                      onClick="@command('afficherDialogCreationSite')"
                       tooltiptext="${c:l('new.match.place.new')}"/>
             </cell>
           </row>
@@ -60,8 +66,9 @@
       </grid>
       <separator/>
       <hlayout>
-        <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/login.zul"/>
-        <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
+        <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/"/>
+        <button id="btnContinue" onClick="@command('creerMatch')"
+                label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
       </hlayout>
     </vlayout>
   </div>
