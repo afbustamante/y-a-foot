@@ -3,11 +3,9 @@ package net.andresbustamante.yafoot.web.model;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;
-import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
-import net.andresbustamante.yafoot.web.vo.MatchVO;
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Init;
-import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
@@ -21,11 +19,11 @@ import java.util.List;
  */
 public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
 
-    private List<MatchVO> matchsAJouer;
-    private List<MatchVO> matchsJoues;
+    private List<Match> matchsAJouer;
+    private List<Match> matchsJoues;
 
-    private ListModel<MatchVO> matchsAJouerListModel;
-    private ListModel<MatchVO> matchsJouesListModel;
+    private ListModel<Match> matchsAJouerListModel;
+    private ListModel<Match> matchsJouesListModel;
 
     @WireVariable
     private RechercheMatchsUIService rechercheMatchsUIService;
@@ -39,17 +37,10 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
             matchsAJouer = new ArrayList<>();
 
             for (Match match : matchs.getMatch()) {
-                MatchVO matchVO = MatchMapper.INSTANCE.toMatchVO(match);
-                matchVO.setTexteDate(getDateFormat().format(match.getDate().getTime()));
-                matchVO.setTexteJoueursAttendus(Labels.getLabel("match.list.players.expected",
-                        new String[]{match.getNumJoueursMin().toString()}));
-                matchVO.setTexteJoueursActuels(Labels.getLabel("match.list.players.actual",
-                        new String[]{matchVO.getNumJoueursInscrits().toString()}));
-
                 if (match.getDate().before(Calendar.getInstance(match.getDate().getTimeZone()))) {
-                    matchsJoues.add(matchVO);
+                    matchsJoues.add(match);
                 } else {
-                    matchsAJouer.add(matchVO);
+                    matchsAJouer.add(match);
                 }
             }
 
@@ -60,11 +51,15 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
         }
     }
 
-    public ListModel<MatchVO> getMatchsAJouerListModel() {
+    public ListModel<Match> getMatchsAJouerListModel() {
         return matchsAJouerListModel;
     }
 
-    public ListModel<MatchVO> getMatchsJouesListModel() {
+    public ListModel<Match> getMatchsJouesListModel() {
         return matchsJouesListModel;
+    }
+
+    public int getNbInscriptions(@BindingParam("match") Match match) {
+        return 0;
     }
 }

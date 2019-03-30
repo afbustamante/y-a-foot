@@ -9,7 +9,7 @@
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul" />
   <div id="content">
-    <vlayout>
+    <vlayout visible="@load(vm.inscrit eq false)">
       <grid>
         <auxhead>
           <auxheader label="${c:l('sign.in.title')}" colspan="2" rowspan="1"/>
@@ -58,6 +58,18 @@
         <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/login.zul"/>
         <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
       </hlayout>
+    </vlayout>
+    <vlayout visible="@load(vm.inscrit)">
+      <grid>
+        <rows>
+          <row>
+            <label value="${c:l('sign.in.successful')}"/>
+          </row>
+          <row>
+            <button id="btnLogin" label="${c:l('button.login')}" image="/images/22x22/system-users.png" href="/login.zul" />
+          </row>
+        </rows>
+      </grid>
     </vlayout>
   </div>
 </window>

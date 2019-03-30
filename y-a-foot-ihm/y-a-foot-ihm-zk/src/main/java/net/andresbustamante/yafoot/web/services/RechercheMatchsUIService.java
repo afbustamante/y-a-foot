@@ -25,7 +25,7 @@ public class RechercheMatchsUIService extends AbstractUIService {
 
     private final transient Logger log = LoggerFactory.getLogger(RechercheMatchsUIService.class);
 
-    @Value("${rest.services.uri}")
+    @Value("${backend.rest.services.uri}")
     private String restServerUrl;
 
     @Value("${recherche.joueurs.service.path}")

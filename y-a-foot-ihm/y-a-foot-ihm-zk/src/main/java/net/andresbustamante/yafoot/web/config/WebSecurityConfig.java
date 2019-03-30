@@ -23,28 +23,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] WEB_RESOURCES = {"/css/**", "/images/**", "/favicon.ico"};
     private static final String REMOVE_DESKTOP_REGEX = "/zkau\\?dtid=.*&cmd_0=rmDesktop&.*";
 
-    @Value("${ldap.connection.url}")
+    @Value("${security.ldap.connection.url}")
     private String ldapConnectionUrl;
 
-    @Value("${ldap.base.dn}")
+    @Value("${security.ldap.base.dn}")
     private String ldapBaseDn;
 
-    @Value("${ldap.users.search.base}")
+    @Value("${security.ldap.users.search.base}")
     private String ldapUsersSearchBase;
 
-    @Value("${ldap.users.search.filter}")
+    @Value("${security.ldap.users.search.filter}")
     private String ldapUsersSearchFilter;
 
-    @Value("${ldap.roles.search.base}")
+    @Value("${security.ldap.roles.search.base}")
     private String ldapRolesSearchBase;
 
-    @Value("${ldap.roles.search.filter}")
+    @Value("${security.ldap.roles.search.filter}")
     private String ldapRolesSearchFilter;
 
-    @Value("${ldap.manager.dn}")
+    @Value("${security.ldap.manager.dn}")
     private String ldapManagerDn;
 
-    @Value("${ldap.manager.password}")
+    @Value("${security.ldap.manager.password}")
     private String ldapManagerPassword;
 
     @Override

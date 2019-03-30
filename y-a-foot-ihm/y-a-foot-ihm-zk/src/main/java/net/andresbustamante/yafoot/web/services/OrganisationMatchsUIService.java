@@ -7,8 +7,11 @@ import net.andresbustamante.yafoot.model.xs.Sites;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,7 +24,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
 
     private final transient Logger log = LoggerFactory.getLogger(OrganisationMatchsUIService.class);
 
-    @Value("${rest.services.uri}")
+    @Value("${backend.rest.services.uri}")
     private String restServerUrl;
 
     @Value("${recherche.sites.service.path}")
@@ -29,6 +32,9 @@ public class OrganisationMatchsUIService extends AbstractUIService {
 
     @Value("${gestion.joueurs.service.path}")
     private String pathJoueursService;
+
+    @Value("${gestion.matchs.service.path}")
+    private String pathMatchsService;
 
     /**
      * Charger la liste de sites disponibles pour l'utilisateur connecté
@@ -61,8 +67,22 @@ public class OrganisationMatchsUIService extends AbstractUIService {
     public String creerMatch(Match match) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            return "";
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + pathMatchsService);
+
+            MultiValueMap<String, String> headers = getHeadersMap();
+            HttpEntity<Match> params = new HttpEntity<>(match, headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, params,
+                    String.class);
+
+            if (response.getStatusCode().is2xxSuccessful() && response.getHeaders().getLocation() != null) {
+                String[] location = response.getHeaders().getLocation().getPath().split("/");
+                return location[location.length - 1];
+            }
+            return null;
         } catch (RestClientException e) {
+            log.error("Erreur du client REST", e);
             throw new ApplicationException(e.getMessage());
         }
     }

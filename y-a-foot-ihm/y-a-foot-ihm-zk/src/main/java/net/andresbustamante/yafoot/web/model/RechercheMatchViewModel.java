@@ -13,11 +13,8 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author andresbustamante
@@ -31,6 +28,8 @@ public class RechercheMatchViewModel extends AbstractViewModel {
     private String code;
 
     private boolean matchFound;
+
+    private int nbPlacesDisponibles;
 
     private ListModel<Inscription> inscriptionsListModel;
 
@@ -46,16 +45,9 @@ public class RechercheMatchViewModel extends AbstractViewModel {
     @NotifyChange({"matchFound", "match", "inscriptionsListModel"})
     public void chercherMatch() {
         try {
-            Match match = rechercheMatchsUIService.chercherMatchParCode(code);
+            match = rechercheMatchsUIService.chercherMatchParCode(code);
 
             if (match != null) {
-                Locale locale = getLocaleUtilisateur();
-                DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, locale);
-                DateFormat heureFormat = new SimpleDateFormat("H:mm z");
-
-                String texteDate = dateFormat.format(match.getDate().getTime()) + NL +
-                        heureFormat.format(match.getDate().getTime());
-
                 matchFound = true;
 
                 List<Inscription> inscriptions = (match.getInscriptions().getInscription() != null) ?
@@ -63,6 +55,7 @@ public class RechercheMatchViewModel extends AbstractViewModel {
                 inscriptionsListModel = new ListModelArray<>(inscriptions);
             } else {
                 matchFound = false;
+                inscriptionsListModel = new ListModelArray<>(Collections.emptyList());
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la recherche d'un match", e);
@@ -87,5 +80,14 @@ public class RechercheMatchViewModel extends AbstractViewModel {
 
     public ListModel<Inscription> getInscriptionsListModel() {
         return inscriptionsListModel;
+    }
+
+    public int getNbPlacesDisponibles() {
+        if (nbPlacesDisponibles == 0) {
+            if (match != null && match.getInscriptions() != null) {
+                nbPlacesDisponibles = Math.max(0, match.getNumJoueursMax() - match.getInscriptions().getInscription().size());
+            }
+        }
+        return nbPlacesDisponibles;
     }
 }

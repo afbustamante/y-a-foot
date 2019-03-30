@@ -8,13 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Messagebox;
-
-import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_ACCUEIL;
 
 public class InscriptionJoueurViewModel extends AbstractViewModel {
 
@@ -22,6 +17,7 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
     private String nom;
     private String motDePasse;
     private String email;
+    private boolean inscrit;
 
     private final transient Logger log = LoggerFactory.getLogger(InscriptionJoueursUIService.class);
 
@@ -30,7 +26,7 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
 
     @Init
     public void init() {
-        // no-op
+        inscrit = false;
     }
 
     @Command
@@ -42,15 +38,7 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
         joueur.setMotDePasse(motDePasse);
 
         try {
-            boolean inscrit = inscriptionJoueursUIService.creerNouveauCompteJoueur(joueur);
-
-            if (inscrit) {
-                EventListener<Messagebox.ClickEvent> clickListener = event -> Executions.sendRedirect(PAGE_ACCUEIL);
-                Messagebox.show(Labels.getLabel("sign.in.successful"), Labels.getLabel("dialog.information.title"),
-                        new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION, clickListener);
-            } else {
-                Clients.showNotification(Labels.getLabel("sign.in.error.existing.player"));
-            }
+            inscrit = inscriptionJoueursUIService.creerNouveauCompteJoueur(joueur);
         } catch (ApplicationException e) {
             log.error("Erreur lors de l'inscription d'un joueur", e);
             Clients.showNotification(Labels.getLabel("application.exception.text", e.getMessage()), true);
@@ -87,5 +75,9 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isInscrit() {
+        return inscrit;
     }
 }

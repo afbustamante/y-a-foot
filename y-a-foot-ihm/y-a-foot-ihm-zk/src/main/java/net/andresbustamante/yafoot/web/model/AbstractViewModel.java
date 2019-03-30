@@ -28,7 +28,7 @@ public abstract class AbstractViewModel {
         return Locale.forLanguageTag(languesAcceptees[0]);
     }
 
-    protected DateFormat getDateFormat() {
+    public DateFormat getDateFormat() {
         Session session = Sessions.getCurrent();
         Object obj = session.getAttribute(ConstantesWeb.DATE_FORMAT);
 

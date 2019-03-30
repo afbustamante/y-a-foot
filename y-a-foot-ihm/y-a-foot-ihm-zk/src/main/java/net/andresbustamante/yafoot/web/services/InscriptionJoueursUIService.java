@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class InscriptionJoueursUIService extends AbstractUIService {
 
-    @Value("${rest.services.uri}")
+    @Value("${backend.rest.services.uri}")
     private String restServerUrl;
 
     @Value("${gestion.joueurs.service.path}")

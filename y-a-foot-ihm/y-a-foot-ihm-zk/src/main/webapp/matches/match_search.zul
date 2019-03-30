@@ -10,8 +10,6 @@
   <include src="/zul/top.zul"/>
   <div id="content">
     <vlayout>
-      <label value="${c:l('match.search.wish.text')}"/>
-      <separator/>
       <grid>
         <columns>
           <column width="30%"/>
@@ -25,7 +23,8 @@
               <!--button id="btnAideCodeMatch" image="/images/22x22/help-browser.png" /-->
             </cell>
             <cell>
-              <textbox id="txbCode" constraint="no empty" width="90%"/>
+              <textbox id="txbCode" value="@save(vm.code)"
+                       constraint="no empty" width="90%"/>
             </cell>
             <cell>
               <button id="btnSearch" onClick="@command('chercherMatch')"
@@ -46,7 +45,7 @@
               <label value="${c:l('match.search.result.when')}"/>
             </cell>
             <cell>
-              <label id="lblDate" multiline="true"/>
+              <label id="lblDate" value="@load(vm.match.date.time) @converter('formattedDate', format='yyyy/MM/dd HH:mm')"/>
             </cell>
             <cell/>
           </row>
@@ -55,7 +54,9 @@
               <label value="${c:l('match.search.result.where')}"/>
             </cell>
             <cell>
-              <label id="lblPlace" multiline="true"/>
+              <label value="@load(vm.match.site.nom)"/>
+              <separator/>
+              <label value="@load(vm.match.site.adresse)"/>
             </cell>
             <cell>
               <button id="btnViewMap" label="${c:l('match.search.result.map')}"
@@ -67,7 +68,8 @@
               <label value="${c:l('match.search.result.who')}"/>
             </cell>
             <cell>
-              <listbox id="lsbPlayers" emptyMessage="${c:l('match.search.result.who')}">
+              <listbox id="lsbPlayers" model="@bind(vm.inscriptionsListModel)"
+                       emptyMessage="${c:l('match.search.result.who.nobody')}">
                 <template name="model">
                   <listitem>
                     <listcell label="${each.joueur.prenom}" />
@@ -75,15 +77,13 @@
                 </template>
               </listbox>
             </cell>
-            <cell>
-              <label id="lblSpotsAvailable"/>
-            </cell>
           </row>
         </rows>
       </grid>
       <separator/>
       <hlayout>
-        <button id="btnJoin" label="${c:l('match.search.button.join')}" image="/images/22x22/go-next.png"/>
+        <button id="btnJoin" visible="@load(vm.matchFound)"
+                label="${c:l('match.search.button.join')}" image="/images/22x22/go-next.png"/>
       </hlayout>
     </vlayout>
   </div>

@@ -10,8 +10,6 @@
   <include src="/zul/top.zul"/>
   <div id="content">
     <vlayout>
-      <label value="${c:l('match.list.title')}"/>
-      <separator/>
       <tabbox>
         <tabs>
           <tab id="tabMatchesToPlay" label="${c:l('match.list.to.play')}"/>
@@ -21,20 +19,25 @@
           <tabpanel id="tbpMatchesToPlay">
             <listbox id="lbxMatchesToPlay" model="@bind(vm.matchsAJouerListModel)">
               <listhead>
-                <listheader label="${c:l('match.list.title.date')}" sort="auto" />
-                <listheader label="${c:l('match.list.title.place')}" sort="auto" />
-                <listheader label="${c:l('match.list.title.players')}" sort="auto" />
+                <listheader label="${c:l('match.list.title.date')}" sort="auto"/>
+                <listheader label="${c:l('match.list.title.place')}" sort="auto"/>
+                <listheader label="${c:l('match.list.title.players')}" sort="auto"/>
               </listhead>
               <template name="model">
                 <listitem>
                   <listcell>
-                    <label value="@load(each.texteDate)"/>
+                    <label value="@load(each.date.time) @converter('formattedDate', format='yyyy/MM/dd HH:mm')"/>
                   </listcell>
                   <listcell>
-                    <label value="@load(each.site.nom)&#10;@load(each.site.adresse)" multiline="true" />
+                    <label value="@load(each.site.nom)"/>
+                    <separator/>
+                    <label value="@load(each.site.adresse)"/>
                   </listcell>
                   <listcell>
-                    <label value="@load(each.texteJoueursActuels)&#10;@load(each.texteJoueursAttendus)" multiline="true" />
+                    <label value="@load(vm.getNbInscriptions(match=each))"/>
+                    /
+                    <label value="@load(each.numJoueursMin)"/>
+                    <label value="${c:l('match.list.players.actual')}" />
                   </listcell>
                 </listitem>
               </template>
@@ -43,20 +46,25 @@
           <tabpanel id="tbpPlayedMatches">
             <listbox id="lbxPlayedMatches" model="@bind(vm.matchsJouesListModel)">
               <listhead>
-                <listheader label="${c:l('match.list.title.date')}" sort="auto" />
-                <listheader label="${c:l('match.list.title.place')}" sort="auto" />
-                <listheader label="${c:l('match.list.title.players')}" sort="auto" />
+                <listheader label="${c:l('match.list.title.date')}" sort="auto"/>
+                <listheader label="${c:l('match.list.title.place')}" sort="auto"/>
+                <listheader label="${c:l('match.list.title.players')}" sort="auto"/>
               </listhead>
               <template name="model">
                 <listitem>
                   <listcell>
-                    <label value="@load(each.texteDate)"/>
+                    <label value="@load(each.date.time) @converter('formattedDate', format='yyyy/MM/dd HH:mm')"/>
                   </listcell>
                   <listcell>
-                    <label value="@load(each.site.nom)&#10;@load(each.site.adresse)" multiline="true" />
+                    <label value="@load(each.site.nom)" />
+                    <separator/>
+                    <label value="@load(each.site.adresse)" />
                   </listcell>
                   <listcell>
-                    <label value="@load(each.texteJoueursActuels)&#10;@load(each.texteJoueursAttendus)" multiline="true" />
+                    <label value="@load(vm.getNbInscriptions(match=each))"/>
+                    /
+                    <label value="@load(each.numJoueursMin)"/>
+                    <label value="${c:l('match.list.players.actual')}"/>
                   </listcell>
                 </listitem>
               </template>

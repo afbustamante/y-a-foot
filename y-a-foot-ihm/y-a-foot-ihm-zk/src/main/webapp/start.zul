@@ -7,20 +7,30 @@
 <?taglib uri="http://www.zkoss.org/zkspring/security" prefix="sec"?>
 <window>
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
-  <include src="/zul/top.zul" />
+  <include src="/zul/top.zul"/>
   <div id="content">
-    <vbox width="100%">
-      <label value="${c:l('start.wish.text')}"/>
-      <separator />
-      <button id="btnOrganise" label="${c:l('start.button.organise')}"
-              href="/matches/new_match.zul"
-              image="/images/22x22/appointment-new.png"/>
-      <button id="btnJoin" label="${c:l('start.button.join')}"
-              href="/matches/match_search.zul"
-              image="/images/22x22/system-search.png"/>
-      <button id="btnList" label="${c:l('start.button.list')}"
-              href="/matches/match_list.zul"
-              image="/images/22x22/office-calendar.png"/>
-    </vbox>
+    <vlayout>
+      <grid>
+        <columns>
+          <column width="50%"/>
+          <column width="50%"/>
+        </columns>
+        <rows>
+          <row>
+            <button id="btnOrganise" label="${c:l('start.button.organise')}"
+                    href="/matches/new_match.zul"
+                    image="/images/22x22/appointment-new.png"/>
+            <button id="btnJoin" label="${c:l('start.button.join')}"
+                    href="/matches/match_search.zul"
+                    image="/images/22x22/system-search.png"/>
+          </row>
+          <row>
+            <button id="btnList" label="${c:l('start.button.list')}"
+                    href="/matches/match_list.zul"
+                    image="/images/22x22/office-calendar.png"/>
+          </row>
+        </rows>
+      </grid>
+    </vlayout>
   </div>
 </window>

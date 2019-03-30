@@ -8,19 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Window;
 
-import java.util.*;
-
-import static net.andresbustamante.yafoot.web.ConstantesWeb.PAGE_LISTE_MATCHS;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author andresbustamante
@@ -40,40 +37,33 @@ public class CreationMatchViewModel extends AbstractViewModel {
     @WireVariable
     private transient OrganisationMatchsUIService organisationMatchsUIService;
 
-    private List<Site> sites;
-
-    private Map<Integer, Site> mapSites;
-
     private ListModel<Site> sitesListModel;
+
+    private String codeMatch;
+
+    private boolean creationSiteActive;
 
     @Init
     public void init() {
         try {
-            sites = organisationMatchsUIService.chercherSites();
+            List<Site> sites = organisationMatchsUIService.chercherSites();
 
             if (sites != null) {
                 sitesListModel = new ListModelArray<>(sites);
-                mapSites = new TreeMap<>();
-
-                for (Site site : sites) {
-                    mapSites.put(site.getId(), site);
-                }
             }
         } catch (ApplicationException e) {
-            // TODO Afficher message d'erreur
+            log.error("Erreur lors de la récupération des sites sur l'écran de création des matchs", e);
         }
     }
 
     @Command
-    public void afficherDialogCreationSite() {
-        Map<String, Object> arguments = new WeakHashMap<>();
-        arguments.put("sitesListModel", sitesListModel);
-        String template = "/sites/new_site_dialog.zul";
-        Window window = (Window) Executions.createComponents(template, null, arguments);
-        window.doModal();
+    @NotifyChange("creationSiteActive")
+    public void activerCreationSite() {
+        creationSiteActive = true;
     }
 
     @Command
+    @NotifyChange("codeMatch")
     public void creerMatch() {
         try {
             Calendar dateMatch = Calendar.getInstance();
@@ -85,12 +75,7 @@ public class CreationMatchViewModel extends AbstractViewModel {
             match.setNumJoueursMax(nbMaxJoueurs);
             match.setSite(site);
 
-            String codeMatch = organisationMatchsUIService.creerMatch(match);
-
-            EventListener<Messagebox.ClickEvent> clickListener = event -> Executions.sendRedirect(PAGE_LISTE_MATCHS);
-            Messagebox.show(Labels.getLabel("new.match.success", new String[]{codeMatch}),
-                    Labels.getLabel("dialog.information.title"),
-                    new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION, clickListener);
+            codeMatch = organisationMatchsUIService.creerMatch(match);
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
             Clients.showNotification(Labels.getLabel("application.exception.text", e.getMessage()), true);
@@ -131,5 +116,13 @@ public class CreationMatchViewModel extends AbstractViewModel {
 
     public ListModel<Site> getSitesListModel() {
         return sitesListModel;
+    }
+
+    public String getCodeMatch() {
+        return codeMatch;
+    }
+
+    public boolean isCreationSiteActive() {
+        return creationSiteActive;
     }
 }
