@@ -5,7 +5,9 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +22,11 @@ public class RsServerConfig {
 
     @Autowired
     private Bus bus;
+
+    @Bean
+    public ServletRegistrationBean dispatcherServletCxf() {
+        return new ServletRegistrationBean(new CXFServlet(), "/api/*");
+    }
 
     @Bean
     public Server rsServer() {

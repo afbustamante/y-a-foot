@@ -11,7 +11,7 @@ import javax.ws.rs.PathParam;
 public class UtilisateursController {
 
     @PUT
-    @Path("/{email}/recuperationMotDePasse")
+    @Path("/{email}/motDePasse")
     public boolean recupererMdpOublie(@PathParam("email") String email) {
         //TODO implement this method
         throw new UnsupportedOperationException("Not implemented yet.");

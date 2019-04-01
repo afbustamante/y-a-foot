@@ -1,49 +1,115 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<application xmlns="http://wadl.dev.java.net/2009/02"
-             xmlns:xs="http://www.w3.org/2001/XMLSchema"
-             xmlns:yaf="http://andresbustamante.net/yafoot/model/xs">
-  <doc xml:lang="fr" title="Services REST - Y'a foot !"/>
+<?xml-stylesheet type="text/xsl" href="/Users/andresbustamante/Desktop/repositorios/y-a-foot/y-a-foot-ws/src/main/resources/wadl/wadl.xsl"?>
+<application xmlns="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <doc title="Y-a-foot REST API"/>
   <grammars>
-    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://andresbustamante.net/yafoot/model/xs"
+               attributeFormDefault="unqualified" elementFormDefault="qualified"
+               targetNamespace="http://andresbustamante.net/yafoot/model/xs">
       <xs:import namespace="http://andresbustamante.net/yafoot/model/xs" schemaLocation="../xsd/foot.xsd"/>
     </xs:schema>
   </grammars>
-  <resources base="/">
-    <resource path="/inscriptions" id="InscriptionsController">
-      <resource path="">
-        <method name="POST" id="inscrireJoueurMatch">
+  <resources base="/api">
+    <resource path="/matchs">
+      <method name="GET">
+        <request>
+          <param name="idJoueur" style="query" type="xs:int"/>
+          <param name="ctxUser" style="header" type="xs:int"/>
+          <param name="tz" style="header" type="xs:string"/>
+        </request>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+      <method name="POST">
+        <request>
+          <representation mediaType="*/*"/>
+        </request>
+        <response>
+          <representation mediaType="application/json"/>
+        </response>
+      </method>
+      <resource path="/{codeMatch}">
+        <param name="codeMatch" style="template" type="xs:string"/>
+        <method name="GET">
           <request>
-            <representation mediaType="application/json" element="yaf:inscription"/>
-            <representation mediaType="application/xml" element="yaf:inscription"/>
-          </request>4
-          <response status="200">
-            <representation mediaType="application/json" element="xs:boolean"/>
+            <param name="ctxUser" style="header" type="xs:int"/>
+          </request>
+          <response>
+            <representation mediaType="application/xml"/>
           </response>
         </method>
       </resource>
-      <resource path="/{id}">
-        <method name="DELETE">
+      <resource path="/{codeMatch}/annulation">
+        <param name="codeMatch" style="template" type="xs:string"/>
+        <method name="PUT">
           <request>
-            <representation mediaType="application/json" element="yaf:inscription"/>
-            <representation mediaType="application/xml" element="yaf:inscription"/>
+            <representation mediaType="*/*"/>
           </request>
-          <response status="200">
-            <representation mediaType="application/json" element="xs:boolean"/>
+          <response>
+            <representation mediaType="application/json"/>
           </response>
         </method>
       </resource>
     </resource>
-    <resource path="/matchs" id="MatchsController">
-      <resource path="/{codeMatch}">
+    <resource path="/joueurs">
+      <method name="POST">
+        <request>
+          <representation mediaType="*/*"/>
+        </request>
+        <response>
+          <representation mediaType="application/json"/>
+        </response>
+      </method>
+      <resource path="/{email}/email">
+        <param name="email" style="template" type="xs:string"/>
         <method name="GET">
+          <request></request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
           <request>
-            <param name="codeMatch" style="template"/>
+            <representation mediaType="*/*"/>
           </request>
-          <response status="200">
-            <representation mediaType="application/xml" element="yaf:match"/>
+          <response>
+            <representation mediaType="application/json"/>
           </response>
         </method>
       </resource>
+    </resource>
+    <resource path="/utilisateurs">
+      <resource path="/{email}/motDePasse">
+        <param name="email" style="template" type="xs:string"/>
+        <method name="PUT">
+          <request></request>
+          <response>
+            <representation mediaType="*/*">
+              <param name="result" style="plain" type="xs:boolean"/>
+            </representation>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/sites">
+      <method name="GET">
+        <request>
+          <param name="idJoueur" style="query" type="xs:int"/>
+        </request>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+    </resource>
+    <resource path="/inscriptions">
+      <method name="POST">
+        <request>
+          <representation mediaType="*/*"/>
+        </request>
+        <response>
+          <representation mediaType="application/json"/>
+        </response>
+      </method>
     </resource>
   </resources>
 </application>

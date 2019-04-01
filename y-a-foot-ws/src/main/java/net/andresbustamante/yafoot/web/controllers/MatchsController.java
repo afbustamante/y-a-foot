@@ -120,9 +120,10 @@ public class MatchsController extends AbstractController {
     }
 
     @PUT
-    @Path("/{idMatch}/annulation")
+    @Path("/{codeMatch}/annulation")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response annulerMatch(Match match, @Context HttpServletRequest request) {
+    public Response annulerMatch(@PathParam("codeMatch") String codeMatch, Match match,
+                                 @Context HttpServletRequest request) {
         //TODO implement this method
         throw new UnsupportedOperationException("Not implemented yet.");
     }
