@@ -1,0 +1,33 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<window apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.CreationSiteViewModel')" width="560px">
+  <caption label="${c:l('dialog.confirmation.title')}"/>
+
+  <vlayout>
+    <grid>
+      <columns>
+        <column align="right" width="30%"/>
+        <column/>
+      </columns>
+      <rows>
+        <row>
+          <cell>${c:l('new.match.place.name')}</cell>
+          <cell><textbox id="tbxName" value="@save(vm.nouveauSite.nom)" width="90%"/></cell>
+        </row>
+        <row>
+          <cell>${c:l('new.match.place.address')}</cell>
+          <cell><textbox id="tbxAddress" value="@save(vm.nouveauSite.adresse)" rows="2" width="90%"/></cell>
+        </row>
+        <row>
+          <cell>${c:l('new.match.place.phone.number')}</cell>
+          <cell><textbox id="tbxPhone" value="@save(vm.nouveauSite.numeroTelephone)" width="90%"/></cell>
+        </row>
+      </rows>
+    </grid>
+    <separator/>
+    <hbox>
+      <button id="btnContinue" onClick="@command('ajouterSite') @global-command('rafraichirListeSites')"
+              label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
+    </hbox>
+  </vlayout>
+</window>

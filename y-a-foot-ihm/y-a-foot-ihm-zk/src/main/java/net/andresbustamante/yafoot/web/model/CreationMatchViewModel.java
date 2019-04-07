@@ -7,17 +7,18 @@ import net.andresbustamante.yafoot.web.services.OrganisationMatchsUIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
+import org.zkoss.zul.Window;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author andresbustamante
@@ -43,6 +44,8 @@ public class CreationMatchViewModel extends AbstractViewModel {
 
     private boolean creationSiteActive;
 
+    private Window winNouveauSite;
+
     @Init
     public void init() {
         try {
@@ -60,12 +63,31 @@ public class CreationMatchViewModel extends AbstractViewModel {
     @NotifyChange("creationSiteActive")
     public void activerCreationSite() {
         creationSiteActive = true;
+
+        winNouveauSite = (Window) Executions.createComponents("/sites/new_site_dialog.zul", null, null);
+        winNouveauSite.setClosable(true);
+        winNouveauSite.doModal();
+    }
+
+    @GlobalCommand
+    @NotifyChange("sitesListModel")
+    public void rafraichirListeSites() {
+        List<Site> sites = (List<Site>) Executions.getCurrent().getSession().getAttribute("sites");
+        sitesListModel = new ListModelArray<>(sites);
+
+        if (winNouveauSite != null) {
+            winNouveauSite.detach();
+        }
     }
 
     @Command
     @NotifyChange("codeMatch")
     public void creerMatch() {
         try {
+            if (isCreationMatchImpossible()) {
+                return;
+            }
+
             Calendar dateMatch = Calendar.getInstance();
             dateMatch.setTime(date);
 
@@ -76,6 +98,11 @@ public class CreationMatchViewModel extends AbstractViewModel {
             match.setSite(site);
 
             codeMatch = organisationMatchsUIService.creerMatch(match);
+
+            if (Executions.getCurrent().getSession().hasAttribute("sites")) {
+                // Un site a été ajouté. Nettoyer la session
+                Executions.getCurrent().getSession().removeAttribute("sites");
+            }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
             Clients.showNotification(Labels.getLabel("application.exception.text", e.getMessage()), true);
@@ -124,5 +151,9 @@ public class CreationMatchViewModel extends AbstractViewModel {
 
     public boolean isCreationSiteActive() {
         return creationSiteActive;
+    }
+
+    public boolean isCreationMatchImpossible() {
+        return (date == null || nbMinJoueurs == null || site == null);
     }
 }

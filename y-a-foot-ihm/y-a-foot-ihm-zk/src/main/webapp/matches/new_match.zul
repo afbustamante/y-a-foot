@@ -15,7 +15,7 @@
           <auxheader label="${c:l('new.match.details.title')}" colspan="3" rowspan="1"/>
         </auxhead>
         <columns>
-          <column align="right" hflex="min"/>
+          <column align="right" hflex="min" width="30%"/>
           <column width="50%"/>
           <column/>
         </columns>
@@ -45,12 +45,13 @@
             <cell/>
           </row>
           <row>
-            <cell>${c:l('new.match.place.name')}</cell>
+            <cell>${c:l('new.match.place')}</cell>
             <cell>
               <combobox id="cbbSite" model="@bind(vm.sitesListModel)" selectedItem="@save(vm.site)"
+                        constraint="no empty"
                         autodrop="true" width="90%">
                 <template name="model">
-                  <comboitem label="@bind(each.nom)" value="@bind(each.id)" tooltiptext="@bind(each.adresse)"/>
+                  <comboitem label="@load(each.nom)" tooltiptext="@load(each.adresse)"/>
                 </template>
               </combobox>
             </cell>
@@ -59,8 +60,6 @@
                       onClick="@command('activerCreationSite')"
                       tooltiptext="${c:l('new.match.place.new')}"/>
             </cell>
-          </row>
-          <row visible="@load(vm.creationSiteActive)">
           </row>
         </rows>
       </grid>
