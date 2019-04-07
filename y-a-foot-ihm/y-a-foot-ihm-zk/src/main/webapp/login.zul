@@ -15,21 +15,21 @@
             <auxheader label="${c:l('login.title.text')}" colspan="2" rowspan="1"/>
           </auxhead>
           <columns>
-            <column align="right" hflex="min"/>
+            <column align="right" hflex="min" width="30%"/>
             <column/>
           </columns>
           <rows>
             <row>
               <cell sclass="row-title">${c:l('login.username')}</cell>
               <cell>
-                <textbox id="username" name="username" width="50%"
+                <textbox id="username" name="username" width="90%"
                          constraint="no empty: ${c:l('login.username.required')}"/>
               </cell>
             </row>
             <row>
               <cell sclass="row-title">${c:l('login.password')}</cell>
               <cell>
-                <textbox id="password" name="password" width="50%" type="password"
+                <textbox id="password" name="password" width="90%" type="password"
                          constraint="no empty: ${c:l('login.password.required')}"/>
               </cell>
             </row>
