@@ -77,12 +77,13 @@
                 </template>
               </listbox>
             </cell>
+            <cell/>
           </row>
         </rows>
       </grid>
       <separator/>
-      <hlayout>
-        <button id="btnJoin" visible="@load(vm.matchFound)"
+      <hlayout visible="@load(vm.matchFound)">
+        <button id="btnJoin" visible="@load(vm.inscriptionPossible)" onClick="@command('redirectJoinMatch')"
                 label="${c:l('match.search.button.join')}" image="/images/22x22/go-next.png"/>
       </hlayout>
     </vlayout>

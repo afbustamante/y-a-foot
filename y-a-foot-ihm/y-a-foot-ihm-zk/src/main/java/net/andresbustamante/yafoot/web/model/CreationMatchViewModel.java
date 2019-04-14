@@ -64,7 +64,7 @@ public class CreationMatchViewModel extends AbstractViewModel {
     public void activerCreationSite() {
         creationSiteActive = true;
 
-        winNouveauSite = (Window) Executions.createComponents("/sites/new_site_dialog.zul", null, null);
+        winNouveauSite = (Window) Executions.createComponents("/sites/dialog_new.zul", null, null);
         winNouveauSite.setClosable(true);
         winNouveauSite.doModal();
     }

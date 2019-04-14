@@ -1,0 +1,49 @@
+<?page title="${c:l('application.title')}"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1.0"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1"?>
+<?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<window apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.InscriptionMatchViewModel')">
+  <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
+  <include src="/zul/top.zul"/>
+  <div id="content">
+    <vlayout>
+      <grid>
+        <auxhead>
+          <auxheader label="${c:l('dialog.confirmation.title')}"/>
+        </auxhead>
+        <columns>
+          <column/>
+        </columns>
+        <rows>
+          <row>
+            <cell>
+              <label value="${c:l('match.join.confirmation.dialog.text')}"/>
+              <radiogroup id="rgpMode" onCheck="@command('choisirMode', mode=self.selectedItem.value)"/>
+            </cell>
+          </row>
+          <row>
+            <radio id="rbWithCar" radiogroup="rgpMode"
+                   label="${c:l('match.join.confirmation.dialog.ok.with.car')}" value="INSCRIPTION_AVEC_VOITURE"/>
+          </row>
+          <row>
+            <radio id="rbWithoutCar" radiogroup="rgpMode"
+                   label="${c:l('match.join.confirmation.dialog.ok.without.car')}" value="INSCRIPTION_SANS_VOITURE"/>
+          </row>
+          <row>
+            <radio id="rbOther" radiogroup="rgpMode"
+                   label="${c:l('match.join.confirmation.dialog.ok.other')}" value="INSCRIPTION_AUTRE_TRANSPORT"/>
+          </row>
+        </rows>
+      </grid>
+      <separator/>
+      <hlayout>
+        <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/matches/search.zul"/>
+        <button id="btnContinue" onClick="@command('joindreMatch')"
+                label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
+      </hlayout>
+    </vlayout>
+  </div>
+</window>

@@ -4,11 +4,13 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
@@ -29,6 +31,8 @@ public class RechercheMatchViewModel extends AbstractViewModel {
 
     private boolean matchFound;
 
+    private boolean inscriptionPossible;
+
     private int nbPlacesDisponibles;
 
     private ListModel<Inscription> inscriptionsListModel;
@@ -42,16 +46,31 @@ public class RechercheMatchViewModel extends AbstractViewModel {
     }
 
     @Command
-    @NotifyChange({"matchFound", "match", "inscriptionsListModel"})
+    @NotifyChange({"matchFound", "match", "inscriptionsListModel", "inscriptionPossible"})
     public void chercherMatch() {
         try {
             match = rechercheMatchsUIService.chercherMatchParCode(code);
 
             if (match != null) {
                 matchFound = true;
+                boolean dejaInscrit = false;
 
                 List<Inscription> inscriptions = (match.getInscriptions().getInscription() != null) ?
                         match.getInscriptions().getInscription() : Collections.emptyList();
+
+                String nomUtilisateur = getNomUtilisateurActif();
+
+                if (CollectionUtils.isNotEmpty(inscriptions) && nomUtilisateur != null) {
+                    for (Inscription i : inscriptions) {
+                        if (nomUtilisateur.equalsIgnoreCase(i.getJoueur().getEmail())) {
+                            dejaInscrit = true;
+                            break;
+                        }
+                    }
+                }
+
+                inscriptionPossible = matchFound && !dejaInscrit;
+
                 inscriptionsListModel = new ListModelArray<>(inscriptions);
             } else {
                 matchFound = false;
@@ -60,6 +79,11 @@ public class RechercheMatchViewModel extends AbstractViewModel {
         } catch (ApplicationException e) {
             log.error("Erreur lors de la recherche d'un match", e);
         }
+    }
+
+    @Command
+    public void redirectJoinMatch() {
+        Executions.getCurrent().sendRedirect("/matches/join.zul?code=" + match.getCode());
     }
 
     public String getCode() {
@@ -89,5 +113,9 @@ public class RechercheMatchViewModel extends AbstractViewModel {
             }
         }
         return nbPlacesDisponibles;
+    }
+
+    public boolean isInscriptionPossible() {
+        return inscriptionPossible;
     }
 }

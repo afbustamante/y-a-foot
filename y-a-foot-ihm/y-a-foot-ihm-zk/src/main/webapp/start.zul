@@ -12,13 +12,13 @@
     <vlayout>
       <vbox>
         <button id="btnOrganise" label="${c:l('start.button.organise')}"
-                href="/matches/new_match.zul" width="100%"
+                href="/matches/new.zul" width="100%"
                 image="/images/22x22/appointment-new.png"/>
         <button id="btnJoin" label="${c:l('start.button.join')}"
-                href="/matches/match_search.zul" width="100%"
+                href="/matches/search.zul" width="100%"
                 image="/images/22x22/system-search.png"/>
         <button id="btnList" label="${c:l('start.button.list')}"
-                href="/matches/match_list.zul" width="100%"
+                href="/matches/list.zul" width="100%"
                 image="/images/22x22/office-calendar.png"/>
       </vbox>
     </vlayout>
