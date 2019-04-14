@@ -25,11 +25,11 @@
             </cell>
           </row>
           <row>
-            <radio id="rbWithCar" radiogroup="rgpMode"
+            <radio id="rbWithCar" radiogroup="rgpMode" disabled="true"
                    label="${c:l('match.join.confirmation.dialog.ok.with.car')}" value="INSCRIPTION_AVEC_VOITURE"/>
           </row>
           <row>
-            <radio id="rbWithoutCar" radiogroup="rgpMode"
+            <radio id="rbWithoutCar" radiogroup="rgpMode" disabled="true"
                    label="${c:l('match.join.confirmation.dialog.ok.without.car')}" value="INSCRIPTION_SANS_VOITURE"/>
           </row>
           <row>
@@ -41,7 +41,7 @@
       <separator/>
       <hlayout>
         <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/matches/search.zul"/>
-        <button id="btnContinue" onClick="@command('joindreMatch')"
+        <button id="btnContinue" onClick="@command('joindreMatch')" disabled="@load(vm.joueurDejaInscrit)"
                 label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
       </hlayout>
     </vlayout>
