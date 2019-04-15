@@ -5,7 +5,200 @@
     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://andresbustamante.net/yafoot/model/xs"
                attributeFormDefault="unqualified" elementFormDefault="qualified"
                targetNamespace="http://andresbustamante.net/yafoot/model/xs">
-      <xs:import namespace="http://andresbustamante.net/yafoot/model/xs" schemaLocation="../xsd/foot.xsd"/>
+      <xs:element name="contexte">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="utilisateur" type="tns:utilisateur"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="inscription">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="idMatch" type="xs:int"/>
+            <xs:element name="idJoueur" type="xs:int"/>
+            <xs:element ref="tns:joueur"/>
+            <xs:element minOccurs="0" ref="tns:voiture"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="inscriptions">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="inscription" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="idMatch" type="xs:int"/>
+                  <xs:element name="idJoueur" type="xs:int"/>
+                  <xs:element ref="tns:joueur"/>
+                  <xs:element minOccurs="0" ref="tns:voiture"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="joueur">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="tns:utilisateur">
+              <xs:sequence>
+                <xs:element minOccurs="0" name="nom" type="xs:string"/>
+                <xs:element minOccurs="0" name="prenom" type="xs:string"/>
+                <xs:element minOccurs="0" name="numeroTelephone" type="xs:string"/>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="joueurs">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="joueur" nillable="true">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="tns:utilisateur">
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="nom" type="xs:string"/>
+                      <xs:element minOccurs="0" name="prenom" type="xs:string"/>
+                      <xs:element minOccurs="0" name="numeroTelephone" type="xs:string"/>
+                    </xs:sequence>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="match">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="id" type="xs:int"/>
+            <xs:element minOccurs="0" name="code" type="xs:string"/>
+            <xs:element name="date" type="xs:dateTime"/>
+            <xs:element minOccurs="0" name="description" type="xs:string"/>
+            <xs:element minOccurs="0" name="numJoueursMin" type="xs:int"/>
+            <xs:element minOccurs="0" name="numJoueursMax" type="xs:int"/>
+            <xs:element minOccurs="0" ref="tns:site"/>
+            <xs:element minOccurs="0" ref="tns:inscriptions"/>
+            <xs:element minOccurs="0" name="createur" type="tns:utilisateur"/>
+            <xs:element name="covoiturageActif" type="xs:boolean"/>
+            <xs:element name="partageActif" type="xs:boolean"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="matchs">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="match" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" name="id" type="xs:int"/>
+                  <xs:element minOccurs="0" name="code" type="xs:string"/>
+                  <xs:element name="date" type="xs:dateTime"/>
+                  <xs:element minOccurs="0" name="description" type="xs:string"/>
+                  <xs:element minOccurs="0" name="numJoueursMin" type="xs:int"/>
+                  <xs:element minOccurs="0" name="numJoueursMax" type="xs:int"/>
+                  <xs:element minOccurs="0" ref="tns:site"/>
+                  <xs:element minOccurs="0" ref="tns:inscriptions"/>
+                  <xs:element minOccurs="0" name="createur" type="tns:utilisateur"/>
+                  <xs:element name="covoiturageActif" type="xs:boolean"/>
+                  <xs:element name="partageActif" type="xs:boolean"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="passagers">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="joueur" nillable="true">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="tns:utilisateur">
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="nom" type="xs:string"/>
+                      <xs:element minOccurs="0" name="prenom" type="xs:string"/>
+                      <xs:element minOccurs="0" name="numeroTelephone" type="xs:string"/>
+                    </xs:sequence>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="site">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="id" type="xs:int"/>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="adresse" type="xs:string"/>
+            <xs:element minOccurs="0" name="numeroTelephone" type="xs:string"/>
+            <xs:element minOccurs="0" name="localisation" type="tns:coordonneesGPS"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sites">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="site" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" name="id" type="xs:int"/>
+                  <xs:element name="nom" type="xs:string"/>
+                  <xs:element name="adresse" type="xs:string"/>
+                  <xs:element minOccurs="0" name="numeroTelephone" type="xs:string"/>
+                  <xs:element minOccurs="0" name="localisation" type="tns:coordonneesGPS"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="utilisateur" type="tns:utilisateur"/>
+      <xs:element name="voiture">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="id" type="xs:int"/>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="numPlaces" type="xs:int"/>
+            <xs:element minOccurs="0" name="chauffeur" type="tns:utilisateur"/>
+            <xs:element minOccurs="0" ref="tns:passagers"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="voitures">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="voiture" nillable="true">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" name="id" type="xs:int"/>
+                  <xs:element name="nom" type="xs:string"/>
+                  <xs:element name="numPlaces" type="xs:int"/>
+                  <xs:element minOccurs="0" name="chauffeur" type="tns:utilisateur"/>
+                  <xs:element minOccurs="0" ref="tns:passagers"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="utilisateur">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:int"/>
+          <xs:element name="email" type="xs:string"/>
+          <xs:element minOccurs="0" name="motDePasse" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="coordonneesGPS">
+        <xs:sequence>
+          <xs:element name="latitude" type="xs:decimal"/>
+          <xs:element name="longitude" type="xs:decimal"/>
+        </xs:sequence>
+      </xs:complexType>
     </xs:schema>
   </grammars>
   <resources base="/api">

@@ -139,35 +139,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.jvnet.jaxb2.maven2</groupId>
-        <artifactId>maven-jaxb2-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>jaxb-generate-foot-xsd</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <schemaIncludes>
-                <include>foot.xsd</include>
-              </schemaIncludes>
-              <bindingIncludes>
-                <include>foot.xjb</include>
-              </bindingIncludes>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
-          <bindingDirectory>${basedir}/src/main/resources/xjb</bindingDirectory>
-          <forceRegenerate>true</forceRegenerate>
-          <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
-          <verbose>true</verbose>
-          <strict>false</strict>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2wadl-plugin</artifactId>
         <dependencies>
