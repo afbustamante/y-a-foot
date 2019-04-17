@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <t_joueur jou_id="1" jou_nom="Ronaldo" jou_prenom="Cristiano" jou_telephone="01234656789" jou_email="cr7@email.com"
-            jou_date_creation="2019-01-01"/>
-  <t_joueur jou_id="2" jou_nom="Messi" jou_prenom="Lionel" jou_telephone="02234656789" jou_email="messi@email.com"
-            jou_date_creation="2019-01-02"/>
-  <t_joueur jou_id="3" jou_nom="Griezmann" jou_prenom="Antoine" jou_telephone="03234656789" jou_email="griezmann@email.com"
-            jou_date_creation="2019-01-03"/>
+    <t_joueur jou_id="1" jou_nom="Ronaldo" jou_prenom="Cristiano" jou_telephone="01234656789" jou_email="cr7@email.com"
+              jou_date_creation="2019-01-01"/>
+    <t_joueur jou_id="2" jou_nom="Messi" jou_prenom="Lionel" jou_telephone="02234656789" jou_email="messi@email.com"
+              jou_date_creation="2019-01-02"/>
+    <t_joueur jou_id="3" jou_nom="Griezmann" jou_prenom="Antoine" jou_telephone="03234656789"
+              jou_email="griezmann@email.com"
+              jou_date_creation="2019-01-03"/>
 
-  <t_site sit_id="1" sit_nom="Foot-à-5 de la ville" sit_adresse="9 Rue du sport" sit_telephone="1234567890"/>
-  <t_site sit_id="2" sit_nom="Foot-à-5 de l'autre ville" sit_adresse="5 Rue des fous" sit_telephone="1434567890"/>
+    <t_site sit_id="1" sit_nom="Foot-à-5 de la ville" sit_adresse="9 Rue du sport" sit_telephone="1234567890"/>
+    <t_site sit_id="2" sit_nom="Foot-à-5 de l'autre ville" sit_adresse="5 Rue des fous" sit_telephone="1434567890"/>
 
-  <t_match mat_id="1" mat_date="2018-10-02 18:30:00" mat_code="AZERTY-1234" mat_description="Mon match dans le passé"
-           mat_num_joueurs_min="9" mat_site_fk="1" mat_createur_fk="1" mat_date_creation="2019-01-02"/>
-  <t_match mat_id="2" mat_date="2019-10-02 19:10:00" mat_code="QWERTY-1234" mat_description="Mon match dans le futur"
-           mat_num_joueurs_min="8" mat_num_joueurs_max="12" mat_site_fk="2" mat_createur_fk="2" mat_date_creation="2019-01-02"/>
+    <t_match mat_id="1" mat_date="2018-10-02 18:30:00" mat_code="AZERTY-1234" mat_description="Mon match dans le passé"
+             mat_num_joueurs_min="9" mat_site_fk="1" mat_createur_fk="1" mat_date_creation="2019-01-02"
+             mat_covoiturage_actif="true" mat_partage_actif="true"/>
+    <t_match mat_id="2" mat_date="2019-10-02 19:10:00" mat_code="QWERTY-1234" mat_description="Mon match dans le futur"
+             mat_num_joueurs_min="8" mat_num_joueurs_max="12" mat_site_fk="2" mat_createur_fk="2"
+             mat_date_creation="2019-01-02" mat_covoiturage_actif="false" mat_partage_actif="true"/>
 
-  <t_joueur_match jma_match_fk="1" jma_joueur_fk="1" />
-  <t_joueur_match jma_match_fk="2" jma_joueur_fk="2" />
-  <t_joueur_match jma_match_fk="2" jma_joueur_fk="3" />
+    <t_joueur_match jma_match_fk="1" jma_joueur_fk="1"/>
+    <t_joueur_match jma_match_fk="2" jma_joueur_fk="2"/>
+    <t_joueur_match jma_match_fk="2" jma_joueur_fk="3"/>
 </dataset>

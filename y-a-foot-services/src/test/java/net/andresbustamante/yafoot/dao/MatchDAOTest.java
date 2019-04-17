@@ -5,6 +5,7 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Site;
+import net.andresbustamante.yafoot.model.Utilisateur;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,6 +58,9 @@ public class MatchDAOTest extends AbstractDAOTest {
         assertEquals(ZonedDateTime.of(dateMatch, ZoneId.systemDefault()), match.getDateMatch());
         assertEquals(8, match.getNumJoueursMin().intValue());
         assertEquals(12, match.getNumJoueursMax().intValue());
+        assertNotNull(match.getCreateur());
+        assertEquals("Lionel", match.getCreateur().getPrenom());
+        assertEquals("Messi", match.getCreateur().getNom());
     }
 
     @Test
@@ -75,6 +79,10 @@ public class MatchDAOTest extends AbstractDAOTest {
         assertNotNull(matchs.get(0));
         assertEquals("AZERTY-1234", matchs.get(0).getCode());
         assertTrue(matchs.get(0).getDateMatch().isAfter(dateInitiale));
+        assertNotNull(matchs.get(0).getCreateur());
+        assertEquals("Cristiano", matchs.get(0).getCreateur().getPrenom());
+        assertEquals("Ronaldo", matchs.get(0).getCreateur().getNom());
+        assertEquals("cr7@email.com", matchs.get(0).getCreateur().getEmail());
     }
 
     @Test
@@ -109,6 +117,9 @@ public class MatchDAOTest extends AbstractDAOTest {
         match.setCreateur(joueur);
         match.setDescription("Match de test");
         match.setSite(site);
+
+        Utilisateur createur = new Utilisateur();
+        createur.setId(1);
 
         // When
         matchDAO.creerMatch(match);

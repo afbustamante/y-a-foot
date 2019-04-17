@@ -59,6 +59,8 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
             if (createur != null) {
                 match.setCreateur(createur);
+            } else {
+                throw new BDDException("Identifiant d'utilisateur non trouvé en BDD : " + contexte.getIdUtilisateur());
             }
 
             if (match.getSite().getId() != null && !match.getSite().getId().equals(NOUVEL_ID)) {

@@ -24,6 +24,10 @@
             sit.sit_telephone       AS telephoneSite,
             sit.sit_latitude        AS latitudeSite,
             sit.sit_longitude       AS longitudeSite,
+            cre.jou_id              AS idCreateur,
+            cre.jou_nom             AS nomCreateur,
+            cre.jou_prenom          AS prenomCreateur,
+            cre.jou_email           AS emailCreateur,
             jma.jma_joueur_fk       AS idJoueur,
             jou.jou_prenom          AS prenomJoueur,
             jou.jou_email           AS emailJoueur,
@@ -31,6 +35,7 @@
             voi.voi_num_places      AS numPlacesVoiture
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
+            JOIN t_joueur cre ON mat.mat_createur_fk = cre.jou_id
             LEFT JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
             LEFT JOIN t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
             LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
@@ -53,6 +58,10 @@
             sit.sit_telephone       AS telephoneSite,
             sit.sit_latitude        AS latitudeSite,
             sit.sit_longitude       AS longitudeSite,
+            cre.jou_id              AS idCreateur,
+            cre.jou_nom             AS nomCreateur,
+            cre.jou_prenom          AS prenomCreateur,
+            cre.jou_email           AS emailCreateur,
             jma.jma_joueur_fk       AS idJoueur,
             jou.jou_prenom          AS prenomJoueur,
             jou.jou_email           AS emailJoueur,
@@ -60,6 +69,7 @@
             voi.voi_num_places      AS numPlacesVoiture
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
+            JOIN t_joueur cre ON mat.mat_createur_fk = cre.jou_id
             JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
             LEFT JOIN t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
             LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
@@ -76,6 +86,10 @@
             mat.mat_num_joueurs_max AS numJoueursMax,
             mat.mat_covoiturage_actif AS covoiturageActif,
             mat.mat_partage_actif   AS partageActif,
+            cre.jou_id              AS idCreateur,
+            cre.jou_nom             AS nomCreateur,
+            cre.jou_prenom          AS prenomCreateur,
+            cre.jou_email           AS emailCreateur,
             sit.sit_id              AS idSite,
             sit.sit_nom             AS nomSite,
             sit.sit_adresse         AS adresseSite,
@@ -84,6 +98,7 @@
             sit.sit_longitude       AS longitudeSite
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
+            JOIN t_joueur cre on mat.mat_createur_fk = cre.jou_id
         WHERE mat.mat_id = #{id}
     </select>
 
@@ -92,9 +107,31 @@
             SELECT NEXTVAL('s_match') AS id;
         </selectKey>
 
-        INSERT INTO t_match (mat_id, mat_date, mat_description, mat_num_joueurs_min, mat_num_joueurs_max,
-        mat_site_fk, mat_code, mat_date_creation, mat_covoiturage_actif, mat_partage_actif) VALUES (#{match.id}, #{match.dateMatch}, #{match.description},
-        #{match.numJoueursMin}, #{match.numJoueursMax}, #{match.site.id}, #{match.code}, NOW(), #{match.covoiturageActif}, #{match.partageActif})
+        INSERT INTO t_match (
+            mat_id,
+            mat_date,
+            mat_description,
+            mat_num_joueurs_min,
+            mat_num_joueurs_max,
+            mat_site_fk,
+            mat_code,
+            mat_date_creation,
+            mat_covoiturage_actif,
+            mat_partage_actif,
+            mat_createur_fk
+        ) VALUES (
+            #{match.id},
+            #{match.dateMatch},
+            #{match.description},
+            #{match.numJoueursMin},
+            #{match.numJoueursMax},
+            #{match.site.id},
+            #{match.code},
+            NOW(),
+            #{match.covoiturageActif},
+            #{match.partageActif},
+            #{match.createur.id}
+        )
     </insert>
 
     <insert id="inscrireJoueurMatch">
@@ -134,6 +171,12 @@
                 <result column="latitudeSite" property="latitude"/>
                 <result column="longitudeSite" property="longitude"/>
             </association>
+        </association>
+        <association property="createur" javaType="net.andresbustamante.yafoot.model.Utilisateur">
+            <id column="idCreateur" property="id"/>
+            <result column="nomCreateur" property="nom"/>
+            <result column="prenomCreateur" property="prenom"/>
+            <result column="emailCreateur" property="email"/>
         </association>
         <collection property="inscriptions" ofType="net.andresbustamante.yafoot.model.Inscription">
             <result column="id" property="id.idMatch" />
