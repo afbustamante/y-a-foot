@@ -5,10 +5,12 @@ import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.util.SecuriteUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.annotation.SessionScope;
 
-@Service
+@Component
+@SessionScope
 public class InscriptionJoueursUIService extends AbstractUIService {
 
     @Value("${backend.rest.services.uri}")
