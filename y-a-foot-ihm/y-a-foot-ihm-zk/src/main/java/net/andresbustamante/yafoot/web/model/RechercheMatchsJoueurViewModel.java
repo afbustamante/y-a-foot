@@ -4,12 +4,21 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;
+import net.andresbustamante.yafoot.web.services.InscriptionMatchsUIService;
+import net.andresbustamante.yafoot.web.services.OrganisationMatchsUIService;
 import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.BindingParam;
+import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
+import org.zkoss.zul.Messagebox;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +37,14 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
 
     @WireVariable
     private RechercheMatchsUIService rechercheMatchsUIService;
+
+    @WireVariable
+    private OrganisationMatchsUIService organisationMatchsUIService;
+
+    @WireVariable
+    private InscriptionMatchsUIService inscriptionMatchsUIService;
+
+    private transient final Logger log = LoggerFactory.getLogger(RechercheMatchsJoueurViewModel.class);
 
     @Init
     public void init() {
@@ -52,6 +69,70 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
         }
     }
 
+    @Command
+    public void afficherDetailMatch(@BindingParam("match") Match match) {
+    }
+
+    @Command
+    @NotifyChange("matchsAJouerListModel")
+    public void quitterMatch(@BindingParam("match") Match match) {
+        EventListener<Messagebox.ClickEvent> clickListener = event -> {
+            if (Messagebox.Button.YES.equals(event.getButton())) {
+                try {
+                    inscriptionMatchsUIService.desinscrireJoueurMatch(match);
+                    Messagebox.show(Labels.getLabel("match.list.leave.success"),
+                            Labels.getLabel("dialog.confirmation.title"),
+                            Messagebox.Button.OK.id,
+                            Messagebox.INFORMATION);
+                } catch (ApplicationException e) {
+                    log.error("Erreur lors de l'abandon d'un match", e);
+                    Messagebox.show(Labels.getLabel("match.list.leave.error"),
+                            Labels.getLabel("dialog.error.title"),
+                            Messagebox.Button.OK.id,
+                            Messagebox.ERROR);
+                }
+            }
+        };
+        Messagebox.show(Labels.getLabel("match.list.leave.warning"),
+                Labels.getLabel("dialog.confirmation.title"),
+                new Messagebox.Button[]{Messagebox.Button.YES, Messagebox.Button.NO},
+                Messagebox.QUESTION, clickListener);
+    }
+
+    @Command
+    @NotifyChange("matchsAJouerListModel")
+    public void annulerMatch(@BindingParam("match") Match match) {
+        if (isAnnulationPossible(match)) {
+            // Afficher message de confirmation pour l'annulation
+            EventListener<Messagebox.ClickEvent> clickListener = event -> {
+                if (Messagebox.Button.YES.equals(event.getButton())) {
+                    try {
+                        organisationMatchsUIService.annulerMatch(match);
+                        Messagebox.show(Labels.getLabel("match.list.cancel.success"),
+                                Labels.getLabel("dialog.confirmation.title"),
+                                Messagebox.Button.OK.id,
+                                Messagebox.INFORMATION);
+                    } catch (ApplicationException e) {
+                        log.error("Erreur lors de l'annulation d'un match", e);
+                        Messagebox.show(Labels.getLabel("match.list.cancel.error"),
+                                Labels.getLabel("dialog.error.title"),
+                                Messagebox.Button.OK.id,
+                                Messagebox.ERROR);
+                    }
+                }
+            };
+            Messagebox.show(Labels.getLabel("match.list.cancel.warning"),
+                    Labels.getLabel("dialog.confirmation.title"),
+                    new Messagebox.Button[]{Messagebox.Button.YES, Messagebox.Button.NO},
+                    Messagebox.QUESTION, clickListener);
+        } else {
+            // Afficher message informatif sur les conditions d'annulation et terminer
+            Messagebox.show(Labels.getLabel("match.list.cancel.not.allowed"),
+                    Labels.getLabel("dialog.information.title"), Messagebox.Button.OK.id,
+                    Messagebox.INFORMATION);
+        }
+    }
+
     public ListModel<Match> getMatchsAJouerListModel() {
         return matchsAJouerListModel;
     }
@@ -66,5 +147,9 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
             return inscriptions.size();
         }
         return 0;
+    }
+
+    public boolean isAnnulationPossible(Match match) {
+        return getNomUtilisateurActif().equals(match.getCreateur().getEmail());
     }
 }

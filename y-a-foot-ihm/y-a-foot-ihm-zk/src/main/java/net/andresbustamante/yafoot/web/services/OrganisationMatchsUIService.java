@@ -87,6 +87,15 @@ public class OrganisationMatchsUIService extends AbstractUIService {
         }
     }
 
+    /**
+     * Lancer une demande d'annulation de match
+     *
+     * @param match Match à annuler
+     * @throws ApplicationException
+     */
+    public void annulerMatch(Match match) throws ApplicationException {
+    }
+
     @Override
     protected String getServerUrl() {
         return restServerUrl;

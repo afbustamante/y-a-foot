@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
@@ -36,10 +35,9 @@ public class InscriptionMatchsUIService extends AbstractUIService {
      *
      * @param match Match auquel on va inscrire le joueur actif
      * @param voiture Voiture dans laquelle le joueur actif va se déplacer
-     * @return Succès de l'opération ?
      * @throws ApplicationException
      */
-    public boolean inscrireJoueurMatch(Match match, Voiture voiture) throws ApplicationException {
+    public void inscrireJoueurMatch(Match match, Voiture voiture) throws ApplicationException {
         Inscription inscription = new Inscription();
         inscription.setIdMatch(match.getId());
         inscription.setJoueur((Joueur) getContexte().getUtilisateur());
@@ -49,8 +47,6 @@ public class InscriptionMatchsUIService extends AbstractUIService {
         }
 
         try {
-            boolean succes = false;
-
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + inscriptionsServicesPath);
@@ -58,16 +54,20 @@ public class InscriptionMatchsUIService extends AbstractUIService {
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Inscription> params = new HttpEntity<>(inscription, headers);
 
-            ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, params,
-                    String.class);
-
-            succes = (response.getStatusCode().is2xxSuccessful() && response.getHeaders().getLocation() != null);
-
-            return succes;
+            restTemplate.exchange(builder.toUriString(), HttpMethod.POST, params, String.class);
         } catch (RestClientException e) {
             log.error("Erreur du client REST", e);
             throw new ApplicationException(e.getMessage());
         }
+    }
+
+    /**
+     * Lancer une demande de desinscription du joueur actif d'un match passé en paramètre
+     *
+     * @param match Match à quitter
+     * @throws ApplicationException
+     */
+    public void desinscrireJoueurMatch(Match match) throws ApplicationException {
     }
 
     @Override
