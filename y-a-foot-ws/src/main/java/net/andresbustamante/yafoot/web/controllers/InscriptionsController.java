@@ -2,8 +2,12 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
+import net.andresbustamante.yafoot.services.RechercheJoueursService;
+import net.andresbustamante.yafoot.services.RechercheMatchsService;
 import net.andresbustamante.yafoot.web.mappers.InscriptionMapper;
 import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import org.slf4j.Logger;
@@ -11,9 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -32,13 +34,19 @@ public class InscriptionsController extends AbstractController {
     @Autowired
     private GestionMatchsService gestionMatchsService;
 
+    @Autowired
+    private RechercheMatchsService rechercheMatchsService;
+
+    @Autowired
+    private RechercheJoueursService rechercheJoueursService;
+
     private final Logger log = LoggerFactory.getLogger(InscriptionsController.class);
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response inscrireJoueurMatch(Inscription inscription,
                                         @Context HttpServletRequest request) {
-        log.info("Traitement de nouvelle demande d'inscription");
+        log.debug("Traitement de nouvelle demande d'inscription");
 
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
@@ -52,6 +60,32 @@ public class InscriptionsController extends AbstractController {
                 return Response.created(getLocationURI(location)).build();
             } else {
                 log.warn("Le joueur n'a pas pu etre inscrit");
+                return Response.status(BAD_REQUEST).build();
+            }
+        } catch (BDDException e) {
+            log.error("Erreur de base de données", e);
+            return Response.serverError().build();
+        } catch (ApplicationException e) {
+            log.error("Erreur lors de la récupération des information du contexte", e);
+            return Response.status(BAD_REQUEST).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{codeMatch}")
+    public Response desinscrireJoueurMatch(@PathParam("codeMatch") String codeMatch,
+                                           @Context HttpServletRequest request) {
+        try {
+            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
+
+            Match match = rechercheMatchsService.chercherMatchParCode(codeMatch, contexte);
+
+            if (match != null && contexte.getEmailUtilisateur() != null) {
+                Joueur joueur = rechercheJoueursService.chercherJoueur(contexte.getEmailUtilisateur(), contexte);
+                gestionMatchsService.desinscrireJoueurMatch(joueur, match, contexte);
+                return Response.noContent().build();
+            } else {
+                log.warn("Désinscription demandée sur un match non existant avec le code " + codeMatch);
                 return Response.status(BAD_REQUEST).build();
             }
         } catch (BDDException e) {

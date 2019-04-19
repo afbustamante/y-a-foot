@@ -202,6 +202,75 @@
     </xs:schema>
   </grammars>
   <resources base="/api">
+    <resource path="/sites">
+      <method name="GET">
+        <request>
+          <param name="idJoueur" style="query" type="xs:int"/>
+        </request>
+        <response>
+          <representation mediaType="application/xml"/>
+        </response>
+      </method>
+    </resource>
+    <resource path="/inscriptions">
+      <method name="POST">
+        <request>
+          <representation mediaType="*/*"/>
+        </request>
+        <response>
+          <representation mediaType="application/json"/>
+        </response>
+      </method>
+      <resource path="/{codeMatch}">
+        <param name="codeMatch" style="template" type="xs:string"/>
+        <method name="DELETE">
+          <request></request>
+          <response>
+            <representation mediaType="*/*"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/utilisateurs">
+      <resource path="/{email}/motDePasse">
+        <param name="email" style="template" type="xs:string"/>
+        <method name="PUT">
+          <request></request>
+          <response>
+            <representation mediaType="*/*">
+              <param name="result" style="plain" type="xs:boolean"/>
+            </representation>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/joueurs">
+      <method name="POST">
+        <request>
+          <representation mediaType="*/*"/>
+        </request>
+        <response>
+          <representation mediaType="application/json"/>
+        </response>
+      </method>
+      <resource path="/{email}/email">
+        <param name="email" style="template" type="xs:string"/>
+        <method name="GET">
+          <request></request>
+          <response>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method name="PUT">
+          <request>
+            <representation mediaType="*/*"/>
+          </request>
+          <response>
+            <representation mediaType="application/json"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
     <resource path="/matchs">
       <method name="GET">
         <request>
@@ -243,66 +312,6 @@
           </response>
         </method>
       </resource>
-    </resource>
-    <resource path="/joueurs">
-      <method name="POST">
-        <request>
-          <representation mediaType="*/*"/>
-        </request>
-        <response>
-          <representation mediaType="application/json"/>
-        </response>
-      </method>
-      <resource path="/{email}/email">
-        <param name="email" style="template" type="xs:string"/>
-        <method name="GET">
-          <request></request>
-          <response>
-            <representation mediaType="application/xml"/>
-          </response>
-        </method>
-        <method name="PUT">
-          <request>
-            <representation mediaType="*/*"/>
-          </request>
-          <response>
-            <representation mediaType="application/json"/>
-          </response>
-        </method>
-      </resource>
-    </resource>
-    <resource path="/utilisateurs">
-      <resource path="/{email}/motDePasse">
-        <param name="email" style="template" type="xs:string"/>
-        <method name="PUT">
-          <request></request>
-          <response>
-            <representation mediaType="*/*">
-              <param name="result" style="plain" type="xs:boolean"/>
-            </representation>
-          </response>
-        </method>
-      </resource>
-    </resource>
-    <resource path="/sites">
-      <method name="GET">
-        <request>
-          <param name="idJoueur" style="query" type="xs:int"/>
-        </request>
-        <response>
-          <representation mediaType="application/xml"/>
-        </response>
-      </method>
-    </resource>
-    <resource path="/inscriptions">
-      <method name="POST">
-        <request>
-          <representation mediaType="*/*"/>
-        </request>
-        <response>
-          <representation mediaType="application/json"/>
-        </response>
-      </method>
     </resource>
   </resources>
 </application>

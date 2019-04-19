@@ -79,4 +79,14 @@ public interface MatchDAO {
      */
     boolean isJoueurInscritMatch(@Param(ConstantesDaoUtils.JOUEUR) Joueur joueur,
                                  @Param(ConstantesDaoUtils.MATCH) Match match) throws SQLException;
+
+    /**
+     * Désinscrire un joueur d'un match
+     *
+     * @param joueur Joueur à désinscrire
+     * @param match Match concerné
+     * @throws SQLException
+     */
+    void desinscrireJoueurMatch(@Param(ConstantesDaoUtils.JOUEUR) Joueur joueur,
+                                @Param(ConstantesDaoUtils.MATCH) Match match) throws SQLException;
 }

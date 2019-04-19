@@ -118,6 +118,31 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
                 throw new BDDException("Impossible d'inscrire le joueur : objet inexistant");
             }
         } catch (SQLException e) {
+            log.error("Erreur de BDD lors de l'inscription d'un joueur à un match", e);
+            throw new BDDException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean desinscrireJoueurMatch(Joueur joueur, Match match, Contexte contexte) throws BDDException {
+        if (joueur == null || joueur.getId() == null || match == null || match.getCode() == null) {
+            return false;
+        }
+
+        try {
+            boolean isJoueurExistant = (joueurDAO.chercherJoueurParId(joueur.getId()) != null);
+            boolean isMatchExistant = (matchDAO.chercherMatchParCode(match.getCode()) != null);
+
+            if (isJoueurExistant && isMatchExistant && matchDAO.isJoueurInscritMatch(joueur, match)) {
+                matchDAO.desinscrireJoueurMatch(joueur, match);
+                log.info("Joueur désinscrit du match");
+                return true;
+            } else {
+                throw new BDDException("Impossible d'inscrire le joueur : objet inexistant");
+            }
+        } catch (SQLException e) {
+            log.error("Erreur de BDD lors de la désinscription d'un joueur", e);
             throw new BDDException(e.getMessage());
         }
     }

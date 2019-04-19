@@ -147,6 +147,10 @@
         </choose>
     </insert>
 
+    <delete id="desinscrireJoueurMatch">
+        DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{joueur.id} AND jma_match_fk = #{match.id}
+    </delete>
+
     <select id="isJoueurInscritMatch" resultType="boolean">
         SELECT COUNT(*)
         FROM t_joueur_match jma

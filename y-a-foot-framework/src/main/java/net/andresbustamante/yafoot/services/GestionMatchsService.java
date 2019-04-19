@@ -32,4 +32,15 @@ public interface GestionMatchsService {
      * @throws BDDException
      */
     boolean inscrireJoueurMatch(Joueur joueur, Match match, Voiture voiture, Contexte contexte) throws BDDException;
+
+    /**
+     * Désinscrire un joueur d'un match
+     *
+     * @param joueur Joueur à désinscrire
+     * @param match Match concerné
+     * @param contexte
+     * @return
+     * @throws BDDException
+     */
+    boolean desinscrireJoueurMatch(Joueur joueur, Match match, Contexte contexte) throws BDDException;
 }

@@ -157,4 +157,18 @@ public class MatchDAOTest extends AbstractDAOTest {
         assertTrue(test1);
         assertFalse(test2);
     }
+
+    @Test
+    public void desinscrireJoueurMatch() throws Exception {
+        // Given
+        Joueur joueur = joueurDAO.chercherJoueurParId(1);
+        Match match = matchDAO.chercherMatchParId(1);
+        assertTrue(matchDAO.isJoueurInscritMatch(joueur, match));
+
+        // When
+        matchDAO.desinscrireJoueurMatch(joueur, match);
+
+        // Then
+        assertFalse(matchDAO.isJoueurInscritMatch(joueur, match));
+    }
 }
