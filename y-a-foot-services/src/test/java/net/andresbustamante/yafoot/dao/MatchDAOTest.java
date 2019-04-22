@@ -2,10 +2,7 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import net.andresbustamante.yafoot.model.Joueur;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Site;
-import net.andresbustamante.yafoot.model.Utilisateur;
+import net.andresbustamante.yafoot.model.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,7 +29,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     public void isCodeExistant() throws Exception {
         // Given
         String codeExistant = "QWERTY-1234";
-        String codeInexistant = "QWERTZ-1234";
+        String codeInexistant = "QWERTY-1230";
 
         // When
         boolean test1 = matchDAO.isCodeExistant(codeExistant);
@@ -61,6 +58,40 @@ public class MatchDAOTest extends AbstractDAOTest {
         assertNotNull(match.getCreateur());
         assertEquals("Lionel", match.getCreateur().getPrenom());
         assertEquals("Messi", match.getCreateur().getNom());
+    }
+
+    @Test
+    public void chercherMatchsAvecInscriptions() throws Exception {
+        // Given
+        String code = "QWERTY-1234";
+
+        // When
+        Match match = matchDAO.chercherMatchParCode(code);
+
+        // Then
+        assertNotNull(match);
+        assertNotNull(match.getInscriptions());
+        assertEquals(2, match.getInscriptions().size());
+
+        for (Inscription ins : match.getInscriptions()) {
+            assertNull(ins.getMatch());
+            assertNotNull(ins.getJoueur());
+            assertNotNull(ins.getId());
+        }
+    }
+
+    @Test
+    public void chercherMatchsSansInscriptions() throws Exception {
+        // Given
+        Integer idMatch = 3;
+
+        // When
+        Match match = matchDAO.chercherMatchParId(idMatch);
+
+        // Then
+        assertNotNull(match);
+        assertNotNull(match.getInscriptions());
+        assertTrue(match.getInscriptions().isEmpty());
     }
 
     @Test

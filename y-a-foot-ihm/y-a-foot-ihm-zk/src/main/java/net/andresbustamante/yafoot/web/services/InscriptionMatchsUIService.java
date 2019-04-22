@@ -70,6 +70,20 @@ public class InscriptionMatchsUIService extends AbstractUIService {
      * @throws ApplicationException
      */
     public void desinscrireJoueurMatch(Match match) throws ApplicationException {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + inscriptionsServicesPath);
+            builder.path("/").path(match.getCode());
+
+            MultiValueMap<String, String> headers = getHeadersMap();
+            HttpEntity<Inscription> params = new HttpEntity<>(headers);
+
+            restTemplate.exchange(builder.toUriString(), HttpMethod.DELETE, params, String.class);
+        } catch (RestClientException e) {
+            log.error("Erreur du client REST", e);
+            throw new ApplicationException(e.getMessage());
+        }
     }
 
     @Override

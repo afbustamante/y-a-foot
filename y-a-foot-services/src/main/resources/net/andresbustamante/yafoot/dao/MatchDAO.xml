@@ -28,7 +28,7 @@
             cre.jou_nom             AS nomCreateur,
             cre.jou_prenom          AS prenomCreateur,
             cre.jou_email           AS emailCreateur,
-            jma.jma_joueur_fk       AS idJoueur,
+            jou.jou_id              AS idJoueur,
             jou.jou_prenom          AS prenomJoueur,
             jou.jou_email           AS emailJoueur,
             voi.voi_id              AS idVoiture,
@@ -62,7 +62,7 @@
             cre.jou_nom             AS nomCreateur,
             cre.jou_prenom          AS prenomCreateur,
             cre.jou_email           AS emailCreateur,
-            jma.jma_joueur_fk       AS idJoueur,
+            jou.jou_id              AS idJoueur,
             jou.jou_prenom          AS prenomJoueur,
             jou.jou_email           AS emailJoueur,
             voi.voi_id              AS idVoiture,
@@ -183,8 +183,7 @@
             <result column="emailCreateur" property="email"/>
         </association>
         <collection property="inscriptions" ofType="net.andresbustamante.yafoot.model.Inscription">
-            <result column="id" property="id.idMatch" />
-            <result column="idJoueur" property="id.idJoueur" />
+            <id column="idJoueur" property="id.idJoueur" />
             <association property="joueur" javaType="net.andresbustamante.yafoot.model.Joueur">
                 <id column="idJoueur" property="id" />
                 <result column="prenomJoueur" property="prenom" />

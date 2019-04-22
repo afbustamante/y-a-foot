@@ -17,7 +17,7 @@
         </tabs>
         <tabpanels>
           <tabpanel id="tbpMatchesToPlay">
-            <listbox id="lbxMatchesToPlay" model="@bind(vm.matchsAJouerListModel)">
+            <listbox id="lbxMatchesToPlay" model="@bind(vm.matchsAJouerListModel)" emptyMessage="${c:l('match.list.empty')}">
               <listhead>
                 <listheader/>
                 <listheader width="30%"/>
@@ -47,7 +47,7 @@
             </listbox>
           </tabpanel>
           <tabpanel id="tbpPlayedMatches">
-            <listbox id="lbxPlayedMatches" model="@bind(vm.matchsJouesListModel)">
+            <listbox id="lbxPlayedMatches" model="@bind(vm.matchsJouesListModel)" emptyMessage="${c:l('match.list.empty')}">
               <listhead>
                 <listheader label="${c:l('match.list.title.date')}" sort="auto"/>
                 <listheader label="${c:l('match.list.title.place')}" sort="auto"/>

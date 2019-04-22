@@ -80,8 +80,8 @@ public class InscriptionsController extends AbstractController {
 
             Match match = rechercheMatchsService.chercherMatchParCode(codeMatch, contexte);
 
-            if (match != null && contexte.getEmailUtilisateur() != null) {
-                Joueur joueur = rechercheJoueursService.chercherJoueur(contexte.getEmailUtilisateur(), contexte);
+            if (match != null) {
+                Joueur joueur = new Joueur(contexte.getIdUtilisateur());
                 gestionMatchsService.desinscrireJoueurMatch(joueur, match, contexte);
                 return Response.noContent().build();
             } else {

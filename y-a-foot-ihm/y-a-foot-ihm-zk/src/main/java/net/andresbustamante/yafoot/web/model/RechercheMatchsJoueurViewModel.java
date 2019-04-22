@@ -84,6 +84,7 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
                             Labels.getLabel("dialog.confirmation.title"),
                             Messagebox.Button.OK.id,
                             Messagebox.INFORMATION);
+                    init();
                 } catch (ApplicationException e) {
                     log.error("Erreur lors de l'abandon d'un match", e);
                     Messagebox.show(Labels.getLabel("match.list.leave.error"),
