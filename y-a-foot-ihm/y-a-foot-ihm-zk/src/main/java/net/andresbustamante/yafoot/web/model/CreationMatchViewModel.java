@@ -13,12 +13,14 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author andresbustamante
@@ -105,7 +107,9 @@ public class CreationMatchViewModel extends AbstractViewModel {
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
-            Clients.showNotification(Labels.getLabel("application.exception.text", e.getMessage()), true);
+            Messagebox.show(Labels.getLabel("application.exception.text"),
+                    Labels.getLabel("dialog.error.title", new String[]{e.getMessage()}),
+                    Messagebox.Button.OK.id, Messagebox.ERROR);
         }
     }
 

@@ -32,7 +32,7 @@ public class InscriptionJoueursUIService extends AbstractUIService {
             RestTemplate restTemplate = new RestTemplate();
 
             ResponseEntity<Boolean> response = restTemplate.postForEntity(restServerUrl + gestionJoueursPath, joueur, Boolean.class);
-            boolean succes = (response.getBody() != null) ? response.getBody() : false;
+            boolean succes = (response.getHeaders().getLocation() != null);
 
             return (response.getStatusCode().is2xxSuccessful() && succes);
         } catch (Exception e) {

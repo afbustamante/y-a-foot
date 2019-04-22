@@ -8,14 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Messagebox;
 
 public class InscriptionJoueurViewModel extends AbstractViewModel {
 
     private String prenom;
     private String nom;
-    private String motDePasse;
+    private String motDePasse1;
+    private String motDePasse2;
     private String email;
     private boolean inscrit;
 
@@ -31,17 +33,39 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
 
     @Command
     public void enregistrerUtilisateur() {
-        Joueur joueur = new Joueur();
-        joueur.setEmail(email);
-        joueur.setNom(nom);
-        joueur.setPrenom(prenom);
-        joueur.setMotDePasse(motDePasse);
+        if (motDePasse1.equals(motDePasse2)) {
+            Joueur joueur = new Joueur();
+            joueur.setEmail(email);
+            joueur.setNom(nom);
+            joueur.setPrenom(prenom);
+            joueur.setMotDePasse(motDePasse1);
 
-        try {
-            inscrit = inscriptionJoueursUIService.creerNouveauCompteJoueur(joueur);
-        } catch (ApplicationException e) {
-            log.error("Erreur lors de l'inscription d'un joueur", e);
-            Clients.showNotification(Labels.getLabel("application.exception.text", e.getMessage()), true);
+            try {
+                inscrit = inscriptionJoueursUIService.creerNouveauCompteJoueur(joueur);
+
+                if (inscrit) {
+                    Messagebox.show(Labels.getLabel("sign.in.successful"),
+                            Labels.getLabel("dialog.information.title"),
+                            Messagebox.Button.OK.id,
+                            Messagebox.INFORMATION, event -> Executions.getCurrent().sendRedirect("/"));
+                } else {
+                    Messagebox.show(Labels.getLabel("sign.in.error.existing.player"),
+                            Labels.getLabel("dialog.information.title"),
+                            Messagebox.Button.OK.id,
+                            Messagebox.EXCLAMATION);
+                }
+            } catch (ApplicationException e) {
+                log.error("Erreur lors de l'inscription d'un joueur", e);
+                Messagebox.show(Labels.getLabel("application.exception.text"),
+                        Labels.getLabel("dialog.error.title", new String[]{e.getMessage()}),
+                        Messagebox.Button.OK.id, Messagebox.ERROR);
+            }
+        } else {
+            Messagebox.show(Labels.getLabel("sign.in.password.confirmation.does.not.match"),
+                    Labels.getLabel("dialog.information.title"),
+                    Messagebox.Button.OK.id,
+                    Messagebox.EXCLAMATION);
+            return;
         }
     }
 
@@ -61,12 +85,20 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
         this.nom = nom;
     }
 
-    public String getMotDePasse() {
-        return motDePasse;
+    public String getMotDePasse1() {
+        return motDePasse1;
     }
 
-    public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
+    public void setMotDePasse1(String motDePasse1) {
+        this.motDePasse1 = motDePasse1;
+    }
+
+    public String getMotDePasse2() {
+        return motDePasse2;
+    }
+
+    public void setMotDePasse2(String motDePasse2) {
+        this.motDePasse2 = motDePasse2;
     }
 
     public String getEmail() {
