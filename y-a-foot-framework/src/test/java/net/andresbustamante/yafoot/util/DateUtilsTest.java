@@ -84,7 +84,7 @@ public class DateUtilsTest {
     public void testGetPatternDateAutre() {
         String pattern = DateUtils.getPatternDate("xx");
         assertNotNull(pattern);
-        assertEquals("yyyy/MM/dd", pattern);
+        assertEquals("yyyy-MM-dd", pattern);
     }
 
     @Test

@@ -36,7 +36,7 @@ public class DateUtils {
 
     public static String getPatternDate(String langue) {
         if (langue == null) {
-            return "yyyy/MM/dd";
+            return "yyyy-MM-dd";
         }
 
         switch (langue) {
@@ -46,7 +46,7 @@ public class DateUtils {
             case ANGLAIS:
                 return "yyyy-MM-dd";
             default:
-                return "yyyy/MM/dd";
+                return "yyyy-MM-dd";
         }
     }
 
@@ -57,13 +57,13 @@ public class DateUtils {
 
         switch (langue) {
             case ESPAGNOL:
-                return "dd/MM/yyyy H:mm";
+                return "dd/MM/yyyy h:mm a";
             case FRANCAIS:
-                return "dd/MM/yyyy H'h'mm";
+                return "dd/MM/yyyy H:mm";
             case ANGLAIS:
                 return "yyyy-MM-dd h:mm a";
             default:
-                return "yyyy/MM/dd H:mm";
+                return "yyyy-MM-dd H:mm";
         }
     }
 

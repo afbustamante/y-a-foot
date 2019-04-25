@@ -26,7 +26,7 @@
                 <listitem>
                   <listcell>
                     <vbox>
-                      <label value="@load(each.date.time) @converter('formattedDate', format='dd/MM/yyyy HH:mm')"/>
+                      <label value="@load(each.date.time) @converter('formattedDate', format='dd/MM/yyyy H:mm')"/>
                       <label value="@load(each.site.nom)"/>
                       <label value="@load(each.site.adresse)"/>
                       <div>
@@ -56,7 +56,7 @@
               <template name="model">
                 <listitem>
                   <listcell>
-                    <label value="@load(each.date.time) @converter('formattedDate', format='dd/MM/yyyy HH:mm')"/>
+                    <label value="@load(each.date.time) @converter('formattedDate', format='dd/MM/yyyy H:mm')"/>
                   </listcell>
                   <listcell>
                     <label value="@load(each.site.nom)" />
