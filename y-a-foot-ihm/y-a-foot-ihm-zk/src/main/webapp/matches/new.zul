@@ -64,11 +64,11 @@
         </rows>
       </grid>
       <separator/>
-      <hlayout>
+      <div>
         <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/"/>
         <button id="btnContinue" onClick="@command('creerMatch')"
                 label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
-      </hlayout>
+      </div>
     </vlayout>
     <vlayout visible="@load(vm.codeMatch ne null)">
       <grid>

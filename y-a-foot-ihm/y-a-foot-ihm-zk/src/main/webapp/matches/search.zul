@@ -60,6 +60,7 @@
             </cell>
             <cell>
               <button id="btnViewMap" label="${c:l('match.search.result.map')}"
+                      disabled="true"
                       image="/images/22x22/system-search.png"/>
             </cell>
           </row>

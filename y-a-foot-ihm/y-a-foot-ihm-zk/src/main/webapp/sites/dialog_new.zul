@@ -25,9 +25,9 @@
       </rows>
     </grid>
     <separator/>
-    <hbox>
+    <div>
       <button id="btnContinue" onClick="@command('ajouterSite') @global-command('rafraichirListeSites')"
               label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
-    </hbox>
+    </div>
   </vlayout>
 </window>

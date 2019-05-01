@@ -39,11 +39,11 @@
         </rows>
       </grid>
       <separator/>
-      <hlayout>
+      <div>
         <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/matches/search.zul"/>
         <button id="btnContinue" onClick="@command('joindreMatch')" disabled="@load(vm.joueurDejaInscrit)"
                 label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
-      </hlayout>
+      </div>
     </vlayout>
   </div>
 </window>

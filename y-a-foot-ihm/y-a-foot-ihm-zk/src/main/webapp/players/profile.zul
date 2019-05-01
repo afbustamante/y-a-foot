@@ -1,0 +1,92 @@
+<?page title="${c:l('application.title')}"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1.0"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1"?>
+<?link rel="stylesheet" type="text/css" href="/css/layout.css"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<window apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.ProfilJoueurViewModel')">
+  <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
+  <include src="/zul/top.zul"/>
+  <div id="content">
+    <vlayout>
+      <grid>
+        <auxhead>
+          <auxheader label="${c:l('player.profile.detail.title')}" colspan="2"/>
+        </auxhead>
+        <columns>
+          <column align="right" hflex="min"/>
+          <column/>
+        </columns>
+        <rows>
+          <row>
+            <cell>${c:l('player.profile.first.name')}</cell>
+            <cell>
+              <textbox value="@bind(vm.joueur.prenom)" width="90%"/>
+            </cell>
+          </row>
+          <row>
+            <cell>${c:l('player.profile.surname')}</cell>
+            <cell>
+              <textbox value="@bind(vm.joueur.nom)" width="90%"/>
+            </cell>
+          </row>
+          <row>
+            <cell>${c:l('player.profile.email')}</cell>
+            <cell>
+              <textbox value="@bind(vm.joueur.email)" disabled="true" width="90%"/>
+            </cell>
+          </row>
+          <row>
+            <cell>${c:l('player.profile.phone.number')}</cell>
+            <cell>
+              <textbox value="@bind(vm.joueur.numeroTelephone)" width="90%"/>
+            </cell>
+          </row>
+        </rows>
+      </grid>
+      <separator/>
+      <div>
+        <button label="${c:l('player.profile.button.save')}" image="/images/22x22/document-save.png"
+                onClick="@command('sauvegarderModifications')"/>
+        <button label="${c:l('player.profile.button.deactivate')}" image="/images/22x22/process-stop.png"
+                onClick="@command('desactiverCompte')"/>
+      </div>
+      <separator/>
+      <grid>
+        <auxhead>
+          <auxheader label="${c:l('player.profile.security.title')}" colspan="2"/>
+        </auxhead>
+        <columns>
+          <column align="right" hflex="min"/>
+          <column/>
+        </columns>
+        <rows>
+          <row>
+            <cell>${c:l('player.profile.old.passwd')}</cell>
+            <cell>
+              <textbox value="@save(vm.ancienMotDePasse)" width="90%"/>
+            </cell>
+          </row>
+          <row>
+            <cell>${c:l('player.profile.new.passwd1')}</cell>
+            <cell>
+              <textbox value="@save(vm.nouveauMotDePasse)" width="90%"/>
+            </cell>
+          </row>
+          <row>
+            <cell>${c:l('player.profile.new.passwd2')}</cell>
+            <cell>
+              <textbox value="@save(vm.confirmationMotDePasse)" width="90%"/>
+            </cell>
+          </row>
+        </rows>
+      </grid>
+      <separator/>
+      <div>
+        <button label="${c:l('player.profile.button.update.passwd')}" image="/images/22x22/document-save-as.png"
+                onClick="@command('modifierMotDePasse')"/>
+      </div>
+    </vlayout>
+  </div>
+</window>
