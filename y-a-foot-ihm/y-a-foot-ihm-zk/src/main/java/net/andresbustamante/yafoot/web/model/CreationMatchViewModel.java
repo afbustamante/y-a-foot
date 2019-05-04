@@ -107,8 +107,8 @@ public class CreationMatchViewModel extends AbstractViewModel {
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
-            Messagebox.show(Labels.getLabel("application.exception.text"),
-                    Labels.getLabel("dialog.error.title", new String[]{e.getMessage()}),
+            Messagebox.show(Labels.getLabel("application.exception.text", new String[]{e.getMessage()}),
+                    Labels.getLabel("dialog.error.title"),
                     Messagebox.Button.OK.id, Messagebox.ERROR);
         }
     }

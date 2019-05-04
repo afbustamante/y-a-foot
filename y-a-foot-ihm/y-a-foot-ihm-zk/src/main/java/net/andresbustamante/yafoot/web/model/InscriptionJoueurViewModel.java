@@ -56,8 +56,8 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
                 }
             } catch (ApplicationException e) {
                 log.error("Erreur lors de l'inscription d'un joueur", e);
-                Messagebox.show(Labels.getLabel("application.exception.text"),
-                        Labels.getLabel("dialog.error.title", new String[]{e.getMessage()}),
+                Messagebox.show(Labels.getLabel("application.exception.text", new String[]{e.getMessage()}),
+                        Labels.getLabel("dialog.error.title"),
                         Messagebox.Button.OK.id, Messagebox.ERROR);
             }
         } else {

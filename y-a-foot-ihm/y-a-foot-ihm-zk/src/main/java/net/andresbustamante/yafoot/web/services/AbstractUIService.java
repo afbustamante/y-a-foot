@@ -1,13 +1,17 @@
 package net.andresbustamante.yafoot.web.services;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.web.util.ConstantesWeb;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
@@ -20,13 +24,22 @@ import static net.andresbustamante.yafoot.model.Contexte.UTILISATEUR;
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 /**
+ * Service abstrait à étendre par tous les services utilisés depuis la couche UI
+ *
  * @author andresbustamante
  */
 public abstract class AbstractUIService {
 
+    private final Logger log = LoggerFactory.getLogger(AbstractUIService.class);
     private Contexte contexte;
 
-    protected Contexte getContexte() {
+    /**
+     * Récupérer les informations du contexte de l'utilisateur
+     *
+     * @return
+     * @throws ApplicationException Si un problème parvient lors de la récupération des infos du joueur depuis le serveur
+     */
+    protected Contexte getContexte() throws ApplicationException {
         if (contexte == null) {
             Session session = Sessions.getCurrent();
             Object obj = session.getAttribute(ConstantesWeb.CONTEXTE);
@@ -54,18 +67,36 @@ public abstract class AbstractUIService {
 
     protected abstract String getJoueursPath();
 
-    protected MultiValueMap<String, String> getHeadersMap() {
+    /**
+     *
+     * @return
+     * @throws ApplicationException
+     */
+    protected MultiValueMap<String, String> getHeadersMap() throws ApplicationException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.put(UTILISATEUR, Collections.singletonList(getContexte().getUtilisateur().getId().toString()));
         headers.put(TIMEZONE, Collections.singletonList("CET")); // TODO Injecter la timezone à partir de la session
         return headers;
     }
 
-    private Joueur chercherJoueur(String email) {
-        RestTemplate restTemplate = new RestTemplate();
+    /**
+     * Chercher les informations du joueur connecté à partir de son adresse mail
+     *
+     * @param email Adresse mail du joueur
+     * @return Informations du joueur
+     * @throws ApplicationException Si un problème parvient lors des échanges avec le serveur
+     */
+    private Joueur chercherJoueur(String email) throws ApplicationException {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
 
-        String url = getServerUrl() + getJoueursPath() + MessageFormat.format("/{0}/email", email);
-        ResponseEntity<Joueur> response = restTemplate.getForEntity(url, Joueur.class);
-        return response.getBody();
+            String url = getServerUrl() + getJoueursPath() + MessageFormat.format("/{0}/email", email);
+            ResponseEntity<Joueur> response = restTemplate.getForEntity(url, Joueur.class);
+            return response.getBody();
+        } catch (RestClientException e) {
+            String message = "Erreur lors de la récupération des informations d'un joueur";
+            log.error(message, e);
+            throw new ApplicationException(message);
+        }
     }
 }

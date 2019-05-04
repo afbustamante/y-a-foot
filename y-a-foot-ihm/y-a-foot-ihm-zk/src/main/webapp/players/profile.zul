@@ -63,21 +63,15 @@
         </columns>
         <rows>
           <row>
-            <cell>${c:l('player.profile.old.passwd')}</cell>
-            <cell>
-              <textbox value="@save(vm.ancienMotDePasse)" width="90%"/>
-            </cell>
-          </row>
-          <row>
             <cell>${c:l('player.profile.new.passwd1')}</cell>
             <cell>
-              <textbox value="@save(vm.nouveauMotDePasse)" width="90%"/>
+              <textbox value="@save(vm.nouveauMotDePasse)" type="password" width="90%"/>
             </cell>
           </row>
           <row>
             <cell>${c:l('player.profile.new.passwd2')}</cell>
             <cell>
-              <textbox value="@save(vm.confirmationMotDePasse)" width="90%"/>
+              <textbox value="@save(vm.confirmationMotDePasse)" type="password" width="90%"/>
             </cell>
           </row>
         </rows>
