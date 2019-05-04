@@ -36,8 +36,7 @@ public class RsServerConfig {
         endpoint.setServiceBeans(Arrays.asList(inscriptionsController(),
                 joueursController(),
                 matchsController(),
-                sitesController(),
-                utilisateursController()));
+                sitesController()));
         return endpoint.create();
     }
 
@@ -66,10 +65,5 @@ public class RsServerConfig {
     @Bean
     public SitesController sitesController() {
         return new SitesController();
-    }
-
-    @Bean
-    public UtilisateursController utilisateursController() {
-        return new UtilisateursController();
     }
 }

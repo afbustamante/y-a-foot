@@ -8,6 +8,8 @@
   </appender>
 
   <logger name="net.andresbustamante.yafoot" level="INFO"/>
+  <logger name="org.apache.ibatis" level="DEBUG"/>
+  <logger name="org.mybatis" level="DEBUG"/>
 
   <root level="info">
     <appender-ref ref="STDOUT" />

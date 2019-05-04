@@ -5,6 +5,7 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.model.Joueur;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -79,23 +80,16 @@ public class JoueurDAOTest extends AbstractDAOTest {
 
     @Test
     public void actualiserJoueur() throws Exception {
-        Joueur joueur1 = joueurDAO.chercherJoueurParEmail(EMAIL);
-        assertNotNull(joueur1);
-
-        // Copier les informations du joueur1
-        String nom = joueur1.getNom();
-        String prenom = joueur1.getPrenom();
-        String telephone = joueur1.getTelephone();
-
         // Modifier les informations pour le joueur avec l'ID de John Doe
-        Joueur joueur = new Joueur();
-        joueur.setId(JOHN_DOE.getId());
+        Joueur joueur = joueurDAO.chercherJoueurParEmail(EMAIL);
         joueur.setTelephone(AUTRE_TELEPHONE);
         joueur.setNom(AUTRE_NOM);
         joueur.setPrenom(AUTRE_PRENOM);
+        assertNull(joueur.getDateDerniereMaj());
 
         joueurDAO.actualiserJoueur(joueur);
-        joueur1 = joueurDAO.chercherJoueurParEmail(EMAIL);
+
+        Joueur joueur1 = joueurDAO.chercherJoueurParEmail(EMAIL);
 
         // Les informations du joueur 1 doivent être modifiées
         assertNotNull(joueur1.getTelephone());
@@ -104,6 +98,8 @@ public class JoueurDAOTest extends AbstractDAOTest {
         assertEquals(AUTRE_NOM, joueur1.getNom());
         assertNotNull(joueur1.getPrenom());
         assertEquals(AUTRE_PRENOM, joueur1.getPrenom());
+        assertNotNull(joueur1.getDateDerniereMaj());
+        assertTrue(joueur.getDateCreation().isBefore(joueur1.getDateDerniereMaj()));
     }
 
     @Test

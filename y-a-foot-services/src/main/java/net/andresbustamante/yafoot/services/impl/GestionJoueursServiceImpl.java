@@ -55,7 +55,7 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
     @Override
     public boolean actualiserJoueur(Joueur joueur, Contexte contexte) throws BDDException {
         try {
-            Joueur joueurExistant = joueurDAO.chercherJoueurParId(joueur.getId());
+            Joueur joueurExistant = joueurDAO.chercherJoueurParEmail(joueur.getEmail());
             boolean isImpactLdap = false;
 
             if (joueurExistant != null) {

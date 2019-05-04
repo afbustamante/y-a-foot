@@ -56,7 +56,8 @@
         <if test="joueur.telephone != null">
             jou_telephone = #{joueur.telephone},
         </if>
-        jou_date_derniere_maj = NOW();
+        jou_date_derniere_maj = NOW()
+        WHERE jou_email = #{joueur.email}
     </update>
 
     <delete id="supprimerJoueur">

@@ -79,6 +79,7 @@ public class JoueursController extends AbstractController {
     public Response actualiserJoueur(@PathParam("email") String email, Joueur joueur,
                                      @Context HttpServletRequest request) {
         try {
+            log.info("Mise à jour des données du joueur " + email);
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
             boolean succes = gestionJoueursService.actualiserJoueur(JoueurMapper.INSTANCE.toJoueurBean(joueur), contexte);
             return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
