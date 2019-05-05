@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.ldap.impl;
 import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
 import net.andresbustamante.yafoot.model.Utilisateur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.util.ConstantesLdapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.NameNotFoundException;
@@ -15,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
+
+import static net.andresbustamante.yafoot.util.ConstantesLdapUtils.*;
 
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
@@ -61,7 +62,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
      * @return
      */
     private Name getIdAnnuaire(Utilisateur usr) {
-        return LdapNameBuilder.newInstance(dnUtilisateurs).add(ConstantesLdapUtils.UID, usr.getEmail()).build();
+        return LdapNameBuilder.newInstance(dnUtilisateurs).add(UID, usr.getEmail()).build();
     }
 
     /**
@@ -71,7 +72,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
      * @return
      */
     private Name getIdAnnuaire(RolesEnum role) {
-        return LdapNameBuilder.newInstance(dnRoles).add(ConstantesLdapUtils.CN, role.name()).build();
+        return LdapNameBuilder.newInstance(dnRoles).add(CN, role.name()).build();
     }
 
     /**
@@ -89,7 +90,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
         Attributes attrs = new BasicAttributes();
         attrs.put(objectClass);
-        attrs.put(ConstantesLdapUtils.UID, usr.getEmail());
+        attrs.put(UID, usr.getEmail());
         attrs.put("mail", usr.getEmail());
 
         if (usr.getNom() != null) {
@@ -97,11 +98,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         }
 
         if (usr.getPrenom() != null) {
-            attrs.put(ConstantesLdapUtils.CN, usr.getPrenom());
+            attrs.put(CN, usr.getPrenom());
             attrs.put("givenName", usr.getPrenom());
         }
 
-        attrs.put("userPassword", ConstantesLdapUtils.PREFIX_MDP + usr.getMotDePasse());
+        attrs.put("userPassword", PREFIX_MDP + usr.getMotDePasse());
 
         if (usr.getPrenom() != null && usr.getNom() != null) {
             attrs.put("displayName", usr.getPrenom() + " " + usr.getNom());

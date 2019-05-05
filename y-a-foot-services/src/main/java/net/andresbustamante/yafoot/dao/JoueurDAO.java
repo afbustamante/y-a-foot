@@ -1,10 +1,11 @@
 package net.andresbustamante.yafoot.dao;
 
 import net.andresbustamante.yafoot.model.Joueur;
-import net.andresbustamante.yafoot.util.ConstantesDaoUtils;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
+
+import static net.andresbustamante.yafoot.util.ConstantesDaoUtils.*;
 
 /**
  * Interface de récupération et modification des informations des joueurs en base des données
@@ -20,7 +21,7 @@ public interface JoueurDAO {
      * @return Le joueur correspondant à l'identifiant passé en paramètre. Null si l'identifiant n'est pas utilisé
      * @throws SQLException
      */
-    Joueur chercherJoueurParId(@Param(ConstantesDaoUtils.ID) Integer idJoueur) throws SQLException;
+    Joueur chercherJoueurParId(@Param(ID) Integer idJoueur) throws SQLException;
 
     /**
      * Vérifier si une adresse mail est déjà utilisée par un joueur inscrit
@@ -29,7 +30,7 @@ public interface JoueurDAO {
      * @return True si un joueur existe avec l'adresse mail passée en paramètre
      * @throws SQLException
      */
-    boolean isJoueurInscrit(@Param(ConstantesDaoUtils.EMAIL) String email) throws SQLException;
+    boolean isJoueurInscrit(@Param(EMAIL) String email) throws SQLException;
 
     /**
      * Créer un joueur en base des données
@@ -37,7 +38,7 @@ public interface JoueurDAO {
      * @param joueur Joueur à créer
      * @throws SQLException
      */
-    void creerJoueur(@Param(ConstantesDaoUtils.JOUEUR) Joueur joueur) throws SQLException;
+    void creerJoueur(@Param(JOUEUR) Joueur joueur) throws SQLException;
 
     /**
      * Mettre à jour les informations personnelles d'un joueur passé en paramètre
@@ -45,7 +46,7 @@ public interface JoueurDAO {
      * @param joueur Joueur à mettre à jour
      * @throws SQLException
      */
-    void actualiserJoueur(@Param(ConstantesDaoUtils.JOUEUR) Joueur joueur) throws SQLException;
+    void actualiserJoueur(@Param(JOUEUR) Joueur joueur) throws SQLException;
 
     /**
      * Chercher un joueur en base des données à partir de son adresse mail
@@ -54,7 +55,7 @@ public interface JoueurDAO {
      * @return Joueur associé à l'adresse mail passée en paramètre
      * @throws SQLException
      */
-    Joueur chercherJoueurParEmail(@Param(ConstantesDaoUtils.EMAIL) String email) throws SQLException;
+    Joueur chercherJoueurParEmail(@Param(EMAIL) String email) throws SQLException;
 
     /**
      * Supprimer définitivement un joueur de la base des données
@@ -62,5 +63,5 @@ public interface JoueurDAO {
      * @param joueur Joueur à supprimer
      * @throws SQLException
      */
-    void supprimerJoueur(@Param(ConstantesDaoUtils.JOUEUR) Joueur joueur) throws SQLException;
+    void supprimerJoueur(@Param(JOUEUR) Joueur joueur) throws SQLException;
 }

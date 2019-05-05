@@ -26,8 +26,7 @@ import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static net.andresbustamante.yafoot.model.Contexte.TIMEZONE;
-import static net.andresbustamante.yafoot.model.Contexte.UTILISATEUR;
+import static net.andresbustamante.yafoot.web.util.ConstantesRest.*;
 
 /**
  * Web Service REST pour la recherche et consultation des matches
@@ -54,7 +53,7 @@ public class MatchsController extends AbstractController {
     @GET
     @Path("/{codeMatch}")
     @Produces(MediaType.APPLICATION_XML)
-    public Response getMatchParCode(@PathParam("codeMatch") String codeMatch,
+    public Response getMatchParCode(@PathParam(CODE_MATCH) String codeMatch,
                                     @HeaderParam(UTILISATEUR) Integer idUtilisateur) {
         try {
             net.andresbustamante.yafoot.model.Match match = rechercheMatchsService.chercherMatchParCode(codeMatch,
@@ -70,7 +69,7 @@ public class MatchsController extends AbstractController {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Response getMatchsJoueur(@QueryParam("idJoueur") Integer idJoueur,
+    public Response getMatchsJoueur(@QueryParam(ID_JOUEUR) Integer idJoueur,
                                     @HeaderParam(UTILISATEUR) Integer idUtilisateur,
                                     @HeaderParam(TIMEZONE) String timezone) {
         try {
@@ -122,7 +121,7 @@ public class MatchsController extends AbstractController {
     @PUT
     @Path("/{codeMatch}/annulation")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response annulerMatch(@PathParam("codeMatch") String codeMatch, Match match,
+    public Response annulerMatch(@PathParam(CODE_MATCH) String codeMatch, Match match,
                                  @Context HttpServletRequest request) {
         //TODO implement this method
         throw new UnsupportedOperationException("Not implemented yet.");

@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static net.andresbustamante.yafoot.web.util.ConstantesRest.CODE_MATCH;
 
 /**
  * Web Service REST pour la gestion des inscriptions aux matches
@@ -73,7 +74,7 @@ public class InscriptionsController extends AbstractController {
 
     @DELETE
     @Path("/{codeMatch}")
-    public Response desinscrireJoueurMatch(@PathParam("codeMatch") String codeMatch,
+    public Response desinscrireJoueurMatch(@PathParam(CODE_MATCH) String codeMatch,
                                            @Context HttpServletRequest request) {
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);

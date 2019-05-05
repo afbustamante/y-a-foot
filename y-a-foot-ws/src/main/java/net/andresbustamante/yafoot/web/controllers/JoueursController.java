@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static net.andresbustamante.yafoot.web.util.ConstantesRest.EMAIL;
 
 /**
  * Service REST de gestion des inscriptions des joueurs dans l'application
@@ -76,7 +77,7 @@ public class JoueursController extends AbstractController {
     @PUT
     @Path("/{email}/email")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response actualiserJoueur(@PathParam("email") String email, Joueur joueur,
+    public Response actualiserJoueur(@PathParam(EMAIL) String email, Joueur joueur,
                                      @Context HttpServletRequest request) {
         try {
             log.info("Mise à jour des données du joueur " + email);
@@ -95,7 +96,7 @@ public class JoueursController extends AbstractController {
     @GET
     @Path("/{email}/email")
     @Produces(MediaType.APPLICATION_XML)
-    public Response chercherJoueurParEmail(@PathParam("email") String email) {
+    public Response chercherJoueurParEmail(@PathParam(EMAIL) String email) {
         net.andresbustamante.yafoot.model.Contexte contexte = new net.andresbustamante.yafoot.model.Contexte();
 
         try {
