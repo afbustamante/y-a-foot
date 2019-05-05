@@ -29,7 +29,7 @@ public class UtilisateurDAOTest {
     private static final Utilisateur USR_TEST = new Utilisateur("test@email.com", "password", "TEST",
             "Utilisateur", "0123456789");
 
-    @Value("${ldap.users.dn}")
+    @Value("${ldap.config.users.dn}")
     private String dnUtilisateurs;
 
     @Autowired
