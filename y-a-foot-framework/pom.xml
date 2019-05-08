@@ -40,8 +40,28 @@
 
     <!-- Testing -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.sbrannen</groupId>
+      <artifactId>spring-test-junit5</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -70,7 +90,6 @@
         <configuration>
           <schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
           <bindingDirectory>${basedir}/src/main/resources/xjb</bindingDirectory>
-          <forceRegenerate>true</forceRegenerate>
           <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
           <verbose>true</verbose>
           <strict>false</strict>

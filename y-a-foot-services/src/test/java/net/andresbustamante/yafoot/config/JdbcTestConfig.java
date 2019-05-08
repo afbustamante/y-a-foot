@@ -1,11 +1,13 @@
 package net.andresbustamante.yafoot.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 @Configuration
@@ -31,4 +33,11 @@ public class JdbcTestConfig {
         return dataSource;
     }
 
+    @PostConstruct
+    public void updateDatabase() throws Exception {
+        Flyway flyway = Flyway.configure().dataSource(dataSource()).load();
+
+        // Start the migration
+        flyway.migrate();
+    }
 }
