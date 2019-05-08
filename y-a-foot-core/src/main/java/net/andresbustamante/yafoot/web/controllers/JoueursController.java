@@ -52,7 +52,7 @@ public class JoueursController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response inscrireJoueur(Joueur joueur) {
         try {
-            log.info("Demande de création d'un nouveau joueur avec l'adresse " + joueur.getEmail());
+            log.info("Demande de création d'un nouveau joueur avec l'adresse {}", joueur.getEmail());
             net.andresbustamante.yafoot.model.Joueur nouveauJoueur = JoueurMapper.INSTANCE.toJoueurBean(joueur);
             boolean inscrit = gestionJoueursService.inscrireJoueur(nouveauJoueur,
                     ContexteMapper.INSTANCE.toContexteBean(new Contexte()));
