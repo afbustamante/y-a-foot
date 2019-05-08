@@ -22,6 +22,9 @@
     <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <maven-plugin-plugin.version>3.5.2</maven-plugin-plugin.version>
+    <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+    <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
     <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
     <maven-filtering.version>3.1.1</maven-filtering.version>
     <maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
@@ -39,13 +42,13 @@
     <activation.version>1.1.1</activation.version>
 
     <!-- Spring Framework -->
-    <spring.version>5.0.9.RELEASE</spring.version>
+    <spring.version>5.0.13.RELEASE</spring.version>
     <spring-dao.version>2.0.8</spring-dao.version>
     <spring-ldap-core.version>2.3.2.RELEASE</spring-ldap-core.version>
-    <spring-data-commons.version>2.0.12.RELEASE</spring-data-commons.version>
-    <spring-security.version>5.0.8.RELEASE</spring-security.version>
+    <spring-data-commons.version>2.0.14.RELEASE</spring-data-commons.version>
+    <spring-security.version>5.0.12.RELEASE</spring-security.version>
     <jackson-databind.version>2.9.8</jackson-databind.version>
-    <spring-boot.version>2.0.5.RELEASE</spring-boot.version>
+    <spring-boot.version>2.0.9.RELEASE</spring-boot.version>
 
     <!-- ICEFaces -->
     <icefaces.version>4.1.1</icefaces.version>
@@ -68,7 +71,7 @@
     <commons-dbcp2.version>2.2.0</commons-dbcp2.version>
 
     <!-- Apache CXF -->
-    <cxf.version>3.2.6</cxf.version>
+    <cxf.version>3.2.8</cxf.version>
     <jackson-jaxrs.version>1.9.13</jackson-jaxrs.version>
 
     <junit.version>4.12</junit.version>
@@ -430,8 +433,20 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${maven-plugin-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
           <version>${maven-clean-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven-source-plugin.version}</version>
         </plugin>
 
         <plugin>
@@ -443,6 +458,12 @@
             <target>${maven.compiler.target}</target>
             <encoding>${project.build.sourceEncoding}</encoding>
           </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin.version}</version>
         </plugin>
 
         <plugin>
