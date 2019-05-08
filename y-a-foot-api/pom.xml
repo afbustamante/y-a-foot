@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>y-a-foot-framework</artifactId>
+  <artifactId>y-a-foot-api</artifactId>
 
   <packaging>jar</packaging>
 

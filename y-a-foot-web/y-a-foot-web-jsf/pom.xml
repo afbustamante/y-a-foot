@@ -2,16 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>y-a-foot-ihm</artifactId>
+    <artifactId>y-a-foot-web</artifactId>
     <groupId>net.andresbustamante</groupId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>y-a-foot-ihm-jsf</artifactId>
+  <artifactId>y-a-foot-web-jsf</artifactId>
   <packaging>war</packaging>
 
-  <name>y-a-foot-ihm-jsf</name>
+  <name>y-a-foot-web-jsf</name>
 
   <properties>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -26,7 +26,7 @@
     </dependency>
     <dependency>
       <groupId>net.andresbustamante</groupId>
-      <artifactId>y-a-foot-framework</artifactId>
+      <artifactId>y-a-foot-api</artifactId>
       <version>${project.version}</version>
     </dependency>
 

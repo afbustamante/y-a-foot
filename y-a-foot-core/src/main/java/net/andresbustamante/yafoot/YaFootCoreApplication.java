@@ -6,9 +6,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication(scanBasePackages = "net.andresbustamante.yafoot")
 @EnableAspectJAutoProxy
-public class YaFootWsApplication {
+public class YaFootCoreApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(YaFootWsApplication.class, args);
+        SpringApplication.run(YaFootCoreApplication.class, args);
     }
 }

@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>y-a-foot-ws</artifactId>
+  <artifactId>y-a-foot-core</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -196,7 +196,7 @@
               <attachWadl>true</attachWadl>
               <applicationTitle>Y-a-foot REST API</applicationTitle>
               <basePackages>net.andresbustamante.yafoot.web.controllers</basePackages>
-              <outputFile>${basedir}/src/main/resources/wadl/y-a-foot-ws.wadl</outputFile>
+              <outputFile>${basedir}/src/main/resources/wadl/y-a-foot-core.wadl</outputFile>
               <ignoreForwardSlash>false</ignoreForwardSlash>
               <stylesheetReference>${basedir}/src/main/resources/wadl/wadl.xsl</stylesheetReference>
             </configuration>

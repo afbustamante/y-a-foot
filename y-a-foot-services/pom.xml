@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>net.andresbustamante</groupId>
-      <artifactId>y-a-foot-framework</artifactId>
+      <artifactId>y-a-foot-api</artifactId>
       <version>${project.version}</version>
     </dependency>
 

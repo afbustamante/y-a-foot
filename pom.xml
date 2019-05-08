@@ -10,10 +10,10 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <modules>
-    <module>y-a-foot-framework</module>
+    <module>y-a-foot-api</module>
     <module>y-a-foot-services</module>
-    <module>y-a-foot-ws</module>
-    <module>y-a-foot-ihm</module>
+    <module>y-a-foot-core</module>
+    <module>y-a-foot-web</module>
   </modules>
 
   <properties>
