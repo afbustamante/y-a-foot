@@ -99,7 +99,9 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
             Voiture voitureExistante = null;
 
             if (voiture != null) {
-                voitureExistante = voitureDAO.chercherVoitureParId(voiture.getId());
+                if (voiture.getId() != null) {
+                    voitureExistante = voitureDAO.chercherVoitureParId(voiture.getId());
+                }
 
                 if (voitureExistante == null) {
                     // Enregistrer la voiture en base

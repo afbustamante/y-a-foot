@@ -41,8 +41,8 @@ public class RechercheMatchsServiceImpl implements RechercheMatchsService {
     public List<Match> chercherMatchsJoueur(Integer idJoueur, Contexte contexte) throws BDDException {
         try {
             if (idJoueur != null && idJoueur > 0) {
-                // Chercher les matchs programmés pour le joueur depuis ce matin
-                LocalDateTime dateLocale = LocalDate.now(contexte.getTimeZone()).atStartOfDay();
+                // Chercher les matchs programmés pour le joueur depuis 1 an
+                LocalDateTime dateLocale = LocalDate.now(contexte.getTimeZone()).atStartOfDay().minusYears(1L);
                 ZonedDateTime date = ZonedDateTime.of(dateLocale, contexte.getTimeZone());
                 return matchDAO.chercherMatchsParJoueur(idJoueur, date);
             } else {

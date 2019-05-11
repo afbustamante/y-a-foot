@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-abstract class AbstractServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public abstract class AbstractServiceTest {
 }

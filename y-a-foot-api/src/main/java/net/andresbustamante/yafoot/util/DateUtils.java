@@ -16,18 +16,19 @@ public class DateUtils {
 
     public static final String SEPARATEUR_HEURE = ":";
 
-    private static final String FORMAT_DATE = "dd/MM/yyyy";
+    private static final String FORMAT_DD_MM_YYYY = "dd/MM/yyyy";
+    private static final String FORMAT_YYYY_MM_DD = "yyyy-MM-dd";
 
     private DateUtils() {}
 
     public static String formater(Date date) {
-        DateFormat formatDate = new SimpleDateFormat(FORMAT_DATE);
+        DateFormat formatDate = new SimpleDateFormat(FORMAT_DD_MM_YYYY);
         return (date != null) ? formatDate.format(date) : "";
     }
 
     public static Date transformer(String texte) {
         try {
-            DateFormat formatDate = new SimpleDateFormat(FORMAT_DATE);
+            DateFormat formatDate = new SimpleDateFormat(FORMAT_DD_MM_YYYY);
             return (texte != null) ? formatDate.parse(texte) : null;
         } catch (ParseException e) {
             return null;
@@ -36,17 +37,17 @@ public class DateUtils {
 
     public static String getPatternDate(String langue) {
         if (langue == null) {
-            return "yyyy-MM-dd";
+            return FORMAT_YYYY_MM_DD;
         }
 
         switch (langue) {
             case ESPAGNOL:
             case FRANCAIS:
-                return "dd/MM/yyyy";
+                return FORMAT_DD_MM_YYYY;
             case ANGLAIS:
-                return "yyyy-MM-dd";
+                return FORMAT_YYYY_MM_DD;
             default:
-                return "yyyy-MM-dd";
+                return FORMAT_YYYY_MM_DD;
         }
     }
 
