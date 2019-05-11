@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import static net.andresbustamante.yafoot.util.ConstantesDaoUtils.*;
+import static net.andresbustamante.yafoot.util.DaoConstants.*;
 
 /**
  * Interface de récupération et modification des informations des matchs en base des données

@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-import static net.andresbustamante.yafoot.web.util.ConstantesRest.ID_JOUEUR;
+import static net.andresbustamante.yafoot.web.util.RestConstants.ID_JOUEUR;
 
 /**
  * @author andresbustamante

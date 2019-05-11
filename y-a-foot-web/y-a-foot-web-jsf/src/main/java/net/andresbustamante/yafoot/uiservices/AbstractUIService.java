@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.uiservices;
 import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.util.ConfigProperties;
-import net.andresbustamante.yafoot.util.ConstantesWeb;
+import net.andresbustamante.yafoot.util.WebConstants;
 
 import javax.faces.context.FacesContext;
 import javax.ws.rs.client.Client;
@@ -25,7 +25,7 @@ public abstract class AbstractUIService {
 
     public Contexte getContexte() {
         if (contexte == null) {
-            Object obj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(ConstantesWeb
+            Object obj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(WebConstants
                     .CONTEXTE);
             if (obj != null) {
                 contexte = (Contexte) obj;
@@ -42,7 +42,7 @@ public abstract class AbstractUIService {
                         contexte.setUtilisateur(joueur);
                     }
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(
-                            ConstantesWeb.CONTEXTE, contexte);
+                            WebConstants.CONTEXTE, contexte);
                 }
             }
         }

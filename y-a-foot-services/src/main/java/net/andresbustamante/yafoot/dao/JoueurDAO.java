@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 
-import static net.andresbustamante.yafoot.util.ConstantesDaoUtils.*;
+import static net.andresbustamante.yafoot.util.DaoConstants.*;
 
 /**
  * Interface de récupération et modification des informations des joueurs en base des données

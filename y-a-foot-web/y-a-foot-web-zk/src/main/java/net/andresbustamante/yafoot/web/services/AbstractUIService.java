@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.web.services;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
-import net.andresbustamante.yafoot.web.util.ConstantesWeb;
+import net.andresbustamante.yafoot.web.util.WebConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +42,7 @@ public abstract class AbstractUIService {
     protected Contexte getContexte() throws ApplicationException {
         if (contexte == null) {
             Session session = Sessions.getCurrent();
-            Object obj = session.getAttribute(ConstantesWeb.CONTEXTE);
+            Object obj = session.getAttribute(WebConstants.CONTEXTE);
 
             if (obj != null) {
                 contexte = (Contexte) obj;
@@ -56,7 +56,7 @@ public abstract class AbstractUIService {
                 if (joueur != null) {
                     contexte = new Contexte();
                     contexte.setUtilisateur(joueur);
-                    session.setAttribute(ConstantesWeb.CONTEXTE, contexte);
+                    session.setAttribute(WebConstants.CONTEXTE, contexte);
                 }
             }
         }

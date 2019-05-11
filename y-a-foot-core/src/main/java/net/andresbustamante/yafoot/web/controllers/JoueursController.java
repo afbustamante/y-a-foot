@@ -23,7 +23,7 @@ import java.text.MessageFormat;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static net.andresbustamante.yafoot.web.util.ConstantesRest.EMAIL;
+import static net.andresbustamante.yafoot.web.util.RestConstants.EMAIL;
 
 /**
  * Service REST de gestion des inscriptions des joueurs dans l'application

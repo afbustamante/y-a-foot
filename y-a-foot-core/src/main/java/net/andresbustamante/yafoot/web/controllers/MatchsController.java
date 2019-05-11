@@ -26,7 +26,7 @@ import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static net.andresbustamante.yafoot.web.util.ConstantesRest.*;
+import static net.andresbustamante.yafoot.web.util.RestConstants.*;
 
 /**
  * Web Service REST pour la recherche et consultation des matches

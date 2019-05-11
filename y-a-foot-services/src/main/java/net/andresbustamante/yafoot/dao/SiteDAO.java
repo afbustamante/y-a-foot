@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.sql.SQLException;
 import java.util.List;
 
-import static net.andresbustamante.yafoot.util.ConstantesDaoUtils.*;
+import static net.andresbustamante.yafoot.util.DaoConstants.*;
 
 /**
  * @author andresbustamante

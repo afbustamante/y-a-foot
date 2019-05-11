@@ -5,7 +5,7 @@ import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.uiservices.InscriptionMatchsUIService;
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
-import net.andresbustamante.yafoot.util.ConstantesWeb;
+import net.andresbustamante.yafoot.util.WebConstants;
 import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.util.MessagesProperties;
 import org.apache.commons.logging.Log;
@@ -79,22 +79,22 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
 
                         if (inscrit) {
                             ajouterMessageInfo("match.join.success.summary.text", "match.join.success.detail.text", null);
-                            return ConstantesWeb.SUCCES;
+                            return WebConstants.SUCCES;
                         } else {
                             ajouterMessageErreur("match.join.error.summary.text", "match.join.error.detail.text", null);
-                            return ConstantesWeb.ECHEC;
+                            return WebConstants.ECHEC;
                         }
                     default:
-                        return ConstantesWeb.ECHEC;
+                        return WebConstants.ECHEC;
                 }
             } catch (ApplicationException e) {
                 // Afficher l'exception
                 log.error("Erreur lors de l'inscription : " + e.getCause());
-                return ConstantesWeb.ECHEC;
+                return WebConstants.ECHEC;
             }
         } else {
             log.error("Pas d'option valide pour finaliser l'inscription");
-            return ConstantesWeb.ECHEC;
+            return WebConstants.ECHEC;
         }
     }
 

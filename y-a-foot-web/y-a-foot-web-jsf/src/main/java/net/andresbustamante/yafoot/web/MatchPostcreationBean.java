@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.web;
 
-import net.andresbustamante.yafoot.util.ConstantesWeb;
+import net.andresbustamante.yafoot.util.WebConstants;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -20,7 +20,7 @@ public class MatchPostcreationBean extends AbstractFacesBean implements Serializ
     }
 
     public String getCodeMatch() {
-        Object obj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(ConstantesWeb
+        Object obj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(WebConstants
                 .CODE_MATCH);
 
         if (obj != null) {

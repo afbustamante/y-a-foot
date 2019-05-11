@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.util;
 
-public class ConstantesDaoUtils {
+public class DaoConstants {
 
     public static final String ID = "id";
     public static final String NOM = "nom";
@@ -11,4 +11,6 @@ public class ConstantesDaoUtils {
     public static final String DATE = "date";
     public static final String MATCH = "match";
     public static final String VOITURE = "voiture";
+
+    private DaoConstants() {}
 }

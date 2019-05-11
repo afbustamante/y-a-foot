@@ -5,8 +5,8 @@ import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 
-import static net.andresbustamante.yafoot.util.ConstantesDaoUtils.ID;
-import static net.andresbustamante.yafoot.util.ConstantesDaoUtils.VOITURE;
+import static net.andresbustamante.yafoot.util.DaoConstants.ID;
+import static net.andresbustamante.yafoot.util.DaoConstants.VOITURE;
 
 /**
  * Interface de gestion et récupération des informations des voitures en base des données

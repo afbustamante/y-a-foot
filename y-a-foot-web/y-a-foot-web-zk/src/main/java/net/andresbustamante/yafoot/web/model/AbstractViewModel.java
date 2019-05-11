@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.util.DateUtils;
-import net.andresbustamante.yafoot.web.util.ConstantesWeb;
+import net.andresbustamante.yafoot.web.util.WebConstants;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.zkoss.zk.ui.Executions;
@@ -39,14 +39,14 @@ public abstract class AbstractViewModel {
 
     public DateFormat getDateFormat() {
         Session session = Sessions.getCurrent();
-        Object obj = session.getAttribute(ConstantesWeb.DATE_FORMAT);
+        Object obj = session.getAttribute(WebConstants.DATE_FORMAT);
 
         if (obj != null) {
             return (DateFormat) obj;
         } else {
             DateFormat dateFormat = new SimpleDateFormat(DateUtils.getPatternDateHeure(getLocaleUtilisateur().getLanguage()),
                     getLocaleUtilisateur());
-            session.setAttribute(ConstantesWeb.DATE_FORMAT, dateFormat);
+            session.setAttribute(WebConstants.DATE_FORMAT, dateFormat);
             return dateFormat;
         }
     }

@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static net.andresbustamante.yafoot.web.util.ConstantesRest.CODE_MATCH;
+import static net.andresbustamante.yafoot.web.util.RestConstants.CODE_MATCH;
 
 /**
  * Web Service REST pour la gestion des inscriptions aux matches

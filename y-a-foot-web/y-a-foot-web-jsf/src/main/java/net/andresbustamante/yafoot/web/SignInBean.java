@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.web;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.uiservices.InscriptionJoueursUIService;
-import net.andresbustamante.yafoot.util.ConstantesWeb;
+import net.andresbustamante.yafoot.util.WebConstants;
 import net.andresbustamante.yafoot.util.SecuriteUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,13 +45,13 @@ public class SignInBean extends AbstractFacesBean implements Serializable {
 
                 if (succes) {
                     ajouterMessageInfo("sign.in.successful", null, null);
-                    return ConstantesWeb.SUCCES;
+                    return WebConstants.SUCCES;
                 } else {
-                    return ConstantesWeb.ECHEC;
+                    return WebConstants.ECHEC;
                 }
             } else {
                 ajouterMessageErreur("sign.in.password.confirmation.does.not.match", null, null);
-                return ConstantesWeb.ECHEC;
+                return WebConstants.ECHEC;
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un joueur", e);

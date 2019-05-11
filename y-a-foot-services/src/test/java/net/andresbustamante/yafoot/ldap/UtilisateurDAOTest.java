@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.config.LdapConfig;
 import net.andresbustamante.yafoot.config.LdapTestConfig;
 import net.andresbustamante.yafoot.model.Utilisateur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.util.ConstantesLdapUtils;
+import net.andresbustamante.yafoot.util.LdapConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -117,6 +117,6 @@ public class UtilisateurDAOTest {
     }
 
     private Name getIdAnnuaire(Utilisateur usr) {
-        return LdapNameBuilder.newInstance(dnUtilisateurs).add(ConstantesLdapUtils.UID, usr.getEmail()).build();
+        return LdapNameBuilder.newInstance(dnUtilisateurs).add(LdapConstants.UID, usr.getEmail()).build();
     }
 }

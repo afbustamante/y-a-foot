@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.uiservices.OrganisationMatchsUIService;
-import net.andresbustamante.yafoot.util.ConstantesWeb;
+import net.andresbustamante.yafoot.util.WebConstants;
 import net.andresbustamante.yafoot.util.DateUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -258,9 +258,9 @@ public class NewMatchBean extends AbstractFacesBean implements Serializable {
 
         try {
             String codeMatch = organisationMatchsUIService.creerMatch(match);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ConstantesWeb.CODE_MATCH,
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(WebConstants.CODE_MATCH,
                     codeMatch);
-            return ConstantesWeb.SUCCES;
+            return WebConstants.SUCCES;
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);
             ajouterMessageErreur(e.getMessage(), null, null);
