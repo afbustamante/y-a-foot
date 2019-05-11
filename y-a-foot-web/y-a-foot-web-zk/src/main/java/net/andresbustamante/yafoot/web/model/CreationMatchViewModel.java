@@ -22,6 +22,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static net.andresbustamante.yafoot.web.util.WebConstants.SITES;
+
 /**
  * @author andresbustamante
  */
@@ -35,10 +37,10 @@ public class CreationMatchViewModel extends AbstractViewModel {
 
     private Site site;
 
-    private final transient Logger log = LoggerFactory.getLogger(CreationMatchViewModel.class);
+    private final Logger log = LoggerFactory.getLogger(CreationMatchViewModel.class);
 
     @WireVariable
-    private transient OrganisationMatchsUIService organisationMatchsUIService;
+    private OrganisationMatchsUIService organisationMatchsUIService;
 
     private ListModel<Site> sitesListModel;
 
@@ -74,7 +76,7 @@ public class CreationMatchViewModel extends AbstractViewModel {
     @GlobalCommand
     @NotifyChange("sitesListModel")
     public void rafraichirListeSites() {
-        List<Site> sites = (List<Site>) Executions.getCurrent().getSession().getAttribute("sites");
+        List<Site> sites = (List<Site>) Executions.getCurrent().getSession().getAttribute(SITES);
         sitesListModel = new ListModelArray<>(sites);
 
         if (winNouveauSite != null) {
@@ -101,9 +103,9 @@ public class CreationMatchViewModel extends AbstractViewModel {
 
             codeMatch = organisationMatchsUIService.creerMatch(match);
 
-            if (Executions.getCurrent().getSession().hasAttribute("sites")) {
+            if (Executions.getCurrent().getSession().hasAttribute(SITES)) {
                 // Un site a été ajouté. Nettoyer la session
-                Executions.getCurrent().getSession().removeAttribute("sites");
+                Executions.getCurrent().getSession().removeAttribute(SITES);
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la création d'un match", e);

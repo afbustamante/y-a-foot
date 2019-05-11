@@ -16,6 +16,7 @@ public class LoggingAspect {
 
     @Pointcut("execution(* net.andresbustamante.yafoot.services.impl.*ServiceImpl.*(..))")
     public void filtrerServicesMetier() {
+        // no-op
     }
 
     @Before("filtrerServicesMetier()")

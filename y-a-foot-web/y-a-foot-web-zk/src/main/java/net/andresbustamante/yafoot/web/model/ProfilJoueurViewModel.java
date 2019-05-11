@@ -15,7 +15,7 @@ import org.zkoss.zul.Messagebox;
 
 public class ProfilJoueurViewModel extends AbstractViewModel {
 
-    private transient final Logger log = LoggerFactory.getLogger(ProfilJoueurViewModel.class);
+    private final Logger log = LoggerFactory.getLogger(ProfilJoueurViewModel.class);
     private Joueur joueur;
     private String nouveauMotDePasse;
     private String confirmationMotDePasse;

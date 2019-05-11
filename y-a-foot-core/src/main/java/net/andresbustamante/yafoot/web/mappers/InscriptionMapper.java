@@ -4,12 +4,9 @@ import net.andresbustamante.yafoot.model.Inscription;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {JoueurMapper.class, VoitureMapper.class})
+@Mapper(componentModel = "spring", uses = {JoueurMapper.class, VoitureMapper.class})
 public interface InscriptionMapper {
-
-    InscriptionMapper INSTANCE = Mappers.getMapper(InscriptionMapper.class);
 
     @Mappings({
             @Mapping(source = "idMatch", target = "id.idMatch"),

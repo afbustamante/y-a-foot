@@ -96,6 +96,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
      * @throws ApplicationException
      */
     public void annulerMatch(Match match) throws ApplicationException {
+        throw new UnsupportedOperationException("To be done");
     }
 
     @Override

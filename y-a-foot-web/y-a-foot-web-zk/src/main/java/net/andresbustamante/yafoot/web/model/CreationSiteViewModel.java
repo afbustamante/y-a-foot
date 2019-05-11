@@ -8,6 +8,8 @@ import org.zkoss.zk.ui.Executions;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.andresbustamante.yafoot.web.util.WebConstants.SITES;
+
 /**
  * @author andresbustamante
  */
@@ -22,8 +24,8 @@ public class CreationSiteViewModel extends AbstractViewModel {
     public void init() {
         nouveauSite = new Site();
 
-        if (Executions.getCurrent().getSession().hasAttribute("sites")) {
-            sites = (List<Site>) Executions.getCurrent().getSession().getAttribute("sites");
+        if (Executions.getCurrent().getSession().hasAttribute(SITES)) {
+            sites = (List<Site>) Executions.getCurrent().getSession().getAttribute(SITES);
         }
 
         if (sites == null) {
@@ -34,7 +36,7 @@ public class CreationSiteViewModel extends AbstractViewModel {
     @Command
     public void ajouterSite() {
         sites.add(nouveauSite);
-        Executions.getCurrent().getSession().setAttribute("sites", sites);
+        Executions.getCurrent().getSession().setAttribute(SITES, sites);
     }
 
     public Site getNouveauSite() {

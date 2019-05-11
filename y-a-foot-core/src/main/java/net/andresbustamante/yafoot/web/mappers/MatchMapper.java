@@ -4,12 +4,9 @@ import net.andresbustamante.yafoot.model.Match;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {VoitureMapper.class})
+@Mapper(componentModel = "spring", uses = {VoitureMapper.class})
 public interface MatchMapper {
-
-    MatchMapper INSTANCE = Mappers.getMapper(MatchMapper.class);
 
     @Mappings({
             @Mapping(source = "match.inscriptions.inscription", target = "inscriptions"),

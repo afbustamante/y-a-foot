@@ -44,7 +44,7 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
     @WireVariable
     private InscriptionMatchsUIService inscriptionMatchsUIService;
 
-    private transient final Logger log = LoggerFactory.getLogger(RechercheMatchsJoueurViewModel.class);
+    private final Logger log = LoggerFactory.getLogger(RechercheMatchsJoueurViewModel.class);
 
     @Init
     public void init() {

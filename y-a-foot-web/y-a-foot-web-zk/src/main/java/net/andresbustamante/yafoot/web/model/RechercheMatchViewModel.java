@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class RechercheMatchViewModel extends AbstractViewModel {
 
-    private final transient Logger log = LoggerFactory.getLogger(RechercheMatchViewModel.class);
+    private final Logger log = LoggerFactory.getLogger(RechercheMatchViewModel.class);
 
     private Match match;
 
@@ -60,14 +60,7 @@ public class RechercheMatchViewModel extends AbstractViewModel {
 
                 String nomUtilisateur = getNomUtilisateurActif();
 
-                if (CollectionUtils.isNotEmpty(inscriptions) && nomUtilisateur != null) {
-                    for (Inscription i : inscriptions) {
-                        if (nomUtilisateur.equalsIgnoreCase(i.getJoueur().getEmail())) {
-                            dejaInscrit = true;
-                            break;
-                        }
-                    }
-                }
+                dejaInscrit = isJoueurDejaInscrit(nomUtilisateur, inscriptions);
 
                 inscriptionPossible = matchFound && !dejaInscrit;
 
@@ -117,5 +110,16 @@ public class RechercheMatchViewModel extends AbstractViewModel {
 
     public boolean isInscriptionPossible() {
         return inscriptionPossible;
+    }
+
+    private boolean isJoueurDejaInscrit(String nomUtilisateur, List<Inscription> inscriptions) {
+        if (CollectionUtils.isNotEmpty(inscriptions) && nomUtilisateur != null) {
+            for (Inscription i : inscriptions) {
+                if (nomUtilisateur.equalsIgnoreCase(i.getJoueur().getEmail())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

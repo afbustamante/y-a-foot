@@ -41,6 +41,9 @@ public class InscriptionsController extends AbstractController {
     @Autowired
     private RechercheJoueursService rechercheJoueursService;
 
+    @Autowired
+    private InscriptionMapper inscriptionMapper;
+
     private final Logger log = LoggerFactory.getLogger(InscriptionsController.class);
 
     @POST
@@ -51,7 +54,7 @@ public class InscriptionsController extends AbstractController {
 
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            net.andresbustamante.yafoot.model.Inscription ins = InscriptionMapper.INSTANCE.toInscriptionBean(inscription);
+            net.andresbustamante.yafoot.model.Inscription ins = inscriptionMapper.toInscriptionBean(inscription);
             boolean succes = gestionMatchsService.inscrireJoueurMatch(ins.getJoueur(), ins.getMatch(),
                     ins.getVoiture(), contexte);
 

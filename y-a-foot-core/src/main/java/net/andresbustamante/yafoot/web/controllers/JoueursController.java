@@ -39,6 +39,12 @@ public class JoueursController extends AbstractController {
     @Autowired
     private RechercheJoueursService rechercheJoueursService;
 
+    @Autowired
+    private JoueurMapper joueurMapper;
+
+    @Autowired
+    private ContexteMapper contexteMapper;
+
     @Value("${recherche.joueurs.email.service.path}")
     private String pathRechercheJoueursParAdresseMail;
 
@@ -53,9 +59,9 @@ public class JoueursController extends AbstractController {
     public Response inscrireJoueur(Joueur joueur) {
         try {
             log.info("Demande de création d'un nouveau joueur avec l'adresse {}", joueur.getEmail());
-            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = JoueurMapper.INSTANCE.toJoueurBean(joueur);
+            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = joueurMapper.toJoueurBean(joueur);
             boolean inscrit = gestionJoueursService.inscrireJoueur(nouveauJoueur,
-                    ContexteMapper.INSTANCE.toContexteBean(new Contexte()));
+                    contexteMapper.toContexteBean(new Contexte()));
 
             if (inscrit) {
                 String location = MessageFormat.format(pathRechercheJoueursParAdresseMail, joueur.getEmail());
@@ -82,7 +88,7 @@ public class JoueursController extends AbstractController {
         try {
             log.info("Mise à jour des données du joueur " + email);
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            boolean succes = gestionJoueursService.actualiserJoueur(JoueurMapper.INSTANCE.toJoueurBean(joueur), contexte);
+            boolean succes = gestionJoueursService.actualiserJoueur(joueurMapper.toJoueurBean(joueur), contexte);
             return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
         } catch (BDDException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
@@ -103,7 +109,7 @@ public class JoueursController extends AbstractController {
             net.andresbustamante.yafoot.model.Joueur joueur = rechercheJoueursService.chercherJoueur(email, contexte);
 
             if (joueur != null) {
-                return Response.ok(JoueurMapper.INSTANCE.toJoueurDTO(joueur)).build();
+                return Response.ok(joueurMapper.toJoueurDTO(joueur)).build();
             } else {
                 return Response.status(NOT_FOUND).build();
             }

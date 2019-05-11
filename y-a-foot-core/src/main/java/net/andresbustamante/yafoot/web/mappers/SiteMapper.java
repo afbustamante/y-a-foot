@@ -3,12 +3,9 @@ package net.andresbustamante.yafoot.web.mappers;
 import net.andresbustamante.yafoot.model.Site;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SiteMapper {
-
-    SiteMapper INSTANCE = Mappers.getMapper(SiteMapper.class);
 
     @Mapping(source = "site.numeroTelephone", target = "telephone")
     Site toSiteBean(net.andresbustamante.yafoot.model.xs.Site site);

@@ -21,10 +21,10 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
     private String email;
     private boolean inscrit;
 
-    private final transient Logger log = LoggerFactory.getLogger(InscriptionJoueursUIService.class);
+    private final Logger log = LoggerFactory.getLogger(InscriptionJoueursUIService.class);
 
     @WireVariable
-    private transient InscriptionJoueursUIService inscriptionJoueursUIService;
+    private InscriptionJoueursUIService inscriptionJoueursUIService;
 
     @Init
     public void init() {

@@ -29,6 +29,9 @@ public class SitesController {
     @Autowired
     private RechercheSitesService rechercheSitesService;
 
+    @Autowired
+    private SiteMapper siteMapper;
+
     private final Logger log = LoggerFactory.getLogger(SitesController.class);
 
     @GET
@@ -42,7 +45,7 @@ public class SitesController {
                 Sites result = new Sites();
 
                 for (net.andresbustamante.yafoot.model.Site site : sites) {
-                    result.getSite().add(SiteMapper.INSTANCE.toSiteDTO(site));
+                    result.getSite().add(siteMapper.toSiteDTO(site));
                 }
                 return Response.ok(result).build();
             } else {
