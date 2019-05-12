@@ -16,9 +16,6 @@ import java.text.MessageFormat;
  */
 public class RechercheMatchsUIService extends AbstractUIService {
 
-    public RechercheMatchsUIService() {
-    }
-
     public Match chercherMatchParCode(String codeMatch) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));

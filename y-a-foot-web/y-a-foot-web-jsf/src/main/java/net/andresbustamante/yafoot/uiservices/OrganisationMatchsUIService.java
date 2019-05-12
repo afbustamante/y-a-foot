@@ -21,9 +21,6 @@ public class OrganisationMatchsUIService extends AbstractUIService {
 
     private final Log log = LogFactory.getLog(OrganisationMatchsUIService.class);
 
-    public OrganisationMatchsUIService() {
-    }
-
     /**
      * Charger la liste de sites disponibles pour l'utilisateur connecté
      *

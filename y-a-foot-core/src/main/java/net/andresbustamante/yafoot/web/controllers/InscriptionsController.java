@@ -6,7 +6,6 @@ import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
-import net.andresbustamante.yafoot.services.RechercheJoueursService;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
 import net.andresbustamante.yafoot.web.mappers.InscriptionMapper;
 import net.andresbustamante.yafoot.web.util.ContexteUtils;
@@ -37,9 +36,6 @@ public class InscriptionsController extends AbstractController {
 
     @Autowired
     private RechercheMatchsService rechercheMatchsService;
-
-    @Autowired
-    private RechercheJoueursService rechercheJoueursService;
 
     @Autowired
     private InscriptionMapper inscriptionMapper;

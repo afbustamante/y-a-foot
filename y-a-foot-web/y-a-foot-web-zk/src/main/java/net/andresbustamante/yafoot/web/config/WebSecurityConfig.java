@@ -65,7 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, ZK_RESOURCES).permitAll()
                 .antMatchers(HttpMethod.POST, ZK_POST).permitAll()

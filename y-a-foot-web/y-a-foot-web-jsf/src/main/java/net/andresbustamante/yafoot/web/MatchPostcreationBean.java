@@ -16,9 +16,6 @@ public class MatchPostcreationBean extends AbstractFacesBean implements Serializ
 
     private String codeMatch;
 
-    public MatchPostcreationBean() {
-    }
-
     public String getCodeMatch() {
         Object obj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(WebConstants
                 .CODE_MATCH);

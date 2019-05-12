@@ -45,12 +45,12 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
 
                 if (inscrit) {
                     Messagebox.show(Labels.getLabel("sign.in.successful"),
-                            Labels.getLabel("dialog.information.title"),
+                            Labels.getLabel(DIALOG_INFORMATION_TITLE),
                             Messagebox.Button.OK.id,
                             Messagebox.INFORMATION, event -> Executions.getCurrent().sendRedirect("/"));
                 } else {
                     Messagebox.show(Labels.getLabel("sign.in.error.existing.player"),
-                            Labels.getLabel("dialog.information.title"),
+                            Labels.getLabel(DIALOG_INFORMATION_TITLE),
                             Messagebox.Button.OK.id,
                             Messagebox.EXCLAMATION);
                 }
@@ -62,7 +62,7 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
             }
         } else {
             Messagebox.show(Labels.getLabel("sign.in.password.confirmation.does.not.match"),
-                    Labels.getLabel("dialog.information.title"),
+                    Labels.getLabel(DIALOG_INFORMATION_TITLE),
                     Messagebox.Button.OK.id,
                     Messagebox.EXCLAMATION);
             return;

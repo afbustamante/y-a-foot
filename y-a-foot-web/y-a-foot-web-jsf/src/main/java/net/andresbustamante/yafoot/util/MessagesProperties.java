@@ -8,9 +8,10 @@ import java.util.ResourceBundle;
  */
 public class MessagesProperties {
 
-    private static final ResourceBundle MESSAGES_EN = ResourceBundle.getBundle("messages", new Locale("en"));
-    private static final ResourceBundle MESSAGES_ES = ResourceBundle.getBundle("messages", new Locale("es"));
-    private static final ResourceBundle MESSAGES_FR = ResourceBundle.getBundle("messages", new Locale("fr"));
+    private static final String BASE_NAME = "messages";
+    private static final ResourceBundle MESSAGES_EN = ResourceBundle.getBundle(BASE_NAME, new Locale("en"));
+    private static final ResourceBundle MESSAGES_ES = ResourceBundle.getBundle(BASE_NAME, new Locale("es"));
+    private static final ResourceBundle MESSAGES_FR = ResourceBundle.getBundle(BASE_NAME, new Locale("fr"));
 
     /**
      * @param key
@@ -42,7 +43,7 @@ public class MessagesProperties {
             int i = 0;
 
             for (Object param : params) {
-                String texteARemplacer = "{" + String.valueOf(i) + "}";
+                String texteARemplacer = "{" + i + "}";
 
                 value = value.replace(texteARemplacer, param.toString());
             }

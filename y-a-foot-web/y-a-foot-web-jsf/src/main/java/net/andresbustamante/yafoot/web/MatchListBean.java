@@ -27,9 +27,6 @@ public class MatchListBean extends AbstractFacesBean implements Serializable {
 
     private transient final Log log = LogFactory.getLog(MatchListBean.class);
 
-    public MatchListBean() {
-    }
-
     public List<Match> getMatches() {
         if (matches == null) {
             Integer idJoueur = rechercheMatchsUIService.getContexte().getUtilisateur().getId();

@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 /**
  * @author andresbustamante
  */
-public class AbstractController {
+public abstract class AbstractController {
 
     private final Logger log = LoggerFactory.getLogger(AbstractController.class);
 

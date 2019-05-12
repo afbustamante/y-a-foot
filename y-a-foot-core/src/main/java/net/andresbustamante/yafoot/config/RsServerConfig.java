@@ -20,16 +20,13 @@ import java.util.Collections;
 @Configuration
 public class RsServerConfig {
 
-    @Autowired
-    private Bus bus;
-
     @Bean
     public ServletRegistrationBean dispatcherServletCxf() {
         return new ServletRegistrationBean(new CXFServlet(), "/api/*");
     }
 
     @Bean
-    public Server rsServer() {
+    public Server rsServer(Bus bus) {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);
         endpoint.setFeatures(Collections.singletonList(loggingFeature()));

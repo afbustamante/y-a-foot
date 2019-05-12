@@ -64,7 +64,7 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
         } catch (ApplicationException e) {
             log.error("Erreur lors de la charge d'un match", e);
             Messagebox.show(Labels.getLabel("match.join.error.detail.text"),
-                    Labels.getLabel("dialog.error.title"),
+                    Labels.getLabel(DIALOG_ERROR_TITLE),
                     new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.ERROR,
                     event -> event.getTarget().detach());
         }
@@ -112,13 +112,13 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
             inscriptionMatchsUIService.inscrireJoueurMatch(match, voiture);
 
             Messagebox.show(Labels.getLabel("match.join.success.detail.text"),
-                    Labels.getLabel("dialog.information.title"),
+                    Labels.getLabel(DIALOG_INFORMATION_TITLE),
                     new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION,
                     event -> Executions.getCurrent().sendRedirect("/matches/list.zul"));
         } catch (ApplicationException e) {
             log.error("Erreur lors de l'inscription d'un joueur à un match", e);
             Messagebox.show(Labels.getLabel("match.join.error.detail.text"),
-                    Labels.getLabel("dialog.error.title"),
+                    Labels.getLabel(DIALOG_ERROR_TITLE),
                     new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.ERROR,
                     event -> event.getTarget().detach());
         }

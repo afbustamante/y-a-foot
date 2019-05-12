@@ -22,6 +22,10 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
 @VariableResolver(DelegatingVariableResolver.class)
 public abstract class AbstractViewModel {
 
+    protected static final String DIALOG_INFORMATION_TITLE = "dialog.information.title";
+    protected static final String DIALOG_ERROR_TITLE = "dialog.error.title";
+    protected static final String ACCUEIL = "/";
+
     private static final String ACCEPT_LANGUAGE = "Accept-Language";
     private static final String SEPARATEUR_ACCEPT_LANGUAGE = ",";
 
