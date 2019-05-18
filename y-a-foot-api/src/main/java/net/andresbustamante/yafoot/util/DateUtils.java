@@ -53,7 +53,7 @@ public class DateUtils {
 
     public static String getPatternDateHeure(String langue) {
         if (langue == null) {
-            return "yyyy/MM/dd H:mm";
+            return "yyyy-MM-dd H:mm";
         }
 
         switch (langue) {

@@ -20,8 +20,19 @@ public class SecuriteUtils {
      * @return Mot de passe crypté en base 64 et SHA1
      */
     public static String crypterMotDePasse(String motDePasse) throws ApplicationException {
+        return crypterMotDePasse(motDePasse, DIGEST);
+    }
+
+    /**
+     * Crypter un mot de passe en clair avec un algorithme d'encryption passé en paramètre
+     *
+     * @param motDePasse Mot de passe à crypter (en clair)
+     * @param algorithme Algorithme d'encryption à utiliser
+     * @return Mot de passe crypté en base 64 suite à l'application du digest
+     */
+    public static String crypterMotDePasse(String motDePasse, String algorithme) throws ApplicationException {
         try {
-            MessageDigest digest = MessageDigest.getInstance(DIGEST);
+            MessageDigest digest = MessageDigest.getInstance(algorithme);
             byte[] mdpDigest = digest.digest(motDePasse.getBytes());
             return Base64.getEncoder().encodeToString(mdpDigest);
         } catch (NoSuchAlgorithmException e) {

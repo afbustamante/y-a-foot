@@ -22,10 +22,6 @@ public class RechercheSitesServiceImpl implements RechercheSitesService {
 
     @Override
     public List<Site> chercherSitesParJoueur(Integer idJoueur, Contexte contexte) throws BDDException {
-        try {
-            return siteDAO.chercherSitesPourJoueur(idJoueur);
-        } catch (SQLException e) {
-            throw new BDDException(e.getMessage());
-        }
+        return siteDAO.chercherSitesPourJoueur(idJoueur);
     }
 }

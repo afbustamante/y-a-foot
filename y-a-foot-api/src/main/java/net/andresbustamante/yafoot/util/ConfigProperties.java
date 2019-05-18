@@ -10,6 +10,8 @@ public class ConfigProperties {
 
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("config");
 
+    private ConfigProperties() {}
+
     /**
      * @param key
      * @return

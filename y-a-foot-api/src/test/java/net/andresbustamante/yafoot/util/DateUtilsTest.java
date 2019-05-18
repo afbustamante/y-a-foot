@@ -85,6 +85,42 @@ public class DateUtilsTest {
         String pattern = DateUtils.getPatternDate("xx");
         assertNotNull(pattern);
         assertEquals("yyyy-MM-dd", pattern);
+
+        pattern = DateUtils.getPatternDate(null);
+        assertNotNull(pattern);
+        assertEquals("yyyy-MM-dd", pattern);
+    }
+
+    @Test
+    public void testGetPatternDateHeureFrancais() {
+        String pattern = DateUtils.getPatternDateHeure(LocaleUtils.FRANCAIS);
+        assertNotNull(pattern);
+        assertEquals("dd/MM/yyyy H:mm", pattern);
+    }
+
+    @Test
+    public void testGetPatternDateHeureAnglais() {
+        String pattern = DateUtils.getPatternDateHeure(LocaleUtils.ANGLAIS);
+        assertNotNull(pattern);
+        assertEquals("yyyy-MM-dd h:mm a", pattern);
+    }
+
+    @Test
+    public void testGetPatternDateHeureEspagnol() {
+        String pattern = DateUtils.getPatternDateHeure(LocaleUtils.ESPAGNOL);
+        assertNotNull(pattern);
+        assertEquals("dd/MM/yyyy h:mm a", pattern);
+    }
+
+    @Test
+    public void testGetPatternDateHeureAutre() {
+        String pattern = DateUtils.getPatternDateHeure("xx");
+        assertNotNull(pattern);
+        assertEquals("yyyy-MM-dd H:mm", pattern);
+
+        pattern = DateUtils.getPatternDateHeure(null);
+        assertNotNull(pattern);
+        assertEquals("yyyy-MM-dd H:mm", pattern);
     }
 
     @Test

@@ -3,8 +3,6 @@ package net.andresbustamante.yafoot.dao;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.apache.ibatis.annotations.Param;
 
-import java.sql.SQLException;
-
 import static net.andresbustamante.yafoot.util.DaoConstants.ID;
 import static net.andresbustamante.yafoot.util.DaoConstants.VOITURE;
 
@@ -20,15 +18,13 @@ public interface VoitureDAO {
      *
      * @param id Identifiant de la voiture à chercher
      * @return
-     * @throws SQLException
      */
-    Voiture chercherVoitureParId(@Param(ID) Integer id) throws SQLException;
+    Voiture chercherVoitureParId(@Param(ID) Integer id);
 
     /**
      * Créer une nouvelle voiture en base de données
      *
      * @param voiture Voiture à enregistrer
-     * @throws SQLException
      */
-    void enregistrerVoiture(@Param(VOITURE) Voiture voiture) throws SQLException;
+    void enregistrerVoiture(@Param(VOITURE) Voiture voiture);
 }

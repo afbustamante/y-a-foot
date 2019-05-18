@@ -72,12 +72,37 @@ public class GestionJoueursServiceImplTest extends AbstractServiceTest {
         Joueur joueurExistant = new Joueur(1);
         joueurExistant.setNom("Smith");
         joueurExistant.setPrenom("Alan");
+        joueurExistant.setTelephone("0123456789");
         joueurExistant.setEmail("test@email.com");
 
         Joueur joueurMaj = new Joueur(1);
         joueurMaj.setNom("Doe");
         joueurMaj.setPrenom("John");
+        joueurMaj.setTelephone("0423456789");
         joueurMaj.setEmail("test@email.com");
+        Contexte ctx = new Contexte();
+
+        // When
+        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueurExistant);
+        boolean succes = gestionJoueursService.actualiserJoueur(joueurMaj, ctx);
+
+        // Then
+        verify(joueurDAO, times(1)).chercherJoueurParEmail(any());
+        verify(utilisateurDAO, times(1)).actualiserUtilisateur(any());
+        verify(joueurDAO, times(1)).actualiserJoueur(any());
+        assertTrue(succes);
+    }
+
+    @Test
+    public void actualiserMdpJoueurExistant() throws Exception {
+        // Given
+        Joueur joueurExistant = new Joueur(1);
+        joueurExistant.setEmail("test@email.com");
+        joueurExistant.setMotDePasse("QWERTY123");
+
+        Joueur joueurMaj = new Joueur(1);
+        joueurMaj.setEmail("test@email.com");
+        joueurMaj.setMotDePasse("AZERTY123");
         Contexte ctx = new Contexte();
 
         // When

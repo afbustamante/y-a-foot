@@ -5,7 +5,6 @@ import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.apache.ibatis.annotations.Param;
 
-import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public interface MatchDAO {
      * @param codeMatch Code à vérifier
      * @return
      */
-    boolean isCodeExistant(@Param(CODE) String codeMatch) throws SQLException;
+    boolean isCodeExistant(@Param(CODE) String codeMatch);
 
     /**
      * Récupérer les informations d'un match à partir de son code unique
@@ -32,7 +31,7 @@ public interface MatchDAO {
      * @param codeMatch Code du match à récupérer
      * @return
      */
-    Match chercherMatchParCode(@Param(CODE) String codeMatch) throws SQLException;
+    Match chercherMatchParCode(@Param(CODE) String codeMatch);
 
     /**
      * Trouver les matchs auxquels un joueur a été inscrit
@@ -41,8 +40,7 @@ public interface MatchDAO {
      * @return
      */
     List<Match> chercherMatchsParJoueur(@Param(ID) Integer idJoueur,
-                                        @Param(DATE) ZonedDateTime dateInitiale)
-            throws SQLException;
+                                        @Param(DATE) ZonedDateTime dateInitiale);
 
     /**
      * Récupérer les informations d'un match à partir de son identifiant unique
@@ -50,14 +48,14 @@ public interface MatchDAO {
      * @param id Identifiant du match
      * @return
      */
-    Match chercherMatchParId(@Param(ID) Integer id) throws SQLException;
+    Match chercherMatchParId(@Param(ID) Integer id);
 
     /**
      * Créer un match en base des données
      *
      * @param match Match à créer
      */
-    void creerMatch(@Param(MATCH) Match match) throws SQLException;
+    void creerMatch(@Param(MATCH) Match match);
 
     /**
      * Inscrire un joueur à un match existant
@@ -68,7 +66,7 @@ public interface MatchDAO {
      */
     void inscrireJoueurMatch(@Param(JOUEUR) Joueur joueur,
                              @Param(MATCH) Match match,
-                             @Param(VOITURE) Voiture voiture) throws SQLException;
+                             @Param(VOITURE) Voiture voiture);
 
     /**
      * Vérifier si un joueur est déjà inscrit à un match passé en paramètre
@@ -76,18 +74,16 @@ public interface MatchDAO {
      * @param joueur Joueur à vérifier
      * @param match Match à chercher
      * @return
-     * @throws SQLException
      */
     boolean isJoueurInscritMatch(@Param(JOUEUR) Joueur joueur,
-                                 @Param(MATCH) Match match) throws SQLException;
+                                 @Param(MATCH) Match match);
 
     /**
      * Désinscrire un joueur d'un match
      *
      * @param joueur Joueur à désinscrire
      * @param match Match concerné
-     * @throws SQLException
      */
     void desinscrireJoueurMatch(@Param(JOUEUR) Joueur joueur,
-                                @Param(MATCH) Match match) throws SQLException;
+                                @Param(MATCH) Match match);
 }

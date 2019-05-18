@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.dao;
 import net.andresbustamante.yafoot.model.Site;
 import org.apache.ibatis.annotations.Param;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static net.andresbustamante.yafoot.util.DaoConstants.*;
@@ -19,22 +18,20 @@ public interface SiteDAO {
      * @param idJoueur Identifiant du joueur
      * @return Liste de sites ayant un lien avec le joueur passé en paramètre
      */
-    List<Site> chercherSitesPourJoueur(@Param(JOUEUR) Integer idJoueur) throws SQLException;
+    List<Site> chercherSitesPourJoueur(@Param(JOUEUR) Integer idJoueur);
 
     /**
      * Chercher un site par ID
      *
      * @param id Identifiant du site
      * @return Site associé à l'identifiant passé en paramètre
-     * @throws SQLException
      */
-    Site chercherSiteParId(@Param(ID) Integer id) throws SQLException;
+    Site chercherSiteParId(@Param(ID) Integer id);
 
     /**
      * Créer le site passé en paramètre
      *
      * @param site Site à créer
-     * @throws SQLException
      */
-    void creerSite(@Param(SITE) Site site) throws SQLException;
+    void creerSite(@Param(SITE) Site site);
 }

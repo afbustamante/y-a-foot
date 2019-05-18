@@ -15,8 +15,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-
 /**
  * @author andresbustamante
  */
@@ -81,7 +79,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
             inscrireJoueurMatch(createur, match, null, contexte);
             return true;
-        } catch (SQLException | DataAccessException e) {
+        } catch (DataAccessException e) {
             log.error("Erreur lors de la création d'un match", e);
             throw new BDDException(e.getMessage());
         }
@@ -95,33 +93,28 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
             return false;
         }
 
-        try {
-            Voiture voitureExistante = null;
+        Voiture voitureExistante = null;
 
-            if (voiture != null) {
-                if (voiture.getId() != null) {
-                    voitureExistante = voitureDAO.chercherVoitureParId(voiture.getId());
-                }
-
-                if (voitureExistante == null) {
-                    // Enregistrer la voiture en base
-                    voitureDAO.enregistrerVoiture(voiture);
-                }
+        if (voiture != null) {
+            if (voiture.getId() != null) {
+                voitureExistante = voitureDAO.chercherVoitureParId(voiture.getId());
             }
 
-            boolean isJoueurExistant = (joueurDAO.chercherJoueurParId(joueur.getId()) != null);
-            boolean isMatchExistant = (matchDAO.chercherMatchParId(match.getId()) != null);
-
-            if (isJoueurExistant && isMatchExistant && (!matchDAO.isJoueurInscritMatch(joueur, match))) {
-                matchDAO.inscrireJoueurMatch(joueur, match, voiture);
-                log.info("Joueur inscrit au match");
-                return true;
-            } else {
-                throw new BDDException("Impossible d'inscrire le joueur : objet inexistant");
+            if (voitureExistante == null) {
+                // Enregistrer la voiture en base
+                voitureDAO.enregistrerVoiture(voiture);
             }
-        } catch (SQLException e) {
-            log.error("Erreur de BDD lors de l'inscription d'un joueur à un match", e);
-            throw new BDDException(e.getMessage());
+        }
+
+        boolean isJoueurExistant = (joueurDAO.chercherJoueurParId(joueur.getId()) != null);
+        boolean isMatchExistant = (matchDAO.chercherMatchParId(match.getId()) != null);
+
+        if (isJoueurExistant && isMatchExistant && (!matchDAO.isJoueurInscritMatch(joueur, match))) {
+            matchDAO.inscrireJoueurMatch(joueur, match, voiture);
+            log.info("Joueur inscrit au match");
+            return true;
+        } else {
+            throw new BDDException("Impossible d'inscrire le joueur : objet inexistant");
         }
     }
 
@@ -132,20 +125,15 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
             return false;
         }
 
-        try {
-            boolean isJoueurExistant = (joueurDAO.chercherJoueurParId(joueur.getId()) != null);
-            boolean isMatchExistant = (matchDAO.chercherMatchParCode(match.getCode()) != null);
+        boolean isJoueurExistant = (joueurDAO.chercherJoueurParId(joueur.getId()) != null);
+        boolean isMatchExistant = (matchDAO.chercherMatchParCode(match.getCode()) != null);
 
-            if (isJoueurExistant && isMatchExistant && matchDAO.isJoueurInscritMatch(joueur, match)) {
-                matchDAO.desinscrireJoueurMatch(joueur, match);
-                log.info("Joueur désinscrit du match");
-                return true;
-            } else {
-                throw new BDDException("Impossible d'inscrire le joueur : objet inexistant");
-            }
-        } catch (SQLException e) {
-            log.error("Erreur de BDD lors de la désinscription d'un joueur", e);
-            throw new BDDException(e.getMessage());
+        if (isJoueurExistant && isMatchExistant && matchDAO.isJoueurInscritMatch(joueur, match)) {
+            matchDAO.desinscrireJoueurMatch(joueur, match);
+            log.info("Joueur désinscrit du match");
+            return true;
+        } else {
+            throw new BDDException("Impossible d'inscrire le joueur : objet inexistant");
         }
     }
 

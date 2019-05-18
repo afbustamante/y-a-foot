@@ -48,6 +48,19 @@ public class RechercheMatchsServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
+    public void chercherMatchParCodeVide() throws Exception {
+        // Given
+        Contexte ctx = new Contexte();
+
+        // When
+        Match match = rechercheMatchsService.chercherMatchParCode(null, ctx);
+
+        // Then
+        assertNull(match);
+        verify(matchDAO, times(0)).chercherMatchParCode(anyString());
+    }
+
+    @Test
     public void chercherMatchInexistantParCode() throws Exception {
         // Given
         String code = "code";
@@ -78,5 +91,21 @@ public class RechercheMatchsServiceImplTest extends AbstractServiceTest {
         // Then
         assertNotNull(matchs);
         assertEquals(2, matchs.size());
+        verify(matchDAO, times(1)).chercherMatchsParJoueur(anyInt(), any());
+    }
+
+    @Test
+    public void chercherMatchsJoueurSansIdJoueur() throws Exception {
+        // Given
+        Contexte ctx = new Contexte();
+        ctx.setTimeZone(ZoneId.of("UTC"));
+
+        // When
+        List<Match> matchs = rechercheMatchsService.chercherMatchsJoueur(null, ctx);
+
+        // Then
+        assertNotNull(matchs);
+        assertTrue(matchs.isEmpty());
+        verify(matchDAO, times(0)).chercherMatchsParJoueur(anyInt(), any());
     }
 }

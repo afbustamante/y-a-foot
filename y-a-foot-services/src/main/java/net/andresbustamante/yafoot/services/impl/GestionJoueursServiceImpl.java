@@ -14,8 +14,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-
 /**
  * @author andresbustamante
  */
@@ -45,7 +43,7 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
                 log.info("Rejet : Joueur existant avec l'adresse " + joueur.getEmail());
                 return false;
             }
-        } catch (SQLException | DataAccessException e) {
+        } catch (DataAccessException e) {
             log.error("Erreur lors de la création d'un utilisateur", e);
             throw new BDDException(e.getMessage());
         }
@@ -85,7 +83,7 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
                 log.info("Rejet : Joueur inexistant avec l'adresse " + joueur.getEmail());
                 return false;
             }
-        } catch (SQLException | DataAccessException e) {
+        } catch (DataAccessException e) {
             log.error("Erreur lors de la mise à jour d'un utilisateur", e);
             throw new BDDException(e.getMessage());
         }

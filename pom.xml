@@ -686,7 +686,7 @@
                     <limit>
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.04</minimum><!-- TODO Augmenter quand les tests des services seront implémentés -->
+                      <minimum>0.06</minimum>
                     </limit>
                   </limits>
                 </rule>
@@ -708,7 +708,7 @@
                     <limit>
                       <counter>INSTRUCTION</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.5</minimum>
+                      <minimum>0.8</minimum>
                     </limit>
                   </limits>
                 </rule>
