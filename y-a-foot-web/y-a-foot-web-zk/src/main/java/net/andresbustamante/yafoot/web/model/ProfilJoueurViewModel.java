@@ -40,7 +40,7 @@ public class ProfilJoueurViewModel extends AbstractViewModel {
 
             if (succes) {
                 Messagebox.show(Labels.getLabel("player.profile.update.success"),
-                        Labels.getLabel("dialog.information.title"),
+                        Labels.getLabel(DIALOG_INFORMATION_TITLE),
                         new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION,
                         event -> Executions.getCurrent().sendRedirect(ACCUEIL));
             } else {

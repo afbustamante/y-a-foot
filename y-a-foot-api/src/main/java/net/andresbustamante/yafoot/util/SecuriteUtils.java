@@ -13,6 +13,8 @@ public class SecuriteUtils {
     private static final String DIGEST = "SHA";
     private static final Log LOG = LogFactory.getLog(SecuriteUtils.class);
 
+    private SecuriteUtils() {}
+
     /**
      * Crypter un mot de passe en clair en SHA1
      *

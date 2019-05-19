@@ -85,7 +85,7 @@ public class InscriptionsController extends AbstractController {
                 gestionMatchsService.desinscrireJoueurMatch(joueur, match, contexte);
                 return Response.noContent().build();
             } else {
-                log.warn("Désinscription demandée sur un match non existant avec le code " + codeMatch);
+                log.warn("Désinscription demandée sur un match non existant avec le code {}", codeMatch);
                 return Response.status(BAD_REQUEST).build();
             }
         } catch (BDDException e) {

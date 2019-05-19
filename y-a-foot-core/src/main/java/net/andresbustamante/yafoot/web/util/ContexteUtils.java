@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ContexteUtils {
 
+    private ContexteUtils() {}
+
     public static Contexte getContexte(HttpServletRequest request) throws ApplicationException {
         String id = request.getHeader(Contexte.UTILISATEUR);
 

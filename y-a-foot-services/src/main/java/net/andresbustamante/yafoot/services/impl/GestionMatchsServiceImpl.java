@@ -75,7 +75,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
             }
 
             matchDAO.creerMatch(match);
-            log.info("Nouveau match enregistré avec l'ID " + match.getId());
+            log.info("Nouveau match enregistré avec l'ID {}", match.getId());
 
             inscrireJoueurMatch(createur, match, null, contexte);
             return true;

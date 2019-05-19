@@ -13,6 +13,8 @@ public class MessagesProperties {
     private static final ResourceBundle MESSAGES_ES = ResourceBundle.getBundle(BASE_NAME, new Locale("es"));
     private static final ResourceBundle MESSAGES_FR = ResourceBundle.getBundle(BASE_NAME, new Locale("fr"));
 
+    private MessagesProperties() {}
+
     /**
      * @param key
      * @return

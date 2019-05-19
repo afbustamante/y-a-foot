@@ -81,21 +81,21 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
                 try {
                     inscriptionMatchsUIService.desinscrireJoueurMatch(match);
                     Messagebox.show(Labels.getLabel("match.list.leave.success"),
-                            Labels.getLabel("dialog.confirmation.title"),
+                            Labels.getLabel(DIALOG_CONFIRMATION_TITLE),
                             Messagebox.Button.OK.id,
                             Messagebox.INFORMATION);
                     init();
                 } catch (ApplicationException e) {
                     log.error("Erreur lors de l'abandon d'un match", e);
                     Messagebox.show(Labels.getLabel("match.list.leave.error"),
-                            Labels.getLabel("dialog.error.title"),
+                            Labels.getLabel(DIALOG_ERROR_TITLE),
                             Messagebox.Button.OK.id,
                             Messagebox.ERROR);
                 }
             }
         };
         Messagebox.show(Labels.getLabel("match.list.leave.warning"),
-                Labels.getLabel("dialog.confirmation.title"),
+                Labels.getLabel(DIALOG_CONFIRMATION_TITLE),
                 new Messagebox.Button[]{Messagebox.Button.YES, Messagebox.Button.NO},
                 Messagebox.QUESTION, clickListener);
     }
@@ -110,26 +110,26 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
                     try {
                         organisationMatchsUIService.annulerMatch(match);
                         Messagebox.show(Labels.getLabel("match.list.cancel.success"),
-                                Labels.getLabel("dialog.confirmation.title"),
+                                Labels.getLabel(DIALOG_CONFIRMATION_TITLE),
                                 Messagebox.Button.OK.id,
                                 Messagebox.INFORMATION);
                     } catch (ApplicationException e) {
                         log.error("Erreur lors de l'annulation d'un match", e);
                         Messagebox.show(Labels.getLabel("match.list.cancel.error"),
-                                Labels.getLabel("dialog.error.title"),
+                                Labels.getLabel(DIALOG_ERROR_TITLE),
                                 Messagebox.Button.OK.id,
                                 Messagebox.ERROR);
                     }
                 }
             };
             Messagebox.show(Labels.getLabel("match.list.cancel.warning"),
-                    Labels.getLabel("dialog.confirmation.title"),
+                    Labels.getLabel(DIALOG_CONFIRMATION_TITLE),
                     new Messagebox.Button[]{Messagebox.Button.YES, Messagebox.Button.NO},
                     Messagebox.QUESTION, clickListener);
         } else {
             // Afficher message informatif sur les conditions d'annulation et terminer
             Messagebox.show(Labels.getLabel("match.list.cancel.not.allowed"),
-                    Labels.getLabel("dialog.information.title"), Messagebox.Button.OK.id,
+                    Labels.getLabel(DIALOG_INFORMATION_TITLE), Messagebox.Button.OK.id,
                     Messagebox.INFORMATION);
         }
     }
