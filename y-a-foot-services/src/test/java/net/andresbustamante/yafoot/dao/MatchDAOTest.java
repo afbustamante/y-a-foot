@@ -3,18 +3,18 @@ package net.andresbustamante.yafoot.dao;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.model.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.*;
 import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DatabaseSetup(value = "classpath:datasets/matchsDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/matchsDataset.xml", type = DELETE_ALL)
-public class MatchDAOTest extends AbstractDAOTest {
+class MatchDAOTest extends AbstractDAOTest {
 
     @Autowired
     private MatchDAO matchDAO;
@@ -26,7 +26,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     private SiteDAO siteDAO;
 
     @Test
-    public void isCodeExistant() throws Exception {
+    void isCodeExistant() throws Exception {
         // Given
         String codeExistant = "QWERTY-1234";
         String codeInexistant = "QWERTY-1230";
@@ -41,7 +41,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void chercherMatchParCode() throws Exception {
+    void chercherMatchParCode() throws Exception {
         // Given
         String code = "QWERTY-1234";
         LocalDateTime dateMatch = LocalDateTime.of(2019, 10, 2, 19, 10); // 2019-10-02 19:10
@@ -61,7 +61,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void chercherMatchsAvecInscriptions() throws Exception {
+    void chercherMatchsAvecInscriptions() throws Exception {
         // Given
         String code = "QWERTY-1234";
 
@@ -81,7 +81,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void chercherMatchsSansInscriptions() throws Exception {
+    void chercherMatchsSansInscriptions() throws Exception {
         // Given
         Integer idMatch = 3;
 
@@ -95,7 +95,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void chercherMatchsParJoueur() throws Exception {
+    void chercherMatchsParJoueur() throws Exception {
         // Given
         Integer idJoueur = 1;
         LocalDateTime date = LocalDate.of(2018, 10, 2).atStartOfDay();
@@ -117,7 +117,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void chercherMatchParId() throws Exception {
+    void chercherMatchParId() throws Exception {
         // Given
         Integer idMatch = 1;
 
@@ -132,7 +132,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void creerMatch() throws Exception {
+    void creerMatch() throws Exception {
         // Given
         ZonedDateTime maintenant = ZonedDateTime.now();
         Joueur joueur = joueurDAO.chercherJoueurParId(1);
@@ -161,7 +161,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void inscrireJoueurMatchSansVoiture() throws Exception {
+    void inscrireJoueurMatchSansVoiture() throws Exception {
         // Given
         Joueur joueur = joueurDAO.chercherJoueurParId(1);
         Match match = matchDAO.chercherMatchParId(2);
@@ -174,7 +174,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void isJoueurInscritMatch() throws Exception {
+    void isJoueurInscritMatch() throws Exception {
         // Given
         Joueur joueurInscrit = joueurDAO.chercherJoueurParId(1);
         Joueur joueurNonInscrit = joueurDAO.chercherJoueurParId(2);
@@ -190,7 +190,7 @@ public class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void desinscrireJoueurMatch() throws Exception {
+    void desinscrireJoueurMatch() throws Exception {
         // Given
         Joueur joueur = joueurDAO.chercherJoueurParId(1);
         Match match = matchDAO.chercherMatchParId(1);

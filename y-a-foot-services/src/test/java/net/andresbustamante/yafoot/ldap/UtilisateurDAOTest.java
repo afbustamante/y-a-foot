@@ -5,26 +5,26 @@ import net.andresbustamante.yafoot.config.LdapTestConfig;
 import net.andresbustamante.yafoot.model.Utilisateur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.util.LdapConstants;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.naming.Name;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author andresbustamante
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {LdapTestConfig.class, LdapConfig.class})
-public class UtilisateurDAOTest {
+class UtilisateurDAOTest {
 
     private static final Utilisateur USR_TEST = new Utilisateur("test@email.com", "password", "TEST",
             "Utilisateur", "0123456789");
@@ -35,18 +35,18 @@ public class UtilisateurDAOTest {
     @Autowired
     private UtilisateurDAO utilisateurDAO;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         utilisateurDAO.creerUtilisateur(USR_TEST, RolesEnum.JOUEUR);
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         utilisateurDAO.supprimerUtilisateur(USR_TEST, new RolesEnum[]{RolesEnum.JOUEUR});
     }
 
     @Test
-    public void creerUtilisateur() throws Exception {
+    void creerUtilisateur() throws Exception {
         Utilisateur nouvelUtilisateur = getNouvelUtilisateur();
 
         utilisateurDAO.creerUtilisateur(nouvelUtilisateur, RolesEnum.JOUEUR);
@@ -58,7 +58,7 @@ public class UtilisateurDAOTest {
     }
 
     @Test
-    public void actualiserUtilisateur() throws Exception {
+    void actualiserUtilisateur() throws Exception {
         Utilisateur utilisateurModifie = new Utilisateur();
         utilisateurModifie.setEmail(USR_TEST.getEmail());
         utilisateurModifie.setNom(USR_TEST.getNom() + " autre");
@@ -83,7 +83,7 @@ public class UtilisateurDAOTest {
     }
 
     @Test
-    public void supprimerUtilisateur() throws Exception {
+    void supprimerUtilisateur() throws Exception {
         Utilisateur nouvelUtilisateur = getNouvelUtilisateur();
         utilisateurDAO.creerUtilisateur(nouvelUtilisateur, RolesEnum.JOUEUR);
 
@@ -94,7 +94,7 @@ public class UtilisateurDAOTest {
     }
 
     @Test
-    public void chercherUtilisateur() throws Exception {
+    void chercherUtilisateur() throws Exception {
         Utilisateur utilisateur = utilisateurDAO.chercherUtilisateur(getIdAnnuaire(USR_TEST).toString());
         assertNotNull(utilisateur);
         assertNotNull(utilisateur.getEmail());

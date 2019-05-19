@@ -3,23 +3,23 @@ package net.andresbustamante.yafoot.dao;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.model.Site;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DatabaseSetup(value = "classpath:datasets/matchsDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/matchsDataset.xml", type = DELETE_ALL)
-public class SiteDAOTest extends AbstractDAOTest {
+class SiteDAOTest extends AbstractDAOTest {
 
     @Autowired
     private SiteDAO siteDAO;
 
     @Test
-    public void chercherSitesParJoueur() throws Exception {
+    void chercherSitesParJoueur() throws Exception {
         // Given
         Integer idJoueur = 1;
 
@@ -34,7 +34,7 @@ public class SiteDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void chercherSiteParId() throws Exception {
+    void chercherSiteParId() throws Exception {
         // Given
         // When
         Site site = siteDAO.chercherSiteParId(1);
@@ -47,7 +47,7 @@ public class SiteDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void creerSite() throws Exception {
+    void creerSite() throws Exception {
         // Given
         Site nouveauSite = new Site("Nouveau site", "123 Rue du site", "0412345678", null);
 

@@ -3,8 +3,8 @@ package net.andresbustamante.yafoot.services.impl;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Match;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -13,10 +13,10 @@ import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class RechercheMatchsServiceImplTest extends AbstractServiceTest {
+class RechercheMatchsServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
     private RechercheMatchsServiceImpl rechercheMatchsService;
@@ -24,13 +24,13 @@ public class RechercheMatchsServiceImplTest extends AbstractServiceTest {
     @Mock
     private MatchDAO matchDAO;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void chercherMatchExistantParCode() throws Exception {
+    void chercherMatchExistantParCode() throws Exception {
         // Given
         String code = "code";
         Contexte ctx = new Contexte();
@@ -48,7 +48,7 @@ public class RechercheMatchsServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void chercherMatchParCodeVide() throws Exception {
+    void chercherMatchParCodeVide() throws Exception {
         // Given
         Contexte ctx = new Contexte();
 
@@ -61,7 +61,7 @@ public class RechercheMatchsServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void chercherMatchInexistantParCode() throws Exception {
+    void chercherMatchInexistantParCode() throws Exception {
         // Given
         String code = "code";
         Contexte ctx = new Contexte();
@@ -76,7 +76,7 @@ public class RechercheMatchsServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void chercherMatchsJoueur() throws Exception {
+    void chercherMatchsJoueur() throws Exception {
         // Given
         Match match1 = new Match(1);
         Match match2 = new Match(2);
@@ -95,7 +95,7 @@ public class RechercheMatchsServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void chercherMatchsJoueurSansIdJoueur() throws Exception {
+    void chercherMatchsJoueurSansIdJoueur() throws Exception {
         // Given
         Contexte ctx = new Contexte();
         ctx.setTimeZone(ZoneId.of("UTC"));

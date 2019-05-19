@@ -1,14 +1,14 @@
 package net.andresbustamante.yafoot.util;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class SecuriteUtilsTest {
+class SecuriteUtilsTest {
 
     @Test
-    public void crypterMotDePasse() throws Exception {
+    void crypterMotDePasse() throws Exception {
         // Given
         String mdp = "demodemo";
         String digest = "WGPZ5MvfUi6qYuB0f86xxbJJuhM=";
@@ -21,7 +21,7 @@ public class SecuriteUtilsTest {
     }
 
     @Test
-    public void crypterMotDePasseAlgorithmeNonSupporte() throws Exception {
+    void crypterMotDePasseAlgorithmeNonSupporte() throws Exception {
         // Given
         String mdp = "demodemo";
         String algo = "SHA1024";
@@ -37,7 +37,7 @@ public class SecuriteUtilsTest {
     }
 
     @Test
-    public void crypterMotDePasseMD5() throws Exception {
+    void crypterMotDePasseMD5() throws Exception {
         String mdp = "demodemo";
         String algo = "MD5";
         String digest = "xRTJHk7TQfJj5FjUSzuwpw==";

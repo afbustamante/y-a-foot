@@ -1,20 +1,20 @@
 package net.andresbustamante.yafoot.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class ConfigPropertiesTest {
+class ConfigPropertiesTest {
 
     @Test
-    public void getValueCleExistante() {
+    void getValueCleExistante() {
         String valeur = ConfigProperties.getValue("test.property");
         assertNotNull(valeur);
         assertEquals("Test value", valeur);
     }
 
     @Test
-    public void getValueCleInexistante() {
+    void getValueCleInexistante() {
         String valeur = ConfigProperties.getValue("another.property");
         assertNull(valeur);
     }

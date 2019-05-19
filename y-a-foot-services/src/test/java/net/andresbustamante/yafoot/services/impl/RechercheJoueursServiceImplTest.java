@@ -3,16 +3,16 @@ package net.andresbustamante.yafoot.services.impl;
 import net.andresbustamante.yafoot.dao.JoueurDAO;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class RechercheJoueursServiceImplTest extends AbstractServiceTest {
+class RechercheJoueursServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
     private RechercheJoueursServiceImpl rechercheJoueursService;
@@ -20,13 +20,13 @@ public class RechercheJoueursServiceImplTest extends AbstractServiceTest {
     @Mock
     private JoueurDAO joueurDAO;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void chercherJoueurInexistant() throws Exception {
+    void chercherJoueurInexistant() throws Exception {
         // Given
         String email = "test@email.com";
         Contexte ctx = new Contexte();
@@ -41,7 +41,7 @@ public class RechercheJoueursServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void chercherJoueurExistant() throws Exception {
+    void chercherJoueurExistant() throws Exception {
         // Given
         String email = "test@email.com";
         Joueur joueur = new Joueur(1);

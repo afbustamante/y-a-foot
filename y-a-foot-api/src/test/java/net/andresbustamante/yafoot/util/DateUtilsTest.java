@@ -1,24 +1,24 @@
 package net.andresbustamante.yafoot.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author andresbustamante
  */
-public class DateUtilsTest {
+class DateUtilsTest {
 
     private static final String TEXTE_DATE = "22/04/2017";
     private static final String TEXTE_DATE_INVALIDE = "22.04.2017";
     private static final int MONTHS_OFFSET = 1;
 
     @Test
-    public void testTransformerTexte() throws Exception {
+    void testTransformerTexte() throws Exception {
         // Transformer une date valide
         Date date = DateUtils.transformer(TEXTE_DATE);
         assertNotNull(date);
@@ -35,7 +35,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testFormater() throws Exception {
+    void testFormater() throws Exception {
         // Formater une date valide
         Calendar calendar = Calendar.getInstance();
         calendar.set(2017, Calendar.APRIL, 22, 12, 0); // 2017-04-22 12:00
@@ -46,7 +46,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testPremiereMinuteDuJour() throws Exception {
+    void testPremiereMinuteDuJour() throws Exception {
         Calendar calendar = Calendar.getInstance();
 
         LocalDateTime premiereMinute = LocalDateTime.ofInstant(DateUtils.premiereMinuteDuJour(calendar.getTime()).toInstant(),
@@ -60,28 +60,28 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testGetPatternDateFrancais() {
+    void testGetPatternDateFrancais() {
         String pattern = DateUtils.getPatternDate(LocaleUtils.FRANCAIS);
         assertNotNull(pattern);
         assertEquals("dd/MM/yyyy", pattern);
     }
 
     @Test
-    public void testGetPatternDateAnglais() {
+    void testGetPatternDateAnglais() {
         String pattern = DateUtils.getPatternDate(LocaleUtils.ANGLAIS);
         assertNotNull(pattern);
         assertEquals("yyyy-MM-dd", pattern);
     }
 
     @Test
-    public void testGetPatternDateEspagnol() {
+    void testGetPatternDateEspagnol() {
         String pattern = DateUtils.getPatternDate(LocaleUtils.ESPAGNOL);
         assertNotNull(pattern);
         assertEquals("dd/MM/yyyy", pattern);
     }
 
     @Test
-    public void testGetPatternDateAutre() {
+    void testGetPatternDateAutre() {
         String pattern = DateUtils.getPatternDate("xx");
         assertNotNull(pattern);
         assertEquals("yyyy-MM-dd", pattern);
@@ -92,28 +92,28 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testGetPatternDateHeureFrancais() {
+    void testGetPatternDateHeureFrancais() {
         String pattern = DateUtils.getPatternDateHeure(LocaleUtils.FRANCAIS);
         assertNotNull(pattern);
         assertEquals("dd/MM/yyyy H:mm", pattern);
     }
 
     @Test
-    public void testGetPatternDateHeureAnglais() {
+    void testGetPatternDateHeureAnglais() {
         String pattern = DateUtils.getPatternDateHeure(LocaleUtils.ANGLAIS);
         assertNotNull(pattern);
         assertEquals("yyyy-MM-dd h:mm a", pattern);
     }
 
     @Test
-    public void testGetPatternDateHeureEspagnol() {
+    void testGetPatternDateHeureEspagnol() {
         String pattern = DateUtils.getPatternDateHeure(LocaleUtils.ESPAGNOL);
         assertNotNull(pattern);
         assertEquals("dd/MM/yyyy h:mm a", pattern);
     }
 
     @Test
-    public void testGetPatternDateHeureAutre() {
+    void testGetPatternDateHeureAutre() {
         String pattern = DateUtils.getPatternDateHeure("xx");
         assertNotNull(pattern);
         assertEquals("yyyy-MM-dd H:mm", pattern);
@@ -124,7 +124,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testToLocalDateTime() {
+    void testToLocalDateTime() {
         Calendar cal = Calendar.getInstance();
 
         LocalDateTime dateTime = DateUtils.toLocalDateTime(cal.getTime());

@@ -6,18 +6,18 @@ import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.dao.VoitureDAO;
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.model.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.ZonedDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class GestionMatchsServiceImplTest {
+class GestionMatchsServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
     private GestionMatchsServiceImpl gestionMatchsService;
@@ -34,13 +34,13 @@ public class GestionMatchsServiceImplTest {
     @Mock
     private JoueurDAO joueurDAO;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void creerMatchSiteExistant() throws Exception {
+    void creerMatchSiteExistant() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
         Site site = new Site(1);
@@ -69,7 +69,7 @@ public class GestionMatchsServiceImplTest {
     }
 
     @Test
-    public void creerMatchSiteInexistant() throws Exception {
+    void creerMatchSiteInexistant() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
         Site site = new Site();
@@ -82,7 +82,6 @@ public class GestionMatchsServiceImplTest {
         // When
         when(matchDAO.isCodeExistant(anyString())).thenReturn(false);
         when(joueurDAO.chercherJoueurParId(anyInt())).thenReturn(joueur);
-        when(siteDAO.chercherSiteParId(anyInt())).thenReturn(null);
         boolean succes = gestionMatchsService.creerMatch(match, ctx);
 
         // Then
@@ -97,7 +96,7 @@ public class GestionMatchsServiceImplTest {
     }
 
     @Test
-    public void inscrireJoueurMatchSansVoiture() throws Exception {
+    void inscrireJoueurMatchSansVoiture() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
         Match match = new Match(1);
@@ -118,7 +117,7 @@ public class GestionMatchsServiceImplTest {
     }
 
     @Test
-    public void inscrireJoueurMatchAvecVoitureExistante() throws Exception {
+    void inscrireJoueurMatchAvecVoitureExistante() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
         Match match = new Match(1);
@@ -141,7 +140,7 @@ public class GestionMatchsServiceImplTest {
     }
 
     @Test
-    public void inscrireJoueurMatchAvecNouvelleVoiture() throws Exception {
+    void inscrireJoueurMatchAvecNouvelleVoiture() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
         Match match = new Match(1);
@@ -163,7 +162,7 @@ public class GestionMatchsServiceImplTest {
     }
 
     @Test
-    public void desinscrireJoueurMatch() throws Exception {
+    void desinscrireJoueurMatch() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
         Match match = new Match(1);
@@ -185,7 +184,7 @@ public class GestionMatchsServiceImplTest {
     }
 
     @Test
-    public void desinscrireJoueurNonInscritMatch() throws Exception {
+    void desinscrireJoueurNonInscritMatch() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
         Match match = new Match(1);

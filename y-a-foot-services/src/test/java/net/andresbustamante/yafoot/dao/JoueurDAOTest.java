@@ -3,17 +3,17 @@ package net.andresbustamante.yafoot.dao;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.model.Joueur;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DatabaseSetup(value = "classpath:datasets/joueursDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/joueursDataset.xml", type = DELETE_ALL)
-public class JoueurDAOTest extends AbstractDAOTest {
+class JoueurDAOTest extends AbstractDAOTest {
 
     private static final String EMAIL = "john.doe@email.com";
     private static final String AUTRE_TELEPHONE = "0423456789";
@@ -27,7 +27,7 @@ public class JoueurDAOTest extends AbstractDAOTest {
     private JoueurDAO joueurDAO;
 
     @Test
-    public void creerJoueur() throws Exception {
+    void creerJoueur() throws Exception {
         Joueur joueur = getNouveauJoueur();
         joueurDAO.creerJoueur(joueur);
 
@@ -37,7 +37,7 @@ public class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void isJoueurInscrit() throws Exception {
+    void isJoueurInscrit() throws Exception {
         boolean isInscrit = joueurDAO.isJoueurInscrit(NOUVEL_EMAIL);
         assertFalse(isInscrit);
 
@@ -46,7 +46,7 @@ public class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void chercherJoueurParId() throws Exception {
+    void chercherJoueurParId() throws Exception {
         Joueur joueur1 = joueurDAO.chercherJoueurParId(JOHN_DOE.getId());
         assertNotNull(joueur1);
 
@@ -63,7 +63,7 @@ public class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void chercherJoueurParEmail() throws Exception {
+    void chercherJoueurParEmail() throws Exception {
         Joueur joueur = joueurDAO.chercherJoueurParEmail(EMAIL);
         assertNotNull(joueur);
         assertNotNull(joueur.getNom());
@@ -78,7 +78,7 @@ public class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void actualiserJoueur() throws Exception {
+    void actualiserJoueur() throws Exception {
         // Modifier les informations pour le joueur avec l'ID de John Doe
         Joueur joueur = joueurDAO.chercherJoueurParEmail(EMAIL);
         joueur.setTelephone(AUTRE_TELEPHONE);
@@ -102,7 +102,7 @@ public class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    public void supprimerJoueur() throws Exception {
+    void supprimerJoueur() throws Exception {
         // Chercher le joueur à supprimer
         joueurDAO.supprimerJoueur(JOHN_DOE);
 

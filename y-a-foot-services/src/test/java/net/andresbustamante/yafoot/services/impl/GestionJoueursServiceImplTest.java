@@ -4,17 +4,16 @@ import net.andresbustamante.yafoot.dao.JoueurDAO;
 import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class GestionJoueursServiceImplTest extends AbstractServiceTest {
+class GestionJoueursServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
     private GestionJoueursServiceImpl gestionJoueursService;
@@ -25,13 +24,13 @@ public class GestionJoueursServiceImplTest extends AbstractServiceTest {
     @Mock
     private UtilisateurDAO utilisateurDAO;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void inscrireNouveauJoueur() throws Exception {
+    void inscrireNouveauJoueur() throws Exception {
         // Given
         Joueur joueur = new Joueur();
         joueur.setEmail("test@email.com");
@@ -49,7 +48,7 @@ public class GestionJoueursServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void inscrireJoueurDejaInscrit() throws Exception {
+    void inscrireJoueurDejaInscrit() throws Exception {
         // Given
         Joueur joueur = new Joueur();
         joueur.setEmail("test@email.com");
@@ -67,7 +66,7 @@ public class GestionJoueursServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void actualiserJoueurExistant() throws Exception {
+    void actualiserJoueurExistant() throws Exception {
         // Given
         Joueur joueurExistant = new Joueur(1);
         joueurExistant.setNom("Smith");
@@ -94,7 +93,7 @@ public class GestionJoueursServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void actualiserMdpJoueurExistant() throws Exception {
+    void actualiserMdpJoueurExistant() throws Exception {
         // Given
         Joueur joueurExistant = new Joueur(1);
         joueurExistant.setEmail("test@email.com");
@@ -117,7 +116,7 @@ public class GestionJoueursServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    public void actualiserJoueurInexistant() throws Exception {
+    void actualiserJoueurInexistant() throws Exception {
         // Given
         Joueur joueurMaj = new Joueur(1);
         joueurMaj.setNom("Doe");

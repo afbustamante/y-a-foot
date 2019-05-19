@@ -14,6 +14,17 @@
   <packaging>jar</packaging>
 
   <dependencies>
+    <!-- Spring -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Apache Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -40,12 +51,6 @@
 
     <!-- Testing -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <!--
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
@@ -61,16 +66,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.github.sbrannen</groupId>
       <artifactId>spring-test-junit5</artifactId>
       <scope>test</scope>
     </dependency>
-    -->
   </dependencies>
 
   <build>
