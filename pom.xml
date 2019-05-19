@@ -93,7 +93,7 @@
     <logback.version>1.2.3</logback.version>
 
     <!-- JaCoCo + Sonar -->
-    <sonar.junit.reportPaths>${basedir}/target/surfire-reports</sonar.junit.reportPaths>
+    <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
     <sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
   </properties>
 
