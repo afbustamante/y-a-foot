@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>net.andresbustamante</groupId>
   <artifactId>y-a-foot</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <name>y-a-foot</name>
   <description>Football planning for amateurs</description>
@@ -36,6 +34,7 @@
     <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
     <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
     <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
     <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
@@ -615,6 +614,12 @@
         </plugin>
 
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+        </plugin>
+
+        <plugin>
           <groupId>org.jvnet.jaxb2.maven2</groupId>
           <artifactId>maven-jaxb2-plugin</artifactId>
           <version>${maven-jaxb2-plugin.version}</version>
@@ -673,8 +678,8 @@
             </goals>
             <configuration>
               <rules>
-                <dependencyConvergence/>
-                <banDuplicatePomDependencyVersions/>
+                <dependencyConvergence />
+                <banDuplicatePomDependencyVersions />
               </rules>
               <fail>true</fail>
               <skip>false</skip>
