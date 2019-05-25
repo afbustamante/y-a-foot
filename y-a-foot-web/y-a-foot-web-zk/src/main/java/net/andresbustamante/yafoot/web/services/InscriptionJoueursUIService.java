@@ -8,16 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @SessionScope
 public class InscriptionJoueursUIService extends AbstractUIService {
 
-    @Value("${backend.rest.services.uri}")
-    private String restServerUrl;
-
-    @Value("${gestion.joueurs.service.path}")
-    private String gestionJoueursPath;
+    @Value("${api.rest.joueurs.services.path}")
+    private String joueursServicesPath;
 
     /**
      * Créer un nouveau joueur dans l'application
@@ -31,7 +29,10 @@ public class InscriptionJoueursUIService extends AbstractUIService {
 
             RestTemplate restTemplate = new RestTemplate();
 
-            ResponseEntity<Boolean> response = restTemplate.postForEntity(restServerUrl + gestionJoueursPath, joueur, Boolean.class);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(joueursServicesPath);
+
+            ResponseEntity<Boolean> response = restTemplate.postForEntity(builder.toUriString(), joueur, Boolean.class);
             boolean succes = (response.getHeaders().getLocation() != null);
 
             return (response.getStatusCode().is2xxSuccessful() && succes);
@@ -43,15 +44,5 @@ public class InscriptionJoueursUIService extends AbstractUIService {
     private void crypterMotDePasse(Joueur joueur) throws ApplicationException {
         String mdp = joueur.getMotDePasse();
         joueur.setMotDePasse(SecuriteUtils.crypterMotDePasse(mdp));
-    }
-
-    @Override
-    protected String getServerUrl() {
-        return restServerUrl;
-    }
-
-    @Override
-    protected String getJoueursPath() {
-        return gestionJoueursPath;
     }
 }

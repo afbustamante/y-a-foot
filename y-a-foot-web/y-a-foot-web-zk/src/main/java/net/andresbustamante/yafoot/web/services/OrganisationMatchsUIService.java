@@ -26,17 +26,11 @@ public class OrganisationMatchsUIService extends AbstractUIService {
 
     private final transient Logger log = LoggerFactory.getLogger(OrganisationMatchsUIService.class);
 
-    @Value("${backend.rest.services.uri}")
-    private String restServerUrl;
+    @Value("${api.rest.sites.services.path}")
+    private String sitesServicesPath;
 
-    @Value("${recherche.sites.service.path}")
-    private String pathSitesService;
-
-    @Value("${gestion.joueurs.service.path}")
-    private String pathJoueursService;
-
-    @Value("${gestion.matchs.service.path}")
-    private String pathMatchsService;
+    @Value("${api.rest.matchs.services.path}")
+    private String matchsServicesPath;
 
     /**
      * Charger la liste de sites disponibles pour l'utilisateur connecté
@@ -48,7 +42,8 @@ public class OrganisationMatchsUIService extends AbstractUIService {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + pathSitesService)
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(sitesServicesPath)
                     .queryParam("idJoueur", getContexte().getUtilisateur().getId());
 
             ResponseEntity<Sites> response = restTemplate.getForEntity(builder.toUriString(), Sites.class);
@@ -70,7 +65,8 @@ public class OrganisationMatchsUIService extends AbstractUIService {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + pathMatchsService);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(matchsServicesPath);
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Match> params = new HttpEntity<>(match, headers);
@@ -97,15 +93,5 @@ public class OrganisationMatchsUIService extends AbstractUIService {
      */
     public void annulerMatch(Match match) throws ApplicationException {
         throw new UnsupportedOperationException("To be done");
-    }
-
-    @Override
-    protected String getServerUrl() {
-        return restServerUrl;
-    }
-
-    @Override
-    protected String getJoueursPath() {
-        return pathJoueursService;
     }
 }

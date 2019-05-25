@@ -15,15 +15,17 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.text.MessageFormat;
+
 @Component
 @SessionScope
 public class GestionProfilJoueurUIService extends AbstractUIService {
 
-    @Value("${backend.rest.services.uri}")
-    private String restServerUrl;
+    @Value("${api.rest.joueurs.services.path}")
+    private String joueursServicesPath;
 
-    @Value("${gestion.joueurs.service.path}")
-    private String gestionJoueursPath;
+    @Value("${api.rest.joueurs.services.email.path}")
+    private String joueurParEmailServicesPath;
 
     private final Logger log = LoggerFactory.getLogger(GestionProfilJoueurUIService.class);
 
@@ -35,8 +37,9 @@ public class GestionProfilJoueurUIService extends AbstractUIService {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + gestionJoueursPath);
-            builder.path("/").path(joueur.getEmail()).path("/email");
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(joueursServicesPath)
+                    .path(MessageFormat.format(joueurParEmailServicesPath, joueur.getEmail()));
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Joueur> params = new HttpEntity<>(joueur, headers);
@@ -63,15 +66,5 @@ public class GestionProfilJoueurUIService extends AbstractUIService {
         joueur.setMotDePasse(mdpCrypte);
 
         return actualiserDonneesJoueur(joueur);
-    }
-
-    @Override
-    protected String getServerUrl() {
-        return restServerUrl;
-    }
-
-    @Override
-    protected String getJoueursPath() {
-        return gestionJoueursPath;
     }
 }

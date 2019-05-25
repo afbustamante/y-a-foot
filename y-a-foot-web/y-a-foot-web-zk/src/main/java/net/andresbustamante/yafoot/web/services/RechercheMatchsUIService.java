@@ -27,25 +27,24 @@ public class RechercheMatchsUIService extends AbstractUIService {
 
     private final transient Logger log = LoggerFactory.getLogger(RechercheMatchsUIService.class);
 
-    @Value("${backend.rest.services.uri}")
-    private String restServerUrl;
+    @Value("${api.rest.joueurs.services.path}")
+    private String joueursServicesPath;
 
-    @Value("${recherche.joueurs.service.path}")
-    private String pathJoueursService;
+    @Value("${api.rest.matchs.services.code.path}")
+    private String matchsParCodeServicesPath;
 
-    @Value("${recherche.match.par.code.path}")
-    private String pathRechercheMatchParCode;
-
-    @Value("${recherche.matchs.service.path}")
-    private String pathRechercheMatchs;
+    @Value("${api.rest.matchs.services.path}")
+    private String matchsServicesPath;
 
     public Match chercherMatchParCode(String codeMatch) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
-            String url = restServerUrl + MessageFormat.format(pathRechercheMatchParCode, codeMatch);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(matchsServicesPath)
+                    .path(MessageFormat.format(matchsParCodeServicesPath, codeMatch));
 
-            ResponseEntity<Match> response = restTemplate.getForEntity(url, Match.class);
+            ResponseEntity<Match> response = restTemplate.getForEntity(builder.toUriString(), Match.class);
 
             return (response.getStatusCode().is2xxSuccessful()) ? response.getBody() : null;
         } catch (RestClientException e) {
@@ -58,7 +57,8 @@ public class RechercheMatchsUIService extends AbstractUIService {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + pathRechercheMatchs)
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(matchsServicesPath)
                     .queryParam("idJoueur", getContexte().getUtilisateur().getId());
 
             MultiValueMap<String, String> headers = getHeadersMap();
@@ -71,15 +71,5 @@ public class RechercheMatchsUIService extends AbstractUIService {
             log.error("Erreur lors de la recherche d'un match", e);
             throw new ApplicationException(e.getMessage());
         }
-    }
-
-    @Override
-    protected String getServerUrl() {
-        return restServerUrl;
-    }
-
-    @Override
-    protected String getJoueursPath() {
-        return pathJoueursService;
     }
 }

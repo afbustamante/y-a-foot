@@ -17,17 +17,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.text.MessageFormat;
+
 @Component
 @SessionScope
 public class InscriptionMatchsUIService extends AbstractUIService {
 
-    @Value("${backend.rest.services.uri}")
-    private String restServerUrl;
-
-    @Value("${recherche.joueurs.service.path}")
-    private String joueursServicesPath;
-
-    @Value("${inscriptions.matchs.service.path}")
+    @Value("${api.rest.inscriptions.services.path}")
     private String inscriptionsServicesPath;
 
     private final transient Logger log = LoggerFactory.getLogger(InscriptionMatchsUIService.class);
@@ -51,7 +47,8 @@ public class InscriptionMatchsUIService extends AbstractUIService {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + inscriptionsServicesPath);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(inscriptionsServicesPath);
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Inscription> params = new HttpEntity<>(inscription, headers);
@@ -73,8 +70,9 @@ public class InscriptionMatchsUIService extends AbstractUIService {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(restServerUrl + inscriptionsServicesPath);
-            builder.path("/").path(match.getCode());
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(inscriptionsServicesPath)
+                    .path(MessageFormat.format("/{0}", match.getCode()));
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Inscription> params = new HttpEntity<>(headers);
@@ -84,15 +82,5 @@ public class InscriptionMatchsUIService extends AbstractUIService {
             log.error("Erreur du client REST", e);
             throw new ApplicationException(e.getMessage());
         }
-    }
-
-    @Override
-    protected String getServerUrl() {
-        return restServerUrl;
-    }
-
-    @Override
-    protected String getJoueursPath() {
-        return joueursServicesPath;
     }
 }

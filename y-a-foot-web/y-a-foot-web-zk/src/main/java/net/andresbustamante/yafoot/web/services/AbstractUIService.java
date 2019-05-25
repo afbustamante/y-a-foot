@@ -6,6 +6,7 @@ import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.web.util.WebConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 
@@ -29,6 +31,15 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
  * @author andresbustamante
  */
 public abstract class AbstractUIService {
+
+    @Value("${api.rest.services.url}")
+    protected String backendServicesUrl;
+
+    @Value("${api.rest.joueurs.services.path}")
+    private String joueursServicesPath;
+
+    @Value("${api.rest.joueurs.services.email.path}")
+    private String joueurParEmailServicesPath;
 
     private final Logger log = LoggerFactory.getLogger(AbstractUIService.class);
     private Contexte contexte;
@@ -63,10 +74,6 @@ public abstract class AbstractUIService {
         return contexte;
     }
 
-    protected abstract String getServerUrl();
-
-    protected abstract String getJoueursPath();
-
     /**
      *
      * @return
@@ -90,8 +97,10 @@ public abstract class AbstractUIService {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
-            String url = getServerUrl() + getJoueursPath() + MessageFormat.format("/{0}/email", email);
-            ResponseEntity<Joueur> response = restTemplate.getForEntity(url, Joueur.class);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(joueursServicesPath)
+                    .path(MessageFormat.format(joueurParEmailServicesPath, email));
+            ResponseEntity<Joueur> response = restTemplate.getForEntity(builder.toUriString(), Joueur.class);
             return response.getBody();
         } catch (RestClientException e) {
             String message = "Erreur lors de la récupération des informations d'un joueur";
