@@ -5,7 +5,7 @@
   <groupId>net.andresbustamante</groupId>
   <artifactId>y-a-foot</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.3-SNAPSHOT</version>
+  <version>1.0.3</version>
 
   <name>y-a-foot</name>
   <description>Football planning for amateurs</description>
@@ -104,7 +104,7 @@
     <connection>scm:git:git@github.com:afbustamante/y-a-foot.git</connection>
     <developerConnection>scm:git:https://github.com/afbustamante/y-a-foot.git</developerConnection>
     <url>https://github.com/afbustamante/y-a-foot</url>
-    <tag>HEAD</tag>
+    <tag>y-a-foot-1.0.3</tag>
   </scm>
 
   <developers>
