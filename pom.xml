@@ -9,6 +9,10 @@
   <packaging>pom</packaging>
   <version>1.0.0-SNAPSHOT</version>
 
+  <name>y-a-foot</name>
+  <description>Football planning for amateurs</description>
+  <url>https://github.com/afbustamante/y-a-foot</url>
+
   <modules>
     <module>y-a-foot-api</module>
     <module>y-a-foot-services</module>
@@ -48,7 +52,7 @@
     <spring-ldap-core.version>2.3.2.RELEASE</spring-ldap-core.version>
     <spring-data-commons.version>2.0.14.RELEASE</spring-data-commons.version>
     <spring-security.version>5.0.12.RELEASE</spring-security.version>
-    <jackson-databind.version>2.9.8</jackson-databind.version>
+    <jackson-databind.version>2.9.9</jackson-databind.version>
     <spring-boot.version>2.0.9.RELEASE</spring-boot.version>
 
     <!-- ICEFaces -->
@@ -96,6 +100,27 @@
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
     <sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
   </properties>
+
+  <scm>
+    <connection>scm:git:git@github.com:afbustamante/y-a-foot.git</connection>
+    <developerConnection>scm:git:https://github.com/afbustamante/y-a-foot.git</developerConnection>
+    <url>https://github.com/afbustamante/y-a-foot</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <developers>
+    <developer>
+      <email>afbusta@yahoo.com</email>
+      <name>Andres Bustamante</name>
+      <url>https://github.com/afbustamante</url>
+      <id>afbustamante</id>
+    </developer>
+  </developers>
+
+  <issueManagement>
+    <url>https://github.com/afbustamante/y-a-foot/issues</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
 
   <dependencyManagement>
     <dependencies>
