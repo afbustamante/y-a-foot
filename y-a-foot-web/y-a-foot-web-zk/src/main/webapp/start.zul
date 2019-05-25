@@ -7,10 +7,11 @@
 <?taglib uri="http://www.zkoss.org/zkspring/security" prefix="sec"?>
 <window>
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
-  <include src="/zul/top.zul"/>
   <div id="content">
-    <vlayout>
+    <div>
       <vbox>
+        <label value="${c:l('start.wish.text')}" sclass="msg-wish" />
+        <separator/>
         <button id="btnOrganise" label="${c:l('start.button.organise')}"
                 href="/matches/new.zul" width="100%"
                 image="/images/22x22/appointment-new.png"/>
@@ -20,7 +21,15 @@
         <button id="btnList" label="${c:l('start.button.list')}"
                 href="/matches/list.zul" width="100%"
                 image="/images/22x22/office-calendar.png"/>
+        <button id="btnProfile" label="${c:l('start.button.profile')}"
+                href="/players/profile.zul" width="100%"
+                image="/images/22x22/system-users.png"
+                if="${sec:getAuthentication('credentials') ne ''}"/>
+        <button id="btnLogOut" label="${c:l('start.button.logout')}"
+                href="/logout" width="100%"
+                image="/images/22x22/system-log-out.png"
+                if="${sec:getAuthentication('credentials') ne ''}"/>
       </vbox>
-    </vlayout>
+    </div>
   </div>
 </window>

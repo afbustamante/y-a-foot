@@ -4,9 +4,9 @@
                    tooltiptext="${c:l('button.home')}"/>
     <toolbarbutton id="btnProfile" image="/images/22x22/system-users.png"
                    href="/players/profile.zul"
-                   if="${sec:getAuthentication('credentials') ne ''}"
                    tooltiptext="${c:l('button.profile')}"/>
-    <toolbarbutton id="btnLogOut" image="/images/22x22/system-log-out.png" href="/logout"
-                   if="${sec:getAuthentication('credentials') ne ''}" tooltiptext="${c:l('button.logout')}"/>
+    <toolbarbutton id="btnLogOut" image="/images/22x22/system-log-out.png"
+                   href="/logout"
+                   tooltiptext="${c:l('button.logout')}"/>
   </toolbar>
 </div>

@@ -15,7 +15,7 @@
           <auxheader label="${c:l('player.profile.detail.title')}" colspan="2"/>
         </auxhead>
         <columns>
-          <column align="right" hflex="min"/>
+          <column align="right"/>
           <column/>
         </columns>
         <rows>
@@ -58,7 +58,7 @@
           <auxheader label="${c:l('player.profile.security.title')}" colspan="2"/>
         </auxhead>
         <columns>
-          <column align="right" hflex="min"/>
+          <column align="right"/>
           <column/>
         </columns>
         <rows>

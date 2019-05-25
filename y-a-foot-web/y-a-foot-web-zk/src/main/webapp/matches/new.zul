@@ -15,9 +15,9 @@
           <auxheader label="${c:l('new.match.details.title')}" colspan="3" rowspan="1"/>
         </auxhead>
         <columns>
-          <column align="right" hflex="min" width="30%"/>
+          <column align="right" width="30%"/>
           <column width="50%"/>
-          <column/>
+          <column align="left"/>
         </columns>
         <rows>
           <row>

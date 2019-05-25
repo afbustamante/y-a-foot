@@ -15,7 +15,7 @@
           <auxheader label="${c:l('sign.in.title')}" colspan="2" rowspan="1"/>
         </auxhead>
         <columns>
-          <column align="right" hflex="min" width="30%"/>
+          <column align="right" width="30%"/>
           <column/>
         </columns>
         <rows>
