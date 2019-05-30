@@ -71,7 +71,7 @@
         UPDATE t_joueur
         SET jou_prenom    = 'User' || jou_id,
             jou_nom       = 'Foot',
-            jou_email     = jou_email || '.' || CURRENT_TIMESTAMP || '.old',
+            jou_email     = jou_email || '.' || CURRENT_DATE || '.old',
             jou_telephone = null,
             jou_actif     = false,
             jou_date_derniere_maj = NOW()

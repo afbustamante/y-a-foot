@@ -10,6 +10,7 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Messagebox;
 
@@ -50,7 +51,7 @@ public class ProfilJoueurViewModel extends AbstractViewModel {
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la sauvegarde des données pour un utilisateur", e);
-            Messagebox.show(Labels.getLabel("application.exception.text", new String[]{e.getMessage()}),
+            Messagebox.show(Labels.getLabel(APPLICATION_EXCEPTION_TEXT, new String[]{e.getMessage()}),
                     Labels.getLabel(DIALOG_ERROR_TITLE),
                     Messagebox.Button.OK.id, Messagebox.ERROR);
         }
@@ -58,25 +59,33 @@ public class ProfilJoueurViewModel extends AbstractViewModel {
 
     @Command
     public void desactiverCompte() {
-        try {
-            boolean succes = gestionProfilJoueurUIService.desactiverJoueur(joueur);
+        EventListener<Messagebox.ClickEvent> clickListener = event -> {
+            if (Messagebox.Button.YES.equals(event.getButton())) {
+                try {
+                    boolean succes = gestionProfilJoueurUIService.desactiverJoueur(joueur);
 
-            if (succes) {
-                Messagebox.show(Labels.getLabel("player.profile.inactivate.success"),
-                        Labels.getLabel(DIALOG_INFORMATION_TITLE),
-                        new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION,
-                        event -> Executions.getCurrent().sendRedirect("/logout"));
-            } else {
-                Messagebox.show(Labels.getLabel("player.profile.inactivate.error"),
-                        Labels.getLabel(DIALOG_ERROR_TITLE),
-                        Messagebox.Button.OK.id, Messagebox.ERROR);
+                    if (succes) {
+                        Messagebox.show(Labels.getLabel("player.profile.inactivate.success"),
+                                Labels.getLabel(DIALOG_INFORMATION_TITLE),
+                                new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION,
+                                sousEvent -> Executions.getCurrent().sendRedirect("/logout"));
+                    } else {
+                        Messagebox.show(Labels.getLabel("player.profile.inactivate.error"),
+                                Labels.getLabel(DIALOG_ERROR_TITLE),
+                                Messagebox.Button.OK.id, Messagebox.ERROR);
+                    }
+                } catch (ApplicationException e) {
+                    log.error("Erreur lors de la désactivation du profil d'un utilisateur", e);
+                    Messagebox.show(Labels.getLabel(APPLICATION_EXCEPTION_TEXT, new String[]{e.getMessage()}),
+                            Labels.getLabel(DIALOG_ERROR_TITLE),
+                            Messagebox.Button.OK.id, Messagebox.ERROR);
+                }
             }
-        } catch (ApplicationException e) {
-            log.error("Erreur lors de la désactivation du profil d'un utilisateur", e);
-            Messagebox.show(Labels.getLabel("application.exception.text", new String[]{e.getMessage()}),
-                    Labels.getLabel(DIALOG_ERROR_TITLE),
-                    Messagebox.Button.OK.id, Messagebox.ERROR);
-        }
+        };
+        Messagebox.show(Labels.getLabel("player.profile.inactivate.confirmation.dialog.text"),
+                Labels.getLabel(DIALOG_CONFIRMATION_TITLE),
+                new Messagebox.Button[]{Messagebox.Button.YES, Messagebox.Button.NO},
+                Messagebox.QUESTION, clickListener);
     }
 
     @Command
@@ -108,7 +117,7 @@ public class ProfilJoueurViewModel extends AbstractViewModel {
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la mise à jour du mot de passe pour un utilisateur", e);
-            Messagebox.show(Labels.getLabel("application.exception.text", new String[]{e.getMessage()}),
+            Messagebox.show(Labels.getLabel(APPLICATION_EXCEPTION_TEXT, new String[]{e.getMessage()}),
                     Labels.getLabel(DIALOG_ERROR_TITLE),
                     Messagebox.Button.OK.id, Messagebox.ERROR);
         }
