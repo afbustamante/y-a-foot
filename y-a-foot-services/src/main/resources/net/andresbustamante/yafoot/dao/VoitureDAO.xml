@@ -3,16 +3,26 @@
 
 <mapper namespace="net.andresbustamante.yafoot.dao.VoitureDAO">
 
-    <select id="chercherVoitureParId" resultType="net.andresbustamante.yafoot.model.Voiture">
+  <select id="chercherVoitureParId" resultType="net.andresbustamante.yafoot.model.Voiture">
+    SELECT voi_id         AS id,
+           voi_nom        AS nom,
+           voi_num_places AS numPlaces
+    FROM t_voiture
+    WHERE voi_id = #{id}
+  </select>
 
-    </select>
+  <insert id="enregistrerVoiture" useGeneratedKeys="true">
+    <selectKey keyProperty="voiture.id" resultType="int" order="BEFORE">
+      SELECT NEXTVAL('s_voiture') AS id;
+    </selectKey>
 
-    <insert id="enregistrerVoiture" useGeneratedKeys="true">
-        <selectKey keyProperty="voiture.id" resultType="int" order="BEFORE">
-            SELECT NEXTVAL('s_voiture') AS id;
-        </selectKey>
+    INSERT INTO t_voiture (voi_id, voi_nom, voi_num_places, voi_chauffeur_fk)
+    VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.numPlaces}, #{voiture.chauffeur.id})
+  </insert>
 
-        INSERT INTO t_voiture (voi_id, voi_nom, voi_num_places, voi_chauffeur_fk)
-        VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.numPlaces}, #{voiture.chauffeur.id})
-    </insert>
+  <delete id="supprimerVoitures">
+    DELETE
+    FROM t_voiture
+    WHERE voi_chauffeur_fk = #{joueur.id}
+  </delete>
 </mapper>

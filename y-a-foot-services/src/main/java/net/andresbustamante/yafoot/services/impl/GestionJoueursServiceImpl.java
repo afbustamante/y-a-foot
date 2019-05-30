@@ -1,6 +1,8 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.JoueurDAO;
+import net.andresbustamante.yafoot.dao.MatchDAO;
+import net.andresbustamante.yafoot.dao.VoitureDAO;
 import net.andresbustamante.yafoot.exceptions.BDDException;
 import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
 import net.andresbustamante.yafoot.model.Contexte;
@@ -25,6 +27,12 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
 
     @Autowired
     private UtilisateurDAO utilisateurDAO;
+
+    @Autowired
+    private MatchDAO matchDAO;
+
+    @Autowired
+    private VoitureDAO voitureDAO;
 
     private final Logger log = LoggerFactory.getLogger(GestionJoueursService.class);
 
@@ -86,6 +94,30 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
         } catch (DataAccessException e) {
             log.error("Erreur lors de la mise à jour d'un utilisateur", e);
             throw new BDDException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean desactiverJoueur(String emailJoueur, Contexte contexte) throws BDDException {
+        Joueur joueur = joueurDAO.chercherJoueurParEmail(emailJoueur);
+
+        if (joueur != null) {
+            // Supprimer les données du joueur
+            int nbMatchs = matchDAO.desinscrireJoueur(joueur);
+            log.info("Joueur {} desinscrit de {} matchs", emailJoueur, nbMatchs);
+
+            int nbVoitures = voitureDAO.supprimerVoitures(joueur);
+            log.info("{} voitures supprimées pour le joueur {}", nbVoitures, emailJoueur);
+
+            int nbJoueursDesactives = joueurDAO.desactiverJoueur(joueur);
+            log.info("{} joueur désactivé", nbJoueursDesactives);
+
+            // Supprimer l'entrée LDAP
+            utilisateurDAO.supprimerUtilisateur(joueur, new RolesEnum[]{RolesEnum.JOUEUR});
+            return true;
+        } else {
+            return false;
         }
     }
 }

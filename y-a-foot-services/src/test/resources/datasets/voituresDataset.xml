@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+  <t_joueur jou_id="1" jou_nom="Doe" jou_prenom="John" jou_telephone="01234656789" jou_email="john.doe@email.com"
+            jou_date_creation="2019-01-02 12:34:56"/>
+  <t_voiture voi_id="1001" voi_nom="Peugeot 207" voi_num_places="4" voi_chauffeur_fk="1" />
+  <t_voiture voi_id="1002" voi_nom="Renault Mégane GTi" voi_num_places="3" voi_chauffeur_fk="1" />
+</dataset>

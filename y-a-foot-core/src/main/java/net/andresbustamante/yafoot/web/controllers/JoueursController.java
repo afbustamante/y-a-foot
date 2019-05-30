@@ -118,4 +118,23 @@ public class JoueursController extends AbstractController {
             return Response.serverError().build();
         }
     }
+
+    @DELETE
+    @Path("/{email}/email")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response desactiverJoueur(@PathParam(EMAIL) String email,
+                                     @Context HttpServletRequest request) {
+        try {
+            log.info("Traitement de la demande de désactivation du joueur {}", email);
+            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
+            boolean succes = gestionJoueursService.desactiverJoueur(email, contexte);
+            return (succes) ? Response.noContent().build() : Response.status(BAD_REQUEST).build();
+        } catch (BDDException e) {
+            log.error("Erreur lors de l'actualisation d'un joueur", e);
+            return Response.serverError().build();
+        } catch (ApplicationException e) {
+            log.error("Erreur lors de la récupération des information du contexte", e);
+            return Response.status(BAD_REQUEST).build();
+        }
+    }
 }

@@ -16,7 +16,8 @@
             jou.jou_email             AS email,
             jou.jou_telephone         AS telephone,
             jou.jou_date_creation     AS dateCreation,
-            jou.jou_date_derniere_maj AS dateDerniereMaj
+            jou.jou_date_derniere_maj AS dateDerniereMaj,
+            jou.jou_actif             AS actif
         FROM t_joueur jou
         WHERE jou.jou_id = #{id}
     </select>
@@ -29,7 +30,8 @@
             jou.jou_email             AS email,
             jou.jou_telephone         AS telephone,
             jou.jou_date_creation     AS dateCreation,
-            jou.jou_date_derniere_maj AS dateDerniereMaj
+            jou.jou_date_derniere_maj AS dateDerniereMaj,
+            jou.jou_actif             AS actif
         FROM t_joueur jou
         WHERE jou.jou_email = #{email}
     </select>
@@ -39,9 +41,9 @@
             SELECT NEXTVAL('s_joueur') AS id;
         </selectKey>
 
-        INSERT INTO t_joueur (jou_id, jou_nom, jou_prenom, jou_telephone, jou_email, jou_date_creation)
+        INSERT INTO t_joueur (jou_id, jou_nom, jou_prenom, jou_telephone, jou_email, jou_date_creation, jou_actif)
         VALUES
-        (#{joueur.id}, #{joueur.nom}, #{joueur.prenom}, #{joueur.telephone}, #{joueur.email}, NOW())
+        (#{joueur.id}, #{joueur.nom}, #{joueur.prenom}, #{joueur.telephone}, #{joueur.email}, NOW(), true)
     </insert>
 
     <update id="actualiserJoueur">
@@ -64,4 +66,15 @@
         DELETE FROM t_joueur
         WHERE jou_id = #{joueur.id}
     </delete>
+
+    <update id="desactiverJoueur">
+        UPDATE t_joueur
+        SET jou_prenom    = 'User' || jou_id,
+            jou_nom       = 'Foot',
+            jou_email     = jou_email || '.' || CURRENT_TIMESTAMP || '.old',
+            jou_telephone = null,
+            jou_actif     = false,
+            jou_date_derniere_maj = NOW()
+        WHERE jou_id = #{joueur.id}
+    </update>
 </mapper>

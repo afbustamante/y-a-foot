@@ -58,6 +58,25 @@ public class ProfilJoueurViewModel extends AbstractViewModel {
 
     @Command
     public void desactiverCompte() {
+        try {
+            boolean succes = gestionProfilJoueurUIService.desactiverJoueur(joueur);
+
+            if (succes) {
+                Messagebox.show(Labels.getLabel("player.profile.inactivate.success"),
+                        Labels.getLabel(DIALOG_INFORMATION_TITLE),
+                        new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION,
+                        event -> Executions.getCurrent().sendRedirect("/logout"));
+            } else {
+                Messagebox.show(Labels.getLabel("player.profile.inactivate.error"),
+                        Labels.getLabel(DIALOG_ERROR_TITLE),
+                        Messagebox.Button.OK.id, Messagebox.ERROR);
+            }
+        } catch (ApplicationException e) {
+            log.error("Erreur lors de la désactivation du profil d'un utilisateur", e);
+            Messagebox.show(Labels.getLabel("application.exception.text", new String[]{e.getMessage()}),
+                    Labels.getLabel(DIALOG_ERROR_TITLE),
+                    Messagebox.Button.OK.id, Messagebox.ERROR);
+        }
     }
 
     @Command

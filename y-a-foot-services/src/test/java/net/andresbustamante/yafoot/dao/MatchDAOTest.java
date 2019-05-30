@@ -202,4 +202,20 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertFalse(matchDAO.isJoueurInscritMatch(joueur, match));
     }
+
+    @Test
+    void desinscrireJoueur() throws Exception {
+        // Given
+        Joueur joueur = joueurDAO.chercherJoueurParId(1);
+        ZonedDateTime dateTime = ZonedDateTime.now().minusYears(5L); // Il y a 5 ans
+
+        // When
+        int nbLignes = matchDAO.desinscrireJoueur(joueur);
+        List<Match> matchsJoueur = matchDAO.chercherMatchsParJoueur(joueur.getId(), dateTime);
+
+        // Then
+        assertEquals(1, nbLignes);
+        assertNotNull(matchsJoueur);
+        assertTrue(matchsJoueur.isEmpty());
+    }
 }

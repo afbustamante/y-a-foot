@@ -29,9 +29,10 @@ class JoueurDAOTest extends AbstractDAOTest {
     @Test
     void creerJoueur() throws Exception {
         Joueur joueur = getNouveauJoueur();
-        joueurDAO.creerJoueur(joueur);
+        int nbJoueurs = joueurDAO.creerJoueur(joueur);
 
         // Vérifier que le joueur à un identifiant de base de données attribué
+        assertEquals(1, nbJoueurs);
         assertNotNull(joueur.getId());
         assertTrue(joueur.getId() > 0);
     }
@@ -86,11 +87,12 @@ class JoueurDAOTest extends AbstractDAOTest {
         joueur.setPrenom(AUTRE_PRENOM);
         assertNull(joueur.getDateDerniereMaj());
 
-        joueurDAO.actualiserJoueur(joueur);
+        int nbJoueurs = joueurDAO.actualiserJoueur(joueur);
 
         Joueur joueur1 = joueurDAO.chercherJoueurParEmail(EMAIL);
 
         // Les informations du joueur 1 doivent être modifiées
+        assertEquals(1, nbJoueurs);
         assertNotNull(joueur1.getTelephone());
         assertEquals(AUTRE_TELEPHONE, joueur1.getTelephone());
         assertNotNull(joueur1.getNom());
@@ -103,13 +105,33 @@ class JoueurDAOTest extends AbstractDAOTest {
 
     @Test
     void supprimerJoueur() throws Exception {
-        // Chercher le joueur à supprimer
-        joueurDAO.supprimerJoueur(JOHN_DOE);
-
+        // When
+        int nbJoueurs = joueurDAO.supprimerJoueur(JOHN_DOE);
         Joueur joueur = joueurDAO.chercherJoueurParEmail(EMAIL);
 
+        // Then
+        assertEquals(1, nbJoueurs);
         // Le joueur n'existe plus
         assertNull(joueur);
+    }
+
+    @Test
+    void desactiverJoueur() throws Exception {
+        // When
+        int nbJoueurs = joueurDAO.desactiverJoueur(JOHN_DOE);
+        Joueur joueur = joueurDAO.chercherJoueurParId(JOHN_DOE.getId());
+
+        // Then
+        assertEquals(1, nbJoueurs);
+        assertNotNull(joueur);
+        assertTrue(joueur.getPrenom().startsWith("User"));
+        assertTrue(joueur.getPrenom().endsWith(joueur.getId().toString()));
+        assertEquals("Foot", joueur.getNom());
+        assertFalse(joueur.isActif());
+        assertNull(joueur.getTelephone());
+        assertTrue(joueur.getEmail().startsWith(JOHN_DOE.getEmail()));
+        assertNotEquals(JOHN_DOE.getEmail(), joueur.getEmail());
+        assertTrue(joueur.getEmail().endsWith(".old"));
     }
 
     /**

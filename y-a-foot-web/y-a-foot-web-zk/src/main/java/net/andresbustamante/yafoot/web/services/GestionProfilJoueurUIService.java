@@ -54,6 +54,27 @@ public class GestionProfilJoueurUIService extends AbstractUIService {
         }
     }
 
+    public boolean desactiverJoueur(Joueur joueur) throws ApplicationException {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
+                    .path(joueursServicesPath)
+                    .path(MessageFormat.format(joueurParEmailServicesPath, joueur.getEmail()));
+
+            MultiValueMap<String, String> headers = getHeadersMap();
+            HttpEntity<Joueur> params = new HttpEntity<>(headers);
+
+            ResponseEntity<Boolean> response = restTemplate.exchange(builder.toUriString(),
+                    HttpMethod.DELETE, params, Boolean.class);
+
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (Exception e) {
+            log.error("Erreur lors de la mise à jour des données de l'utilisateur " + joueur.getEmail(), e);
+            throw new ApplicationException("Erreur lors de la mise à jour des données");
+        }
+    }
+
     public String crypterMotDePasse(String mdp) throws ApplicationException {
         return SecuriteUtils.crypterMotDePasse(mdp);
     }

@@ -12,6 +12,7 @@ public class Utilisateur implements Serializable, Identifiable {
     protected String nom;
     protected String prenom;
     protected String telephone;
+    protected boolean actif;
 
     public Utilisateur() {
     }
@@ -72,4 +73,11 @@ public class Utilisateur implements Serializable, Identifiable {
         this.telephone = jouTelephone;
     }
 
+    public boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(boolean actif) {
+        this.actif = actif;
+    }
 }

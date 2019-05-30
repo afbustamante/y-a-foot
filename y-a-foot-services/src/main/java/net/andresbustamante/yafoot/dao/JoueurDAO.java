@@ -33,14 +33,14 @@ public interface JoueurDAO {
      *
      * @param joueur Joueur à créer
      */
-    void creerJoueur(@Param(JOUEUR) Joueur joueur);
+    int creerJoueur(@Param(JOUEUR) Joueur joueur);
 
     /**
      * Mettre à jour les informations personnelles d'un joueur passé en paramètre
      *
      * @param joueur Joueur à mettre à jour
      */
-    void actualiserJoueur(@Param(JOUEUR) Joueur joueur);
+    int actualiserJoueur(@Param(JOUEUR) Joueur joueur);
 
     /**
      * Chercher un joueur en base des données à partir de son adresse mail
@@ -55,5 +55,13 @@ public interface JoueurDAO {
      *
      * @param joueur Joueur à supprimer
      */
-    void supprimerJoueur(@Param(JOUEUR) Joueur joueur);
+    int supprimerJoueur(@Param(JOUEUR) Joueur joueur);
+
+
+    /**
+     * Anonymiser les données d'un joueur et désactiver de mannière logique
+     *
+     * @param joueur Joueur à désactiver
+     */
+    int desactiverJoueur(@Param(JOUEUR) Joueur joueur);
 }

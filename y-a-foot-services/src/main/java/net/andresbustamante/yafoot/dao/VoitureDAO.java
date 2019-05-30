@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.dao;
 
+import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.apache.ibatis.annotations.Param;
 
-import static net.andresbustamante.yafoot.util.DaoConstants.ID;
-import static net.andresbustamante.yafoot.util.DaoConstants.VOITURE;
+import static net.andresbustamante.yafoot.util.DaoConstants.*;
 
 /**
  * Interface de gestion et récupération des informations des voitures en base des données
@@ -26,5 +26,12 @@ public interface VoitureDAO {
      *
      * @param voiture Voiture à enregistrer
      */
-    void enregistrerVoiture(@Param(VOITURE) Voiture voiture);
+    int enregistrerVoiture(@Param(VOITURE) Voiture voiture);
+
+    /**
+     * Supprimer toutes les voitures enregistrées par un joueur
+     *
+     * @param joueur
+     */
+    int supprimerVoitures(@Param(JOUEUR) Joueur joueur);
 }

@@ -30,4 +30,14 @@ public interface GestionJoueursService {
      * @throws BDDException
      */
     boolean actualiserJoueur(Joueur joueur, Contexte contexte) throws BDDException;
+
+    /**
+     * Désactiver un joueur tout en supprimant son historique dans l'application et en supprimant
+     * l'entrée dans l'annuaire LDAP
+     *
+     * @param emailJoueur Email du joueur à supprimer
+     * @param contexte Contexte de l'utilisateur réalisant l'action
+     * @return
+     */
+    boolean desactiverJoueur(String emailJoueur, Contexte contexte) throws BDDException;
 }

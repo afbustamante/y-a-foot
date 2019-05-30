@@ -1,6 +1,8 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.JoueurDAO;
+import net.andresbustamante.yafoot.dao.MatchDAO;
+import net.andresbustamante.yafoot.dao.VoitureDAO;
 import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
@@ -23,6 +25,12 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
 
     @Mock
     private UtilisateurDAO utilisateurDAO;
+
+    @Mock
+    private MatchDAO matchDAO;
+
+    @Mock
+    private VoitureDAO voitureDAO;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -133,5 +141,48 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
         verify(utilisateurDAO, times(0)).actualiserUtilisateur(any());
         verify(joueurDAO, times(0)).actualiserJoueur(any());
         assertFalse(succes);
+    }
+
+    @Test
+    void desactiverJoueurExistant() throws Exception {
+        // Given
+        Joueur joueur1 = new Joueur(1);
+        String emailJoueur = "playerNumber1@email.com";
+        Contexte ctx = new Contexte();
+
+        // When
+        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueur1);
+        when(matchDAO.desinscrireJoueur(any())).thenReturn(15);
+        when(voitureDAO.supprimerVoitures(any())).thenReturn(1);
+        when(joueurDAO.desactiverJoueur(any())).thenReturn(1);
+
+        boolean succes = gestionJoueursService.desactiverJoueur(emailJoueur, ctx);
+
+        // Then
+        assertTrue(succes);
+        verify(joueurDAO, times(1)).chercherJoueurParEmail(anyString());
+        verify(matchDAO, times(1)).desinscrireJoueur(any());
+        verify(voitureDAO, times(1)).supprimerVoitures(any());
+        verify(joueurDAO, times(1)).desactiverJoueur(any());
+    }
+
+    @Test
+    void desactiverJoueurInexistant() throws Exception {
+        // Given
+        Joueur autreJoueur = new Joueur(-1);
+        String emailJoueur = "playerNumberX@email.com";
+        Contexte ctx = new Contexte();
+
+        // When
+        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(null);
+
+        boolean succes = gestionJoueursService.desactiverJoueur(emailJoueur, ctx);
+
+        // Then
+        assertFalse(succes);
+        verify(joueurDAO, times(1)).chercherJoueurParEmail(anyString());
+        verify(matchDAO, times(0)).desinscrireJoueur(any());
+        verify(voitureDAO, times(0)).supprimerVoitures(any());
+        verify(joueurDAO, times(0)).desactiverJoueur(any());
     }
 }

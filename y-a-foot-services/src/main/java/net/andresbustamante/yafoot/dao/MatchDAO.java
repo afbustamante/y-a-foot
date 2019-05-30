@@ -34,9 +34,10 @@ public interface MatchDAO {
     Match chercherMatchParCode(@Param(CODE) String codeMatch);
 
     /**
-     * Trouver les matchs auxquels un joueur a été inscrit
+     * Trouver les matchs auxquels un joueur a été inscrit depuis la date passée en paramètre
      *
      * @param idJoueur Identifiant du joueur à chercher
+     * @param dateInitiale Date initiale de la recherche
      * @return
      */
     List<Match> chercherMatchsParJoueur(@Param(ID) Integer idJoueur,
@@ -86,4 +87,11 @@ public interface MatchDAO {
      */
     void desinscrireJoueurMatch(@Param(JOUEUR) Joueur joueur,
                                 @Param(MATCH) Match match);
+
+    /**
+     * Désinscrire un joueur de tous les matchs auxquels il était inscrit même dans le passé
+     *
+     * @param joueur Joueur à désinscrire
+     */
+    int desinscrireJoueur(@Param(JOUEUR) Joueur joueur);
 }
