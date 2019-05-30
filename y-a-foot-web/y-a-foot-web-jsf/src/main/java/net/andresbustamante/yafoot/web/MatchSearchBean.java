@@ -34,7 +34,7 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
     private String complementJoueurs;
     private Locale locale;
     private String patternDate;
-    private transient final Log log = LogFactory.getLog(MatchSearchBean.class);
+    private final transient Log log = LogFactory.getLog(MatchSearchBean.class);
     private boolean inscriptionPossible = false;
     private boolean validationRequise = false;
     private String optionInscription;

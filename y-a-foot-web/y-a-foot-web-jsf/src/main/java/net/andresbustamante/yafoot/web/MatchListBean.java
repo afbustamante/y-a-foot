@@ -25,7 +25,7 @@ public class MatchListBean extends AbstractFacesBean implements Serializable {
     @Inject
     private RechercheMatchsUIService rechercheMatchsUIService;
 
-    private transient final Log log = LogFactory.getLog(MatchListBean.class);
+    private final transient Log log = LogFactory.getLog(MatchListBean.class);
 
     public List<Match> getMatches() {
         if (matches == null) {

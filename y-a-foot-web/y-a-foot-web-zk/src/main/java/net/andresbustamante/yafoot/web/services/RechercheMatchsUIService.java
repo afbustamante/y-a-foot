@@ -25,7 +25,7 @@ import java.text.MessageFormat;
 @SessionScope
 public class RechercheMatchsUIService extends AbstractUIService {
 
-    private final transient Logger log = LoggerFactory.getLogger(RechercheMatchsUIService.class);
+    private final Logger log = LoggerFactory.getLogger(RechercheMatchsUIService.class);
 
     @Value("${api.rest.joueurs.services.path}")
     private String joueursServicesPath;

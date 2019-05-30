@@ -51,7 +51,7 @@ public class NewMatchBean extends AbstractFacesBean implements Serializable {
     private List<SelectItem> itemsSites;
     private boolean nouveauSite;
 
-    private transient final Log log = LogFactory.getLog(NewMatchBean.class);
+    private final transient Log log = LogFactory.getLog(NewMatchBean.class);
 
     @Inject
     private OrganisationMatchsUIService organisationMatchsUIService;

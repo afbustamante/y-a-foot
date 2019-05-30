@@ -24,7 +24,7 @@ import java.util.List;
 @SessionScope
 public class OrganisationMatchsUIService extends AbstractUIService {
 
-    private final transient Logger log = LoggerFactory.getLogger(OrganisationMatchsUIService.class);
+    private final Logger log = LoggerFactory.getLogger(OrganisationMatchsUIService.class);
 
     @Value("${api.rest.sites.services.path}")
     private String sitesServicesPath;

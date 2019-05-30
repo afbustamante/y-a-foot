@@ -26,7 +26,7 @@ public class InscriptionMatchsUIService extends AbstractUIService {
     @Value("${api.rest.inscriptions.services.path}")
     private String inscriptionsServicesPath;
 
-    private final transient Logger log = LoggerFactory.getLogger(InscriptionMatchsUIService.class);
+    private final Logger log = LoggerFactory.getLogger(InscriptionMatchsUIService.class);
 
     /**
      * Inscrire le joueur actif dans la session au match passé en paramètre
