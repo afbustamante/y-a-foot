@@ -100,10 +100,8 @@ public class RechercheMatchViewModel extends AbstractViewModel {
     }
 
     public int getNbPlacesDisponibles() {
-        if (nbPlacesDisponibles == 0) {
-            if (match != null && match.getInscriptions() != null) {
-                nbPlacesDisponibles = Math.max(0, match.getNumJoueursMax() - match.getInscriptions().getInscription().size());
-            }
+        if ((nbPlacesDisponibles == 0) && (match != null) && (match.getInscriptions() != null)) {
+            nbPlacesDisponibles = Math.max(0, match.getNumJoueursMax() - match.getInscriptions().getInscription().size());
         }
         return nbPlacesDisponibles;
     }

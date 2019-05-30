@@ -23,7 +23,7 @@ public class SignInBean extends AbstractFacesBean implements Serializable {
     private String motDePasse1;
     private String motDePasse2;
 
-    private final Log log = LogFactory.getLog(SignInBean.class);
+    private final transient Log log = LogFactory.getLog(SignInBean.class);
 
     @Inject
     private InscriptionJoueursUIService inscriptionJoueursUIService;

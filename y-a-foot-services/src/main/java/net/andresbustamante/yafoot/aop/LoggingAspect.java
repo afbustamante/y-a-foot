@@ -20,7 +20,7 @@ public class LoggingAspect {
     }
 
     @Before("filtrerServicesMetier()")
-    public void loggingMethodesMetier(JoinPoint joinPoint) throws Throwable {
+    public void loggingMethodesMetier(JoinPoint joinPoint) {
         log.info("Service actuel : {}", joinPoint.getSignature().toShortString());
     }
 }

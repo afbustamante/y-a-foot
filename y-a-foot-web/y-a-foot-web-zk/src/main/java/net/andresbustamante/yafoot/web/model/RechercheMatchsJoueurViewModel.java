@@ -71,6 +71,7 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
 
     @Command
     public void afficherDetailMatch(@BindingParam("match") Match match) {
+        // Implémenter cette méthode
     }
 
     @Command
