@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.xs.Inscription;
@@ -62,7 +62,7 @@ public class InscriptionsController extends AbstractController {
                 log.warn("Le joueur n'a pas pu etre inscrit");
                 return Response.status(BAD_REQUEST).build();
             }
-        } catch (BDDException e) {
+        } catch (DatabaseException e) {
             log.error("Erreur de base de données", e);
             return Response.serverError().build();
         } catch (ApplicationException e) {
@@ -88,7 +88,7 @@ public class InscriptionsController extends AbstractController {
                 log.warn("Désinscription demandée sur un match non existant avec le code {}", codeMatch);
                 return Response.status(BAD_REQUEST).build();
             }
-        } catch (BDDException e) {
+        } catch (DatabaseException e) {
             log.error("Erreur de base de données", e);
             return Response.serverError().build();
         } catch (ApplicationException e) {

@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
@@ -24,7 +24,7 @@ public class RechercheMatchsServiceImpl implements RechercheMatchsService {
     private MatchDAO matchDAO;
 
     @Override
-    public Match chercherMatchParCode(String codeMatch, Contexte contexte) throws BDDException {
+    public Match chercherMatchParCode(String codeMatch, Contexte contexte) throws DatabaseException {
         if (codeMatch != null) {
             return matchDAO.chercherMatchParCode(codeMatch);
         } else {
@@ -33,7 +33,7 @@ public class RechercheMatchsServiceImpl implements RechercheMatchsService {
     }
 
     @Override
-    public List<Match> chercherMatchsJoueur(Integer idJoueur, Contexte contexte) throws BDDException {
+    public List<Match> chercherMatchsJoueur(Integer idJoueur, Contexte contexte) throws DatabaseException {
         if (idJoueur != null && idJoueur > 0) {
             // Chercher les matchs programmés pour le joueur depuis 1 an
             LocalDateTime dateLocale = LocalDate.now(contexte.getTimeZone()).atStartOfDay().minusYears(1L);

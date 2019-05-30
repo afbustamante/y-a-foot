@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.JoueurDAO;
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.services.RechercheJoueursService;
@@ -18,7 +18,7 @@ public class RechercheJoueursServiceImpl implements RechercheJoueursService {
     private JoueurDAO joueurDAO;
 
     @Override
-    public Joueur chercherJoueur(String email, Contexte contexte) throws BDDException {
+    public Joueur chercherJoueur(String email, Contexte contexte) throws DatabaseException {
         return joueurDAO.chercherJoueurParEmail(email);
     }
 }

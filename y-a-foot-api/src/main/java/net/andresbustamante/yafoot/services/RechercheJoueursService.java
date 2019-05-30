@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.services;
 
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
 
@@ -17,7 +17,7 @@ public interface RechercheJoueursService {
      * @param email Adresse mail à chercher
      * @param contexte
      * @return
-     * @throws BDDException
+     * @throws DatabaseException
      */
-    Joueur chercherJoueur(String email, Contexte contexte) throws BDDException;
+    Joueur chercherJoueur(String email, Contexte contexte) throws DatabaseException;
 }

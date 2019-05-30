@@ -1,7 +1,8 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.services.GestionJoueursService;
@@ -69,7 +70,7 @@ public class JoueursController extends AbstractController {
             } else {
                 return Response.status(BAD_REQUEST).build();
             }
-        } catch (BDDException e) {
+        } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'inscription d'un joueur", e);
             return Response.serverError().build();
         }
@@ -90,7 +91,7 @@ public class JoueursController extends AbstractController {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
             boolean succes = gestionJoueursService.actualiserJoueur(joueurMapper.toJoueurBean(joueur), contexte);
             return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
-        } catch (BDDException e) {
+        } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
             return Response.serverError().build();
         } catch (ApplicationException e) {
@@ -113,7 +114,7 @@ public class JoueursController extends AbstractController {
             } else {
                 return Response.status(NOT_FOUND).build();
             }
-        } catch (BDDException e) {
+        } catch (DatabaseException e) {
             log.error("Erreur lors de la recherche d'un utilisateur", e);
             return Response.serverError().build();
         }
@@ -129,7 +130,7 @@ public class JoueursController extends AbstractController {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
             boolean succes = gestionJoueursService.desactiverJoueur(email, contexte);
             return (succes) ? Response.noContent().build() : Response.status(BAD_REQUEST).build();
-        } catch (BDDException e) {
+        } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
             return Response.serverError().build();
         } catch (ApplicationException e) {

@@ -4,14 +4,13 @@ import net.andresbustamante.yafoot.dao.JoueurDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.dao.VoitureDAO;
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,53 +41,48 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
     @Transactional
     @Override
-    public boolean creerMatch(Match match, Contexte contexte) throws BDDException {
-        try {
-            String codeMatch;
-            boolean codeDejaUtilise;
-            do {
-                codeMatch = genererCodeMatch();
-                codeDejaUtilise = matchDAO.isCodeExistant(codeMatch);
-            } while (codeDejaUtilise);
+    public boolean creerMatch(Match match, Contexte contexte) throws DatabaseException {
+        String codeMatch;
+        boolean codeDejaUtilise;
+        do {
+            codeMatch = genererCodeMatch();
+            codeDejaUtilise = matchDAO.isCodeExistant(codeMatch);
+        } while (codeDejaUtilise);
 
-            match.setCode(codeMatch);
+        match.setCode(codeMatch);
 
-            Joueur createur = joueurDAO.chercherJoueurParId(contexte.getIdUtilisateur());
+        Joueur createur = joueurDAO.chercherJoueurParId(contexte.getIdUtilisateur());
 
-            if (createur != null) {
-                match.setCreateur(createur);
+        if (createur != null) {
+            match.setCreateur(createur);
+        } else {
+            throw new DatabaseException("Identifiant d'utilisateur non trouvé en BDD : " + contexte.getIdUtilisateur());
+        }
+
+        if (match.getSite().getId() != null && !match.getSite().getId().equals(NOUVEL_ID)) {
+            Site siteExistant = siteDAO.chercherSiteParId(match.getSite().getId());
+
+            if (siteExistant != null) {
+                match.setSite(siteExistant);
             } else {
-                throw new BDDException("Identifiant d'utilisateur non trouvé en BDD : " + contexte.getIdUtilisateur());
-            }
-
-            if (match.getSite().getId() != null && !match.getSite().getId().equals(NOUVEL_ID)) {
-                Site siteExistant = siteDAO.chercherSiteParId(match.getSite().getId());
-
-                if (siteExistant != null) {
-                    match.setSite(siteExistant);
-                } else {
-                    // Créer aussi le site
-                    siteDAO.creerSite(match.getSite());
-                }
-            } else {
+                // Créer aussi le site
                 siteDAO.creerSite(match.getSite());
             }
-
-            matchDAO.creerMatch(match);
-            log.info("Nouveau match enregistré avec l'ID {}", match.getId());
-
-            inscrireJoueurMatch(createur, match, null, contexte);
-            return true;
-        } catch (DataAccessException e) {
-            log.error("Erreur lors de la création d'un match", e);
-            throw new BDDException(e.getMessage());
+        } else {
+            siteDAO.creerSite(match.getSite());
         }
+
+        matchDAO.creerMatch(match);
+        log.info("Nouveau match enregistré avec l'ID {}", match.getId());
+
+        inscrireJoueurMatch(createur, match, null, contexte);
+        return true;
     }
 
     @Transactional
     @Override
     public boolean inscrireJoueurMatch(Joueur joueur, Match match, Voiture voiture, Contexte contexte)
-            throws BDDException {
+            throws DatabaseException {
         if (joueur == null || joueur.getId() == null || match == null || match.getId() == null) {
             return false;
         }
@@ -114,13 +108,13 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
             log.info("Joueur inscrit au match");
             return true;
         } else {
-            throw new BDDException("Impossible d'inscrire le joueur : objet inexistant");
+            throw new DatabaseException("Impossible d'inscrire le joueur : objet inexistant");
         }
     }
 
     @Transactional
     @Override
-    public boolean desinscrireJoueurMatch(Joueur joueur, Match match, Contexte contexte) throws BDDException {
+    public boolean desinscrireJoueurMatch(Joueur joueur, Match match, Contexte contexte) throws DatabaseException {
         if (joueur == null || joueur.getId() == null || match == null || match.getCode() == null) {
             return false;
         }
@@ -133,7 +127,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
             log.info("Joueur désinscrit du match");
             return true;
         } else {
-            throw new BDDException("Impossible d'inscrire le joueur : objet inexistant");
+            throw new DatabaseException("Impossible d'inscrire le joueur : objet inexistant");
         }
     }
 

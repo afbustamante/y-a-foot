@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;
@@ -61,7 +61,7 @@ public class MatchsController extends AbstractController {
 
             return (match != null) ? Response.ok(matchMapper.toMatchDTO(match)).build() :
                     Response.status(NOT_FOUND).build();
-        } catch (BDDException e) {
+        } catch (DatabaseException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
             return Response.serverError().build();
         }
@@ -89,7 +89,7 @@ public class MatchsController extends AbstractController {
             } else {
                 return Response.ok(new Matchs()).build();
             }
-        } catch (BDDException e) {
+        } catch (DatabaseException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
             return Response.serverError().build();
         }
@@ -109,7 +109,7 @@ public class MatchsController extends AbstractController {
             } else {
                 return Response.status(BAD_REQUEST).build();
             }
-        } catch (BDDException e) {
+        } catch (DatabaseException e) {
             log.error("Erreur lors de la création d'un match", e);
             return Response.serverError().build();
         } catch (ApplicationException e) {

@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.SiteDAO;
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Site;
 import net.andresbustamante.yafoot.services.RechercheSitesService;
@@ -20,7 +20,7 @@ public class RechercheSitesServiceImpl implements RechercheSitesService {
     private SiteDAO siteDAO;
 
     @Override
-    public List<Site> chercherSitesParJoueur(Integer idJoueur, Contexte contexte) throws BDDException {
+    public List<Site> chercherSitesParJoueur(Integer idJoueur, Contexte contexte) throws DatabaseException {
         return siteDAO.chercherSitesPourJoueur(idJoueur);
     }
 }

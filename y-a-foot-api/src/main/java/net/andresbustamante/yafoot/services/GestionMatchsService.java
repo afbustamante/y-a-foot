@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.services;
 
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Match;
@@ -18,9 +18,9 @@ public interface GestionMatchsService {
      *
      * @param match Match à créer
      * @param contexte
-     * @throws BDDException
+     * @throws DatabaseException
      */
-    boolean creerMatch(Match match, Contexte contexte) throws BDDException;
+    boolean creerMatch(Match match, Contexte contexte) throws DatabaseException;
 
     /**
      * Inscrire un joueur à un match existant
@@ -29,9 +29,9 @@ public interface GestionMatchsService {
      * @param match Match à impacter avec cette inscription
      * @param voiture Voiture dans laquelle le joueur va se déplacer vers le site de jeu
      * @param contexte
-     * @throws BDDException
+     * @throws DatabaseException
      */
-    boolean inscrireJoueurMatch(Joueur joueur, Match match, Voiture voiture, Contexte contexte) throws BDDException;
+    boolean inscrireJoueurMatch(Joueur joueur, Match match, Voiture voiture, Contexte contexte) throws DatabaseException;
 
     /**
      * Désinscrire un joueur d'un match
@@ -40,7 +40,7 @@ public interface GestionMatchsService {
      * @param match Match concerné
      * @param contexte
      * @return
-     * @throws BDDException
+     * @throws DatabaseException
      */
-    boolean desinscrireJoueurMatch(Joueur joueur, Match match, Contexte contexte) throws BDDException;
+    boolean desinscrireJoueurMatch(Joueur joueur, Match match, Contexte contexte) throws DatabaseException;
 }

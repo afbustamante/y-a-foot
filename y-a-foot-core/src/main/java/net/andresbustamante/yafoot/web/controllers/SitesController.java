@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.xs.Sites;
 import net.andresbustamante.yafoot.services.RechercheSitesService;
@@ -51,7 +51,7 @@ public class SitesController {
             } else {
                 return Response.ok(new Sites()).build();
             }
-        } catch (BDDException e) {
+        } catch (DatabaseException e) {
             log.error("Erreur lors de la recherche de sites par joueur", e);
             return Response.serverError().build();
         }

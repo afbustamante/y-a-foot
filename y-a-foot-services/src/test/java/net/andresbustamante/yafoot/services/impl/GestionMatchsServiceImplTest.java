@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.dao.JoueurDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.dao.VoitureDAO;
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -199,7 +199,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         try {
             gestionMatchsService.desinscrireJoueurMatch(joueur, match, ctx);
             fail();
-        } catch (BDDException e) {
+        } catch (DatabaseException e) {
             assertEquals("Impossible d'inscrire le joueur : objet inexistant", e.getMessage());
         }
     }

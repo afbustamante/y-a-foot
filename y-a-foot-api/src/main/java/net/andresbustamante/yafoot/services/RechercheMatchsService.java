@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.services;
 
-import net.andresbustamante.yafoot.exceptions.BDDException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Match;
 
@@ -19,9 +19,9 @@ public interface RechercheMatchsService {
      * @param codeMatch Code du match à chercher
      * @param contexte
      * @return
-     * @throws BDDException
+     * @throws DatabaseException
      */
-    Match chercherMatchParCode(String codeMatch, Contexte contexte) throws BDDException;
+    Match chercherMatchParCode(String codeMatch, Contexte contexte) throws DatabaseException;
 
     /**
      * Chercher les matchs à venir pour un joueur dont l'identifiant est passé en paramètre
@@ -29,7 +29,7 @@ public interface RechercheMatchsService {
      * @param idJoueur Identifiant du joueur
      * @param contexte
      * @return
-     * @throws BDDException
+     * @throws DatabaseException
      */
-    List<Match> chercherMatchsJoueur(Integer idJoueur, Contexte contexte) throws BDDException;
+    List<Match> chercherMatchsJoueur(Integer idJoueur, Contexte contexte) throws DatabaseException;
 }
