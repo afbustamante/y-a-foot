@@ -97,8 +97,8 @@ public class CreationMatchViewModel extends AbstractViewModel {
 
             Match match = new Match();
             match.setDate(dateMatch);
-            match.setNumJoueursMin(nbMinJoueurs);
-            match.setNumJoueursMax(nbMaxJoueurs);
+            match.setNbJoueursMin(nbMinJoueurs);
+            match.setNbJoueursMax(nbMaxJoueurs);
             match.setSite(site);
 
             codeMatch = organisationMatchsUIService.creerMatch(match);

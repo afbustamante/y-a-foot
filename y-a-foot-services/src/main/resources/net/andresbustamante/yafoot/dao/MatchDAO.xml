@@ -9,30 +9,30 @@
     </select>
 
     <select id="chercherMatchParCode" resultMap="matchComplet">
-        SELECT
-            mat.mat_id              AS id,
-            mat.mat_code            AS code,
-            mat.mat_date            AS dateMatch,
-            mat.mat_description     AS description,
-            mat.mat_num_joueurs_min AS numJoueursMin,
-            mat.mat_num_joueurs_max AS numJoueursMax,
-            mat.mat_covoiturage_actif AS covoiturageActif,
-            mat.mat_partage_actif   AS partageActif,
-            sit.sit_id              AS idSite,
-            sit.sit_nom             AS nomSite,
-            sit.sit_adresse         AS adresseSite,
-            sit.sit_telephone       AS telephoneSite,
-            sit.sit_latitude        AS latitudeSite,
-            sit.sit_longitude       AS longitudeSite,
-            cre.jou_id              AS idCreateur,
-            cre.jou_nom             AS nomCreateur,
-            cre.jou_prenom          AS prenomCreateur,
-            cre.jou_email           AS emailCreateur,
-            jou.jou_id              AS idJoueur,
-            jou.jou_prenom          AS prenomJoueur,
-            jou.jou_email           AS emailJoueur,
-            voi.voi_id              AS idVoiture,
-            voi.voi_num_places      AS numPlacesVoiture
+        SELECT mat.mat_id                   AS id,
+               mat.mat_code                 AS code,
+               mat.mat_date                 AS dateMatch,
+               mat.mat_description          AS description,
+               mat.mat_num_joueurs_min      AS nbJoueursMin,
+               mat.mat_num_joueurs_max      AS nbJoueursMax,
+               mat.mat_num_joueurs_inscrits AS nbJoueursInscrits,
+               mat.mat_covoiturage_actif    AS covoiturageActif,
+               mat.mat_partage_actif        AS partageActif,
+               sit.sit_id                   AS idSite,
+               sit.sit_nom                  AS nomSite,
+               sit.sit_adresse              AS adresseSite,
+               sit.sit_telephone            AS telephoneSite,
+               sit.sit_latitude             AS latitudeSite,
+               sit.sit_longitude            AS longitudeSite,
+               cre.jou_id                   AS idCreateur,
+               cre.jou_nom                  AS nomCreateur,
+               cre.jou_prenom               AS prenomCreateur,
+               cre.jou_email                AS emailCreateur,
+               jou.jou_id                   AS idJoueur,
+               jou.jou_prenom               AS prenomJoueur,
+               jou.jou_email                AS emailJoueur,
+               voi.voi_id                   AS idVoiture,
+               voi.voi_num_places           AS nbPlacesVoiture
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
             JOIN t_joueur cre ON mat.mat_createur_fk = cre.jou_id
@@ -43,30 +43,30 @@
     </select>
 
     <select id="chercherMatchsParJoueur" resultMap="matchComplet">
-        SELECT
-            mat.mat_id              AS id,
-            mat.mat_code            AS code,
-            mat.mat_date            AS dateMatch,
-            mat.mat_description     AS description,
-            mat.mat_num_joueurs_min AS numJoueursMin,
-            mat.mat_num_joueurs_max AS numJoueursMax,
-            mat.mat_covoiturage_actif AS covoiturageActif,
-            mat.mat_partage_actif   AS partageActif,
-            sit.sit_id              AS idSite,
-            sit.sit_nom             AS nomSite,
-            sit.sit_adresse         AS adresseSite,
-            sit.sit_telephone       AS telephoneSite,
-            sit.sit_latitude        AS latitudeSite,
-            sit.sit_longitude       AS longitudeSite,
-            cre.jou_id              AS idCreateur,
-            cre.jou_nom             AS nomCreateur,
-            cre.jou_prenom          AS prenomCreateur,
-            cre.jou_email           AS emailCreateur,
-            jou.jou_id              AS idJoueur,
-            jou.jou_prenom          AS prenomJoueur,
-            jou.jou_email           AS emailJoueur,
-            voi.voi_id              AS idVoiture,
-            voi.voi_num_places      AS numPlacesVoiture
+        SELECT mat.mat_id                   AS id,
+               mat.mat_code                 AS code,
+               mat.mat_date                 AS dateMatch,
+               mat.mat_description          AS description,
+               mat.mat_num_joueurs_min      AS nbJoueursMin,
+               mat.mat_num_joueurs_max      AS nbJoueursMax,
+               mat.mat_num_joueurs_inscrits AS nbJoueursInscrits,
+               mat.mat_covoiturage_actif    AS covoiturageActif,
+               mat.mat_partage_actif        AS partageActif,
+               sit.sit_id                   AS idSite,
+               sit.sit_nom                  AS nomSite,
+               sit.sit_adresse              AS adresseSite,
+               sit.sit_telephone            AS telephoneSite,
+               sit.sit_latitude             AS latitudeSite,
+               sit.sit_longitude            AS longitudeSite,
+               cre.jou_id                   AS idCreateur,
+               cre.jou_nom                  AS nomCreateur,
+               cre.jou_prenom               AS prenomCreateur,
+               cre.jou_email                AS emailCreateur,
+               jou.jou_id                   AS idJoueur,
+               jou.jou_prenom               AS prenomJoueur,
+               jou.jou_email                AS emailJoueur,
+               voi.voi_id                   AS idVoiture,
+               voi.voi_num_places           AS nbPlacesVoiture
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
             JOIN t_joueur cre ON mat.mat_createur_fk = cre.jou_id
@@ -77,25 +77,25 @@
     </select>
 
     <select id="chercherMatchParId" resultMap="matchComplet">
-        SELECT
-            mat.mat_id              AS id,
-            mat.mat_code            AS code,
-            mat.mat_date            AS dateMatch,
-            mat.mat_description     AS description,
-            mat.mat_num_joueurs_min AS numJoueursMin,
-            mat.mat_num_joueurs_max AS numJoueursMax,
-            mat.mat_covoiturage_actif AS covoiturageActif,
-            mat.mat_partage_actif   AS partageActif,
-            cre.jou_id              AS idCreateur,
-            cre.jou_nom             AS nomCreateur,
-            cre.jou_prenom          AS prenomCreateur,
-            cre.jou_email           AS emailCreateur,
-            sit.sit_id              AS idSite,
-            sit.sit_nom             AS nomSite,
-            sit.sit_adresse         AS adresseSite,
-            sit.sit_telephone       AS telephoneSite,
-            sit.sit_latitude        AS latitudeSite,
-            sit.sit_longitude       AS longitudeSite
+        SELECT mat.mat_id                   AS id,
+               mat.mat_code                 AS code,
+               mat.mat_date                 AS dateMatch,
+               mat.mat_description          AS description,
+               mat.mat_num_joueurs_min      AS nbJoueursMin,
+               mat.mat_num_joueurs_max      AS nbJoueursMax,
+               mat.mat_num_joueurs_inscrits AS nbJoueursInscrits,
+               mat.mat_covoiturage_actif    AS covoiturageActif,
+               mat.mat_partage_actif        AS partageActif,
+               cre.jou_id                   AS idCreateur,
+               cre.jou_nom                  AS nomCreateur,
+               cre.jou_prenom               AS prenomCreateur,
+               cre.jou_email                AS emailCreateur,
+               sit.sit_id                   AS idSite,
+               sit.sit_nom                  AS nomSite,
+               sit.sit_adresse              AS adresseSite,
+               sit.sit_telephone            AS telephoneSite,
+               sit.sit_latitude             AS latitudeSite,
+               sit.sit_longitude            AS longitudeSite
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
             JOIN t_joueur cre on mat.mat_createur_fk = cre.jou_id
@@ -123,8 +123,8 @@
             #{match.id},
             #{match.dateMatch},
             #{match.description},
-            #{match.numJoueursMin},
-            #{match.numJoueursMax},
+            #{match.nbJoueursMin},
+            #{match.nbJoueursMax},
             #{match.site.id},
             #{match.code},
             NOW(),
@@ -161,13 +161,26 @@
         DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{joueur.id}
     </delete>
 
+    <update id="notifierInscriptionJoueur">
+        UPDATE t_match
+        SET mat_num_joueurs_inscrits = mat_num_joueurs_inscrits + 1
+        WHERE mat_id = #{match.id}
+    </update>
+
+    <update id="notifierDesinscriptionJoueur">
+        UPDATE t_match
+        SET mat_num_joueurs_inscrits = mat_num_joueurs_inscrits - 1
+        WHERE mat_id = #{match.id}
+    </update>
+
     <resultMap id="matchComplet" type="net.andresbustamante.yafoot.model.Match">
         <id property="id" column="id"/>
         <result property="code" column="code"/>
         <result property="dateMatch" column="dateMatch"/>
         <result property="description" column="description"/>
-        <result property="numJoueursMin" column="numJoueursMin"/>
-        <result property="numJoueursMax" column="numJoueursMax"/>
+        <result property="nbJoueursMin" column="nbJoueursMin"/>
+        <result property="nbJoueursMax" column="nbJoueursMax"/>
+        <result property="nbJoueursInscrits" column="nbJoueursInscrits"/>
         <result property="covoiturageActif" column="covoiturageActif"/>
         <result property="partageActif" column="partageActif"/>
         <association property="site" javaType="net.andresbustamante.yafoot.model.Site">
@@ -195,7 +208,7 @@
             </association>
             <association property="voiture" javaType="net.andresbustamante.yafoot.model.Voiture">
                 <id column="idVoiture" property="id" />
-                <result column="numPlacesVoiture" property="numPlaces" />
+                <result column="nbPlacesVoiture" property="nbPlaces" />
             </association>
         </collection>
     </resultMap>

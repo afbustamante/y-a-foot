@@ -32,14 +32,14 @@
             </xs:restriction>
           </xs:simpleType>
         </xs:element>
-        <xs:element name="numJoueursMin" minOccurs="0">
+        <xs:element name="nbJoueursMin" minOccurs="0">
           <xs:simpleType>
             <xs:restriction base="xs:int">
               <xs:minInclusive value="0"/>
             </xs:restriction>
           </xs:simpleType>
         </xs:element>
-        <xs:element name="numJoueursMax" minOccurs="0">
+        <xs:element name="nbJoueursMax" minOccurs="0">
           <xs:simpleType>
             <xs:restriction base="xs:int">
               <xs:minInclusive value="0"/>
@@ -152,7 +152,7 @@
       <xs:sequence>
         <xs:element name="id" type="xs:int" minOccurs="0"/>
         <xs:element name="nom" type="xs:string"/>
-        <xs:element name="numPlaces" type="xs:int"/>
+        <xs:element name="nbPlaces" type="xs:int"/>
         <xs:element name="chauffeur" type="utilisateur" minOccurs="0" />
         <xs:element ref="passagers" minOccurs="0"/>
       </xs:sequence>

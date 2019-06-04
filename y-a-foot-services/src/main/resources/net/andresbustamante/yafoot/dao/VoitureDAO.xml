@@ -6,7 +6,7 @@
   <select id="chercherVoitureParId" resultType="net.andresbustamante.yafoot.model.Voiture">
     SELECT voi_id         AS id,
            voi_nom        AS nom,
-           voi_num_places AS numPlaces
+           voi_num_places AS nbPlaces
     FROM t_voiture
     WHERE voi_id = #{id}
   </select>
@@ -17,7 +17,7 @@
     </selectKey>
 
     INSERT INTO t_voiture (voi_id, voi_nom, voi_num_places, voi_chauffeur_fk)
-    VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.numPlaces}, #{voiture.chauffeur.id})
+    VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.nbPlaces}, #{voiture.chauffeur.id})
   </insert>
 
   <delete id="supprimerVoitures">

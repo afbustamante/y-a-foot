@@ -53,8 +53,8 @@ class MatchDAOTest extends AbstractDAOTest {
         assertNotNull(match);
         assertEquals(2, match.getId().intValue());
         assertEquals(ZonedDateTime.of(dateMatch, ZoneId.systemDefault()), match.getDateMatch());
-        assertEquals(8, match.getNumJoueursMin().intValue());
-        assertEquals(12, match.getNumJoueursMax().intValue());
+        assertEquals(8, match.getNbJoueursMin().intValue());
+        assertEquals(12, match.getNbJoueursMax().intValue());
         assertNotNull(match.getCreateur());
         assertEquals("Lionel", match.getCreateur().getPrenom());
         assertEquals("Messi", match.getCreateur().getNom());
@@ -128,6 +128,8 @@ class MatchDAOTest extends AbstractDAOTest {
         assertNotNull(match);
         assertEquals("AZERTY-1234", match.getCode());
         assertNotNull(match.getSite());
+        assertNotNull(match.getNbJoueursMin());
+        assertNotNull(match.getNbJoueursInscrits());
         assertEquals(1, match.getSite().getId().intValue());
     }
 
@@ -141,8 +143,8 @@ class MatchDAOTest extends AbstractDAOTest {
         Match match = new Match();
         match.setCode("C-" + (Instant.now().toEpochMilli() / 1000));
         match.setDateMatch(maintenant);
-        match.setNumJoueursMin(10);
-        match.setNumJoueursMax(12);
+        match.setNbJoueursMin(10);
+        match.setNbJoueursMax(12);
         match.setCovoiturageActif(true);
         match.setPartageActif(false);
         match.setCreateur(joueur);
@@ -217,5 +219,20 @@ class MatchDAOTest extends AbstractDAOTest {
         assertEquals(1, nbLignes);
         assertNotNull(matchsJoueur);
         assertTrue(matchsJoueur.isEmpty());
+    }
+
+    @Test
+    void notifierInscriptionJoueur() throws Exception {
+        // Given
+        Match match = matchDAO.chercherMatchParId(1);
+        assertEquals(1, match.getNbJoueursInscrits().intValue());
+
+        // When
+        int nbMatchs = matchDAO.notifierInscriptionJoueur(match);
+        match = matchDAO.chercherMatchParId(1);
+
+        // Then
+        assertEquals(1, nbMatchs);
+        assertEquals(2, match.getNbJoueursInscrits().intValue());
     }
 }

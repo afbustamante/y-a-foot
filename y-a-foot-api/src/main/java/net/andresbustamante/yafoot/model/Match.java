@@ -14,8 +14,9 @@ public class Match implements Serializable {
     private ZonedDateTime dateMatch;
     private String code;
     private String description;
-    private Integer numJoueursMin;
-    private Integer numJoueursMax;
+    private Integer nbJoueursMin;
+    private Integer nbJoueursMax;
+    private Integer nbJoueursInscrits;
     private List<Inscription> inscriptions;
     private Site site;
     private Utilisateur createur;
@@ -66,20 +67,28 @@ public class Match implements Serializable {
         this.description = matDescription;
     }
 
-    public Integer getNumJoueursMin() {
-        return numJoueursMin;
+    public Integer getNbJoueursMin() {
+        return nbJoueursMin;
     }
 
-    public void setNumJoueursMin(Integer matNumJoueursMin) {
-        this.numJoueursMin = matNumJoueursMin;
+    public void setNbJoueursMin(Integer matNumJoueursMin) {
+        this.nbJoueursMin = matNumJoueursMin;
     }
 
-    public Integer getNumJoueursMax() {
-        return numJoueursMax;
+    public Integer getNbJoueursMax() {
+        return nbJoueursMax;
     }
 
-    public void setNumJoueursMax(Integer matNumJoueursMax) {
-        this.numJoueursMax = matNumJoueursMax;
+    public void setNbJoueursMax(Integer matNumJoueursMax) {
+        this.nbJoueursMax = matNumJoueursMax;
+    }
+
+    public Integer getNbJoueursInscrits() {
+        return nbJoueursInscrits;
+    }
+
+    public void setNbJoueursInscrits(Integer nbJoueursInscrits) {
+        this.nbJoueursInscrits = nbJoueursInscrits;
     }
 
     public List<Inscription> getInscriptions() {

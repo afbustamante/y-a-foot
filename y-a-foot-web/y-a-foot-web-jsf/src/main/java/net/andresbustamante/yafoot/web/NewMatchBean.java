@@ -249,8 +249,8 @@ public class NewMatchBean extends AbstractFacesBean implements Serializable {
         site.setNumeroTelephone(telephoneSite);
 
         Match match = new Match();
-        match.setNumJoueursMin(numMinJoueurs);
-        match.setNumJoueursMax(numMaxJoueurs);
+        match.setNbJoueursMin(numMinJoueurs);
+        match.setNbJoueursMax(numMaxJoueurs);
         match.setDate(date);
         match.setSite(site);
         match.setCovoiturageActif(optionCovoiturageActive);

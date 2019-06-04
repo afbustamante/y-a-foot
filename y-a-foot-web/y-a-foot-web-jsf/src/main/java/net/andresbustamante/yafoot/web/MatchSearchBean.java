@@ -128,8 +128,8 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
     }
 
     private Integer getNumPlacesDisponibles() {
-        if ((match != null) && (match.getNumJoueursMax() != null) && (match.getInscriptions() != null)) {
-            return match.getNumJoueursMax() - match.getInscriptions().getInscription().size();
+        if ((match != null) && (match.getNbJoueursMax() != null) && (match.getInscriptions() != null)) {
+            return match.getNbJoueursMax() - match.getInscriptions().getInscription().size();
         }
         return null;
     }

@@ -105,6 +105,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
         if (isJoueurExistant && isMatchExistant && (!matchDAO.isJoueurInscritMatch(joueur, match))) {
             matchDAO.inscrireJoueurMatch(joueur, match, voiture);
+            matchDAO.notifierInscriptionJoueur(match);
             log.info("Joueur inscrit au match");
             return true;
         } else {
@@ -124,6 +125,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
         if (isJoueurExistant && isMatchExistant && matchDAO.isJoueurInscritMatch(joueur, match)) {
             matchDAO.desinscrireJoueurMatch(joueur, match);
+            matchDAO.notifierDesinscriptionJoueur(match);
             log.info("Joueur désinscrit du match");
             return true;
         } else {

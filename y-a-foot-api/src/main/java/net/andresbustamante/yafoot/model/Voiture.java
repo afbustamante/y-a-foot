@@ -11,7 +11,7 @@ public class Voiture implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String nom;
-    private Integer numPlaces;
+    private Integer nbPlaces;
     private Utilisateur chauffeur;
     private List<Joueur> passagers;
 
@@ -38,12 +38,12 @@ public class Voiture implements Serializable {
         this.nom = nom;
     }
 
-    public Integer getNumPlaces() {
-        return numPlaces;
+    public Integer getNbPlaces() {
+        return nbPlaces;
     }
 
-    public void setNumPlaces(Integer numPlaces) {
-        this.numPlaces = numPlaces;
+    public void setNbPlaces(Integer nbPlaces) {
+        this.nbPlaces = nbPlaces;
     }
 
     public Utilisateur getChauffeur() {

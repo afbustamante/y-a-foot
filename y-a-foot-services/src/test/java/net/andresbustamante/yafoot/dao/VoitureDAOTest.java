@@ -33,8 +33,8 @@ class VoitureDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(voiture1);
         assertEquals("Peugeot 207", voiture1.getNom());
-        assertNotNull(voiture1.getNumPlaces());
-        assertEquals(4, voiture1.getNumPlaces().intValue());
+        assertNotNull(voiture1.getNbPlaces());
+        assertEquals(4, voiture1.getNbPlaces().intValue());
     }
 
     @Test
@@ -42,7 +42,7 @@ class VoitureDAOTest extends AbstractDAOTest {
         // Given
         Voiture nouvelleVoiture = new Voiture();
         nouvelleVoiture.setNom("Citroën DS3");
-        nouvelleVoiture.setNumPlaces(3);
+        nouvelleVoiture.setNbPlaces(3);
         nouvelleVoiture.setChauffeur(joueur);
 
         // When

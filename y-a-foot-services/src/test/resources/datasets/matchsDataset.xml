@@ -12,13 +12,13 @@
     <t_site sit_id="2" sit_nom="Foot-à-5 de l'autre ville" sit_adresse="5 Rue des fous" sit_telephone="1434567890"/>
 
     <t_match mat_id="1" mat_date="2018-10-02 18:30:00" mat_code="AZERTY-1234" mat_description="Mon match dans le passé"
-             mat_num_joueurs_min="9" mat_site_fk="1" mat_createur_fk="1" mat_date_creation="2019-01-02"
+             mat_num_joueurs_min="9" mat_num_joueurs_inscrits="1" mat_site_fk="1" mat_createur_fk="1" mat_date_creation="2019-01-02"
              mat_covoiturage_actif="true" mat_partage_actif="true"/>
     <t_match mat_id="2" mat_date="2019-10-02 19:10:00" mat_code="QWERTY-1234" mat_description="Mon match dans le futur"
-             mat_num_joueurs_min="8" mat_num_joueurs_max="12" mat_site_fk="2" mat_createur_fk="2"
+             mat_num_joueurs_min="8" mat_num_joueurs_max="12" mat_num_joueurs_inscrits="2" mat_site_fk="2" mat_createur_fk="2"
              mat_date_creation="2019-01-02" mat_covoiturage_actif="false" mat_partage_actif="true"/>
     <t_match mat_id="3" mat_date="2019-10-02 20:50:00" mat_code="QWERTZ-1234" mat_description="Mon match sans inscriptions"
-             mat_num_joueurs_min="8" mat_num_joueurs_max="12" mat_site_fk="2" mat_createur_fk="2"
+             mat_num_joueurs_min="8" mat_num_joueurs_max="12" mat_num_joueurs_inscrits="0" mat_site_fk="2" mat_createur_fk="2"
              mat_date_creation="2019-01-02" mat_covoiturage_actif="false" mat_partage_actif="true"/>
 
     <t_joueur_match jma_match_fk="1" jma_joueur_fk="1"/>
