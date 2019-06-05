@@ -25,7 +25,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
     private final RandomStringGenerator generateurCodes = new RandomStringGenerator.Builder().withinRange('A', 'Z').build();
 
-    private static final Logger log = LoggerFactory.getLogger(GestionMatchsService.class);
+    private final Logger log = LoggerFactory.getLogger(GestionMatchsService.class);
 
     @Autowired
     private MatchDAO matchDAO;

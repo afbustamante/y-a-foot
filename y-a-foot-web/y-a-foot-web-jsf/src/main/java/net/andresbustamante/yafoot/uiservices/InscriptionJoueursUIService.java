@@ -4,8 +4,8 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.util.ConfigProperties;
 import net.andresbustamante.yafoot.util.MessagesProperties;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.client.*;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
  */
 public class InscriptionJoueursUIService extends AbstractUIService {
 
-    private final Log log = LogFactory.getLog(InscriptionJoueursUIService.class);
+    private final Logger log = LoggerFactory.getLogger(InscriptionJoueursUIService.class);
 
     /**
      * Créer un nouveau joueur dans l'application

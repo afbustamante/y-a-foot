@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.util;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +11,7 @@ import java.util.Base64;
 public class SecuriteUtils {
 
     private static final String DIGEST = "SHA";
-    private static final Log LOG = LogFactory.getLog(SecuriteUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SecuriteUtils.class);
 
     private SecuriteUtils() {}
 

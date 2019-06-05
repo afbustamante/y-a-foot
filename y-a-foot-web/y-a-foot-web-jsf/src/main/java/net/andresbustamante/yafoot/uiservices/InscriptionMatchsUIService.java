@@ -7,8 +7,8 @@ import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Voiture;
 import net.andresbustamante.yafoot.util.ConfigProperties;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
  */
 public class InscriptionMatchsUIService extends AbstractUIService {
 
-    private final Log log = LogFactory.getLog(InscriptionMatchsUIService.class);
+    private final Logger log = LoggerFactory.getLogger(InscriptionMatchsUIService.class);
 
     /**
      * Inscrire le joueur actif dans la session au match passé en paramètre

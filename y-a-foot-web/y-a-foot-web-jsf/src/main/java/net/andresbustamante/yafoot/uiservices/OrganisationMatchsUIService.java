@@ -6,8 +6,8 @@ import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.model.xs.Sites;
 import net.andresbustamante.yafoot.util.ConfigProperties;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class OrganisationMatchsUIService extends AbstractUIService {
 
-    private final Log log = LogFactory.getLog(OrganisationMatchsUIService.class);
+    private final Logger log = LoggerFactory.getLogger(OrganisationMatchsUIService.class);
 
     /**
      * Charger la liste de sites disponibles pour l'utilisateur connecté

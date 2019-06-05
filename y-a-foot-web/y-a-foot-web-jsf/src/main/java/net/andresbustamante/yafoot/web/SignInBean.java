@@ -3,10 +3,10 @@ package net.andresbustamante.yafoot.web;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.uiservices.InscriptionJoueursUIService;
-import net.andresbustamante.yafoot.util.WebConstants;
 import net.andresbustamante.yafoot.util.SecuriteUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import net.andresbustamante.yafoot.util.WebConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -23,7 +23,7 @@ public class SignInBean extends AbstractFacesBean implements Serializable {
     private String motDePasse1;
     private String motDePasse2;
 
-    private final transient Log log = LogFactory.getLog(SignInBean.class);
+    private final transient Logger log = LoggerFactory.getLogger(SignInBean.class);
 
     @Inject
     private InscriptionJoueursUIService inscriptionJoueursUIService;

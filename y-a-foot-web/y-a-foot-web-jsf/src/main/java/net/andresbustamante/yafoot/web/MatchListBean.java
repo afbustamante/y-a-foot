@@ -4,8 +4,8 @@ import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
 import net.andresbustamante.yafoot.util.MatchComparator;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -25,7 +25,7 @@ public class MatchListBean extends AbstractFacesBean implements Serializable {
     @Inject
     private RechercheMatchsUIService rechercheMatchsUIService;
 
-    private final transient Log log = LogFactory.getLog(MatchListBean.class);
+    private final transient Logger log = LoggerFactory.getLogger(MatchListBean.class);
 
     public List<Match> getMatches() {
         if (matches == null) {

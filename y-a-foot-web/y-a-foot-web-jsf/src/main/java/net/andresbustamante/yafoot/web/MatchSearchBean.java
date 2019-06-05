@@ -5,11 +5,11 @@ import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.uiservices.InscriptionMatchsUIService;
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
-import net.andresbustamante.yafoot.util.WebConstants;
 import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.util.MessagesProperties;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import net.andresbustamante.yafoot.util.WebConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
 import javax.faces.bean.ManagedBean;
@@ -34,7 +34,7 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
     private String complementJoueurs;
     private Locale locale;
     private String patternDate;
-    private final transient Log log = LogFactory.getLog(MatchSearchBean.class);
+    private final transient Logger log = LoggerFactory.getLogger(MatchSearchBean.class);
     private boolean inscriptionPossible = false;
     private boolean validationRequise = false;
     private String optionInscription;

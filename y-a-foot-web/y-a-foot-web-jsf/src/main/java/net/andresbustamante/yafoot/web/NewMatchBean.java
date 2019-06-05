@@ -4,11 +4,11 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.uiservices.OrganisationMatchsUIService;
-import net.andresbustamante.yafoot.util.WebConstants;
 import net.andresbustamante.yafoot.util.DateUtils;
+import net.andresbustamante.yafoot.util.WebConstants;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.RolesAllowed;
 import javax.faces.bean.ManagedBean;
@@ -51,7 +51,7 @@ public class NewMatchBean extends AbstractFacesBean implements Serializable {
     private List<SelectItem> itemsSites;
     private boolean nouveauSite;
 
-    private final transient Log log = LogFactory.getLog(NewMatchBean.class);
+    private final transient Logger log = LoggerFactory.getLogger(NewMatchBean.class);
 
     @Inject
     private OrganisationMatchsUIService organisationMatchsUIService;
