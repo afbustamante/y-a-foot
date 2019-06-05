@@ -21,7 +21,7 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
     private String email;
     private boolean inscrit;
 
-    private final Logger log = LoggerFactory.getLogger(InscriptionJoueursUIService.class);
+    private final Logger log = LoggerFactory.getLogger(InscriptionJoueurViewModel.class);
 
     @WireVariable
     private InscriptionJoueursUIService inscriptionJoueursUIService;
