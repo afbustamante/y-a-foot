@@ -51,7 +51,7 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
 
     @RolesAllowed(JOUEUR)
     public void chercherMatch() {
-        log.info("Recherche du match avec le code " + codeMatch);
+        log.info("Recherche du match avec le code {}", codeMatch);
         match = rechercheMatchsUIService.chercherMatchParCode(codeMatch);
     }
 
@@ -89,7 +89,7 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
                 }
             } catch (ApplicationException e) {
                 // Afficher l'exception
-                log.error("Erreur lors de l'inscription : " + e.getCause());
+                log.error("Erreur lors de l'inscription : {}", e.getCause());
                 return WebConstants.ECHEC;
             }
         } else {

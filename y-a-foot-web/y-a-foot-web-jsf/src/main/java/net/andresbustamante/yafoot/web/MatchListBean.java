@@ -34,7 +34,7 @@ public class MatchListBean extends AbstractFacesBean implements Serializable {
             matches.sort(new MatchComparator());
 
             if (CollectionUtils.isNotEmpty(matches)) {
-                log.info(matches.size() + " matches trouvés pour le joueur " + idJoueur);
+                log.info("{} matches trouvés pour le joueur {}", matches.size(), idJoueur);
             }
         }
         return matches;
