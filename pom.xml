@@ -694,6 +694,16 @@
         <configuration>
           <excludes>
             <exclude>META-INF/**</exclude>
+            <exclude>**/*Aspect.*</exclude>
+            <exclude>**/*Config.*</exclude>
+            <exclude>**/*Constants.*</exclude>
+            <exclude>**/*Test.*</exclude>
+            <exclude>**/*Exception.*</exclude>
+            <exclude>**/*Bean.*</exclude>
+            <exclude>**/*ViewModel.*</exclude>
+            <exclude>**/*UIService.*</exclude>
+            <exclude>**/yafoot/model/**</exclude>
+            <exclude>org/w3/**</exclude>
           </excludes>
         </configuration>
         <executions>
