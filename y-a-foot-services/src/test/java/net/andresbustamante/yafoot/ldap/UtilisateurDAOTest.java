@@ -53,6 +53,10 @@ class UtilisateurDAOTest {
 
         Utilisateur utilisateur = utilisateurDAO.chercherUtilisateur(getIdAnnuaire(nouvelUtilisateur).toString());
         assertNotNull(utilisateur);
+        assertNotNull(utilisateur.getNom());
+        assertNotNull(utilisateur.getPrenom());
+        assertNotNull(utilisateur.getEmail());
+        assertNull(utilisateur.getMotDePasse());
 
         utilisateurDAO.supprimerUtilisateur(nouvelUtilisateur, new RolesEnum[]{RolesEnum.JOUEUR});
     }
@@ -104,6 +108,7 @@ class UtilisateurDAOTest {
         assertNotNull(utilisateur.getPrenom());
         assertEquals(USR_TEST.getPrenom(), utilisateur.getPrenom());
         assertNotNull(utilisateur.getNom());
+        assertNull(utilisateur.getMotDePasse());
     }
 
     private Utilisateur getNouvelUtilisateur() {

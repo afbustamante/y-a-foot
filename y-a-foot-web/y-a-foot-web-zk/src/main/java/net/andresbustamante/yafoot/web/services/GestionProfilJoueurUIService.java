@@ -2,7 +2,6 @@ package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
-import net.andresbustamante.yafoot.util.SecuriteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 
 @Component
@@ -75,16 +75,11 @@ public class GestionProfilJoueurUIService extends AbstractUIService {
         }
     }
 
-    public String crypterMotDePasse(String mdp) throws ApplicationException {
-        return SecuriteUtils.crypterMotDePasse(mdp);
-    }
-
     public boolean actualiserMotDePasseJoueur(String emailJoueur, String motDePasse) throws ApplicationException {
-        String mdpCrypte = crypterMotDePasse(motDePasse);
 
         Joueur joueur = new Joueur();
         joueur.setEmail(emailJoueur);
-        joueur.setMotDePasse(mdpCrypte);
+        joueur.setMotDePasse(motDePasse.getBytes(StandardCharsets.UTF_8));
 
         return actualiserDonneesJoueur(joueur);
     }

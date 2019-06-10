@@ -2,7 +2,6 @@ package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
-import net.andresbustamante.yafoot.util.SecuriteUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -25,8 +24,6 @@ public class InscriptionJoueursUIService extends AbstractUIService {
      */
     public boolean creerNouveauCompteJoueur(Joueur joueur) throws ApplicationException {
         try {
-            crypterMotDePasse(joueur);
-
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
@@ -39,10 +36,5 @@ public class InscriptionJoueursUIService extends AbstractUIService {
         } catch (Exception e) {
             throw new ApplicationException(e.getMessage());
         }
-    }
-
-    private void crypterMotDePasse(Joueur joueur) throws ApplicationException {
-        String mdp = joueur.getMotDePasse();
-        joueur.setMotDePasse(SecuriteUtils.crypterMotDePasse(mdp));
     }
 }

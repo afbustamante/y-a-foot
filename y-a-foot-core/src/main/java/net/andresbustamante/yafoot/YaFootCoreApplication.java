@@ -9,6 +9,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class YaFootCoreApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(YaFootCoreApplication.class, args);
+        SpringApplication.run(YaFootCoreApplication.class);
     }
 }

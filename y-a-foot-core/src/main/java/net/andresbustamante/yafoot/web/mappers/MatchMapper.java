@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(componentModel = "spring", uses = {VoitureMapper.class})
+@Mapper(componentModel = "spring", uses = {VoitureMapper.class, JoueurMapper.class, StringMapper.class})
 public interface MatchMapper {
 
     @Mappings({

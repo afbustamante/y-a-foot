@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.web;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.uiservices.InscriptionJoueursUIService;
-import net.andresbustamante.yafoot.util.SecuriteUtils;
 import net.andresbustamante.yafoot.util.WebConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 
 @ManagedBean
 @ViewScoped
@@ -39,7 +39,7 @@ public class SignInBean extends AbstractFacesBean implements Serializable {
                 nouveauJoueur.setNom(nom);
                 nouveauJoueur.setPrenom(prenom);
                 nouveauJoueur.setEmail(email);
-                nouveauJoueur.setMotDePasse(SecuriteUtils.crypterMotDePasse(motDePasse1));
+                nouveauJoueur.setMotDePasse(motDePasse1.getBytes(StandardCharsets.UTF_8));
 
                 boolean succes = inscriptionJoueursUIService.creerNouveauCompteJoueur(nouveauJoueur);
 

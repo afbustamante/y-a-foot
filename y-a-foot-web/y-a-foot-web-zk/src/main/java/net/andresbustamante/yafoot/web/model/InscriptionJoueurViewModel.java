@@ -12,6 +12,8 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Messagebox;
 
+import java.nio.charset.StandardCharsets;
+
 public class InscriptionJoueurViewModel extends AbstractViewModel {
 
     private String prenom;
@@ -38,7 +40,7 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
             joueur.setEmail(email);
             joueur.setNom(nom);
             joueur.setPrenom(prenom);
-            joueur.setMotDePasse(motDePasse1);
+            joueur.setMotDePasse(motDePasse1.getBytes(StandardCharsets.UTF_8));
 
             try {
                 inscrit = inscriptionJoueursUIService.creerNouveauCompteJoueur(joueur);
