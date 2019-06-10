@@ -87,6 +87,32 @@ class UtilisateurDAOTest {
     }
 
     @Test
+    void actualiserMotDePasse() throws Exception {
+        // Given
+        Utilisateur utilisateurModifie = new Utilisateur();
+        utilisateurModifie.setEmail(USR_TEST.getEmail());
+        utilisateurModifie.setNom(USR_TEST.getNom() + " autre");
+        utilisateurModifie.setPrenom(USR_TEST.getPrenom() + " autre");
+        utilisateurModifie.setMotDePasse("monNouveauMotDePasse");
+
+        // When
+        utilisateurDAO.actualiserUtilisateur(utilisateurModifie);
+        Utilisateur utilisateur = utilisateurDAO.chercherUtilisateur(getIdAnnuaire(utilisateurModifie).toString());
+
+        // Then
+        assertNotNull(utilisateur);
+        assertEquals(USR_TEST.getNom(), utilisateur.getNom()); // Non modifié
+        assertEquals(USR_TEST.getPrenom(), utilisateur.getPrenom()); // Non modifié
+        assertNull(utilisateur.getMotDePasse()); // Non chargé pour sécurité
+
+        // Remettre les informations de l'utilisateur
+        utilisateur.setNom(USR_TEST.getNom());
+        utilisateur.setPrenom(USR_TEST.getPrenom());
+        utilisateur.setTelephone(USR_TEST.getTelephone());
+        utilisateurDAO.actualiserUtilisateur(utilisateur);
+    }
+
+    @Test
     void supprimerUtilisateur() throws Exception {
         Utilisateur nouvelUtilisateur = getNouvelUtilisateur();
         utilisateurDAO.creerUtilisateur(nouvelUtilisateur, RolesEnum.JOUEUR);

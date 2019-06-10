@@ -41,7 +41,7 @@ public class ModifyPasswordRequest implements ExtendedRequest {
      *                                    is too long
      */
     public ModifyPasswordRequest(String dn, String password)
-            throws NullPointerException, CannotProceedException, SizeLimitExceededException {
+            throws CannotProceedException, SizeLimitExceededException {
         if (dn == null) {
             throw new NullPointerException("dn cannot be null");
         }

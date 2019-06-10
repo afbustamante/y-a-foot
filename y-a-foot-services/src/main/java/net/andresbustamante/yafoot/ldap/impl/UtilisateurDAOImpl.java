@@ -158,8 +158,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     }
 
     /**
+     * Modifier le mot de passe d'un utilisateur présent dans l'annuaire LDAP
      *
-     * @param usr
+     * @param usr Utilisateur avec le nouveau mot de passe
      */
     private void modifierMotDePasse(Utilisateur usr) {
         String dn = getIdAnnuaire(usr).toString();

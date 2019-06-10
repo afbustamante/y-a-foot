@@ -1,5 +1,7 @@
 # Y'a foot !
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=net.andresbustamante%3Ay-a-foot&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.andresbustamante%3Ay-a-foot)
+
 Avec *Y'a foot !* les amateurs du foot et du sport en général peuvent mieux gérer la logistique et l'organisation de 
 leurs matchs entre collègues, amis, camarades, etc.
 
