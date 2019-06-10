@@ -5,6 +5,7 @@ import net.andresbustamante.yafoot.model.xs.Joueur;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,8 +34,8 @@ public class InscriptionJoueursUIService extends AbstractUIService {
             boolean succes = (response.getHeaders().getLocation() != null);
 
             return (response.getStatusCode().is2xxSuccessful() && succes);
-        } catch (Exception e) {
-            throw new ApplicationException(e.getMessage());
+        } catch (RestClientException e) {
+            throw new ApplicationException("Erreur lors de la création d'un nouveau compte", e);
         }
     }
 }

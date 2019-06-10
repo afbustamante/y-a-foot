@@ -5,8 +5,6 @@ import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Voiture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -25,8 +23,6 @@ public class InscriptionMatchsUIService extends AbstractUIService {
 
     @Value("${api.rest.inscriptions.services.path}")
     private String inscriptionsServicesPath;
-
-    private final Logger log = LoggerFactory.getLogger(InscriptionMatchsUIService.class);
 
     /**
      * Inscrire le joueur actif dans la session au match passé en paramètre
@@ -55,8 +51,7 @@ public class InscriptionMatchsUIService extends AbstractUIService {
 
             restTemplate.exchange(builder.toUriString(), HttpMethod.POST, params, String.class);
         } catch (RestClientException e) {
-            log.error("Erreur du client REST", e);
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException("Erreur du client REST lors de l'inscription d'un joueur", e);
         }
     }
 
@@ -79,8 +74,7 @@ public class InscriptionMatchsUIService extends AbstractUIService {
 
             restTemplate.exchange(builder.toUriString(), HttpMethod.DELETE, params, String.class);
         } catch (RestClientException e) {
-            log.error("Erreur du client REST", e);
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException("Erreur du client REST lors de la desincription d'un joueur", e);
         }
     }
 }

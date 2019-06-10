@@ -4,8 +4,6 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.model.xs.Sites;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -23,8 +21,6 @@ import java.util.List;
 @Component
 @SessionScope
 public class OrganisationMatchsUIService extends AbstractUIService {
-
-    private final Logger log = LoggerFactory.getLogger(OrganisationMatchsUIService.class);
 
     @Value("${api.rest.sites.services.path}")
     private String sitesServicesPath;
@@ -49,8 +45,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
             ResponseEntity<Sites> response = restTemplate.getForEntity(builder.toUriString(), Sites.class);
             return (response.getBody() != null) ? response.getBody().getSite() : Collections.emptyList();
         } catch (RestClientException e) {
-            log.error("Erreur lors de la recherche des sites pour un joueur", e);
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException("Erreur lors de la recherche des sites pour un joueur", e);
         }
     }
 
@@ -80,8 +75,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
             }
             return null;
         } catch (RestClientException e) {
-            log.error("Erreur du client REST", e);
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException("Erreur lors de la création d'un match", e);
         }
     }
 

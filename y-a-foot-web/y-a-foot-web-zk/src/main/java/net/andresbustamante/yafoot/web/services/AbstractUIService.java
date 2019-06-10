@@ -4,8 +4,6 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.web.util.WebConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
@@ -41,7 +39,6 @@ public abstract class AbstractUIService {
     @Value("${api.rest.joueurs.services.email.path}")
     private String joueurParEmailServicesPath;
 
-    private final Logger log = LoggerFactory.getLogger(AbstractUIService.class);
     private Contexte contexte;
 
     /**
@@ -103,9 +100,7 @@ public abstract class AbstractUIService {
             ResponseEntity<Joueur> response = restTemplate.getForEntity(builder.toUriString(), Joueur.class);
             return response.getBody();
         } catch (RestClientException e) {
-            String message = "Erreur lors de la récupération des informations d'un joueur";
-            log.error(message, e);
-            throw new ApplicationException(message);
+            throw new ApplicationException("Erreur lors de la récupération des informations d'un joueur", e);
         }
     }
 }

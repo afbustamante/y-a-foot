@@ -3,8 +3,6 @@ package net.andresbustamante.yafoot.web.services;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -24,8 +22,6 @@ import java.text.MessageFormat;
 @Component
 @SessionScope
 public class RechercheMatchsUIService extends AbstractUIService {
-
-    private final Logger log = LoggerFactory.getLogger(RechercheMatchsUIService.class);
 
     @Value("${api.rest.joueurs.services.path}")
     private String joueursServicesPath;
@@ -48,8 +44,7 @@ public class RechercheMatchsUIService extends AbstractUIService {
 
             return (response.getStatusCode().is2xxSuccessful()) ? response.getBody() : null;
         } catch (RestClientException e) {
-            log.error("Erreur lors de la recherche d'un match", e);
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException("Erreur lors de la recherche d'un match", e);
         }
     }
 
@@ -68,8 +63,7 @@ public class RechercheMatchsUIService extends AbstractUIService {
 
             return (response.getStatusCode().is2xxSuccessful()) ? response.getBody() : null;
         } catch (RestClientException e) {
-            log.error("Erreur lors de la recherche d'un match", e);
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException("Erreur lors de la recherche des matchs pour un joueur", e);
         }
     }
 }
