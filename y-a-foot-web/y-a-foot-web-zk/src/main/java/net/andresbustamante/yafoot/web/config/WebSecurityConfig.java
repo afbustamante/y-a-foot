@@ -72,17 +72,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(WEB_RESOURCES).permitAll()
                 .regexMatchers(HttpMethod.GET, REMOVE_DESKTOP_REGEX).permitAll()
                 .antMatchers("/", "/start.zul", "/signin.zul", "/login.zul").permitAll()
-                .anyRequest().authenticated();
-        http.formLogin()
+                .anyRequest().authenticated()
+            .and()
+            .formLogin()
                 .loginProcessingUrl("/login")
                 .loginPage("/login.zul")
                 .failureUrl("/login.zul?error=1")
                 .defaultSuccessUrl("/")
                 .and()
-                .logout()
+            .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
-                .invalidateHttpSession(true);
+                .deleteCookies("remember-me")
+                .invalidateHttpSession(true)
+            .and()
+            .rememberMe()
+                .rememberMeCookieName("y-a-foot-cookie")
+                //.userDetailsService() // TODO Ajouter cette référence pour activer l'option remember-me
+                .tokenValiditySeconds(24 * 60 * 60);
         // @formatter:on
     }
 

@@ -33,6 +33,14 @@
                          constraint="no empty: ${c:l('login.password.required')}"/>
               </cell>
             </row>
+            <!--
+            <row>
+              <cell></cell>
+              <cell>
+                <checkbox id="remember-me" name="remember-me" width="90%" label="${c:l('login.remember.me')}" />
+              </cell>
+            </row>
+            -->
             <row if="${not empty param.error}">
               <cell sclass="msg-error" colspan="2">${c:l('login.fail.text')}</cell>
             </row>
