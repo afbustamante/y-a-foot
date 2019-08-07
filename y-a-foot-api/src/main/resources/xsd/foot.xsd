@@ -46,6 +46,13 @@
             </xs:restriction>
           </xs:simpleType>
         </xs:element>
+        <xs:element name="nbJoueursInscrits" minOccurs="0">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minInclusive value="0"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
         <xs:element ref="site" minOccurs="0"/>
         <xs:element ref="inscriptions" minOccurs="0"/>
         <xs:element name="createur" type="utilisateur" minOccurs="0" />

@@ -35,7 +35,7 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
 
     @Command
     public void enregistrerUtilisateur() {
-        if (motDePasse1.equals(motDePasse2)) {
+        if (motDePasse1 != null && motDePasse1.equals(motDePasse2)) {
             Joueur joueur = new Joueur();
             joueur.setEmail(email);
             joueur.setNom(nom);
@@ -67,7 +67,6 @@ public class InscriptionJoueurViewModel extends AbstractViewModel {
                     Labels.getLabel(DIALOG_INFORMATION_TITLE),
                     Messagebox.Button.OK.id,
                     Messagebox.EXCLAMATION);
-            return;
         }
     }
 

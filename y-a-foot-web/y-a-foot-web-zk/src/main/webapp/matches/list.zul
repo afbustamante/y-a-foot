@@ -30,7 +30,9 @@
                       <label value="@load(each.site.nom)"/>
                       <label value="@load(each.site.adresse)"/>
                       <div>
-                        <label value="@load(vm.getNbInscriptions(match=each))"/>/<label value="@load(each.nbJoueursMin)"/>
+                        <label value="@load(each.nbJoueursInscrits)"/>
+                        /
+                        <label value="@load(each.nbJoueursMin)"/>
                         ${c:l('match.list.players.actual')}
                       </div>
                     </vbox>
@@ -64,7 +66,7 @@
                     <label value="@load(each.site.adresse)" />
                   </listcell>
                   <listcell>
-                    <label value="@load(vm.getNbInscriptions(match=each))"/>
+                    <label value="@load(each.nbJoueursInscrits)"/>
                     /
                     <label value="@load(each.nbJoueursMin)"/>
                     <label value="${c:l('match.list.players.actual')}"/>

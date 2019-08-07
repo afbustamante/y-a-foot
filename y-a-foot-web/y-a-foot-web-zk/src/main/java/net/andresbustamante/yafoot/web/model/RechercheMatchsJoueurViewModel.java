@@ -1,7 +1,6 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matchs;
 import net.andresbustamante.yafoot.web.services.InscriptionMatchsUIService;
@@ -143,15 +142,7 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
         return matchsJouesListModel;
     }
 
-    public int getNbInscriptions(@BindingParam("match") Match match) {
-        if (match != null && match.getInscriptions() != null) {
-            List<Inscription> inscriptions = match.getInscriptions().getInscription();
-            return inscriptions.size();
-        }
-        return 0;
-    }
-
-    public boolean isAnnulationPossible(Match match) {
+    private boolean isAnnulationPossible(Match match) {
         return getNomUtilisateurActif().equals(match.getCreateur().getEmail());
     }
 }
