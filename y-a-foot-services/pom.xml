@@ -130,4 +130,17 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <testResources>
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+
+    <filters>
+      <filter>${basedir}/src/test/filters/filter-${env}.properties</filter>
+    </filters>
+  </build>
+
 </project>
