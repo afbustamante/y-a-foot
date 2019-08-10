@@ -1,0 +1,29 @@
+dn: ou=test,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: test
+
+dn: ou=yafoot,ou=test,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: yafoot
+
+dn: ou=Users,ou=yafoot,ou=test,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: Users
+
+dn: ou=Roles,ou=yafoot,ou=test,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: Roles
+
+dn: cn=pic,ou=test,dc=andresbustamante,dc=net
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: pic
+displayName: PIC Admin
+sn: PIC
+uid: pic
