@@ -59,7 +59,7 @@ public class MatchsController extends AbstractController {
             net.andresbustamante.yafoot.model.Match match = rechercheMatchsService.chercherMatchParCode(codeMatch,
                     new Contexte(idUtilisateur));
 
-            return (match != null) ? Response.ok(matchMapper.toMatchDTO(match)).build() :
+            return (match != null) ? Response.ok(matchMapper.map(match)).build() :
                     Response.status(NOT_FOUND).build();
         } catch (DatabaseException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
@@ -83,7 +83,7 @@ public class MatchsController extends AbstractController {
                 Matchs result = new Matchs();
 
                 for (net.andresbustamante.yafoot.model.Match m : matchs) {
-                    result.getMatch().add(matchMapper.toMatchDTO(m));
+                    result.getMatch().add(matchMapper.map(m));
                 }
                 return Response.ok(result).build();
             } else {
@@ -100,7 +100,7 @@ public class MatchsController extends AbstractController {
     public Response creerMatch(Match match, @Context HttpServletRequest request) {
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            net.andresbustamante.yafoot.model.Match m = matchMapper.toMatchBean(match);
+            net.andresbustamante.yafoot.model.Match m = matchMapper.map(match);
             boolean isMatchCree = gestionMatchsService.creerMatch(m, contexte);
 
             if (isMatchCree) {

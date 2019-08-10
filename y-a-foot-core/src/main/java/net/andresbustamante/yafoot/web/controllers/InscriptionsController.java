@@ -50,7 +50,7 @@ public class InscriptionsController extends AbstractController {
 
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            net.andresbustamante.yafoot.model.Inscription ins = inscriptionMapper.toInscriptionBean(inscription);
+            net.andresbustamante.yafoot.model.Inscription ins = inscriptionMapper.map(inscription);
             boolean succes = gestionMatchsService.inscrireJoueurMatch(ins.getJoueur(), ins.getMatch(),
                     ins.getVoiture(), contexte);
 

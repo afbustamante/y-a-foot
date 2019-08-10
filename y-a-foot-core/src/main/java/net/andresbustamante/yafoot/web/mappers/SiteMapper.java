@@ -7,9 +7,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface SiteMapper {
 
-    @Mapping(source = "site.numeroTelephone", target = "telephone")
-    Site toSiteBean(net.andresbustamante.yafoot.model.xs.Site site);
+    @Mapping(source = "numeroTelephone", target = "telephone")
+    Site map(net.andresbustamante.yafoot.model.xs.Site site);
 
-    @Mapping(source = "site.telephone", target = "numeroTelephone")
-    net.andresbustamante.yafoot.model.xs.Site toSiteDTO(Site site);
+    @Mapping(source = "telephone", target = "numeroTelephone")
+    net.andresbustamante.yafoot.model.xs.Site map(Site site);
 }

@@ -45,7 +45,7 @@ public class SitesController {
                 Sites result = new Sites();
 
                 for (net.andresbustamante.yafoot.model.Site site : sites) {
-                    result.getSite().add(siteMapper.toSiteDTO(site));
+                    result.getSite().add(siteMapper.map(site));
                 }
                 return Response.ok(result).build();
             } else {

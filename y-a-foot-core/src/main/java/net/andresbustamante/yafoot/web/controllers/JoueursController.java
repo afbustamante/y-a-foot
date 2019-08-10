@@ -60,9 +60,9 @@ public class JoueursController extends AbstractController {
     public Response inscrireJoueur(Joueur joueur) {
         try {
             log.info("Demande de création d'un nouveau joueur avec l'adresse {}", joueur.getEmail());
-            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = joueurMapper.toJoueurBean(joueur);
+            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = joueurMapper.map(joueur);
             boolean inscrit = gestionJoueursService.inscrireJoueur(nouveauJoueur,
-                    contexteMapper.toContexteBean(new Contexte()));
+                    contexteMapper.map(new Contexte()));
 
             if (inscrit) {
                 String location = MessageFormat.format(pathRechercheJoueursParAdresseMail, joueur.getEmail());
@@ -89,7 +89,7 @@ public class JoueursController extends AbstractController {
         try {
             log.info("Mise à jour des données du joueur {}", email);
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            boolean succes = gestionJoueursService.actualiserJoueur(joueurMapper.toJoueurBean(joueur), contexte);
+            boolean succes = gestionJoueursService.actualiserJoueur(joueurMapper.map(joueur), contexte);
             return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
@@ -110,7 +110,7 @@ public class JoueursController extends AbstractController {
             net.andresbustamante.yafoot.model.Joueur joueur = rechercheJoueursService.chercherJoueur(email, contexte);
 
             if (joueur != null) {
-                return Response.ok(joueurMapper.toJoueurDTO(joueur)).build();
+                return Response.ok(joueurMapper.map(joueur)).build();
             } else {
                 return Response.status(NOT_FOUND).build();
             }
