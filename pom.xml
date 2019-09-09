@@ -29,10 +29,10 @@
     <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
     <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
     <maven-filtering.version>3.1.1</maven-filtering.version>
-    <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-war-plugin.version>3.2.0</maven-war-plugin.version>
     <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
-    <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
+    <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
@@ -46,13 +46,13 @@
     <activation.version>1.1.1</activation.version>
 
     <!-- Spring Framework -->
-    <spring.version>5.0.13.RELEASE</spring.version>
+    <spring.version>5.1.9.RELEASE</spring.version>
     <spring-dao.version>2.0.8</spring-dao.version>
     <spring-ldap-core.version>2.3.2.RELEASE</spring-ldap-core.version>
-    <spring-data-commons.version>2.0.14.RELEASE</spring-data-commons.version>
-    <spring-security.version>5.0.12.RELEASE</spring-security.version>
+    <spring-data-commons.version>2.1.10.RELEASE</spring-data-commons.version>
+    <spring-security.version>5.1.6.RELEASE</spring-security.version>
     <jackson-databind.version>2.9.9.2</jackson-databind.version>
-    <spring-boot.version>2.0.9.RELEASE</spring-boot.version>
+    <spring-boot.version>2.1.8.RELEASE</spring-boot.version>
 
     <!-- ICEFaces -->
     <icefaces.version>4.1.1</icefaces.version>
@@ -75,21 +75,21 @@
     <commons-dbcp2.version>2.2.0</commons-dbcp2.version>
 
     <!-- Apache CXF -->
-    <cxf.version>3.2.8</cxf.version>
+    <cxf.version>3.3.3</cxf.version>
     <jackson-jaxrs.version>1.9.13</jackson-jaxrs.version>
 
     <!-- Tests -->
     <junit.jupiter.version>5.3.2</junit.jupiter.version>
     <junit-platform.version>1.3.2</junit-platform.version>
-    <spring-test-junit5.version>1.3.2</spring-test-junit5.version>
+    <spring-test-junit5.version>1.5.0</spring-test-junit5.version>
     <spring-test-dbunit.version>1.3.0</spring-test-dbunit.version>
-    <mockito-core.version>2.27.0</mockito-core.version>
+    <mockito-core.version>3.0.0</mockito-core.version>
     <byte-buddy.version>1.9.10</byte-buddy.version>
 
     <!-- Autres -->
     <dbunit.version>2.6.0</dbunit.version>
     <postgresql.version>42.2.2</postgresql.version>
-    <mapstruct.version>1.2.0.Final</mapstruct.version>
+    <mapstruct.version>1.3.0.Final</mapstruct.version>
     <flyway-core.version>5.2.4</flyway-core.version>
     <slf4j-api.version>1.7.25</slf4j-api.version>
     <javassist.version>3.21.0-GA</javassist.version>
@@ -512,7 +512,7 @@
       </dependency>
       <dependency>
         <groupId>org.mapstruct</groupId>
-        <artifactId>mapstruct-jdk8</artifactId>
+        <artifactId>mapstruct</artifactId>
         <version>${mapstruct.version}</version>
       </dependency>
     </dependencies>
@@ -594,11 +594,6 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven-surefire-plugin.version}</version>
           <dependencies>
-            <dependency>
-              <groupId>org.junit.platform</groupId>
-              <artifactId>junit-platform-surefire-provider</artifactId>
-              <version>${junit-platform.version}</version>
-            </dependency>
             <dependency>
               <groupId>org.junit.jupiter</groupId>
               <artifactId>junit-jupiter-engine</artifactId>
