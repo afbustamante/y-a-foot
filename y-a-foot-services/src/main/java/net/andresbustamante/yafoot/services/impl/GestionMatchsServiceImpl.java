@@ -96,7 +96,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
             if (voitureExistante == null) {
                 // Enregistrer la voiture en base
-                voitureDAO.enregistrerVoiture(voiture);
+                voitureDAO.enregistrerVoiture(voiture, joueur);
             }
         }
 

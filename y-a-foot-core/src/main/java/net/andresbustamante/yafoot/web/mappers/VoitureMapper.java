@@ -4,6 +4,8 @@ import net.andresbustamante.yafoot.model.Voiture;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {JoueurMapper.class, StringMapper.class})
 public interface VoitureMapper {
 
@@ -12,4 +14,6 @@ public interface VoitureMapper {
 
     @Mapping(source = "passagers", target = "passagers.joueur")
     net.andresbustamante.yafoot.model.xs.Voiture map(Voiture voiture);
+    
+    List<net.andresbustamante.yafoot.model.xs.Voiture> map(List<Voiture> voitures);
 }

@@ -41,16 +41,14 @@ public class SitesController {
             List<net.andresbustamante.yafoot.model.Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur,
                     new Contexte());
 
-            if (CollectionUtils.isNotEmpty(sites)) {
-                Sites result = new Sites();
+            Sites result = new Sites();
 
+            if (CollectionUtils.isNotEmpty(sites)) {
                 for (net.andresbustamante.yafoot.model.Site site : sites) {
                     result.getSite().add(siteMapper.map(site));
                 }
-                return Response.ok(result).build();
-            } else {
-                return Response.ok(new Sites()).build();
             }
+            return Response.ok(result).build();
         } catch (DatabaseException e) {
             log.error("Erreur lors de la recherche de sites par joueur", e);
             return Response.serverError().build();

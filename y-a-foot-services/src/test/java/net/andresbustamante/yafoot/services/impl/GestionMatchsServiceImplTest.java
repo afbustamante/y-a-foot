@@ -112,7 +112,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         // Then
         assertTrue(succes);
         verify(voitureDAO, times(0)).chercherVoitureParId(anyInt());
-        verify(voitureDAO, times(0)).enregistrerVoiture(any());
+        verify(voitureDAO, times(0)).enregistrerVoiture(any(Voiture.class), any(Joueur.class));
         verify(matchDAO, times(1)).inscrireJoueurMatch(joueur, match, null);
     }
 
@@ -135,7 +135,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         // Then
         assertTrue(succes);
         verify(voitureDAO, times(1)).chercherVoitureParId(anyInt());
-        verify(voitureDAO, times(0)).enregistrerVoiture(any());
+        verify(voitureDAO, times(0)).enregistrerVoiture(any(Voiture.class), any(Joueur.class));
         verify(matchDAO, times(1)).inscrireJoueurMatch(joueur, match, voiture);
     }
 
@@ -157,7 +157,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         // Then
         assertTrue(succes);
         verify(voitureDAO, times(0)).chercherVoitureParId(anyInt());
-        verify(voitureDAO, times(1)).enregistrerVoiture(any());
+        verify(voitureDAO, times(1)).enregistrerVoiture(any(Voiture.class), any(Joueur.class));
         verify(matchDAO, times(1)).inscrireJoueurMatch(joueur, match, voiture);
     }
 
