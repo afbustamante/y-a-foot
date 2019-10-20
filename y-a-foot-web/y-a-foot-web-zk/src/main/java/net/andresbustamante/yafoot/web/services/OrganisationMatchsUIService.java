@@ -40,7 +40,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(sitesServicesPath)
-                    .queryParam("idJoueur", getContexte().getUtilisateur().getId());
+                    .queryParam("pid", getContexte().getUtilisateur().getId());
 
             ResponseEntity<Sites> response = restTemplate.getForEntity(builder.toUriString(), Sites.class);
             return (response.getBody() != null) ? response.getBody().getSite() : Collections.emptyList();

@@ -54,7 +54,7 @@ public class RechercheMatchsUIService extends AbstractUIService {
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(matchsServicesPath)
-                    .queryParam("idJoueur", getContexte().getUtilisateur().getId());
+                    .queryParam("pid", getContexte().getUtilisateur().getId());
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);

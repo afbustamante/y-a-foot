@@ -1,0 +1,32 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<window apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.CarRegisterViewModel')" width="560px">
+  <caption label="${c:l('dialog.confirmation.title')}"/>
+
+  <vlayout>
+    <grid>
+      <columns>
+        <column align="right" width="30%"/>
+        <column/>
+      </columns>
+      <rows>
+        <row>
+          <cell>${c:l('car.new.name')}</cell>
+          <cell><textbox id="tbxName" value="@save(vm.newCar.nom)" width="90%"/></cell>
+        </row>
+        <row>
+          <cell>${c:l('car.new.num.places')}</cell>
+          <cell>
+            <spinner id="spbNumPassengers" value="@save(vm.newCar.nbPlaces)"
+                     constraint="no empty, no negative" width="90%"/>
+          </cell>
+        </row>
+      </rows>
+    </grid>
+    <separator/>
+    <div>
+      <button id="btnContinue" onClick="@command('addCar') @global-command('refreshCarList')"
+              label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
+    </div>
+  </vlayout>
+</window>

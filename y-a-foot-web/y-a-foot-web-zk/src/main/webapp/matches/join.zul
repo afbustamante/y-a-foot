@@ -10,38 +10,38 @@
   <include src="/zul/top.zul"/>
   <div id="content">
     <vlayout>
-      <grid>
+      <grid visible="@load(vm.carProposalEnabled)">
         <auxhead>
-          <auxheader label="${c:l('dialog.confirmation.title')}"/>
+          <auxheader label="${c:l('match.join.car.proposal.title')}"/>
         </auxhead>
         <columns>
-          <column/>
+          <column align="right" width="30%"/>
+          <column width="50%"/>
+          <column align="left"/>
         </columns>
         <rows>
           <row>
+            <cell>${c:l('match.join.car.name')}</cell>
             <cell>
-              <label value="${c:l('match.join.confirmation.dialog.text')}"/>
-              <radiogroup id="rgpMode" onCheck="@command('choisirMode', mode=self.selectedItem.value)"/>
+              <combobox id="cbbCar" model="@bind(vm.carsListModel)" selectedItem="@save(vm.car)"
+                        constraint="no empty" autodrop="true" width="90%">
+                <template name="model">
+                  <comboitem label="@load(each.nom)" />
+                </template>
+              </combobox>
             </cell>
-          </row>
-          <row>
-            <radio id="rbWithCar" radiogroup="rgpMode" disabled="true"
-                   label="${c:l('match.join.confirmation.dialog.ok.with.car')}" value="INSCRIPTION_AVEC_VOITURE"/>
-          </row>
-          <row>
-            <radio id="rbWithoutCar" radiogroup="rgpMode" disabled="true"
-                   label="${c:l('match.join.confirmation.dialog.ok.without.car')}" value="INSCRIPTION_SANS_VOITURE"/>
-          </row>
-          <row>
-            <radio id="rbOther" radiogroup="rgpMode"
-                   label="${c:l('match.join.confirmation.dialog.ok.other')}" value="INSCRIPTION_AUTRE_TRANSPORT"/>
+            <cell>
+              <button id="btnAddCar" label="${c:l('match.join.add.car')}" image="/images/22x22/list-add.png"
+                      onClick="@command('showNewCarDialog')"
+                      tooltiptext="${c:l('match.join.add.car')}"/>
+            </cell>
           </row>
         </rows>
       </grid>
       <separator/>
       <div>
         <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/matches/search.zul"/>
-        <button id="btnContinue" onClick="@command('joindreMatch')" disabled="@load(vm.joueurDejaInscrit)"
+        <button id="btnContinue" onClick="@command('joinMatch')" disabled="@load(vm.playerAlreadyListed)"
                 label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
       </div>
     </vlayout>

@@ -84,7 +84,7 @@
       </grid>
       <separator/>
       <hlayout visible="@load(vm.matchFound)">
-        <button id="btnJoin" visible="@load(vm.inscriptionPossible)" onClick="@command('redirectJoinMatch')"
+        <button id="btnJoin" visible="@load(vm.inscriptionPossible)" onClick="@command('showMatchJoinDialog')"
                 label="${c:l('match.search.button.join')}" image="/images/22x22/go-next.png"/>
       </hlayout>
     </vlayout>

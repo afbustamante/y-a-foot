@@ -8,15 +8,19 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
+import org.zkoss.zul.Window;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.andresbustamante.yafoot.web.util.WebConstants.MATCH_JOIN_MODE;
 
 /**
  * @author andresbustamante
@@ -36,6 +40,8 @@ public class RechercheMatchViewModel extends AbstractViewModel {
     private int nbPlacesDisponibles;
 
     private ListModel<Inscription> inscriptionsListModel;
+
+    private Window winJoinMatch;
 
     @WireVariable
     private RechercheMatchsUIService rechercheMatchsUIService;
@@ -75,8 +81,25 @@ public class RechercheMatchViewModel extends AbstractViewModel {
     }
 
     @Command
-    public void redirectJoinMatch() {
-        Executions.getCurrent().sendRedirect("/matches/join.zul?code=" + match.getCode());
+    public void showMatchJoinDialog() {
+        winJoinMatch = (Window) Executions.createComponents("/matches/dialog_join.zul", null, null);
+        winJoinMatch.setClosable(true);
+        winJoinMatch.doModal();
+    }
+
+    @GlobalCommand
+    public void showMatchJoinPage() {
+        if (winJoinMatch != null) {
+            winJoinMatch.detach();
+        }
+
+        String mode = "";
+
+        if (Executions.getCurrent().getSession().hasAttribute(MATCH_JOIN_MODE)) {
+            mode = "&mode=" + Executions.getCurrent().getSession().getAttribute(MATCH_JOIN_MODE);
+        }
+
+        Executions.getCurrent().sendRedirect("/matches/join.zul?code=" + match.getCode() + mode);
     }
 
     public String getCode() {
