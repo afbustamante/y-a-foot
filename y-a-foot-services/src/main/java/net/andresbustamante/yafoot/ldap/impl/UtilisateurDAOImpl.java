@@ -1,20 +1,19 @@
 package net.andresbustamante.yafoot.ldap.impl;
 
 import net.andresbustamante.yafoot.ldap.ModifyPasswordRequest;
+import net.andresbustamante.yafoot.ldap.UtilisateurMapper;
 import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
 import net.andresbustamante.yafoot.model.Utilisateur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.NameNotFoundException;
-import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.ContextExecutor;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.Name;
-import javax.naming.NamingException;
 import javax.naming.directory.*;
 import javax.naming.ldap.ExtendedRequest;
 import javax.naming.ldap.LdapContext;
@@ -58,7 +57,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     @Override
     public Utilisateur chercherUtilisateur(String uid) {
         try {
-            return (Utilisateur) ldapTemplate.lookup(uid, new AttributesUtilisateurMapper());
+            return ldapTemplate.lookup(uid, new UtilisateurMapper());
         } catch (NameNotFoundException e) {
             return null;
         }
@@ -141,19 +140,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
             attribute.add(getIdAnnuaire(usr).toString());
             ModificationItem item = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attribute);
             ldapTemplate.modifyAttributes(getIdAnnuaire(role), new ModificationItem[]{item});
-        }
-    }
-
-    /**
-     * Mapper des attributes LDAP vers des objets de type Utilisateur
-     */
-    private class AttributesUtilisateurMapper implements AttributesMapper {
-        public Object mapFromAttributes(Attributes attrs) throws NamingException {
-            Utilisateur utilisateur = new Utilisateur();
-            utilisateur.setNom((String) attrs.get(SN).get());
-            utilisateur.setPrenom((String) attrs.get(GIVEN_NAME).get());
-            utilisateur.setEmail((String) attrs.get(MAIL).get());
-            return utilisateur;
         }
     }
 
