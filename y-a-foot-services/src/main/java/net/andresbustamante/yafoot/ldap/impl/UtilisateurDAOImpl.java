@@ -32,9 +32,15 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     @Value("${ldap.config.roles.dn}")
     private String dnRoles;
 
+    private UtilisateurMapper utilisateurMapper;
+
+    public UtilisateurDAOImpl() {
+        utilisateurMapper = new UtilisateurMapper();
+    }
+
     @Override
     public void creerUtilisateur(Utilisateur usr, RolesEnum role) {
-        ldapTemplate.bind(getIdAnnuaire(usr), null, getAttributesLdap(usr));
+        ldapTemplate.bind(getIdAnnuaire(usr), null, utilisateurMapper.mapToAttributes(usr));
         modifierMotDePasse(usr);
         affecterRole(usr, role);
     }
@@ -44,7 +50,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         if (usr.getMotDePasse() != null) {
             modifierMotDePasse(usr);
         } else {
-            ldapTemplate.rebind(getIdAnnuaire(usr), null, getAttributesLdap(usr));
+            ldapTemplate.rebind(getIdAnnuaire(usr), null, utilisateurMapper.mapToAttributes(usr));
         }
     }
 
@@ -57,7 +63,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     @Override
     public Utilisateur chercherUtilisateur(String uid) {
         try {
-            return ldapTemplate.lookup(uid, new UtilisateurMapper());
+            return ldapTemplate.lookup(uid, utilisateurMapper);
         } catch (NameNotFoundException e) {
             return null;
         }
@@ -81,39 +87,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
      */
     private Name getIdAnnuaire(RolesEnum role) {
         return LdapNameBuilder.newInstance(dnRoles).add(CN, role.name()).build();
-    }
-
-    /**
-     * Construire des attributes LDAP à partir des information d'un utilisateur passé en paramètre
-     *
-     * @param usr Utilisateur à processer
-     * @return
-     */
-    private Attributes getAttributesLdap(Utilisateur usr) {
-        BasicAttribute objectClass = new BasicAttribute(OBJECT_CLASS);
-        objectClass.add("top");
-        objectClass.add("person");
-        objectClass.add("organizationalPerson");
-        objectClass.add("inetOrgPerson");
-
-        Attributes attrs = new BasicAttributes();
-        attrs.put(objectClass);
-        attrs.put(UID, usr.getEmail());
-        attrs.put(MAIL, usr.getEmail());
-
-        if (usr.getNom() != null) {
-            attrs.put(SN, usr.getNom());
-        }
-
-        if (usr.getPrenom() != null) {
-            attrs.put(CN, usr.getPrenom());
-            attrs.put(GIVEN_NAME, usr.getPrenom());
-        }
-
-        if (usr.getPrenom() != null && usr.getNom() != null) {
-            attrs.put(DISPLAY_NAME, usr.getPrenom() + " " + usr.getNom());
-        }
-        return attrs;
     }
 
     /**
