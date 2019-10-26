@@ -54,6 +54,13 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Java EE / javax -->
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
     <!-- MyBatis -->
     <dependency>
       <groupId>org.mybatis</groupId>

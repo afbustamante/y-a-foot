@@ -21,9 +21,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+    <java.version>10</java.version>
+    <compiler.source>10</compiler.source>
+    <compiler.target>10</compiler.target>
+
     <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
     <maven-plugin-plugin.version>3.5.2</maven-plugin-plugin.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
     <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
@@ -43,7 +45,9 @@
     <javaee-web-api.version>7.0</javaee-web-api.version>
     <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
     <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
-    <activation.version>1.1.1</activation.version>
+    <jaxb-api.version>2.3.1</jaxb-api.version>
+    <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
+    <javax.activation-api.version>1.2.0</javax.activation-api.version>
 
     <!-- Spring Framework -->
     <spring.version>5.1.9.RELEASE</spring.version>
@@ -138,6 +142,31 @@
         <groupId>javax.ws.rs</groupId>
         <artifactId>javax.ws.rs-api</artifactId>
         <version>${javax.ws.rs-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>${jaxb-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.xml.ws</groupId>
+        <artifactId>jaxws-api</artifactId>
+        <version>${jaxb-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.annotation</groupId>
+        <artifactId>javax.annotation-api</artifactId>
+        <version>${javax.annotation-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.activation</groupId>
+        <artifactId>javax.activation-api</artifactId>
+        <version>${javax.activation-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>${jaxb-api.version}</version>
       </dependency>
 
       <!-- Spring Framework -->
@@ -544,8 +573,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin.version}</version>
           <configuration>
-            <source>${maven.compiler.source}</source>
-            <target>${maven.compiler.target}</target>
+            <source>${compiler.source}</source>
+            <target>${compiler.target}</target>
             <encoding>${project.build.sourceEncoding}</encoding>
           </configuration>
         </plugin>
@@ -723,7 +752,7 @@
                     <limit>
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.06</minimum>
+                      <minimum>0.68</minimum>
                     </limit>
                   </limits>
                 </rule>
@@ -747,7 +776,7 @@
                     <limit>
                       <counter>INSTRUCTION</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.8</minimum>
+                      <minimum>0.80</minimum>
                     </limit>
                   </limits>
                 </rule>
