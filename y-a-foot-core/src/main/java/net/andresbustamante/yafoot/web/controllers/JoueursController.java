@@ -7,8 +7,8 @@ import net.andresbustamante.yafoot.model.xs.Contexte;
 import net.andresbustamante.yafoot.model.xs.Joueur;
 import net.andresbustamante.yafoot.services.GestionJoueursService;
 import net.andresbustamante.yafoot.services.RechercheJoueursService;
-import net.andresbustamante.yafoot.web.mappers.ContexteMapper;
-import net.andresbustamante.yafoot.web.mappers.JoueurMapper;
+import net.andresbustamante.yafoot.web.mappers.ContextMapper;
+import net.andresbustamante.yafoot.web.mappers.PlayerMapper;
 import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +41,10 @@ public class JoueursController extends AbstractController {
     private RechercheJoueursService rechercheJoueursService;
 
     @Autowired
-    private JoueurMapper joueurMapper;
+    private PlayerMapper playerMapper;
 
     @Autowired
-    private ContexteMapper contexteMapper;
+    private ContextMapper contextMapper;
 
     @Value("${recherche.joueurs.email.service.path}")
     private String pathRechercheJoueursParAdresseMail;
@@ -60,9 +60,9 @@ public class JoueursController extends AbstractController {
     public Response inscrireJoueur(Joueur joueur) {
         try {
             log.info("Demande de création d'un nouveau joueur avec l'adresse {}", joueur.getEmail());
-            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = joueurMapper.map(joueur);
+            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = playerMapper.map(joueur);
             boolean inscrit = gestionJoueursService.inscrireJoueur(nouveauJoueur,
-                    contexteMapper.map(new Contexte()));
+                    contextMapper.map(new Contexte()));
 
             if (inscrit) {
                 String location = MessageFormat.format(pathRechercheJoueursParAdresseMail, joueur.getEmail());
@@ -89,7 +89,7 @@ public class JoueursController extends AbstractController {
         try {
             log.info("Mise à jour des données du joueur {}", email);
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            boolean succes = gestionJoueursService.actualiserJoueur(joueurMapper.map(joueur), contexte);
+            boolean succes = gestionJoueursService.actualiserJoueur(playerMapper.map(joueur), contexte);
             return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
@@ -110,7 +110,7 @@ public class JoueursController extends AbstractController {
             net.andresbustamante.yafoot.model.Joueur joueur = rechercheJoueursService.chercherJoueur(email, contexte);
 
             if (joueur != null) {
-                return Response.ok(joueurMapper.map(joueur)).build();
+                return Response.ok(playerMapper.map(joueur)).build();
             } else {
                 return Response.status(NOT_FOUND).build();
             }

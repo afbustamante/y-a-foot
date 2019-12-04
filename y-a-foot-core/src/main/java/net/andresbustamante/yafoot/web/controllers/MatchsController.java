@@ -74,7 +74,7 @@ public class MatchsController extends AbstractController {
                                     @HeaderParam(TIMEZONE) String timezone) {
         try {
             Contexte ctx = new Contexte(idUtilisateur);
-            ctx.setTimeZone(ZoneId.of(timezone));
+            ctx.setTimezone(ZoneId.of(timezone));
 
             List<net.andresbustamante.yafoot.model.Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur,
                     ctx);

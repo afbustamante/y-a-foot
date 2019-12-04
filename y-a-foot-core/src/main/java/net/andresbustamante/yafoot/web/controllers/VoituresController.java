@@ -8,7 +8,7 @@ import net.andresbustamante.yafoot.model.xs.Voiture;
 import net.andresbustamante.yafoot.model.xs.Voitures;
 import net.andresbustamante.yafoot.services.GestionVoituresService;
 import net.andresbustamante.yafoot.services.RechercheVoituresService;
-import net.andresbustamante.yafoot.web.mappers.VoitureMapper;
+import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class VoituresController extends AbstractController {
     private GestionVoituresService gestionVoituresService;
 
     @Autowired
-    private VoitureMapper voitureMapper;
+    private CarMapper carMapper;
 
     private final Logger log = LoggerFactory.getLogger(VoituresController.class);
 
@@ -56,7 +56,7 @@ public class VoituresController extends AbstractController {
             Voitures carsResponse = new Voitures();
 
             if (CollectionUtils.isNotEmpty(cars)) {
-                carsResponse.getVoiture().addAll(voitureMapper.map(cars));
+                carsResponse.getVoiture().addAll(carMapper.map(cars));
             }
             return Response.ok(carsResponse).build();
         } catch (DatabaseException e) {
@@ -69,7 +69,7 @@ public class VoituresController extends AbstractController {
     @Path("")
     public Response addNewCar(@Valid Voiture car, @Context HttpServletRequest request) {
         try {
-            int carId = gestionVoituresService.enregistrerVoiture(voitureMapper.map(car), ContexteUtils.getContexte(request));
+            int carId = gestionVoituresService.enregistrerVoiture(carMapper.map(car), ContexteUtils.getContexte(request));
 
             return Response.created(URI.create(apiPublicUrl + "/voitures/" + carId)).build();
         } catch (DatabaseException e) {

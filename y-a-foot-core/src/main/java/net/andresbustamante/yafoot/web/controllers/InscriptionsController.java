@@ -7,7 +7,7 @@ import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
-import net.andresbustamante.yafoot.web.mappers.InscriptionMapper;
+import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
 import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class InscriptionsController extends AbstractController {
     private RechercheMatchsService rechercheMatchsService;
 
     @Autowired
-    private InscriptionMapper inscriptionMapper;
+    private RegistrationMapper registrationMapper;
 
     private final Logger log = LoggerFactory.getLogger(InscriptionsController.class);
 
@@ -50,7 +50,7 @@ public class InscriptionsController extends AbstractController {
 
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            net.andresbustamante.yafoot.model.Inscription ins = inscriptionMapper.map(inscription);
+            net.andresbustamante.yafoot.model.Inscription ins = registrationMapper.map(inscription);
             boolean succes = gestionMatchsService.inscrireJoueurMatch(ins.getJoueur(), ins.getMatch(),
                     ins.getVoiture(), contexte);
 

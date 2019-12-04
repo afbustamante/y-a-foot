@@ -12,7 +12,7 @@ public class Contexte {
 
     private Integer idUtilisateur;
     private String emailUtilisateur;
-    private ZoneId timeZone;
+    private ZoneId timezone;
 
     public Contexte() {}
 
@@ -36,11 +36,11 @@ public class Contexte {
         this.emailUtilisateur = emailUtilisateur;
     }
 
-    public ZoneId getTimeZone() {
-        return timeZone;
+    public ZoneId getTimezone() {
+        return timezone;
     }
 
-    public void setTimeZone(ZoneId timeZone) {
-        this.timeZone = timeZone;
+    public void setTimezone(ZoneId timezone) {
+        this.timezone = timezone;
     }
 }

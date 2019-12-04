@@ -36,8 +36,8 @@ public class RechercheMatchsServiceImpl implements RechercheMatchsService {
     public List<Match> chercherMatchsJoueur(Integer idJoueur, Contexte contexte) throws DatabaseException {
         if (idJoueur != null && idJoueur > 0) {
             // Chercher les matchs programmés pour le joueur depuis 1 an
-            LocalDateTime dateLocale = LocalDate.now(contexte.getTimeZone()).atStartOfDay().minusYears(1L);
-            ZonedDateTime date = ZonedDateTime.of(dateLocale, contexte.getTimeZone());
+            LocalDateTime dateLocale = LocalDate.now(contexte.getTimezone()).atStartOfDay().minusYears(1L);
+            ZonedDateTime date = ZonedDateTime.of(dateLocale, contexte.getTimezone());
             return matchDAO.chercherMatchsParJoueur(idJoueur, date);
         } else {
             return Collections.emptyList();

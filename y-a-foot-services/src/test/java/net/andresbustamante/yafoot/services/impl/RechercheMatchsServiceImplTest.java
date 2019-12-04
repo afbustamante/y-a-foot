@@ -82,7 +82,7 @@ class RechercheMatchsServiceImplTest extends AbstractServiceTest {
         Match match2 = new Match(2);
         Integer idJoueur = 1;
         Contexte ctx = new Contexte();
-        ctx.setTimeZone(ZoneId.of("UTC"));
+        ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
         when(matchDAO.chercherMatchsParJoueur(anyInt(), any())).thenReturn(Arrays.asList(match1, match2));
@@ -98,7 +98,7 @@ class RechercheMatchsServiceImplTest extends AbstractServiceTest {
     void chercherMatchsJoueurSansIdJoueur() throws Exception {
         // Given
         Contexte ctx = new Contexte();
-        ctx.setTimeZone(ZoneId.of("UTC"));
+        ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
         List<Match> matchs = rechercheMatchsService.chercherMatchsJoueur(null, ctx);

@@ -1,11 +1,12 @@
 package net.andresbustamante.yafoot.web.mappers;
 
+import net.andresbustamante.yafoot.config.DtoMapperConfig;
 import net.andresbustamante.yafoot.model.Inscription;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {JoueurMapper.class, VoitureMapper.class})
-public interface InscriptionMapper {
+@Mapper(config = DtoMapperConfig.class, uses = {PlayerMapper.class, CarMapper.class})
+public interface RegistrationMapper {
 
     @Mapping(source = "idMatch", target = "id.idMatch")
     @Mapping(source = "idMatch", target = "match.id")

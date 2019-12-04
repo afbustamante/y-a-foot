@@ -1,13 +1,14 @@
 package net.andresbustamante.yafoot.web.mappers;
 
+import net.andresbustamante.yafoot.config.DtoMapperConfig;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {JoueurMapper.class, StringMapper.class})
-public interface VoitureMapper {
+@Mapper(config = DtoMapperConfig.class, uses = {UserMapper.class, PlayerMapper.class, StringMapper.class})
+public interface CarMapper {
 
     @Mapping(source = "passagers.joueur", target = "passagers")
     Voiture map(net.andresbustamante.yafoot.model.xs.Voiture voiture);
