@@ -1,6 +1,6 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window apply="org.zkoss.bind.BindComposer"
-        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.CarRegisterViewModel')" width="560px">
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.CarRegistryViewModel')" width="560px">
   <caption label="${c:l('dialog.confirmation.title')}"/>
 
   <vlayout>
@@ -12,12 +12,12 @@
       <rows>
         <row>
           <cell>${c:l('car.new.name')}</cell>
-          <cell><textbox id="tbxName" value="@save(vm.newCar.nom)" width="90%"/></cell>
+          <cell><textbox id="tbxName" value="@save(vm.newCar.name)" width="90%"/></cell>
         </row>
         <row>
           <cell>${c:l('car.new.num.places')}</cell>
           <cell>
-            <spinner id="spbNumPassengers" value="@save(vm.newCar.nbPlaces)"
+            <spinner id="spbNumSeats" value="@save(vm.newCar.numSeats)"
                      constraint="no empty, no negative" width="90%"/>
           </cell>
         </row>

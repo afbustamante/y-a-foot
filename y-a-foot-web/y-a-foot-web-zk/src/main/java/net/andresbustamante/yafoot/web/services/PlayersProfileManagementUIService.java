@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Joueur;
+import net.andresbustamante.yafoot.model.xs.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -18,28 +18,28 @@ import java.text.MessageFormat;
 
 @Component
 @SessionScope
-public class GestionProfilJoueurUIService extends AbstractUIService {
+public class PlayersProfileManagementUIService extends AbstractUIService {
 
-    @Value("${api.rest.joueurs.services.path}")
-    private String joueursServicesPath;
+    @Value("${api.rest.players.services.path}")
+    private String playersServicesPath;
 
-    @Value("${api.rest.joueurs.services.email.path}")
-    private String joueurParEmailServicesPath;
+    @Value("${api.rest.players.byemail.services.path}")
+    private String playersByEmailServicesPath;
 
-    public Joueur chargerProfilJoueurActuel() throws ApplicationException {
-        return (Joueur) getContexte().getUtilisateur();
+    public Player loadProfileForPlayer() throws ApplicationException {
+        return (Player) getUserContext().getUser();
     }
 
-    public boolean actualiserDonneesJoueur(Joueur joueur) throws ApplicationException {
+    public boolean updateProfile(Player player) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(joueursServicesPath)
-                    .path(MessageFormat.format(joueurParEmailServicesPath, joueur.getEmail()));
+                    .path(playersServicesPath)
+                    .path(MessageFormat.format(playersByEmailServicesPath, player.getEmail()));
 
             MultiValueMap<String, String> headers = getHeadersMap();
-            HttpEntity<Joueur> params = new HttpEntity<>(joueur, headers);
+            HttpEntity<Player> params = new HttpEntity<>(player, headers);
 
             ResponseEntity<Boolean> response = restTemplate.exchange(builder.toUriString(),
                     HttpMethod.PUT, params, Boolean.class);
@@ -50,16 +50,16 @@ public class GestionProfilJoueurUIService extends AbstractUIService {
         }
     }
 
-    public boolean desactiverJoueur(Joueur joueur) throws ApplicationException {
+    public boolean deactivatePlayer(Player player) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(joueursServicesPath)
-                    .path(MessageFormat.format(joueurParEmailServicesPath, joueur.getEmail()));
+                    .path(playersServicesPath)
+                    .path(MessageFormat.format(playersByEmailServicesPath, player.getEmail()));
 
             MultiValueMap<String, String> headers = getHeadersMap();
-            HttpEntity<Joueur> params = new HttpEntity<>(headers);
+            HttpEntity<Player> params = new HttpEntity<>(headers);
 
             ResponseEntity<Boolean> response = restTemplate.exchange(builder.toUriString(),
                     HttpMethod.DELETE, params, Boolean.class);
@@ -70,12 +70,12 @@ public class GestionProfilJoueurUIService extends AbstractUIService {
         }
     }
 
-    public boolean actualiserMotDePasseJoueur(String emailJoueur, String motDePasse) throws ApplicationException {
+    public boolean updatePlayerPassword(String emailJoueur, String motDePasse) throws ApplicationException {
 
-        Joueur joueur = new Joueur();
-        joueur.setEmail(emailJoueur);
-        joueur.setMotDePasse(motDePasse.getBytes(StandardCharsets.UTF_8));
+        Player player = new Player();
+        player.setEmail(emailJoueur);
+        player.setPassword(motDePasse.getBytes(StandardCharsets.UTF_8));
 
-        return actualiserDonneesJoueur(joueur);
+        return updateProfile(player);
     }
 }

@@ -13,16 +13,16 @@ import static net.andresbustamante.yafoot.web.util.WebConstants.SITES;
 /**
  * @author andresbustamante
  */
-public class CreationSiteViewModel extends AbstractViewModel {
+public class SiteRegistryViewModel extends AbstractViewModel {
 
     private List<Site> sites;
 
-    private Site nouveauSite;
+    private Site newSite;
 
     @Init
     @Override
     public void init() {
-        nouveauSite = new Site();
+        newSite = new Site();
 
         if (Executions.getCurrent().getSession().hasAttribute(SITES)) {
             sites = (List<Site>) Executions.getCurrent().getSession().getAttribute(SITES);
@@ -34,12 +34,12 @@ public class CreationSiteViewModel extends AbstractViewModel {
     }
 
     @Command
-    public void ajouterSite() {
-        sites.add(nouveauSite);
+    public void addSite() {
+        sites.add(newSite);
         Executions.getCurrent().getSession().setAttribute(SITES, sites);
     }
 
-    public Site getNouveauSite() {
-        return nouveauSite;
+    public Site getNewSite() {
+        return newSite;
     }
 }

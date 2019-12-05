@@ -26,21 +26,21 @@ public abstract class AbstractViewModel {
     protected static final String DIALOG_CONFIRMATION_TITLE = "dialog.confirmation.title";
     protected static final String DIALOG_ERROR_TITLE = "dialog.error.title";
     protected static final String APPLICATION_EXCEPTION_TEXT = "application.exception.text";
-    protected static final String ACCUEIL = "/";
+    protected static final String HOME_PAGE = "/";
 
     private static final String ACCEPT_LANGUAGE = "Accept-Language";
-    private static final String SEPARATEUR_ACCEPT_LANGUAGE = ",";
+    private static final String ACCEPT_LANGUAGE_SEPARATOR = ",";
 
-    protected String getNomUtilisateurActif() {
+    protected String getActiveUsername() {
         Session session = Sessions.getCurrent();
         SecurityContext securityContext = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
         UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
         return userDetails.getUsername();
     }
 
-    protected Locale getLocaleUtilisateur() {
-        String[] languesAcceptees = Executions.getCurrent().getHeader(ACCEPT_LANGUAGE).split(SEPARATEUR_ACCEPT_LANGUAGE);
-        return Locale.forLanguageTag(languesAcceptees[0]);
+    protected Locale getUserLocale() {
+        String[] acceptedLanguages = Executions.getCurrent().getHeader(ACCEPT_LANGUAGE).split(ACCEPT_LANGUAGE_SEPARATOR);
+        return Locale.forLanguageTag(acceptedLanguages[0]);
     }
 
     public DateFormat getDateFormat() {
@@ -50,8 +50,8 @@ public abstract class AbstractViewModel {
         if (obj != null) {
             return (DateFormat) obj;
         } else {
-            DateFormat dateFormat = new SimpleDateFormat(DateUtils.getPatternDateHeure(getLocaleUtilisateur().getLanguage()),
-                    getLocaleUtilisateur());
+            DateFormat dateFormat = new SimpleDateFormat(DateUtils.getPatternDateHeure(getUserLocale().getLanguage()),
+                    getUserLocale());
             session.setAttribute(WebConstants.DATE_FORMAT, dateFormat);
             return dateFormat;
         }

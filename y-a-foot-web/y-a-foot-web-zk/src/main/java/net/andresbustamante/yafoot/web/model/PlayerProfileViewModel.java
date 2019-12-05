@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Joueur;
-import net.andresbustamante.yafoot.web.services.GestionProfilJoueurUIService;
+import net.andresbustamante.yafoot.model.xs.Player;
+import net.andresbustamante.yafoot.web.services.PlayersProfileManagementUIService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,36 +14,36 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Messagebox;
 
-public class ProfilJoueurViewModel extends AbstractViewModel {
+public class PlayerProfileViewModel extends AbstractViewModel {
 
-    private final Logger log = LoggerFactory.getLogger(ProfilJoueurViewModel.class);
-    private Joueur joueur;
-    private String nouveauMotDePasse;
-    private String confirmationMotDePasse;
+    private final Logger log = LoggerFactory.getLogger(PlayerProfileViewModel.class);
+    private Player player;
+    private String newPassword;
+    private String confirmationPassword;
 
     @WireVariable
-    private GestionProfilJoueurUIService gestionProfilJoueurUIService;
+    private PlayersProfileManagementUIService playersProfileManagementUIService;
 
     @Init
     @Override
     public void init() {
         try {
-            joueur = gestionProfilJoueurUIService.chargerProfilJoueurActuel();
+            player = playersProfileManagementUIService.loadProfileForPlayer();
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des données pour un utilisateur", e);
         }
     }
 
     @Command
-    public void sauvegarderModifications() {
+    public void updateProfile() {
         try {
-            boolean succes = gestionProfilJoueurUIService.actualiserDonneesJoueur(joueur);
+            boolean succes = playersProfileManagementUIService.updateProfile(player);
 
             if (succes) {
                 Messagebox.show(Labels.getLabel("player.profile.update.success"),
                         Labels.getLabel(DIALOG_INFORMATION_TITLE),
                         new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION,
-                        event -> Executions.getCurrent().sendRedirect(ACCUEIL));
+                        event -> Executions.getCurrent().sendRedirect(HOME_PAGE));
             } else {
                 Messagebox.show(Labels.getLabel("player.profile.update.error"),
                         Labels.getLabel(DIALOG_ERROR_TITLE),
@@ -58,11 +58,11 @@ public class ProfilJoueurViewModel extends AbstractViewModel {
     }
 
     @Command
-    public void desactiverCompte() {
+    public void deactivateProfile() {
         EventListener<Messagebox.ClickEvent> clickListener = event -> {
             if (Messagebox.Button.YES.equals(event.getButton())) {
                 try {
-                    boolean succes = gestionProfilJoueurUIService.desactiverJoueur(joueur);
+                    boolean succes = playersProfileManagementUIService.deactivatePlayer(player);
 
                     if (succes) {
                         Messagebox.show(Labels.getLabel("player.profile.inactivate.success"),
@@ -89,17 +89,17 @@ public class ProfilJoueurViewModel extends AbstractViewModel {
     }
 
     @Command
-    public void modifierMotDePasse() {
+    public void updatePassword() {
         try {
-            if (StringUtils.isNotBlank(nouveauMotDePasse) && StringUtils.isNotBlank(confirmationMotDePasse)) {
-                if (nouveauMotDePasse.equals(confirmationMotDePasse)) {
-                    boolean succes = gestionProfilJoueurUIService.actualiserMotDePasseJoueur(joueur.getEmail(), nouveauMotDePasse);
+            if (StringUtils.isNotBlank(newPassword) && StringUtils.isNotBlank(confirmationPassword)) {
+                if (newPassword.equals(confirmationPassword)) {
+                    boolean succes = playersProfileManagementUIService.updatePlayerPassword(player.getEmail(), newPassword);
 
                     if (succes) {
                         Messagebox.show(Labels.getLabel("player.profile.update.success"),
                                 Labels.getLabel(DIALOG_INFORMATION_TITLE),
                                 new Messagebox.Button[]{Messagebox.Button.OK}, Messagebox.INFORMATION,
-                                event -> Executions.getCurrent().sendRedirect(ACCUEIL));
+                                event -> Executions.getCurrent().sendRedirect(HOME_PAGE));
                     } else {
                         Messagebox.show(Labels.getLabel("player.profile.error.invalid.passwd"),
                                 Labels.getLabel(DIALOG_ERROR_TITLE),
@@ -123,15 +123,15 @@ public class ProfilJoueurViewModel extends AbstractViewModel {
         }
     }
 
-    public Joueur getJoueur() {
-        return joueur;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setNouveauMotDePasse(String nouveauMotDePasse) {
-        this.nouveauMotDePasse = nouveauMotDePasse;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
-    public void setConfirmationMotDePasse(String confirmationMotDePasse) {
-        this.confirmationMotDePasse = confirmationMotDePasse;
+    public void setConfirmationPassword(String confirmationPassword) {
+        this.confirmationPassword = confirmationPassword;
     }
 }

@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Voiture;
-import net.andresbustamante.yafoot.model.xs.Voitures;
+import net.andresbustamante.yafoot.model.xs.Car;
+import net.andresbustamante.yafoot.model.xs.Cars;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -22,28 +22,28 @@ import java.util.List;
 @SessionScope
 public class CarsManagementUIService extends AbstractUIService {
 
-    @Value("${api.rest.voitures.services.path}")
+    @Value("${api.rest.cars.services.path}")
     private String carsServicesPath;
 
-    public List<Voiture> findCarsByUser() throws ApplicationException {
+    public List<Car> findCarsByUser() throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(carsServicesPath).queryParam("pid", getContexte().getUtilisateur().getId());
+                    .path(carsServicesPath).queryParam("pid", getUserContext().getUser().getId());
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);
 
-            ResponseEntity<Voitures> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params,
-                    Voitures.class);
-            return (response.getBody() != null) ? response.getBody().getVoiture() : Collections.emptyList();
+            ResponseEntity<Cars> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params,
+                    Cars.class);
+            return (response.getBody() != null) ? response.getBody().getCar() : Collections.emptyList();
         } catch (RestClientException e) {
             throw new ApplicationException("REST client error when asking for cars from user", e);
         }
     }
 
-    public void addCarForUser(Voiture voiture) throws ApplicationException {
+    public void addCarForUser(Car car) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -51,7 +51,7 @@ public class CarsManagementUIService extends AbstractUIService {
                     .path(carsServicesPath);
 
             MultiValueMap<String, String> headers = getHeadersMap();
-            HttpEntity<Voiture> params = new HttpEntity<>(voiture, headers);
+            HttpEntity<Car> params = new HttpEntity<>(car, headers);
 
             ResponseEntity<Long> response = restTemplate.postForEntity(builder.toUriString(), params, Long.class);
 
@@ -60,7 +60,7 @@ public class CarsManagementUIService extends AbstractUIService {
 
                 if (location != null) {
                     String locationString = location.toString();
-                    voiture.setId(Integer.valueOf(locationString.substring(locationString.lastIndexOf("/"))));
+                    car.setId(Integer.valueOf(locationString.substring(locationString.lastIndexOf("/"))));
                 }
             }
         } catch (RestClientException e) {

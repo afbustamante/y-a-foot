@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Inscription;
+import net.andresbustamante.yafoot.model.xs.Registration;
 import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
+import net.andresbustamante.yafoot.web.services.MatchsSearchUIService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,9 @@ import static net.andresbustamante.yafoot.web.util.WebConstants.MATCH_JOIN_MODE;
 /**
  * @author andresbustamante
  */
-public class RechercheMatchViewModel extends AbstractViewModel {
+public class MatchSearchViewModel extends AbstractViewModel {
 
-    private final Logger log = LoggerFactory.getLogger(RechercheMatchViewModel.class);
+    private final Logger log = LoggerFactory.getLogger(MatchSearchViewModel.class);
 
     private Match match;
 
@@ -35,16 +35,16 @@ public class RechercheMatchViewModel extends AbstractViewModel {
 
     private boolean matchFound;
 
-    private boolean inscriptionPossible;
+    private boolean registrationPossible;
 
-    private int nbPlacesDisponibles;
+    private int numPlayersLeft;
 
-    private ListModel<Inscription> inscriptionsListModel;
+    private ListModel<Registration> registrationsListModel;
 
     private Window winJoinMatch;
 
     @WireVariable
-    private RechercheMatchsUIService rechercheMatchsUIService;
+    private MatchsSearchUIService matchsSearchUIService;
 
     @Init
     public void init() {
@@ -52,28 +52,28 @@ public class RechercheMatchViewModel extends AbstractViewModel {
     }
 
     @Command
-    @NotifyChange({"matchFound", "match", "inscriptionsListModel", "inscriptionPossible"})
-    public void chercherMatch() {
+    @NotifyChange({"matchFound", "match", "registrationsListModel", "registrationPossible"})
+    public void findMatch() {
         try {
-            match = rechercheMatchsUIService.chercherMatchParCode(code);
+            match = matchsSearchUIService.findMatchByCode(code);
 
             if (match != null) {
                 matchFound = true;
                 boolean dejaInscrit = false;
 
-                List<Inscription> inscriptions = (match.getInscriptions().getInscription() != null) ?
-                        match.getInscriptions().getInscription() : Collections.emptyList();
+                List<Registration> registrations = (match.getRegistrations().getRegistration() != null) ?
+                        match.getRegistrations().getRegistration() : Collections.emptyList();
 
-                String nomUtilisateur = getNomUtilisateurActif();
+                String nomUtilisateur = getActiveUsername();
 
-                dejaInscrit = isJoueurDejaInscrit(nomUtilisateur, inscriptions);
+                dejaInscrit = isPlayerAlredyRegistered(nomUtilisateur, registrations);
 
-                inscriptionPossible = matchFound && !dejaInscrit;
+                registrationPossible = matchFound && !dejaInscrit;
 
-                inscriptionsListModel = new ListModelArray<>(inscriptions);
+                registrationsListModel = new ListModelArray<>(registrations);
             } else {
                 matchFound = false;
-                inscriptionsListModel = new ListModelArray<>(Collections.emptyList());
+                registrationsListModel = new ListModelArray<>(Collections.emptyList());
             }
         } catch (ApplicationException e) {
             log.error("Erreur lors de la recherche d'un match", e);
@@ -118,25 +118,25 @@ public class RechercheMatchViewModel extends AbstractViewModel {
         return matchFound;
     }
 
-    public ListModel<Inscription> getInscriptionsListModel() {
-        return inscriptionsListModel;
+    public ListModel<Registration> getRegistrationsListModel() {
+        return registrationsListModel;
     }
 
-    public int getNbPlacesDisponibles() {
-        if ((nbPlacesDisponibles == 0) && (match != null) && (match.getInscriptions() != null)) {
-            nbPlacesDisponibles = Math.max(0, match.getNbJoueursMax() - match.getInscriptions().getInscription().size());
+    public int getNumPlayersLeft() {
+        if ((numPlayersLeft == 0) && (match != null) && (match.getRegistrations() != null)) {
+            numPlayersLeft = Math.max(0, match.getNumPlayersMax() - match.getRegistrations().getRegistration().size());
         }
-        return nbPlacesDisponibles;
+        return numPlayersLeft;
     }
 
-    public boolean isInscriptionPossible() {
-        return inscriptionPossible;
+    public boolean isRegistrationPossible() {
+        return registrationPossible;
     }
 
-    private boolean isJoueurDejaInscrit(String nomUtilisateur, List<Inscription> inscriptions) {
-        if (CollectionUtils.isNotEmpty(inscriptions) && nomUtilisateur != null) {
-            for (Inscription i : inscriptions) {
-                if (nomUtilisateur.equalsIgnoreCase(i.getJoueur().getEmail())) {
+    private boolean isPlayerAlredyRegistered(String username, List<Registration> registrations) {
+        if (CollectionUtils.isNotEmpty(registrations) && username != null) {
+            for (Registration i : registrations) {
+                if (username.equalsIgnoreCase(i.getPlayer().getEmail())) {
                     return true;
                 }
             }

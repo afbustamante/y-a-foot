@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Inscription;
+import net.andresbustamante.yafoot.model.xs.Registration;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.uiservices.InscriptionMatchsUIService;
 import net.andresbustamante.yafoot.uiservices.RechercheMatchsUIService;
@@ -128,8 +128,8 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
     }
 
     private Integer getNumPlacesDisponibles() {
-        if ((match != null) && (match.getNbJoueursMax() != null) && (match.getInscriptions() != null)) {
-            return match.getNbJoueursMax() - match.getInscriptions().getInscription().size();
+        if ((match != null) && (match.getNumPlayersMax() != null) && (match.getRegistrations() != null)) {
+            return match.getNumPlayersMax() - match.getRegistrations().getRegistration().size();
         }
         return null;
     }
@@ -141,11 +141,11 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
      */
     public boolean isInscriptionPossible() {
         // L'inscription est possible si le match a l'option de partage de code actif et que le joueur n'est pas encore inscrit
-        if (match != null && match.isPartageActif()) {
+        if (match != null && match.isSharingEnabled()) {
             inscriptionPossible = true;
 
-            for (Inscription ins : match.getInscriptions().getInscription()) {
-                if (ins.getJoueur().getEmail().equals(getNomUtilisateurActif())) {
+            for (Registration ins : match.getRegistrations().getRegistration()) {
+                if (ins.getPlayer().getEmail().equals(getNomUtilisateurActif())) {
                     // Le joueur est déjà inscrit au match
                     inscriptionPossible = false;
                 }

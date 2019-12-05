@@ -2,10 +2,10 @@ package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Matchs;
-import net.andresbustamante.yafoot.web.services.InscriptionMatchsUIService;
-import net.andresbustamante.yafoot.web.services.OrganisationMatchsUIService;
-import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
+import net.andresbustamante.yafoot.model.xs.Matches;
+import net.andresbustamante.yafoot.web.services.MatchsJoiningUIService;
+import net.andresbustamante.yafoot.web.services.MatchsRegistryUIService;
+import net.andresbustamante.yafoot.web.services.MatchsSearchUIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.BindingParam;
@@ -26,60 +26,60 @@ import java.util.List;
 /**
  * @author andresbustamante
  */
-public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
+public class PlayersMatchsListingViewModel extends AbstractViewModel {
 
-    private List<Match> matchsAJouer;
-    private List<Match> matchsJoues;
+    private List<Match> matchesToPlay;
+    private List<Match> matchesPlayed;
 
-    private ListModel<Match> matchsAJouerListModel;
-    private ListModel<Match> matchsJouesListModel;
-
-    @WireVariable
-    private RechercheMatchsUIService rechercheMatchsUIService;
+    private ListModel<Match> matchesToPlayListModel;
+    private ListModel<Match> matchesPlayedListModel;
 
     @WireVariable
-    private OrganisationMatchsUIService organisationMatchsUIService;
+    private MatchsSearchUIService matchsSearchUIService;
 
     @WireVariable
-    private InscriptionMatchsUIService inscriptionMatchsUIService;
+    private MatchsRegistryUIService matchsRegistryUIService;
 
-    private final Logger log = LoggerFactory.getLogger(RechercheMatchsJoueurViewModel.class);
+    @WireVariable
+    private MatchsJoiningUIService matchsJoiningUIService;
+
+    private final Logger log = LoggerFactory.getLogger(PlayersMatchsListingViewModel.class);
 
     @Init
     public void init() {
         try {
-            Matchs matchs = rechercheMatchsUIService.chercherMatchsJoueur();
+            Matches matches = matchsSearchUIService.findMatchsForPlayer();
 
-            matchsJoues = new ArrayList<>();
-            matchsAJouer = new ArrayList<>();
+            matchesPlayed = new ArrayList<>();
+            matchesToPlay = new ArrayList<>();
 
-            for (Match match : matchs.getMatch()) {
+            for (Match match : matches.getMatch()) {
                 if (match.getDate().before(Calendar.getInstance(match.getDate().getTimeZone()))) {
-                    matchsJoues.add(match);
+                    matchesPlayed.add(match);
                 } else {
-                    matchsAJouer.add(match);
+                    matchesToPlay.add(match);
                 }
             }
 
-            matchsAJouerListModel = new ListModelArray<>(matchsAJouer);
-            matchsJouesListModel = new ListModelArray<>(matchsJoues);
+            matchesToPlayListModel = new ListModelArray<>(matchesToPlay);
+            matchesPlayedListModel = new ListModelArray<>(matchesPlayed);
         } catch (ApplicationException e) {
             // TODO Afficher message d'erreur
         }
     }
 
     @Command
-    public void afficherDetailMatch(@BindingParam("match") Match match) {
+    public void showMatchDetail(@BindingParam("match") Match match) {
         // Implémenter cette méthode
     }
 
     @Command
-    @NotifyChange("matchsAJouerListModel")
-    public void quitterMatch(@BindingParam("match") Match match) {
+    @NotifyChange("matchesToPlayListModel")
+    public void leaveMatch(@BindingParam("match") Match match) {
         EventListener<Messagebox.ClickEvent> clickListener = event -> {
             if (Messagebox.Button.YES.equals(event.getButton())) {
                 try {
-                    inscriptionMatchsUIService.desinscrireJoueurMatch(match);
+                    matchsJoiningUIService.unregisterPlayerFromMatch(match);
                     Messagebox.show(Labels.getLabel("match.list.leave.success"),
                             Labels.getLabel(DIALOG_CONFIRMATION_TITLE),
                             Messagebox.Button.OK.id,
@@ -101,14 +101,14 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
     }
 
     @Command
-    @NotifyChange("matchsAJouerListModel")
-    public void annulerMatch(@BindingParam("match") Match match) {
-        if (isAnnulationPossible(match)) {
+    @NotifyChange("matchesToPlayListModel")
+    public void cancelMatch(@BindingParam("match") Match match) {
+        if (isCancellingPossible(match)) {
             // Afficher message de confirmation pour l'annulation
             EventListener<Messagebox.ClickEvent> clickListener = event -> {
                 if (Messagebox.Button.YES.equals(event.getButton())) {
                     try {
-                        organisationMatchsUIService.annulerMatch(match);
+                        matchsRegistryUIService.cancelMatch(match);
                         Messagebox.show(Labels.getLabel("match.list.cancel.success"),
                                 Labels.getLabel(DIALOG_CONFIRMATION_TITLE),
                                 Messagebox.Button.OK.id,
@@ -134,15 +134,15 @@ public class RechercheMatchsJoueurViewModel extends AbstractViewModel {
         }
     }
 
-    public ListModel<Match> getMatchsAJouerListModel() {
-        return matchsAJouerListModel;
+    public ListModel<Match> getMatchesToPlayListModel() {
+        return matchesToPlayListModel;
     }
 
-    public ListModel<Match> getMatchsJouesListModel() {
-        return matchsJouesListModel;
+    public ListModel<Match> getMatchesPlayedListModel() {
+        return matchesPlayedListModel;
     }
 
-    private boolean isAnnulationPossible(Match match) {
-        return getNomUtilisateurActif().equals(match.getCreateur().getEmail());
+    private boolean isCancellingPossible(Match match) {
+        return getActiveUsername().equals(match.getAuthor().getEmail());
     }
 }

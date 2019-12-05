@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.uiservices;
 
 import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Matchs;
+import net.andresbustamante.yafoot.model.xs.Matches;
 import net.andresbustamante.yafoot.util.ConfigProperties;
 
 import javax.ws.rs.ClientErrorException;
@@ -18,15 +18,15 @@ public class RechercheMatchsUIService extends AbstractUIService {
 
     public Match chercherMatchParCode(String codeMatch) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
-        WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
+        WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("matches.api.service.path"));
         resource = resource.path(MessageFormat.format("/{0}", codeMatch));
         return resource.request(MediaType.APPLICATION_XML).get(Match.class);
     }
 
-    public Matchs chercherMatchsJoueur(String idJoueur) throws ClientErrorException {
+    public Matches chercherMatchsJoueur(String idJoueur) throws ClientErrorException {
         Client client = ClientBuilder.newClient();
-        WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.matchs.service.path"));
-        resource = resource.queryParam("idJoueur", idJoueur);
-        return resource.request(MediaType.APPLICATION_XML).get(Matchs.class);
+        WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("matches.api.service.path"));
+        resource = resource.queryParam("playerId", idJoueur);
+        return resource.request(MediaType.APPLICATION_XML).get(Matches.class);
     }
 }

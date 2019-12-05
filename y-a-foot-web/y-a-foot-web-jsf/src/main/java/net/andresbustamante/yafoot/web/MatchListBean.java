@@ -29,7 +29,7 @@ public class MatchListBean extends AbstractFacesBean implements Serializable {
 
     public List<Match> getMatches() {
         if (matches == null) {
-            Integer idJoueur = rechercheMatchsUIService.getContexte().getUtilisateur().getId();
+            Integer idJoueur = rechercheMatchsUIService.getUserContext().getUser().getId();
             matches = rechercheMatchsUIService.chercherMatchsJoueur(String.valueOf(idJoueur)).getMatch();
             matches.sort(new MatchComparator());
 

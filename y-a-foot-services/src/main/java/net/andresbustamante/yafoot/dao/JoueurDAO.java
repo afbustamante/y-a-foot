@@ -21,10 +21,10 @@ public interface JoueurDAO {
     Joueur chercherJoueurParId(@Param(ID) Integer idJoueur);
 
     /**
-     * Vérifier si une adresse mail est déjà utilisée par un joueur inscrit
+     * Vérifier si une address mail est déjà utilisée par un joueur inscrit
      *
      * @param email Adresse mail à chercher
-     * @return True si un joueur existe avec l'adresse mail passée en paramètre
+     * @return True si un joueur existe avec l'address mail passée en paramètre
      */
     boolean isJoueurInscrit(@Param(EMAIL) String email);
 
@@ -43,10 +43,10 @@ public interface JoueurDAO {
     int actualiserJoueur(@Param(JOUEUR) Joueur joueur);
 
     /**
-     * Chercher un joueur en base des données à partir de son adresse mail
+     * Chercher un joueur en base des données à partir de son address mail
      *
      * @param email Adresse mail à chercher
-     * @return Joueur associé à l'adresse mail passée en paramètre
+     * @return Joueur associé à l'address mail passée en paramètre
      */
     Joueur chercherJoueurParEmail(@Param(EMAIL) String email);
 

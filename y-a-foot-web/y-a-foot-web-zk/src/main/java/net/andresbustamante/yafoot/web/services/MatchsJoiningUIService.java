@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Inscription;
-import net.andresbustamante.yafoot.model.xs.Joueur;
+import net.andresbustamante.yafoot.model.xs.Player;
+import net.andresbustamante.yafoot.model.xs.Registration;
 import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Voiture;
+import net.andresbustamante.yafoot.model.xs.Car;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -19,39 +19,39 @@ import java.text.MessageFormat;
 
 @Component
 @SessionScope
-public class InscriptionMatchsUIService extends AbstractUIService {
+public class MatchsJoiningUIService extends AbstractUIService {
 
-    @Value("${api.rest.inscriptions.services.path}")
-    private String inscriptionsServicesPath;
+    @Value("${api.rest.registrations.services.path}")
+    private String registrationsServicesPath;
 
     /**
      * Inscrire le joueur actif dans la session au match passé en paramètre
      *
      * @param match Match auquel on va inscrire le joueur actif
-     * @param voiture Voiture dans laquelle le joueur actif va se déplacer
+     * @param car Voiture dans laquelle le joueur actif va se déplacer
      * @throws ApplicationException
      */
-    public void inscrireJoueurMatch(Match match, Voiture voiture) throws ApplicationException {
-        Inscription inscription = new Inscription();
-        inscription.setIdMatch(match.getId());
-        inscription.setJoueur((Joueur) getContexte().getUtilisateur());
+    public void registerPlayerToMatch(Match match, Car car) throws ApplicationException {
+        Registration registration = new Registration();
+        registration.setMatchId(match.getId());
+        registration.setPlayer((Player) getUserContext().getUser());
 
-        if (voiture != null) {
-            inscription.setVoiture(voiture);
+        if (car != null) {
+            registration.setCar(car);
         }
 
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(inscriptionsServicesPath);
+                    .path(registrationsServicesPath);
 
             MultiValueMap<String, String> headers = getHeadersMap();
-            HttpEntity<Inscription> params = new HttpEntity<>(inscription, headers);
+            HttpEntity<Registration> params = new HttpEntity<>(registration, headers);
 
             restTemplate.exchange(builder.toUriString(), HttpMethod.POST, params, String.class);
         } catch (RestClientException e) {
-            throw new ApplicationException("Erreur du client REST lors de l'inscription d'un joueur", e);
+            throw new ApplicationException("Erreur du client REST lors de l'inscription d'un player", e);
         }
     }
 
@@ -61,16 +61,16 @@ public class InscriptionMatchsUIService extends AbstractUIService {
      * @param match Match à quitter
      * @throws ApplicationException
      */
-    public void desinscrireJoueurMatch(Match match) throws ApplicationException {
+    public void unregisterPlayerFromMatch(Match match) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(inscriptionsServicesPath)
+                    .path(registrationsServicesPath)
                     .path(MessageFormat.format("/{0}", match.getCode()));
 
             MultiValueMap<String, String> headers = getHeadersMap();
-            HttpEntity<Inscription> params = new HttpEntity<>(headers);
+            HttpEntity<Registration> params = new HttpEntity<>(headers);
 
             restTemplate.exchange(builder.toUriString(), HttpMethod.DELETE, params, String.class);
         } catch (RestClientException e) {

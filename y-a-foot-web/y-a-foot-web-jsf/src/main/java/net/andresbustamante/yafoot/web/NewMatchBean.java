@@ -193,7 +193,7 @@ public class NewMatchBean extends AbstractFacesBean implements Serializable {
 
                 if (CollectionUtils.isNotEmpty(sites)) {
                     for (Site site : sites) {
-                        itemsSites.add(new SelectItem(site.getId(), site.getNom(), site.getAdresse()));
+                        itemsSites.add(new SelectItem(site.getId(), site.getName(), site.getAddress()));
                     }
                 }
             } catch (ApplicationException e) {
@@ -244,17 +244,17 @@ public class NewMatchBean extends AbstractFacesBean implements Serializable {
 
         Site site = new Site();
         site.setId(idSite);
-        site.setNom(nomSite);
-        site.setAdresse(adresseSite);
-        site.setNumeroTelephone(telephoneSite);
+        site.setName(nomSite);
+        site.setAddress(adresseSite);
+        site.setPhoneNumber(telephoneSite);
 
         Match match = new Match();
-        match.setNbJoueursMin(numMinJoueurs);
-        match.setNbJoueursMax(numMaxJoueurs);
+        match.setNumPlayersMin(numMinJoueurs);
+        match.setNumPlayersMax(numMaxJoueurs);
         match.setDate(date);
         match.setSite(site);
-        match.setCovoiturageActif(optionCovoiturageActive);
-        match.setPartageActif(optionInvitationPubliqueActive);
+        match.setCarpoolingEnabled(optionCovoiturageActive);
+        match.setSharingEnabled(optionInvitationPubliqueActive);
 
         try {
             String codeMatch = organisationMatchsUIService.creerMatch(match);

@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.util;
 public class DaoConstants {
 
     public static final String ID = "id";
-    public static final String NOM = "nom";
+    public static final String NOM = "name";
     public static final String JOUEUR = "joueur";
     public static final String ID_JOUEUR = "idJoueur";
     public static final String SITE = "site";

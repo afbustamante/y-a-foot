@@ -17,7 +17,7 @@ public abstract class AbstractController {
         try {
             return new URI(location);
         } catch (URISyntaxException e) {
-            log.error("Erreur lors de la construction de la localisation d'une ressource", e);
+            log.error("Erreur lors de la construction de la location d'une ressource", e);
             return null;
         }
     }

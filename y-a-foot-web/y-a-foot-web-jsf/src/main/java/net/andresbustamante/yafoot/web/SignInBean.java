@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Joueur;
+import net.andresbustamante.yafoot.model.xs.Player;
 import net.andresbustamante.yafoot.uiservices.InscriptionJoueursUIService;
 import net.andresbustamante.yafoot.util.WebConstants;
 import org.slf4j.Logger;
@@ -35,13 +35,13 @@ public class SignInBean extends AbstractFacesBean implements Serializable {
     public String creerNouveauJoueur() {
         try {
             if (motDePasse1.equals(motDePasse2)) {
-                Joueur nouveauJoueur = new Joueur();
-                nouveauJoueur.setNom(nom);
-                nouveauJoueur.setPrenom(prenom);
-                nouveauJoueur.setEmail(email);
-                nouveauJoueur.setMotDePasse(motDePasse1.getBytes(StandardCharsets.UTF_8));
+                Player newPlayer = new Player();
+                newPlayer.setSurname(nom);
+                newPlayer.setFirstName(prenom);
+                newPlayer.setEmail(email);
+                newPlayer.setPassword(motDePasse1.getBytes(StandardCharsets.UTF_8));
 
-                boolean succes = inscriptionJoueursUIService.creerNouveauCompteJoueur(nouveauJoueur);
+                boolean succes = inscriptionJoueursUIService.creerNouveauCompteJoueur(newPlayer);
 
                 if (succes) {
                     ajouterMessageInfo("sign.in.successful", null, null);

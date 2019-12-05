@@ -5,11 +5,11 @@
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window apply="org.zkoss.bind.BindComposer"
-        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.CreationMatchViewModel')">
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.MatchRegistryViewModel')">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul"/>
   <div id="content">
-    <vlayout visible="@load(vm.codeMatch eq null)">
+    <vlayout visible="@load(vm.matchCode eq null)">
       <grid>
         <auxhead>
           <auxheader label="${c:l('new.match.details.title')}" colspan="3" rowspan="1"/>
@@ -23,7 +23,7 @@
           <row>
             <cell>${c:l('new.match.date')}</cell>
             <cell>
-              <datebox id="dtbDateMatch" value="@save(vm.date)"
+              <datebox id="dtbMatchDate" value="@save(vm.date)"
                        constraint="no empty" format="@load(vm.dateFormat.toPattern())" width="90%"/>
             </cell>
             <cell/>
@@ -31,7 +31,7 @@
           <row>
             <cell>${c:l('new.match.players.min')}</cell>
             <cell>
-              <spinner id="spbNbMinJoueurs" value="@save(vm.nbMinJoueurs)"
+              <spinner id="spbNumPlayersMin" value="@save(vm.numPlayersMin)"
                        constraint="no empty, no negative" width="90%"/>
             </cell>
             <cell/>
@@ -39,7 +39,7 @@
           <row>
             <cell>${c:l('new.match.players.max')}</cell>
             <cell>
-              <spinner id="spbNbMaxJoueurs" value="@save(vm.nbMaxJoueurs)"
+              <spinner id="spbNumPlayersMax" value="@save(vm.numPlayers)"
                        constraint="no negative" width="90%"/>
             </cell>
             <cell/>
@@ -51,13 +51,13 @@
                         constraint="no empty"
                         autodrop="true" width="90%">
                 <template name="model">
-                  <comboitem label="@load(each.nom)" tooltiptext="@load(each.adresse)"/>
+                  <comboitem label="@load(each.name)" tooltiptext="@load(each.address)"/>
                 </template>
               </combobox>
             </cell>
             <cell>
-              <button id="btnNouveauSite" label="${c:l('new.match.place.new')}" image="/images/22x22/list-add.png"
-                      onClick="@command('activerCreationSite')"
+              <button id="btnNewSite" label="${c:l('new.match.place.new')}" image="/images/22x22/list-add.png"
+                      onClick="@command('enableSiteRegistry')"
                       tooltiptext="${c:l('new.match.place.new')}"/>
             </cell>
           </row>
@@ -66,11 +66,11 @@
       <separator/>
       <div>
         <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/"/>
-        <button id="btnContinue" onClick="@command('creerMatch')"
+        <button id="btnContinue" onClick="@command('saveMatch')"
                 label="${c:l('button.continue')}" image="/images/22x22/go-next.png"/>
       </div>
     </vlayout>
-    <vlayout visible="@load(vm.codeMatch ne null)">
+    <vlayout visible="@load(vm.matchCode ne null)">
       <grid>
         <columns>
           <column width="70%"/>
@@ -79,7 +79,7 @@
         <rows>
           <row>
             <label value="${c:l('new.match.success')}"/>
-            <label value="@load(vm.codeMatch)" style="font-weight:bold"/>
+            <label value="@load(vm.matchCode)" style="font-weight:bold"/>
           </row>
           <row>
             <cell colspan="2">

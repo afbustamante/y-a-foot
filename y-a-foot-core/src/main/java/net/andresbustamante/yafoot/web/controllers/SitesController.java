@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-import static net.andresbustamante.yafoot.web.util.RestConstants.ID_JOUEUR;
+import static net.andresbustamante.yafoot.web.util.RestConstants.PLAYER_ID;
 
 /**
  * @author andresbustamante
@@ -36,7 +36,7 @@ public class SitesController {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Response getSitesJoueur(@QueryParam(ID_JOUEUR) Integer idJoueur) {
+    public Response getSitesJoueur(@QueryParam(PLAYER_ID) Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur,
                     new Contexte());

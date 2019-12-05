@@ -12,7 +12,7 @@ import net.andresbustamante.yafoot.model.Joueur;
 public interface RechercheJoueursService {
 
     /**
-     * Chercher un joueur par son adresse mail unique
+     * Chercher un joueur par son address mail unique
      *
      * @param email Adresse mail à chercher
      * @param contexte

@@ -5,7 +5,7 @@
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window apply="org.zkoss.bind.BindComposer"
-        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.InscriptionJoueurViewModel')">
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.PlayerRegistryViewModel')">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul" />
   <div id="content">
@@ -22,14 +22,14 @@
           <row>
             <cell sclass="row-title">${c:l('sign.in.first.name')}</cell>
             <cell>
-              <textbox id="txtFirstName" width="90%" value="@save(vm.prenom)"
+              <textbox id="txtFirstName" width="90%" value="@save(vm.firstName)"
                        constraint="no empty: ${c:l('sign.in.first.name.required')}"/>
             </cell>
           </row>
           <row>
             <cell sclass="row-title">${c:l('sign.in.surname')}</cell>
             <cell>
-              <textbox id="txtSurname" width="90%" value="@save(vm.nom)"
+              <textbox id="txtSurname" width="90%" value="@save(vm.surname)"
                        constraint="no empty: ${c:l('sign.in.surname.required')}"/>
             </cell>
           </row>
@@ -43,14 +43,14 @@
           <row>
             <cell sclass="row-title">${c:l('sign.in.password')}</cell>
             <cell>
-              <textbox id="txtPassword1" width="90%" type="password" value="@save(vm.motDePasse1)"
+              <textbox id="txtPassword1" width="90%" type="password" value="@save(vm.password1)"
                        constraint="no empty: ${c:l('sign.in.password.required')}"/>
             </cell>
           </row>
           <row>
             <cell sclass="row-title">${c:l('sign.in.password.confirmation')}</cell>
             <cell>
-              <textbox id="txtPassword2" width="90%" type="password" value="@save(vm.motDePasse2)"
+              <textbox id="txtPassword2" width="90%" type="password" value="@save(vm.password2)"
                        constraint="no empty: ${c:l('sign.in.password.required')}"/>
             </cell>
           </row>
@@ -60,10 +60,10 @@
       <div>
         <button id="btnCancel" label="${c:l('button.cancel')}" image="/images/22x22/go-previous.png" href="/login.zul"/>
         <button id="btnContinue" label="${c:l('button.continue')}" image="/images/22x22/go-next.png"
-                onClick="@command('enregistrerUtilisateur')"/>
+                onClick="@command('saveUser')"/>
       </div>
     </vlayout>
-    <vlayout visible="@load(vm.inscrit)">
+    <vlayout visible="@load(vm.registered)">
       <grid>
         <rows>
           <row>

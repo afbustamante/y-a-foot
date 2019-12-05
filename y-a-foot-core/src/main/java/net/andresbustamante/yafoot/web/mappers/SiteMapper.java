@@ -8,9 +8,15 @@ import org.mapstruct.Mapping;
 @Mapper(config = DtoMapperConfig.class)
 public interface SiteMapper {
 
-    @Mapping(source = "numeroTelephone", target = "telephone")
+    @Mapping(source = "name", target = "nom")
+    @Mapping(source = "address", target = "adresse")
+    @Mapping(source = "phoneNumber", target = "telephone")
+    @Mapping(source = "location", target = "localisation")
     Site map(net.andresbustamante.yafoot.model.xs.Site site);
 
-    @Mapping(source = "telephone", target = "numeroTelephone")
+    @Mapping(target = "name", source = "nom")
+    @Mapping(target = "address", source = "adresse")
+    @Mapping(target = "phoneNumber", source = "telephone")
+    @Mapping(target = "location", source = "localisation")
     net.andresbustamante.yafoot.model.xs.Site map(Site site);
 }

@@ -3,8 +3,8 @@ package net.andresbustamante.yafoot.web.controllers;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.model.xs.Contexte;
-import net.andresbustamante.yafoot.model.xs.Joueur;
+import net.andresbustamante.yafoot.model.xs.Player;
+import net.andresbustamante.yafoot.model.xs.UserContext;
 import net.andresbustamante.yafoot.services.GestionJoueursService;
 import net.andresbustamante.yafoot.services.RechercheJoueursService;
 import net.andresbustamante.yafoot.web.mappers.ContextMapper;
@@ -31,7 +31,7 @@ import static net.andresbustamante.yafoot.web.util.RestConstants.EMAIL;
  *
  * @author andresbustamante
  */
-@Path("/joueurs")
+@Path("/players")
 public class JoueursController extends AbstractController {
 
     @Autowired
@@ -46,26 +46,26 @@ public class JoueursController extends AbstractController {
     @Autowired
     private ContextMapper contextMapper;
 
-    @Value("${recherche.joueurs.email.service.path}")
+    @Value("${players.byemail.api.service.path}")
     private String pathRechercheJoueursParAdresseMail;
 
     private final Logger log = LoggerFactory.getLogger(JoueursController.class);
 
     /**
-     * @param joueur
+     * @param player
      * @return
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response inscrireJoueur(Joueur joueur) {
+    public Response inscrireJoueur(Player player) {
         try {
-            log.info("Demande de création d'un nouveau joueur avec l'adresse {}", joueur.getEmail());
-            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = playerMapper.map(joueur);
+            log.info("Demande de création d'un nouveau joueur avec l'address {}", player.getEmail());
+            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = playerMapper.map(player);
             boolean inscrit = gestionJoueursService.inscrireJoueur(nouveauJoueur,
-                    contextMapper.map(new Contexte()));
+                    contextMapper.map(new UserContext()));
 
             if (inscrit) {
-                String location = MessageFormat.format(pathRechercheJoueursParAdresseMail, joueur.getEmail());
+                String location = MessageFormat.format(pathRechercheJoueursParAdresseMail, player.getEmail());
                 return Response.created(getLocationURI(location)).build();
             } else {
                 return Response.status(BAD_REQUEST).build();
@@ -77,19 +77,19 @@ public class JoueursController extends AbstractController {
     }
 
     /**
-     * @param joueur
+     * @param player
      * @param request
      * @return
      */
     @PUT
     @Path("/{email}/email")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response actualiserJoueur(@PathParam(EMAIL) String email, Joueur joueur,
+    public Response actualiserJoueur(@PathParam(EMAIL) String email, Player player,
                                      @Context HttpServletRequest request) {
         try {
             log.info("Mise à jour des données du joueur {}", email);
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            boolean succes = gestionJoueursService.actualiserJoueur(playerMapper.map(joueur), contexte);
+            boolean succes = gestionJoueursService.actualiserJoueur(playerMapper.map(player), contexte);
             return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);

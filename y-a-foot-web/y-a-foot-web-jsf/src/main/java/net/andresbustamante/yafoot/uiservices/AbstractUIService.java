@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.uiservices;
 
-import net.andresbustamante.yafoot.model.xs.Contexte;
-import net.andresbustamante.yafoot.model.xs.Joueur;
+import net.andresbustamante.yafoot.model.xs.UserContext;
+import net.andresbustamante.yafoot.model.xs.Player;
 import net.andresbustamante.yafoot.util.ConfigProperties;
 import net.andresbustamante.yafoot.util.WebConstants;
 
@@ -21,42 +21,42 @@ public abstract class AbstractUIService {
 
     protected static final String BASE_URI = ConfigProperties.getValue("rest.services.uri");
 
-    private Contexte contexte;
+    private UserContext userContext;
 
-    public Contexte getContexte() {
-        if (contexte == null) {
+    public UserContext getUserContext() {
+        if (userContext == null) {
             Object obj = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(WebConstants
                     .CONTEXTE);
             if (obj != null) {
-                contexte = (Contexte) obj;
+                userContext = (UserContext) obj;
             } else {
                 Principal user = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
 
                 if (user != null) {
                     String email = user.getName();
 
-                    Joueur joueur = chercherJoueur(email);
+                    Player player = chercherJoueur(email);
 
-                    if (joueur != null) {
-                        contexte = new Contexte();
-                        contexte.setUtilisateur(joueur);
+                    if (player != null) {
+                        userContext = new UserContext();
+                        userContext.setUser(player);
                     }
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(
-                            WebConstants.CONTEXTE, contexte);
+                            WebConstants.CONTEXTE, userContext);
                 }
             }
         }
-        return contexte;
+        return userContext;
     }
 
     protected Locale getLocaleUtilisateur() {
         return FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     }
 
-    private Joueur chercherJoueur(String email) {
+    private Player chercherJoueur(String email) {
         Client client = ClientBuilder.newClient();
         WebTarget resource = client.target(BASE_URI).path(ConfigProperties
-                .getValue("recherche.joueurs.service.path")).path(MessageFormat.format("{0}/email", email));
-        return resource.request(MediaType.APPLICATION_XML).get(Joueur.class);
+                .getValue("players.api.service.path")).path(MessageFormat.format("{0}/email", email));
+        return resource.request(MediaType.APPLICATION_XML).get(Player.class);
     }
 }

@@ -30,8 +30,8 @@ public class OrganisationMatchsUIService extends AbstractUIService {
     public List<Site> chercherSites() throws ApplicationException {
         try {
             Client client = ClientBuilder.newClient();
-            WebTarget webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("recherche.sites.service.path"));
-            Sites sites = webTarget.queryParam("idJoueur", getContexte().getUtilisateur().getId()).request(
+            WebTarget webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("sites.api.service.path"));
+            Sites sites = webTarget.queryParam("playerId", getUserContext().getUser().getId()).request(
                     MediaType.APPLICATION_XML).get(Sites.class);
 
             return (sites != null) ? sites.getSite() : Collections.emptyList();
@@ -51,9 +51,9 @@ public class OrganisationMatchsUIService extends AbstractUIService {
     public String creerMatch(Match match) throws ApplicationException {
         try {
             Client client = ClientBuilder.newClient();
-            WebTarget webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("gestion.matchs.service.path"));
+            WebTarget webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("matches.api.service.path"));
             String location = webTarget.request(MediaType.APPLICATION_JSON).header(Contexte.UTILISATEUR,
-                    getContexte().getUtilisateur().getId()).post(Entity.json(match)).getLocation().getPath();
+                    getUserContext().getUser().getId()).post(Entity.json(match)).getLocation().getPath();
             return location.substring(location.lastIndexOf('/'));
         } catch (ResponseProcessingException ex) {
             log.error("Erreur lors de la création du match", ex);

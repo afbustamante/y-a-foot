@@ -20,12 +20,12 @@ import java.util.List;
 
 @Component
 @SessionScope
-public class OrganisationMatchsUIService extends AbstractUIService {
+public class MatchsRegistryUIService extends AbstractUIService {
 
     @Value("${api.rest.sites.services.path}")
     private String sitesServicesPath;
 
-    @Value("${api.rest.matchs.services.path}")
+    @Value("${api.rest.matches.services.path}")
     private String matchsServicesPath;
 
     /**
@@ -34,18 +34,18 @@ public class OrganisationMatchsUIService extends AbstractUIService {
      * @return Liste de sites trouvés dans l'historique de l'utilisateur connecté
      * @throws ApplicationException
      */
-    public List<Site> chercherSites() throws ApplicationException {
+    public List<Site> findSites() throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(sitesServicesPath)
-                    .queryParam("pid", getContexte().getUtilisateur().getId());
+                    .queryParam("pid", getUserContext().getUser().getId());
 
             ResponseEntity<Sites> response = restTemplate.getForEntity(builder.toUriString(), Sites.class);
             return (response.getBody() != null) ? response.getBody().getSite() : Collections.emptyList();
         } catch (RestClientException e) {
-            throw new ApplicationException("Erreur lors de la recherche des sites pour un joueur", e);
+            throw new ApplicationException("Erreur lors de la recherche des sites pour un player", e);
         }
     }
 
@@ -56,7 +56,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
      * @return Le code du nouveau match
      * @throws ApplicationException
      */
-    public String creerMatch(Match match) throws ApplicationException {
+    public String saveMatch(Match match) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -85,7 +85,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
      * @param match Match à annuler
      * @throws ApplicationException
      */
-    public void annulerMatch(Match match) throws ApplicationException {
+    public void cancelMatch(Match match) throws ApplicationException {
         throw new UnsupportedOperationException("To be done");
     }
 }

@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Contexte;
-import net.andresbustamante.yafoot.model.xs.Joueur;
+import net.andresbustamante.yafoot.model.xs.Player;
+import net.andresbustamante.yafoot.model.xs.UserContext;
 import net.andresbustamante.yafoot.web.util.WebConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -33,42 +33,42 @@ public abstract class AbstractUIService {
     @Value("${api.rest.services.url}")
     protected String backendServicesUrl;
 
-    @Value("${api.rest.joueurs.services.path}")
-    private String joueursServicesPath;
+    @Value("${api.rest.players.services.path}")
+    private String playersServicesPath;
 
-    @Value("${api.rest.joueurs.services.email.path}")
-    private String joueurParEmailServicesPath;
+    @Value("${api.rest.players.byemail.services.path}")
+    private String playersByEmailServicesPath;
 
-    private Contexte contexte;
+    private UserContext userContext;
 
     /**
      * Récupérer les informations du contexte de l'utilisateur
      *
      * @return
-     * @throws ApplicationException Si un problème parvient lors de la récupération des infos du joueur depuis le serveur
+     * @throws ApplicationException Si un problème parvient lors de la récupération des infos du player depuis le serveur
      */
-    protected Contexte getContexte() throws ApplicationException {
-        if (contexte == null) {
+    protected UserContext getUserContext() throws ApplicationException {
+        if (userContext == null) {
             Session session = Sessions.getCurrent();
             Object obj = session.getAttribute(WebConstants.CONTEXTE);
 
             if (obj != null) {
-                contexte = (Contexte) obj;
+                userContext = (UserContext) obj;
             } else {
                 SecurityContext securityContext = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
                 UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
                 String email = userDetails.getUsername();
 
-                Joueur joueur = chercherJoueur(email);
+                Player player = findPlayerByEmail(email);
 
-                if (joueur != null) {
-                    contexte = new Contexte();
-                    contexte.setUtilisateur(joueur);
-                    session.setAttribute(WebConstants.CONTEXTE, contexte);
+                if (player != null) {
+                    userContext = new UserContext();
+                    userContext.setUser(player);
+                    session.setAttribute(WebConstants.CONTEXTE, userContext);
                 }
             }
         }
-        return contexte;
+        return userContext;
     }
 
     /**
@@ -78,7 +78,7 @@ public abstract class AbstractUIService {
      */
     protected MultiValueMap<String, String> getHeadersMap() throws ApplicationException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.put(UTILISATEUR, Collections.singletonList(getContexte().getUtilisateur().getId().toString()));
+        headers.put(UTILISATEUR, Collections.singletonList(getUserContext().getUser().getId().toString()));
         headers.put(TZ, Collections.singletonList("CET")); // TODO Injecter la timezone à partir de la session
         return headers;
     }
@@ -90,14 +90,14 @@ public abstract class AbstractUIService {
      * @return Informations du joueur
      * @throws ApplicationException Si un problème parvient lors des échanges avec le serveur
      */
-    private Joueur chercherJoueur(String email) throws ApplicationException {
+    private Player findPlayerByEmail(String email) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(joueursServicesPath)
-                    .path(MessageFormat.format(joueurParEmailServicesPath, email));
-            ResponseEntity<Joueur> response = restTemplate.getForEntity(builder.toUriString(), Joueur.class);
+                    .path(playersServicesPath)
+                    .path(MessageFormat.format(playersByEmailServicesPath, email));
+            ResponseEntity<Player> response = restTemplate.getForEntity(builder.toUriString(), Player.class);
             return response.getBody();
         } catch (RestClientException e) {
             throw new ApplicationException("Erreur lors de la récupération des informations d'un joueur", e);

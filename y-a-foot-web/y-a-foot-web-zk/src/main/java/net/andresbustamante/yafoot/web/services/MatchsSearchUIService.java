@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Matchs;
+import net.andresbustamante.yafoot.model.xs.Matches;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,18 +21,18 @@ import java.text.MessageFormat;
  */
 @Component
 @SessionScope
-public class RechercheMatchsUIService extends AbstractUIService {
+public class MatchsSearchUIService extends AbstractUIService {
 
-    @Value("${api.rest.joueurs.services.path}")
+    @Value("${api.rest.players.services.path}")
     private String joueursServicesPath;
 
-    @Value("${api.rest.matchs.services.code.path}")
+    @Value("${api.rest.matches.bycode.services.path}")
     private String matchsParCodeServicesPath;
 
-    @Value("${api.rest.matchs.services.path}")
+    @Value("${api.rest.matches.services.path}")
     private String matchsServicesPath;
 
-    public Match chercherMatchParCode(String codeMatch) throws ApplicationException {
+    public Match findMatchByCode(String codeMatch) throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -48,18 +48,18 @@ public class RechercheMatchsUIService extends AbstractUIService {
         }
     }
 
-    public Matchs chercherMatchsJoueur() throws ApplicationException {
+    public Matches findMatchsForPlayer() throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(matchsServicesPath)
-                    .queryParam("pid", getContexte().getUtilisateur().getId());
+                    .queryParam("pid", getUserContext().getUser().getId());
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);
 
-            ResponseEntity<Matchs> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params, Matchs.class);
+            ResponseEntity<Matches> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params, Matches.class);
 
             return (response.getStatusCode().is2xxSuccessful()) ? response.getBody() : null;
         } catch (RestClientException e) {

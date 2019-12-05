@@ -7,7 +7,7 @@ import java.time.ZoneId;
  */
 public class Contexte {
 
-    public static final String UTILISATEUR = "ctxUser";
+    public static final String UTILISATEUR = "userCtx";
     public static final String TZ = "tz";
 
     private Integer idUtilisateur;

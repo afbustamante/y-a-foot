@@ -1,13 +1,13 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.model.xs.Car;
+import net.andresbustamante.yafoot.model.xs.Registration;
 import net.andresbustamante.yafoot.web.enums.MatchJoinModeEnum;
-import net.andresbustamante.yafoot.model.xs.Inscription;
 import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Voiture;
 import net.andresbustamante.yafoot.web.services.CarsManagementUIService;
-import net.andresbustamante.yafoot.web.services.InscriptionMatchsUIService;
-import net.andresbustamante.yafoot.web.services.RechercheMatchsUIService;
+import net.andresbustamante.yafoot.web.services.MatchsJoiningUIService;
+import net.andresbustamante.yafoot.web.services.MatchsSearchUIService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,9 @@ import java.util.List;
 
 import static net.andresbustamante.yafoot.web.util.WebConstants.VOITURES;
 
-public class InscriptionMatchViewModel extends AbstractViewModel {
+public class MatchJoiningViewModel extends AbstractViewModel {
 
-    private final Logger log = LoggerFactory.getLogger(InscriptionMatchViewModel.class);
+    private final Logger log = LoggerFactory.getLogger(MatchJoiningViewModel.class);
 
     private Match match;
 
@@ -37,17 +37,17 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
 
     private boolean carProposalEnabled;
 
-    private ListModel<Voiture> carsListModel;
+    private ListModel<Car> carsListModel;
 
     private Window winNouvelleVoiture;
 
-    private Voiture car;
+    private Car car;
 
     @WireVariable
-    private InscriptionMatchsUIService inscriptionMatchsUIService;
+    private MatchsJoiningUIService matchsJoiningUIService;
 
     @WireVariable
-    private RechercheMatchsUIService rechercheMatchsUIService;
+    private MatchsSearchUIService matchsSearchUIService;
 
     @WireVariable
     private CarsManagementUIService carsManagementUIService;
@@ -57,7 +57,7 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
     public void init() {
         try {
             String codeMatch = Executions.getCurrent().getParameter("code");
-            match = rechercheMatchsUIService.chercherMatchParCode(codeMatch);
+            match = matchsSearchUIService.findMatchByCode(codeMatch);
 
             if (match == null) {
                 Messagebox.show(Labels.getLabel("match.join.not.found"),
@@ -68,15 +68,15 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
 
             processJoinMode(Executions.getCurrent().getParameter("mode"));
 
-            List<Inscription> inscriptions = (match.getInscriptions().getInscription() != null) ?
-                    match.getInscriptions().getInscription() : Collections.emptyList();
+            List<Registration> registrations = (match.getRegistrations().getRegistration() != null) ?
+                    match.getRegistrations().getRegistration() : Collections.emptyList();
 
-            String nomUtilisateur = getNomUtilisateurActif();
+            String nomUtilisateur = getActiveUsername();
             playerAlreadyListed = false;
 
-            if (CollectionUtils.isNotEmpty(inscriptions) && nomUtilisateur != null) {
-                for (Inscription i : inscriptions) {
-                    if (nomUtilisateur.equalsIgnoreCase(i.getJoueur().getEmail())) {
+            if (CollectionUtils.isNotEmpty(registrations) && nomUtilisateur != null) {
+                for (Registration i : registrations) {
+                    if (nomUtilisateur.equalsIgnoreCase(i.getPlayer().getEmail())) {
                         playerAlreadyListed = true;
                         break;
                     }
@@ -96,7 +96,7 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
     public void joinMatch() {
         switch (modeInscription) {
             case JOIN_WITH_CAR:
-                inscrireJoueurMatch(match, car);
+                joinMatch(match, car);
                 break;
             case JOIN_WITHOUT_CAR:
                 // TODO Implémenter inscription sans voiture
@@ -116,9 +116,9 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
     @GlobalCommand
     @NotifyChange("carsListModel")
     public void refreshCarList() {
-        List<Voiture> voitures = (List<Voiture>) Executions.getCurrent().getSession().getAttribute(VOITURES);
+        List<Car> cars = (List<Car>) Executions.getCurrent().getSession().getAttribute(VOITURES);
 
-        carsListModel = new ListModelArray<>(voitures);
+        carsListModel = new ListModelArray<>(cars);
 
         if (winNouvelleVoiture != null) {
             winNouvelleVoiture.detach();
@@ -133,15 +133,15 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
         return carProposalEnabled;
     }
 
-    public ListModel<Voiture> getCarsListModel() {
+    public ListModel<Car> getCarsListModel() {
         return carsListModel;
     }
 
-    public Voiture getCar() {
+    public Car getCar() {
         return car;
     }
 
-    public void setCar(Voiture car) {
+    public void setCar(Car car) {
         this.car = car;
     }
 
@@ -149,7 +149,7 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
         carProposalEnabled = true;
 
         try {
-            List<Voiture> cars = carsManagementUIService.findCarsByUser();
+            List<Car> cars = carsManagementUIService.findCarsByUser();
 
             if (cars != null) {
                 carsListModel = new ListModelArray<>(cars);
@@ -164,9 +164,9 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
         carsListModel = null;
     }
 
-    private void inscrireJoueurMatch(Match match, Voiture voiture) {
+    private void joinMatch(Match match, Car car) {
         try {
-            inscriptionMatchsUIService.inscrireJoueurMatch(match, voiture);
+            matchsJoiningUIService.registerPlayerToMatch(match, car);
 
             Messagebox.show(Labels.getLabel("match.join.success.detail.text"),
                     Labels.getLabel(DIALOG_INFORMATION_TITLE),
@@ -194,7 +194,7 @@ public class InscriptionMatchViewModel extends AbstractViewModel {
                     break;
                 case JOIN_ONLY:
                     disableCarProposal();
-                    inscrireJoueurMatch(match, null);
+                    joinMatch(match, null);
                     break;
                 default:
                     disableCarProposal();

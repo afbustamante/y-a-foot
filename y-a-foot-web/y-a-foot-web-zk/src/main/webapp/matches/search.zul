@@ -5,7 +5,7 @@
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window apply="org.zkoss.bind.BindComposer"
-        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.RechercheMatchViewModel')">
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.MatchSearchViewModel')">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul"/>
   <div id="content">
@@ -27,7 +27,7 @@
                        constraint="no empty" width="90%"/>
             </cell>
             <cell>
-              <button id="btnSearch" onClick="@command('chercherMatch')"
+              <button id="btnSearch" onClick="@command('findMatch')"
                       label="${c:l('match.search.button.search')}"
                       image="/images/22x22/system-search.png"/>
             </cell>
@@ -54,7 +54,7 @@
               <label value="${c:l('match.search.result.where')}"/>
             </cell>
             <cell>
-              <label value="@load(vm.match.site.nom)"/>
+              <label value="@load(vm.match.site.name)"/>
               <separator/>
               <label value="@load(vm.match.site.adresse)"/>
             </cell>
@@ -69,11 +69,11 @@
               <label value="${c:l('match.search.result.who')}"/>
             </cell>
             <cell>
-              <listbox id="lsbPlayers" model="@bind(vm.inscriptionsListModel)"
+              <listbox id="lsbPlayers" model="@bind(vm.registrationsListModel)"
                        emptyMessage="${c:l('match.search.result.who.nobody')}">
                 <template name="model">
                   <listitem>
-                    <listcell label="${each.joueur.prenom}" />
+                    <listcell label="${each.player.firstName}" />
                   </listitem>
                 </template>
               </listbox>
@@ -84,7 +84,7 @@
       </grid>
       <separator/>
       <hlayout visible="@load(vm.matchFound)">
-        <button id="btnJoin" visible="@load(vm.inscriptionPossible)" onClick="@command('showMatchJoinDialog')"
+        <button id="btnJoin" visible="@load(vm.registrationPossible)" onClick="@command('showMatchJoinDialog')"
                 label="${c:l('match.search.button.join')}" image="/images/22x22/go-next.png"/>
       </hlayout>
     </vlayout>

@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.xs.Inscription;
+import net.andresbustamante.yafoot.model.xs.Registration;
 import net.andresbustamante.yafoot.services.GestionMatchsService;
 import net.andresbustamante.yafoot.services.RechercheMatchsService;
 import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
@@ -21,14 +21,14 @@ import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static net.andresbustamante.yafoot.web.util.RestConstants.CODE_MATCH;
+import static net.andresbustamante.yafoot.web.util.RestConstants.MATCH_CODE;
 
 /**
  * Web Service REST pour la gestion des inscriptions aux matches
  *
  * @author andresbustamante
  */
-@Path("/inscriptions")
+@Path("/registrations")
 public class InscriptionsController extends AbstractController {
 
     @Autowired
@@ -44,19 +44,19 @@ public class InscriptionsController extends AbstractController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response inscrireJoueurMatch(Inscription inscription,
+    public Response inscrireJoueurMatch(Registration registration,
                                         @Context HttpServletRequest request) {
         log.debug("Traitement de nouvelle demande d'inscription");
 
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            net.andresbustamante.yafoot.model.Inscription ins = registrationMapper.map(inscription);
+            net.andresbustamante.yafoot.model.Inscription ins = registrationMapper.map(registration);
             boolean succes = gestionMatchsService.inscrireJoueurMatch(ins.getJoueur(), ins.getMatch(),
                     ins.getVoiture(), contexte);
 
             if (succes) {
                 log.info("Le joueur a ete inscrit");
-                String location = MessageFormat.format("/joueurs/{0}", ins.getJoueur().getEmail());
+                String location = MessageFormat.format("/players/{0}", ins.getJoueur().getEmail());
                 return Response.created(getLocationURI(location)).build();
             } else {
                 log.warn("Le joueur n'a pas pu etre inscrit");
@@ -72,20 +72,20 @@ public class InscriptionsController extends AbstractController {
     }
 
     @DELETE
-    @Path("/{codeMatch}")
-    public Response desinscrireJoueurMatch(@PathParam(CODE_MATCH) String codeMatch,
+    @Path("/{matchCode}")
+    public Response desinscrireJoueurMatch(@PathParam(MATCH_CODE) String matchCode,
                                            @Context HttpServletRequest request) {
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
 
-            Match match = rechercheMatchsService.chercherMatchParCode(codeMatch, contexte);
+            Match match = rechercheMatchsService.chercherMatchParCode(matchCode, contexte);
 
             if (match != null) {
                 Joueur joueur = new Joueur(contexte.getIdUtilisateur());
                 gestionMatchsService.desinscrireJoueurMatch(joueur, match, contexte);
                 return Response.noContent().build();
             } else {
-                log.warn("Désinscription demandée sur un match non existant avec le code {}", codeMatch);
+                log.warn("Désinscription demandée sur un match non existant avec le code {}", matchCode);
                 return Response.status(BAD_REQUEST).build();
             }
         } catch (DatabaseException e) {

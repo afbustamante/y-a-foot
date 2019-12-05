@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.web.model;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Site;
-import net.andresbustamante.yafoot.web.services.OrganisationMatchsUIService;
+import net.andresbustamante.yafoot.web.services.MatchsRegistryUIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.Command;
@@ -27,33 +27,33 @@ import static net.andresbustamante.yafoot.web.util.WebConstants.SITES;
 /**
  * @author andresbustamante
  */
-public class CreationMatchViewModel extends AbstractViewModel {
+public class MatchRegistryViewModel extends AbstractViewModel {
 
     private Date date;
 
-    private Integer nbMinJoueurs;
+    private Integer numPlayersMin;
 
-    private Integer nbMaxJoueurs;
+    private Integer numPlayersMax;
 
     private Site site;
 
-    private final Logger log = LoggerFactory.getLogger(CreationMatchViewModel.class);
+    private final Logger log = LoggerFactory.getLogger(MatchRegistryViewModel.class);
 
     @WireVariable
-    private OrganisationMatchsUIService organisationMatchsUIService;
+    private MatchsRegistryUIService matchsRegistryUIService;
 
     private ListModel<Site> sitesListModel;
 
-    private String codeMatch;
+    private String matchCode;
 
-    private boolean creationSiteActive;
+    private boolean siteRegistryEnabled;
 
     private Window winNouveauSite;
 
     @Init
     public void init() {
         try {
-            List<Site> sites = organisationMatchsUIService.chercherSites();
+            List<Site> sites = matchsRegistryUIService.findSites();
 
             if (sites != null) {
                 sitesListModel = new ListModelArray<>(sites);
@@ -64,9 +64,9 @@ public class CreationMatchViewModel extends AbstractViewModel {
     }
 
     @Command
-    @NotifyChange("creationSiteActive")
-    public void activerCreationSite() {
-        creationSiteActive = true;
+    @NotifyChange("siteRegistryEnabled")
+    public void enableSiteRegistration() {
+        siteRegistryEnabled = true;
 
         winNouveauSite = (Window) Executions.createComponents("/sites/dialog_new.zul", null, null);
         winNouveauSite.setClosable(true);
@@ -75,7 +75,7 @@ public class CreationMatchViewModel extends AbstractViewModel {
 
     @GlobalCommand
     @NotifyChange("sitesListModel")
-    public void rafraichirListeSites() {
+    public void refreshSitesList() {
         List<Site> sites = (List<Site>) Executions.getCurrent().getSession().getAttribute(SITES);
         sitesListModel = new ListModelArray<>(sites);
 
@@ -85,10 +85,10 @@ public class CreationMatchViewModel extends AbstractViewModel {
     }
 
     @Command
-    @NotifyChange("codeMatch")
-    public void creerMatch() {
+    @NotifyChange("matchCode")
+    public void saveMatch() {
         try {
-            if (isCreationMatchImpossible()) {
+            if (isMatchRegistryImpossible()) {
                 return;
             }
 
@@ -97,11 +97,11 @@ public class CreationMatchViewModel extends AbstractViewModel {
 
             Match match = new Match();
             match.setDate(dateMatch);
-            match.setNbJoueursMin(nbMinJoueurs);
-            match.setNbJoueursMax(nbMaxJoueurs);
+            match.setNumPlayersMin(numPlayersMin);
+            match.setNumPlayersMax(numPlayersMax);
             match.setSite(site);
 
-            codeMatch = organisationMatchsUIService.creerMatch(match);
+            matchCode = matchsRegistryUIService.saveMatch(match);
 
             if (Executions.getCurrent().getSession().hasAttribute(SITES)) {
                 // Un site a été ajouté. Nettoyer la session
@@ -123,20 +123,20 @@ public class CreationMatchViewModel extends AbstractViewModel {
         this.date = date;
     }
 
-    public Integer getNbMinJoueurs() {
-        return nbMinJoueurs;
+    public Integer getNumPlayersMin() {
+        return numPlayersMin;
     }
 
-    public void setNbMinJoueurs(Integer nbMinJoueurs) {
-        this.nbMinJoueurs = nbMinJoueurs;
+    public void setNumPlayersMin(Integer numPlayersMin) {
+        this.numPlayersMin = numPlayersMin;
     }
 
-    public Integer getNbMaxJoueurs() {
-        return nbMaxJoueurs;
+    public Integer getNumPlayersMax() {
+        return numPlayersMax;
     }
 
-    public void setNbMaxJoueurs(Integer nbMaxJoueurs) {
-        this.nbMaxJoueurs = nbMaxJoueurs;
+    public void setNumPlayersMax(Integer numPlayersMax) {
+        this.numPlayersMax = numPlayersMax;
     }
 
     public Site getSite() {
@@ -151,15 +151,15 @@ public class CreationMatchViewModel extends AbstractViewModel {
         return sitesListModel;
     }
 
-    public String getCodeMatch() {
-        return codeMatch;
+    public String getMatchCode() {
+        return matchCode;
     }
 
-    public boolean isCreationSiteActive() {
-        return creationSiteActive;
+    public boolean isSiteRegistryEnabled() {
+        return siteRegistryEnabled;
     }
 
-    public boolean isCreationMatchImpossible() {
-        return (date == null || nbMinJoueurs == null || site == null);
+    public boolean isMatchRegistryImpossible() {
+        return (date == null || numPlayersMin == null || site == null);
     }
 }

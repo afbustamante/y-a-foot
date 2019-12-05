@@ -4,8 +4,8 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
-import net.andresbustamante.yafoot.model.xs.Voiture;
-import net.andresbustamante.yafoot.model.xs.Voitures;
+import net.andresbustamante.yafoot.model.xs.Cars;
+import net.andresbustamante.yafoot.model.xs.Car;
 import net.andresbustamante.yafoot.services.GestionVoituresService;
 import net.andresbustamante.yafoot.services.RechercheVoituresService;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
@@ -27,9 +27,9 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 
-import static net.andresbustamante.yafoot.web.util.RestConstants.ID_JOUEUR;
+import static net.andresbustamante.yafoot.web.util.RestConstants.PLAYER_ID;
 
-@Path("/voitures")
+@Path("/cars")
 public class VoituresController extends AbstractController {
 
     @Value("api.public.url")
@@ -48,15 +48,15 @@ public class VoituresController extends AbstractController {
 
     @GET
     @Path("")
-    public Response loadCarList(@QueryParam(ID_JOUEUR) Integer idJoueur) {
+    public Response loadCarList(@QueryParam(PLAYER_ID) Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Voiture> cars =
                     rechercheVoituresService.chargerVoituresJoueur(new Joueur(idJoueur), new Contexte());
 
-            Voitures carsResponse = new Voitures();
+            Cars carsResponse = new Cars();
 
             if (CollectionUtils.isNotEmpty(cars)) {
-                carsResponse.getVoiture().addAll(carMapper.map(cars));
+                carsResponse.getCar().addAll(carMapper.map(cars));
             }
             return Response.ok(carsResponse).build();
         } catch (DatabaseException e) {
@@ -67,11 +67,11 @@ public class VoituresController extends AbstractController {
 
     @POST
     @Path("")
-    public Response addNewCar(@Valid Voiture car, @Context HttpServletRequest request) {
+    public Response addNewCar(@Valid Car car, @Context HttpServletRequest request) {
         try {
             int carId = gestionVoituresService.enregistrerVoiture(carMapper.map(car), ContexteUtils.getContexte(request));
 
-            return Response.created(URI.create(apiPublicUrl + "/voitures/" + carId)).build();
+            return Response.created(URI.create(apiPublicUrl + "/cars/" + carId)).build();
         } catch (DatabaseException e) {
             String message = "Database exception when registering a new car";
             log.error(message, e);

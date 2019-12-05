@@ -44,10 +44,10 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
             utilisateurDAO.creerUtilisateur(joueur, RolesEnum.JOUEUR);
             // Créer le joueur en base de données
             joueurDAO.creerJoueur(joueur);
-            log.info("Nouveau joueur enregistré avec l'adresse {}", joueur.getEmail());
+            log.info("Nouveau joueur enregistré avec l'address {}", joueur.getEmail());
             return true;
         } else {
-            log.info("Rejet : Joueur existant avec l'adresse {}", joueur.getEmail());
+            log.info("Rejet : Joueur existant avec l'address {}", joueur.getEmail());
             return false;
         }
     }
@@ -79,10 +79,10 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
                 utilisateurDAO.actualiserUtilisateur(joueur);
             }
             joueurDAO.actualiserJoueur(joueurExistant);
-            log.info("Joueur mis à jour avec l'adresse {}", joueur.getEmail());
+            log.info("Joueur mis à jour avec l'address {}", joueur.getEmail());
             return true;
         } else {
-            log.info("Rejet : Joueur inexistant avec l'adresse {}", joueur.getEmail());
+            log.info("Rejet : Joueur inexistant avec l'address {}", joueur.getEmail());
             return false;
         }
     }
