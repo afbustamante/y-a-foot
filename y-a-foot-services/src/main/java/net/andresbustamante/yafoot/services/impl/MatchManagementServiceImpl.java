@@ -6,7 +6,7 @@ import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.dao.VoitureDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
-import net.andresbustamante.yafoot.services.GestionMatchsService;
+import net.andresbustamante.yafoot.services.MatchManagementService;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
  * @author andresbustamante
  */
 @Service
-public class GestionMatchsServiceImpl implements GestionMatchsService {
+public class MatchManagementServiceImpl implements MatchManagementService {
 
     private static final Integer NOUVEL_ID = -1;
     private static final Integer LONGUEUR_CODE = 10;
 
     private final RandomStringGenerator generateurCodes = new RandomStringGenerator.Builder().withinRange('A', 'Z').build();
 
-    private final Logger log = LoggerFactory.getLogger(GestionMatchsServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(MatchManagementServiceImpl.class);
 
     @Autowired
     private MatchDAO matchDAO;
@@ -41,7 +41,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
     @Transactional
     @Override
-    public boolean creerMatch(Match match, Contexte contexte) throws DatabaseException {
+    public boolean saveMatch(Match match, Contexte contexte) throws DatabaseException {
         String codeMatch;
         boolean codeDejaUtilise;
         do {
@@ -75,13 +75,13 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
         matchDAO.creerMatch(match);
         log.info("Nouveau match enregistré avec l'ID {}", match.getId());
 
-        inscrireJoueurMatch(createur, match, null, contexte);
+        joinMatch(createur, match, null, contexte);
         return true;
     }
 
     @Transactional
     @Override
-    public boolean inscrireJoueurMatch(Joueur joueur, Match match, Voiture voiture, Contexte contexte)
+    public boolean joinMatch(Joueur joueur, Match match, Voiture voiture, Contexte contexte)
             throws DatabaseException {
         if (joueur == null || joueur.getId() == null || match == null || match.getId() == null) {
             return false;
@@ -115,7 +115,7 @@ public class GestionMatchsServiceImpl implements GestionMatchsService {
 
     @Transactional
     @Override
-    public boolean desinscrireJoueurMatch(Joueur joueur, Match match, Contexte contexte) throws DatabaseException {
+    public boolean quitMatch(Joueur joueur, Match match, Contexte contexte) throws DatabaseException {
         if (joueur == null || joueur.getId() == null || match == null || match.getCode() == null) {
             return false;
         }

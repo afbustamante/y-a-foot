@@ -15,10 +15,10 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class GestionJoueursServiceImplTest extends AbstractServiceTest {
+class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private GestionJoueursServiceImpl gestionJoueursService;
+    private PlayerManagementServiceImpl gestionJoueursService;
 
     @Mock
     private JoueurDAO joueurDAO;
@@ -46,7 +46,7 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
 
         // When
         when(joueurDAO.isJoueurInscrit(anyString())).thenReturn(false);
-        boolean succes = gestionJoueursService.inscrireJoueur(joueur, ctx);
+        boolean succes = gestionJoueursService.savePlayer(joueur, ctx);
 
         // Then
         verify(joueurDAO, times(1)).isJoueurInscrit(anyString());
@@ -64,7 +64,7 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
 
         // When
         when(joueurDAO.isJoueurInscrit(anyString())).thenReturn(true);
-        boolean succes = gestionJoueursService.inscrireJoueur(joueur, ctx);
+        boolean succes = gestionJoueursService.savePlayer(joueur, ctx);
 
         // Then
         verify(joueurDAO, times(1)).isJoueurInscrit(anyString());
@@ -91,7 +91,7 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
 
         // When
         when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueurExistant);
-        boolean succes = gestionJoueursService.actualiserJoueur(joueurMaj, ctx);
+        boolean succes = gestionJoueursService.updatePlayer(joueurMaj, ctx);
 
         // Then
         verify(joueurDAO, times(1)).chercherJoueurParEmail(any());
@@ -114,7 +114,7 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
 
         // When
         when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueurExistant);
-        boolean succes = gestionJoueursService.actualiserJoueur(joueurMaj, ctx);
+        boolean succes = gestionJoueursService.updatePlayer(joueurMaj, ctx);
 
         // Then
         verify(joueurDAO, times(1)).chercherJoueurParEmail(any());
@@ -134,7 +134,7 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
 
         // When
         when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(null);
-        boolean succes = gestionJoueursService.actualiserJoueur(joueurMaj, ctx);
+        boolean succes = gestionJoueursService.updatePlayer(joueurMaj, ctx);
 
         // Then
         verify(joueurDAO, times(1)).chercherJoueurParEmail(any());
@@ -156,7 +156,7 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
         when(voitureDAO.supprimerVoitures(any())).thenReturn(1);
         when(joueurDAO.desactiverJoueur(any())).thenReturn(1);
 
-        boolean succes = gestionJoueursService.desactiverJoueur(emailJoueur, ctx);
+        boolean succes = gestionJoueursService.deactivatePlayer(emailJoueur, ctx);
 
         // Then
         assertTrue(succes);
@@ -176,7 +176,7 @@ class GestionJoueursServiceImplTest extends AbstractServiceTest {
         // When
         when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(null);
 
-        boolean succes = gestionJoueursService.desactiverJoueur(emailJoueur, ctx);
+        boolean succes = gestionJoueursService.deactivatePlayer(emailJoueur, ctx);
 
         // Then
         assertFalse(succes);

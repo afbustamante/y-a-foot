@@ -13,14 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 
-class GestionVoituresServiceImplTest extends AbstractServiceTest {
+class CarManagementServiceImplTest extends AbstractServiceTest {
 
     private Joueur joueur;
 
     private Contexte contexte;
 
     @InjectMocks
-    private GestionVoituresServiceImpl gestionVoituresService;
+    private CarManagementServiceImpl gestionVoituresService;
 
     @Mock
     private VoitureDAO voitureDAO;
@@ -39,7 +39,7 @@ class GestionVoituresServiceImplTest extends AbstractServiceTest {
         voiture.setNom("Test car");
         voiture.setNbPlaces(3);
 
-        int idVoiture = gestionVoituresService.enregistrerVoiture(voiture, contexte);
+        int idVoiture = gestionVoituresService.saveCar(voiture, contexte);
 
         assertEquals(8, idVoiture);
         verify(voitureDAO).enregistrerVoiture(any(Voiture.class), any(Joueur.class));

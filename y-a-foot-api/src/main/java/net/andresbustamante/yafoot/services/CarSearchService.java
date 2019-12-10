@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Service useful for research operations
  */
-public interface RechercheVoituresService {
+public interface CarSearchService {
 
     /**
      * Load the list of cars saved by a user
@@ -20,5 +20,5 @@ public interface RechercheVoituresService {
      * @return
      * @throws DatabaseException
      */
-    List<Voiture> chargerVoituresJoueur(Joueur player, Contexte userContext) throws DatabaseException;
+    List<Voiture> findCarsByPlayer(Joueur player, Contexte userContext) throws DatabaseException;
 }

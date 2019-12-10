@@ -5,18 +5,18 @@ import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Voiture;
-import net.andresbustamante.yafoot.services.GestionVoituresService;
+import net.andresbustamante.yafoot.services.CarManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GestionVoituresServiceImpl implements GestionVoituresService {
+public class CarManagementServiceImpl implements CarManagementService {
 
     @Autowired
     private VoitureDAO voitureDAO;
 
     @Override
-    public int enregistrerVoiture(Voiture voiture, Contexte ctx) throws DatabaseException {
+    public int saveCar(Voiture voiture, Contexte ctx) throws DatabaseException {
         voitureDAO.enregistrerVoiture(voiture, new Joueur(ctx.getIdUtilisateur()));
         return voiture.getId();
     }

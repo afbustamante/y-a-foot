@@ -16,10 +16,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 
-class RechercheVoituresServiceImplTest extends AbstractServiceTest {
+class CarSearchServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private RechercheVoituresServiceImpl rechercheVoituresService;
+    private CarSearchServiceImpl rechercheVoituresService;
 
     @Mock
     private VoitureDAO voitureDAO;
@@ -32,7 +32,7 @@ class RechercheVoituresServiceImplTest extends AbstractServiceTest {
         when(voitureDAO.chargerVoituresJoueur(any(Joueur.class))).thenReturn(voitures);
 
         // When
-        List<Voiture> voituresCharges = rechercheVoituresService.chargerVoituresJoueur(joueur, new Contexte());
+        List<Voiture> voituresCharges = rechercheVoituresService.findCarsByPlayer(joueur, new Contexte());
 
         // Then
         assertNotNull(voituresCharges);

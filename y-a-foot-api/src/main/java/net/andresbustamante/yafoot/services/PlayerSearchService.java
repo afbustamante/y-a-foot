@@ -9,7 +9,7 @@ import net.andresbustamante.yafoot.model.Joueur;
  *
  * @author andresbustamante
  */
-public interface RechercheJoueursService {
+public interface PlayerSearchService {
 
     /**
      * Chercher un joueur par son address mail unique
@@ -19,5 +19,5 @@ public interface RechercheJoueursService {
      * @return
      * @throws DatabaseException
      */
-    Joueur chercherJoueur(String email, Contexte contexte) throws DatabaseException;
+    Joueur findPlayerByEmail(String email, Contexte contexte) throws DatabaseException;
 }

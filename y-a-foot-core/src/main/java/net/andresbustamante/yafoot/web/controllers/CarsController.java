@@ -6,8 +6,8 @@ import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.xs.Cars;
 import net.andresbustamante.yafoot.model.xs.Car;
-import net.andresbustamante.yafoot.services.GestionVoituresService;
-import net.andresbustamante.yafoot.services.RechercheVoituresService;
+import net.andresbustamante.yafoot.services.CarManagementService;
+import net.andresbustamante.yafoot.services.CarSearchService;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,28 +30,28 @@ import java.util.List;
 import static net.andresbustamante.yafoot.web.util.RestConstants.PLAYER_ID;
 
 @Path("/cars")
-public class VoituresController extends AbstractController {
+public class CarsController extends AbstractController {
 
     @Value("api.public.url")
     private String apiPublicUrl;
 
     @Autowired
-    private RechercheVoituresService rechercheVoituresService;
+    private CarSearchService carSearchService;
 
     @Autowired
-    private GestionVoituresService gestionVoituresService;
+    private CarManagementService carManagementService;
 
     @Autowired
     private CarMapper carMapper;
 
-    private final Logger log = LoggerFactory.getLogger(VoituresController.class);
+    private final Logger log = LoggerFactory.getLogger(CarsController.class);
 
     @GET
     @Path("")
     public Response loadCarList(@QueryParam(PLAYER_ID) Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Voiture> cars =
-                    rechercheVoituresService.chargerVoituresJoueur(new Joueur(idJoueur), new Contexte());
+                    carSearchService.findCarsByPlayer(new Joueur(idJoueur), new Contexte());
 
             Cars carsResponse = new Cars();
 
@@ -69,7 +69,7 @@ public class VoituresController extends AbstractController {
     @Path("")
     public Response addNewCar(@Valid Car car, @Context HttpServletRequest request) {
         try {
-            int carId = gestionVoituresService.enregistrerVoiture(carMapper.map(car), ContexteUtils.getContexte(request));
+            int carId = carManagementService.saveCar(carMapper.map(car), ContexteUtils.getContexte(request));
 
             return Response.created(URI.create(apiPublicUrl + "/cars/" + carId)).build();
         } catch (DatabaseException e) {

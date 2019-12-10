@@ -7,7 +7,7 @@ import net.andresbustamante.yafoot.model.Voiture;
 /**
  * Service for managing cars in the DB
  */
-public interface GestionVoituresService {
+public interface CarManagementService {
 
     /**
      * Registers a new car in the database
@@ -17,5 +17,5 @@ public interface GestionVoituresService {
      * @return
      * @throws DatabaseException
      */
-    int enregistrerVoiture(Voiture car, Contexte ctx) throws DatabaseException;
+    int saveCar(Voiture car, Contexte ctx) throws DatabaseException;
 }

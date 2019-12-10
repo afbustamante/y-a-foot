@@ -29,11 +29,11 @@ public class RsServerConfig {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);
         endpoint.setFeatures(Collections.singletonList(loggingFeature()));
-        endpoint.setServiceBeans(Arrays.asList(inscriptionsController(),
-                joueursController(),
-                matchsController(),
+        endpoint.setServiceBeans(Arrays.asList(registrationsController(),
+                playersController(),
+                matchesController(),
                 sitesController(),
-                voituresController()));
+                carsController()));
         return endpoint.create();
     }
 
@@ -45,18 +45,18 @@ public class RsServerConfig {
     }
 
     @Bean
-    public InscriptionsController inscriptionsController() {
-        return new InscriptionsController();
+    public RegistrationsController registrationsController() {
+        return new RegistrationsController();
     }
 
     @Bean
-    public JoueursController joueursController() {
-        return new JoueursController();
+    public PlayersController playersController() {
+        return new PlayersController();
     }
 
     @Bean
-    public MatchsController matchsController() {
-        return new MatchsController();
+    public MatchesController matchesController() {
+        return new MatchesController();
     }
 
     @Bean
@@ -65,7 +65,7 @@ public class RsServerConfig {
     }
 
     @Bean
-    public VoituresController voituresController() {
-        return new VoituresController();
+    public CarsController carsController() {
+        return new CarsController();
     }
 }

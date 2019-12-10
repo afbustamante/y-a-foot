@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.web.controllers;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.xs.Sites;
-import net.andresbustamante.yafoot.services.RechercheSitesService;
+import net.andresbustamante.yafoot.services.SiteSearchService;
 import net.andresbustamante.yafoot.web.mappers.SiteMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ import static net.andresbustamante.yafoot.web.util.RestConstants.PLAYER_ID;
 public class SitesController {
 
     @Autowired
-    private RechercheSitesService rechercheSitesService;
+    private SiteSearchService siteSearchService;
 
     @Autowired
     private SiteMapper siteMapper;
@@ -36,9 +36,9 @@ public class SitesController {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Response getSitesJoueur(@QueryParam(PLAYER_ID) Integer idJoueur) {
+    public Response loadSitesByPlayer(@QueryParam(PLAYER_ID) Integer playerId) {
         try {
-            List<net.andresbustamante.yafoot.model.Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur,
+            List<net.andresbustamante.yafoot.model.Site> sites = siteSearchService.findSitesByPlayer(playerId,
                     new Contexte());
 
             Sites result = new Sites();

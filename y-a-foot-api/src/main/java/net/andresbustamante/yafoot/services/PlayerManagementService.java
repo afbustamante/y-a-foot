@@ -10,7 +10,7 @@ import net.andresbustamante.yafoot.model.Joueur;
  *
  * @author andresbustamante
  */
-public interface GestionJoueursService {
+public interface PlayerManagementService {
 
     /**
      * Inscrire un joueur dans le système
@@ -21,7 +21,7 @@ public interface GestionJoueursService {
      * @throws DatabaseException
      * @throws LdapException
      */
-    boolean inscrireJoueur(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException;
+    boolean savePlayer(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException;
 
     /**
      * Mettre à jour les informations de base d'un joeur
@@ -32,7 +32,7 @@ public interface GestionJoueursService {
      * @throws DatabaseException
      * @throws LdapException
      */
-    boolean actualiserJoueur(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException;
+    boolean updatePlayer(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException;
 
     /**
      * Désactiver un joueur tout en supprimant son historique dans l'application et en supprimant
@@ -44,5 +44,5 @@ public interface GestionJoueursService {
      * @throws DatabaseException
      * @throws LdapException
      */
-    boolean desactiverJoueur(String emailJoueur, Contexte contexte) throws LdapException, DatabaseException;
+    boolean deactivatePlayer(String emailJoueur, Contexte contexte) throws LdapException, DatabaseException;
 }

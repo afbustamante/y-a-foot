@@ -15,13 +15,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class RechercheSitesServiceImplTest extends AbstractServiceTest {
+class SiteSearchServiceImplTest extends AbstractServiceTest {
 
     private final Site site1 = new Site(1);
     private final Site site2 = new Site(2);
 
     @InjectMocks
-    private RechercheSitesServiceImpl rechercheSitesService;
+    private SiteSearchServiceImpl rechercheSitesService;
 
     @Mock
     private SiteDAO siteDAO;
@@ -39,7 +39,7 @@ class RechercheSitesServiceImplTest extends AbstractServiceTest {
 
         // When
         when(siteDAO.chercherSitesPourJoueur(anyInt())).thenReturn(Arrays.asList(site1, site2));
-        List<Site> sites = rechercheSitesService.chercherSitesParJoueur(idJoueur, ctx);
+        List<Site> sites = rechercheSitesService.findSitesByPlayer(idJoueur, ctx);
 
         // Then
         verify(siteDAO, times(1)).chercherSitesPourJoueur(1);

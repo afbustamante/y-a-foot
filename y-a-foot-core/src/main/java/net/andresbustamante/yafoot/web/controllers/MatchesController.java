@@ -5,8 +5,8 @@ import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matches;
-import net.andresbustamante.yafoot.services.GestionMatchsService;
-import net.andresbustamante.yafoot.services.RechercheMatchsService;
+import net.andresbustamante.yafoot.services.MatchManagementService;
+import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.web.util.ContexteUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -34,13 +34,13 @@ import static net.andresbustamante.yafoot.web.util.RestConstants.*;
  * @author andresbustamante
  */
 @Path("/matches")
-public class MatchsController extends AbstractController {
+public class MatchesController extends AbstractController {
 
     @Autowired
-    private RechercheMatchsService rechercheMatchsService;
+    private MatchSearchService matchSearchService;
 
     @Autowired
-    private GestionMatchsService gestionMatchsService;
+    private MatchManagementService matchManagementService;
 
     @Autowired
     private MatchMapper matchMapper;
@@ -48,16 +48,16 @@ public class MatchsController extends AbstractController {
     @Value("${matches.bycode.api.service.path}")
     private String pathRechercheMatchsParCode;
 
-    private final Logger log = LoggerFactory.getLogger(MatchsController.class);
+    private final Logger log = LoggerFactory.getLogger(MatchesController.class);
 
     @GET
     @Path("/{matchCode}")
     @Produces(MediaType.APPLICATION_XML)
-    public Response getMatchParCode(@PathParam(MATCH_CODE) String matchCode,
-                                    @HeaderParam(UTILISATEUR) Integer idUtilisateur) {
+    public Response loadMatchByCode(@PathParam(MATCH_CODE) String matchCode,
+                                    @HeaderParam(UTILISATEUR) Integer userId) {
         try {
-            net.andresbustamante.yafoot.model.Match match = rechercheMatchsService.chercherMatchParCode(matchCode,
-                    new Contexte(idUtilisateur));
+            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode,
+                    new Contexte(userId));
 
             return (match != null) ? Response.ok(matchMapper.map(match)).build() :
                     Response.status(NOT_FOUND).build();
@@ -69,14 +69,14 @@ public class MatchsController extends AbstractController {
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Response getMatchsJoueur(@QueryParam(PLAYER_ID) Integer idJoueur,
-                                    @HeaderParam(UTILISATEUR) Integer idUtilisateur,
-                                    @HeaderParam(TIMEZONE) String timezone) {
+    public Response loadMatchesByPlayer(@QueryParam(PLAYER_ID) Integer playerId,
+                                        @HeaderParam(UTILISATEUR) Integer userId,
+                                        @HeaderParam(TIMEZONE) String timezone) {
         try {
-            Contexte ctx = new Contexte(idUtilisateur);
+            Contexte ctx = new Contexte(userId);
             ctx.setTimezone(ZoneId.of(timezone));
 
-            List<net.andresbustamante.yafoot.model.Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur,
+            List<net.andresbustamante.yafoot.model.Match> matchs = matchSearchService.findMatchesByPlayer(playerId,
                     ctx);
 
             if (CollectionUtils.isNotEmpty(matchs)) {
@@ -97,11 +97,11 @@ public class MatchsController extends AbstractController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response creerMatch(Match match, @Context HttpServletRequest request) {
+    public Response createMatch(Match match, @Context HttpServletRequest request) {
         try {
             net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
             net.andresbustamante.yafoot.model.Match m = matchMapper.map(match);
-            boolean isMatchCree = gestionMatchsService.creerMatch(m, contexte);
+            boolean isMatchCree = matchManagementService.saveMatch(m, contexte);
 
             if (isMatchCree) {
                 String location = MessageFormat.format(pathRechercheMatchsParCode, m.getCode());

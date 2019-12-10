@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author andresbustamante
  */
-public interface RechercheMatchsService {
+public interface MatchSearchService {
 
     /**
      * Chercher un match par son code unique
@@ -21,7 +21,7 @@ public interface RechercheMatchsService {
      * @return
      * @throws DatabaseException
      */
-    Match chercherMatchParCode(String codeMatch, Contexte contexte) throws DatabaseException;
+    Match findMatchByCode(String codeMatch, Contexte contexte) throws DatabaseException;
 
     /**
      * Chercher les matchs à venir pour un joueur dont l'identifiant est passé en paramètre
@@ -31,5 +31,5 @@ public interface RechercheMatchsService {
      * @return
      * @throws DatabaseException
      */
-    List<Match> chercherMatchsJoueur(Integer idJoueur, Contexte contexte) throws DatabaseException;
+    List<Match> findMatchesByPlayer(Integer idJoueur, Contexte contexte) throws DatabaseException;
 }

@@ -12,10 +12,10 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class RechercheJoueursServiceImplTest extends AbstractServiceTest {
+class PlayerSearchServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private RechercheJoueursServiceImpl rechercheJoueursService;
+    private PlayerSearchServiceImpl rechercheJoueursService;
 
     @Mock
     private JoueurDAO joueurDAO;
@@ -33,7 +33,7 @@ class RechercheJoueursServiceImplTest extends AbstractServiceTest {
 
         // Then
         when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(null);
-        Joueur joueur = rechercheJoueursService.chercherJoueur(email, ctx);
+        Joueur joueur = rechercheJoueursService.findPlayerByEmail(email, ctx);
 
         // When
         assertNull(joueur);
@@ -49,7 +49,7 @@ class RechercheJoueursServiceImplTest extends AbstractServiceTest {
 
         // Then
         when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueur);
-        Joueur joueurExistant = rechercheJoueursService.chercherJoueur(email, ctx);
+        Joueur joueurExistant = rechercheJoueursService.findPlayerByEmail(email, ctx);
 
         // When
         assertNotNull(joueurExistant);

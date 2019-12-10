@@ -16,10 +16,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class RechercheMatchsServiceImplTest extends AbstractServiceTest {
+class MatchSearchServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private RechercheMatchsServiceImpl rechercheMatchsService;
+    private MatchSearchServiceImpl rechercheMatchsService;
 
     @Mock
     private MatchDAO matchDAO;
@@ -39,7 +39,7 @@ class RechercheMatchsServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.chercherMatchParCode(anyString())).thenReturn(match);
-        Match matchExistant = rechercheMatchsService.chercherMatchParCode(code, ctx);
+        Match matchExistant = rechercheMatchsService.findMatchByCode(code, ctx);
 
         // Then
         assertNotNull(matchExistant);
@@ -53,7 +53,7 @@ class RechercheMatchsServiceImplTest extends AbstractServiceTest {
         Contexte ctx = new Contexte();
 
         // When
-        Match match = rechercheMatchsService.chercherMatchParCode(null, ctx);
+        Match match = rechercheMatchsService.findMatchByCode(null, ctx);
 
         // Then
         assertNull(match);
@@ -68,7 +68,7 @@ class RechercheMatchsServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.chercherMatchParCode(anyString())).thenReturn(null);
-        Match matchExistant = rechercheMatchsService.chercherMatchParCode(code, ctx);
+        Match matchExistant = rechercheMatchsService.findMatchByCode(code, ctx);
 
         // Then
         assertNull(matchExistant);
@@ -86,7 +86,7 @@ class RechercheMatchsServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.chercherMatchsParJoueur(anyInt(), any())).thenReturn(Arrays.asList(match1, match2));
-        List<Match> matchs = rechercheMatchsService.chercherMatchsJoueur(idJoueur, ctx);
+        List<Match> matchs = rechercheMatchsService.findMatchesByPlayer(idJoueur, ctx);
 
         // Then
         assertNotNull(matchs);
@@ -101,7 +101,7 @@ class RechercheMatchsServiceImplTest extends AbstractServiceTest {
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
-        List<Match> matchs = rechercheMatchsService.chercherMatchsJoueur(null, ctx);
+        List<Match> matchs = rechercheMatchsService.findMatchesByPlayer(null, ctx);
 
         // Then
         assertNotNull(matchs);

@@ -9,7 +9,7 @@ import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
 import net.andresbustamante.yafoot.model.Contexte;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.services.GestionJoueursService;
+import net.andresbustamante.yafoot.services.PlayerManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author andresbustamante
  */
 @Service
-public class GestionJoueursServiceImpl implements GestionJoueursService {
+public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Autowired
     private JoueurDAO joueurDAO;
@@ -34,11 +34,11 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
     @Autowired
     private VoitureDAO voitureDAO;
 
-    private final Logger log = LoggerFactory.getLogger(GestionJoueursService.class);
+    private final Logger log = LoggerFactory.getLogger(PlayerManagementService.class);
 
     @Transactional
     @Override
-    public boolean inscrireJoueur(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException {
+    public boolean savePlayer(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException {
         if (!joueurDAO.isJoueurInscrit(joueur.getEmail())) {
             // Créer l'utilisateur sur l'annuaire LDAP
             utilisateurDAO.creerUtilisateur(joueur, RolesEnum.JOUEUR);
@@ -54,7 +54,7 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
 
     @Transactional
     @Override
-    public boolean actualiserJoueur(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException {
+    public boolean updatePlayer(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException {
         Joueur joueurExistant = joueurDAO.chercherJoueurParEmail(joueur.getEmail());
         boolean isImpactLdap = false;
 
@@ -89,7 +89,7 @@ public class GestionJoueursServiceImpl implements GestionJoueursService {
 
     @Transactional
     @Override
-    public boolean desactiverJoueur(String emailJoueur, Contexte contexte) throws LdapException, DatabaseException {
+    public boolean deactivatePlayer(String emailJoueur, Contexte contexte) throws LdapException, DatabaseException {
         Joueur joueur = joueurDAO.chercherJoueurParEmail(emailJoueur);
 
         if (joueur != null) {

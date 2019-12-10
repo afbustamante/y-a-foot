@@ -11,7 +11,7 @@ import net.andresbustamante.yafoot.model.Voiture;
  *
  * @author andresbustamante
  */
-public interface GestionMatchsService {
+public interface MatchManagementService {
 
     /**
      * Créer un match dans le système
@@ -20,7 +20,7 @@ public interface GestionMatchsService {
      * @param contexte
      * @throws DatabaseException
      */
-    boolean creerMatch(Match match, Contexte contexte) throws DatabaseException;
+    boolean saveMatch(Match match, Contexte contexte) throws DatabaseException;
 
     /**
      * Inscrire un joueur à un match existant
@@ -31,7 +31,7 @@ public interface GestionMatchsService {
      * @param contexte
      * @throws DatabaseException
      */
-    boolean inscrireJoueurMatch(Joueur joueur, Match match, Voiture voiture, Contexte contexte) throws DatabaseException;
+    boolean joinMatch(Joueur joueur, Match match, Voiture voiture, Contexte contexte) throws DatabaseException;
 
     /**
      * Désinscrire un joueur d'un match
@@ -42,5 +42,5 @@ public interface GestionMatchsService {
      * @return
      * @throws DatabaseException
      */
-    boolean desinscrireJoueurMatch(Joueur joueur, Match match, Contexte contexte) throws DatabaseException;
+    boolean quitMatch(Joueur joueur, Match match, Contexte contexte) throws DatabaseException;
 }

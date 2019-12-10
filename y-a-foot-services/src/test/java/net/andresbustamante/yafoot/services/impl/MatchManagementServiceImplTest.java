@@ -17,10 +17,10 @@ import java.time.ZonedDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class GestionMatchsServiceImplTest extends AbstractServiceTest {
+class MatchManagementServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private GestionMatchsServiceImpl gestionMatchsService;
+    private MatchManagementServiceImpl gestionMatchsService;
 
     @Mock
     private MatchDAO matchDAO;
@@ -54,7 +54,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         when(matchDAO.isCodeExistant(anyString())).thenReturn(false);
         when(joueurDAO.chercherJoueurParId(anyInt())).thenReturn(joueur);
         when(siteDAO.chercherSiteParId(anyInt())).thenReturn(site);
-        boolean succes = gestionMatchsService.creerMatch(match, ctx);
+        boolean succes = gestionMatchsService.saveMatch(match, ctx);
 
         // Then
         verify(matchDAO, times(1)).isCodeExistant(anyString());
@@ -82,7 +82,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         // When
         when(matchDAO.isCodeExistant(anyString())).thenReturn(false);
         when(joueurDAO.chercherJoueurParId(anyInt())).thenReturn(joueur);
-        boolean succes = gestionMatchsService.creerMatch(match, ctx);
+        boolean succes = gestionMatchsService.saveMatch(match, ctx);
 
         // Then
         verify(matchDAO, times(1)).isCodeExistant(anyString());
@@ -107,7 +107,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         when(joueurDAO.chercherJoueurParId(anyInt())).thenReturn(joueur);
         when(matchDAO.chercherMatchParId(anyInt())).thenReturn(match);
         when(matchDAO.isJoueurInscritMatch(any(), any())).thenReturn(false);
-        boolean succes = gestionMatchsService.inscrireJoueurMatch(joueur, match, null, ctx);
+        boolean succes = gestionMatchsService.joinMatch(joueur, match, null, ctx);
 
         // Then
         assertTrue(succes);
@@ -130,7 +130,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         when(joueurDAO.chercherJoueurParId(anyInt())).thenReturn(joueur);
         when(matchDAO.chercherMatchParId(anyInt())).thenReturn(match);
         when(matchDAO.isJoueurInscritMatch(any(), any())).thenReturn(false);
-        boolean succes = gestionMatchsService.inscrireJoueurMatch(joueur, match, voiture, ctx);
+        boolean succes = gestionMatchsService.joinMatch(joueur, match, voiture, ctx);
 
         // Then
         assertTrue(succes);
@@ -152,7 +152,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         when(joueurDAO.chercherJoueurParId(anyInt())).thenReturn(joueur);
         when(matchDAO.chercherMatchParId(anyInt())).thenReturn(match);
         when(matchDAO.isJoueurInscritMatch(any(), any())).thenReturn(false);
-        boolean succes = gestionMatchsService.inscrireJoueurMatch(joueur, match, voiture, ctx);
+        boolean succes = gestionMatchsService.joinMatch(joueur, match, voiture, ctx);
 
         // Then
         assertTrue(succes);
@@ -173,7 +173,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         when(joueurDAO.chercherJoueurParId(anyInt())).thenReturn(joueur);
         when(matchDAO.chercherMatchParCode(anyString())).thenReturn(match);
         when(matchDAO.isJoueurInscritMatch(joueur, match)).thenReturn(true);
-        boolean succes = gestionMatchsService.desinscrireJoueurMatch(joueur, match, ctx);
+        boolean succes = gestionMatchsService.quitMatch(joueur, match, ctx);
 
         // When
         assertTrue(succes);
@@ -197,7 +197,7 @@ class GestionMatchsServiceImplTest extends AbstractServiceTest {
         when(matchDAO.isJoueurInscritMatch(joueur, match)).thenReturn(false);
 
         try {
-            gestionMatchsService.desinscrireJoueurMatch(joueur, match, ctx);
+            gestionMatchsService.quitMatch(joueur, match, ctx);
             fail();
         } catch (DatabaseException e) {
             assertEquals("Impossible d'inscrire le joueur : objet inexistant", e.getMessage());
