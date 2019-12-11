@@ -547,6 +547,30 @@
     </dependencies>
   </dependencyManagement>
 
+  <profiles>
+    <profile>
+      <id>local</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <env>local</env>
+      </properties>
+    </profile>
+    <profile>
+      <id>devel</id>
+      <properties>
+        <env>dev</env>
+      </properties>
+    </profile>
+    <profile>
+      <id>jenkins</id>
+      <properties>
+        <env>pic</env>
+      </properties>
+    </profile>
+  </profiles>
+
   <build>
     <pluginManagement>
       <plugins>
