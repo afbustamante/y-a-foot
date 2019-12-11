@@ -26,15 +26,15 @@ objectClass: organizationalUnit
 objectClass: top
 ou: Roles
 
-dn: cn=JOUEUR,ou=Roles,ou=yafoot,dc=andresbustamante,dc=net
+dn: cn=PLAYER,ou=Roles,ou=yafoot,dc=andresbustamante,dc=net
 objectClass: groupOfNames
 objectClass: top
-cn: JOUEUR
+cn: PLAYER
 member: uid=admin,ou=Users,ou=yafoot,dc=andresbustamante,dc=net
 
-dn: cn=ADMINISTRATEUR,ou=Roles,ou=yafoot,dc=andresbustamante,dc=net
+dn: cn=ADMINISTRATOR,ou=Roles,ou=yafoot,dc=andresbustamante,dc=net
 objectClass: groupOfNames
 objectClass: top
-cn: ADMINISTRATEUR
+cn: ADMINISTRATOR
 member: uid=admin,ou=Users,ou=yafoot,dc=andresbustamante,dc=net
 

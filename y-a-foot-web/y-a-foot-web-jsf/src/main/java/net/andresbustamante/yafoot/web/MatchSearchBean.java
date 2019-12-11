@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Locale;
 
-import static net.andresbustamante.yafoot.security.Roles.JOUEUR;
+import static net.andresbustamante.yafoot.security.Roles.PLAYER;
 
 /**
  * @author andresbustamante
@@ -49,7 +49,7 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
         locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     }
 
-    @RolesAllowed(JOUEUR)
+    @RolesAllowed(PLAYER)
     public void chercherMatch() {
         log.info("Recherche du match avec le code {}", codeMatch);
         match = rechercheMatchsUIService.chercherMatchParCode(codeMatch);
@@ -63,7 +63,7 @@ public class MatchSearchBean extends AbstractFacesBean implements Serializable {
         validationRequise = false;
     }
 
-    @RolesAllowed(JOUEUR)
+    @RolesAllowed(PLAYER)
     public String validerInscription() {
         fermerDialogValidation(null);
 

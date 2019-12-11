@@ -37,19 +37,19 @@ class UserDAOTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        userDAO.saveUser(USR_TEST, RolesEnum.JOUEUR);
+        userDAO.saveUser(USR_TEST, RolesEnum.PLAYER);
     }
 
     @AfterEach
     void tearDown() throws Exception {
-        userDAO.deleteUser(USR_TEST, new RolesEnum[]{RolesEnum.JOUEUR});
+        userDAO.deleteUser(USR_TEST, new RolesEnum[]{RolesEnum.PLAYER});
     }
 
     @Test
     void saveUser() throws Exception {
         Utilisateur nouvelUtilisateur = buildNewUser();
 
-        userDAO.saveUser(nouvelUtilisateur, RolesEnum.JOUEUR);
+        userDAO.saveUser(nouvelUtilisateur, RolesEnum.PLAYER);
 
         Utilisateur utilisateur = userDAO.findUserByUid(getUid(nouvelUtilisateur).toString());
         assertNotNull(utilisateur);
@@ -58,7 +58,7 @@ class UserDAOTest {
         assertNotNull(utilisateur.getEmail());
         assertNull(utilisateur.getMotDePasse());
 
-        userDAO.deleteUser(nouvelUtilisateur, new RolesEnum[]{RolesEnum.JOUEUR});
+        userDAO.deleteUser(nouvelUtilisateur, new RolesEnum[]{RolesEnum.PLAYER});
     }
 
     @Test
@@ -115,9 +115,9 @@ class UserDAOTest {
     @Test
     void deleteUser() throws Exception {
         Utilisateur nouvelUtilisateur = buildNewUser();
-        userDAO.saveUser(nouvelUtilisateur, RolesEnum.JOUEUR);
+        userDAO.saveUser(nouvelUtilisateur, RolesEnum.PLAYER);
 
-        userDAO.deleteUser(nouvelUtilisateur, new RolesEnum[]{RolesEnum.JOUEUR});
+        userDAO.deleteUser(nouvelUtilisateur, new RolesEnum[]{RolesEnum.PLAYER});
 
         Utilisateur utilisateur = userDAO.findUserByUid(getUid(nouvelUtilisateur).toString());
         assertNull(utilisateur);

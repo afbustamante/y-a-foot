@@ -64,9 +64,9 @@ public interface MatchDAO {
      * @param match Match auxquel le joueur doit s'inscrire
      * @param voiture Voiture du joueur pour assister au match (optionnelle)
      */
-    void registerPlayer(@Param(JOUEUR) Joueur joueur,
+    void registerPlayer(@Param(PLAYER) Joueur joueur,
                              @Param(MATCH) Match match,
-                             @Param(VOITURE) Voiture voiture);
+                             @Param(CAR) Voiture voiture);
 
     /**
      * Vérifier si un joueur est déjà inscrit à un match passé en paramètre
@@ -75,7 +75,7 @@ public interface MatchDAO {
      * @param match Match à chercher
      * @return
      */
-    boolean isPlayerRegistered(@Param(JOUEUR) Joueur joueur,
+    boolean isPlayerRegistered(@Param(PLAYER) Joueur joueur,
                                  @Param(MATCH) Match match);
 
     /**
@@ -84,7 +84,7 @@ public interface MatchDAO {
      * @param joueur Joueur à désinscrire
      * @param match Match concerné
      */
-    void unregisterPlayer(@Param(JOUEUR) Joueur joueur,
+    void unregisterPlayer(@Param(PLAYER) Joueur joueur,
                                 @Param(MATCH) Match match);
 
     /**
@@ -92,7 +92,7 @@ public interface MatchDAO {
      *
      * @param joueur Joueur à désinscrire
      */
-    int unregisterPlayerFromAllMatches(@Param(JOUEUR) Joueur joueur);
+    int unregisterPlayerFromAllMatches(@Param(PLAYER) Joueur joueur);
 
     /**
      * Mettre à jour les informations du match passé en paramètre par rapport au nombre de joueurs

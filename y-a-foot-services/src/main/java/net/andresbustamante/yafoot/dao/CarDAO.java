@@ -29,14 +29,14 @@ public interface CarDAO {
      * @param voiture Voiture à enregistrer
      * @param joueur Joueur enregistrant la voiture
      */
-    int saveCar(@Param(VOITURE) Voiture voiture, @Param(JOUEUR) Joueur joueur);
+    int saveCar(@Param(CAR) Voiture voiture, @Param(PLAYER) Joueur joueur);
 
     /**
      * Supprimer toutes les voitures enregistrées par un joueur
      *
      * @param joueur
      */
-    int deleteCarsForPlayer(@Param(JOUEUR) Joueur joueur);
+    int deleteCarsForPlayer(@Param(PLAYER) Joueur joueur);
 
     /**
      * Loads the list of cars that a player has registered in database
@@ -44,5 +44,5 @@ public interface CarDAO {
      * @param joueur The player to search
      * @return
      */
-    List<Voiture> findCarsByPlayer(@Param(JOUEUR) Joueur joueur);
+    List<Voiture> findCarsByPlayer(@Param(PLAYER) Joueur joueur);
 }

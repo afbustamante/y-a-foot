@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.*;
 
-import static net.andresbustamante.yafoot.security.Roles.JOUEUR;
+import static net.andresbustamante.yafoot.security.Roles.PLAYER;
 
 /**
  * @author andresbustamante
@@ -183,7 +183,7 @@ public class NewMatchBean extends AbstractFacesBean implements Serializable {
         this.patternDate = patternDate;
     }
 
-    @RolesAllowed(JOUEUR)
+    @RolesAllowed(PLAYER)
     public List<SelectItem> getItemsSites() {
         if (itemsSites == null) {
             itemsSites = new ArrayList<>();
@@ -225,7 +225,7 @@ public class NewMatchBean extends AbstractFacesBean implements Serializable {
      *
      * @return
      */
-    @RolesAllowed(JOUEUR)
+    @RolesAllowed(PLAYER)
     public String creerNouveauMatch() {
         log.info("Nouvelle demande de création de match");
 

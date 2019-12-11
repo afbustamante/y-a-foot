@@ -2,8 +2,8 @@ package net.andresbustamante.yafoot.security;
 
 public class Roles {
 
-    public static final String ADMINISTRATEUR = "ADMINISTRATEUR";
-    public static final String JOUEUR = "JOUEUR";
+    public static final String ADMINISTRATOR = "ADMINISTRATOR";
+    public static final String PLAYER = "PLAYER";
 
     private Roles() {}
 }

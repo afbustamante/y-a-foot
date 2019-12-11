@@ -57,7 +57,7 @@
         </web-resource-collection>
         <auth-constraint>
             <description/>
-            <role-name>JOUEUR</role-name>
+            <role-name>PLAYER</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
@@ -70,6 +70,6 @@
     </login-config>
     <security-role>
         <description>Joueur de foot</description>
-        <role-name>JOUEUR</role-name>
+        <role-name>PLAYER</role-name>
     </security-role>
 </web-app>

@@ -41,7 +41,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     public boolean savePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException {
         if (!playerDAO.isPlayerAlreadySignedIn(joueur.getEmail())) {
             // Créer l'utilisateur sur l'annuaire LDAP
-            userDAO.saveUser(joueur, RolesEnum.JOUEUR);
+            userDAO.saveUser(joueur, RolesEnum.PLAYER);
             // Créer le joueur en base de données
             playerDAO.savePlayer(joueur);
             log.info("Nouveau joueur enregistré avec l'address {}", joueur.getEmail());
@@ -104,7 +104,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             log.info("{} joueur désactivé", nbJoueursDesactives);
 
             // Supprimer l'entrée LDAP
-            userDAO.deleteUser(joueur, new RolesEnum[]{RolesEnum.JOUEUR});
+            userDAO.deleteUser(joueur, new RolesEnum[]{RolesEnum.PLAYER});
             return true;
         } else {
             return false;

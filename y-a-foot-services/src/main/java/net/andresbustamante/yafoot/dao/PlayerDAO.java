@@ -33,14 +33,14 @@ public interface PlayerDAO {
      *
      * @param joueur Joueur à créer
      */
-    int savePlayer(@Param(JOUEUR) Joueur joueur);
+    int savePlayer(@Param(PLAYER) Joueur joueur);
 
     /**
      * Mettre à jour les informations personnelles d'un joueur passé en paramètre
      *
      * @param joueur Joueur à mettre à jour
      */
-    int updatePlayer(@Param(JOUEUR) Joueur joueur);
+    int updatePlayer(@Param(PLAYER) Joueur joueur);
 
     /**
      * Chercher un joueur en base des données à partir de son address mail
@@ -55,7 +55,7 @@ public interface PlayerDAO {
      *
      * @param joueur Joueur à supprimer
      */
-    int deletePlayer(@Param(JOUEUR) Joueur joueur);
+    int deletePlayer(@Param(PLAYER) Joueur joueur);
 
 
     /**
@@ -63,5 +63,5 @@ public interface PlayerDAO {
      *
      * @param joueur Joueur à désactiver
      */
-    int deactivatePlayer(@Param(JOUEUR) Joueur joueur);
+    int deactivatePlayer(@Param(PLAYER) Joueur joueur);
 }

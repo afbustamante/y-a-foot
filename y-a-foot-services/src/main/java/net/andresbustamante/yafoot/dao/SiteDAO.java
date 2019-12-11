@@ -18,7 +18,7 @@ public interface SiteDAO {
      * @param idJoueur Identifiant du joueur
      * @return Liste de sites ayant un lien avec le joueur passé en paramètre
      */
-    List<Site> chercherSitesPourJoueur(@Param(JOUEUR) Integer idJoueur);
+    List<Site> chercherSitesPourJoueur(@Param(PLAYER) Integer idJoueur);
 
     /**
      * Chercher un site par ID
