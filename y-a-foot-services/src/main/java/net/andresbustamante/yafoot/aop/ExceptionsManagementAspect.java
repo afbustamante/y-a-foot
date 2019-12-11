@@ -16,7 +16,7 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
-public class GestionExceptionsAspect {
+public class ExceptionsManagementAspect {
 
     @Pointcut("execution(* net.andresbustamante.yafoot.services.impl.*ServiceImpl.*(..))")
     public void filtrerMethodesServices() {

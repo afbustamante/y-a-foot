@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Voiture;
 
@@ -20,5 +20,5 @@ public interface CarSearchService {
      * @return
      * @throws DatabaseException
      */
-    List<Voiture> findCarsByPlayer(Joueur player, Contexte userContext) throws DatabaseException;
+    List<Voiture> findCarsByPlayer(Joueur player, UserContext userContext) throws DatabaseException;
 }

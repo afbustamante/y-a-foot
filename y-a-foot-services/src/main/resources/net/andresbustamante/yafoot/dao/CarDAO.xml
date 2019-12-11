@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.andresbustamante.yafoot.dao.VoitureDAO">
+<mapper namespace="net.andresbustamante.yafoot.dao.CarDAO">
 
-  <select id="chercherVoitureParId" resultType="net.andresbustamante.yafoot.model.Voiture">
+  <select id="findCarById" resultType="net.andresbustamante.yafoot.model.Voiture">
     SELECT voi_id         AS id,
            voi_nom        AS nom,
            voi_num_places AS nbPlaces
@@ -11,7 +11,7 @@
     WHERE voi_id = #{id}
   </select>
 
-  <insert id="enregistrerVoiture" useGeneratedKeys="true">
+  <insert id="saveCar" useGeneratedKeys="true">
     <selectKey keyProperty="voiture.id" resultType="int" order="BEFORE">
       SELECT NEXTVAL('s_voiture') AS id;
     </selectKey>
@@ -20,13 +20,13 @@
     VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.nbPlaces}, #{joueur.id})
   </insert>
 
-  <delete id="supprimerVoitures">
+  <delete id="deleteCarsForPlayer">
     DELETE
     FROM t_voiture
     WHERE voi_chauffeur_fk = #{joueur.id}
   </delete>
 
-  <select id="chargerVoituresJoueur" resultType="net.andresbustamante.yafoot.model.Voiture">
+  <select id="findCarsByPlayer" resultType="net.andresbustamante.yafoot.model.Voiture">
     SELECT
       voi_id         AS id,
       voi_nom        AS nom,

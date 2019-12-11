@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.ldap.impl;
 
 import net.andresbustamante.yafoot.ldap.ModifyPasswordRequest;
-import net.andresbustamante.yafoot.ldap.UtilisateurMapper;
-import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
+import net.andresbustamante.yafoot.ldap.LdapUserMapper;
+import net.andresbustamante.yafoot.ldap.UserDAO;
 import net.andresbustamante.yafoot.model.Utilisateur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,49 +21,49 @@ import javax.naming.ldap.LdapContext;
 import static net.andresbustamante.yafoot.util.LdapConstants.*;
 
 @Repository
-public class UtilisateurDAOImpl implements UtilisateurDAO {
+public class UserDAOImpl implements UserDAO {
 
     @Autowired
     private LdapTemplate ldapTemplate;
 
     @Value("${ldap.config.users.dn}")
-    private String dnUtilisateurs;
+    private String usersDn;
 
     @Value("${ldap.config.roles.dn}")
-    private String dnRoles;
+    private String rolesDn;
 
-    private UtilisateurMapper utilisateurMapper;
+    private LdapUserMapper ldapUserMapper;
 
-    public UtilisateurDAOImpl() {
-        utilisateurMapper = new UtilisateurMapper();
+    public UserDAOImpl() {
+        ldapUserMapper = new LdapUserMapper();
     }
 
     @Override
-    public void creerUtilisateur(Utilisateur usr, RolesEnum role) {
-        ldapTemplate.bind(getIdAnnuaire(usr), null, utilisateurMapper.mapToAttributes(usr));
-        modifierMotDePasse(usr);
-        affecterRole(usr, role);
+    public void saveUser(Utilisateur usr, RolesEnum role) {
+        ldapTemplate.bind(getUid(usr), null, ldapUserMapper.mapToAttributes(usr));
+        modifyPassword(usr);
+        addRoleForUser(usr, role);
     }
 
     @Override
-    public void actualiserUtilisateur(Utilisateur usr) {
+    public void updateUser(Utilisateur usr) {
         if (usr.getMotDePasse() != null) {
-            modifierMotDePasse(usr);
+            modifyPassword(usr);
         } else {
-            ldapTemplate.rebind(getIdAnnuaire(usr), null, utilisateurMapper.mapToAttributes(usr));
+            ldapTemplate.rebind(getUid(usr), null, ldapUserMapper.mapToAttributes(usr));
         }
     }
 
     @Override
-    public void supprimerUtilisateur(Utilisateur usr, RolesEnum[] roles) {
-        desaffecterRoles(usr, roles);
-        ldapTemplate.unbind(getIdAnnuaire(usr));
+    public void deleteUser(Utilisateur usr, RolesEnum[] roles) {
+        removeRoleForUser(usr, roles);
+        ldapTemplate.unbind(getUid(usr));
     }
 
     @Override
-    public Utilisateur chercherUtilisateur(String uid) {
+    public Utilisateur findUserByUid(String uid) {
         try {
-            return ldapTemplate.lookup(uid, utilisateurMapper);
+            return ldapTemplate.lookup(uid, ldapUserMapper);
         } catch (NameNotFoundException e) {
             return null;
         }
@@ -75,8 +75,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
      * @param usr Utilisateur à processer
      * @return
      */
-    private Name getIdAnnuaire(Utilisateur usr) {
-        return LdapNameBuilder.newInstance(dnUtilisateurs).add(UID, usr.getEmail()).build();
+    private Name getUid(Utilisateur usr) {
+        return LdapNameBuilder.newInstance(usersDn).add(UID, usr.getEmail()).build();
     }
 
     /**
@@ -85,8 +85,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
      * @param role Rôle à processer
      * @return
      */
-    private Name getIdAnnuaire(RolesEnum role) {
-        return LdapNameBuilder.newInstance(dnRoles).add(CN, role.name()).build();
+    private Name getCn(RolesEnum role) {
+        return LdapNameBuilder.newInstance(rolesDn).add(CN, role.name()).build();
     }
 
     /**
@@ -95,11 +95,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
      * @param usr  Utilisateur à impacter
      * @param role Rôle à affecter
      */
-    private void affecterRole(Utilisateur usr, RolesEnum role) {
+    private void addRoleForUser(Utilisateur usr, RolesEnum role) {
         Attribute attribute = new BasicAttribute(MEMBER);
-        attribute.add(getIdAnnuaire(usr).toString());
+        attribute.add(getUid(usr).toString());
         ModificationItem item = new ModificationItem(DirContext.ADD_ATTRIBUTE, attribute);
-        ldapTemplate.modifyAttributes(getIdAnnuaire(role), new ModificationItem[]{item});
+        ldapTemplate.modifyAttributes(getCn(role), new ModificationItem[]{item});
     }
 
     /**
@@ -107,12 +107,12 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
      *
      * @param usr Utilisateur à impacter
      */
-    private void desaffecterRoles(Utilisateur usr, RolesEnum[] roles) {
+    private void removeRoleForUser(Utilisateur usr, RolesEnum[] roles) {
         for (RolesEnum role : roles) {
             Attribute attribute = new BasicAttribute(MEMBER);
-            attribute.add(getIdAnnuaire(usr).toString());
+            attribute.add(getUid(usr).toString());
             ModificationItem item = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attribute);
-            ldapTemplate.modifyAttributes(getIdAnnuaire(role), new ModificationItem[]{item});
+            ldapTemplate.modifyAttributes(getCn(role), new ModificationItem[]{item});
         }
     }
 
@@ -121,8 +121,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
      *
      * @param usr Utilisateur avec le nouveau mot de passe
      */
-    private void modifierMotDePasse(Utilisateur usr) {
-        String dn = getIdAnnuaire(usr).toString();
+    private void modifyPassword(Utilisateur usr) {
+        String dn = getUid(usr).toString();
 
         ldapTemplate.executeReadWrite((ContextExecutor<Object>) ctx -> {
             if (!(ctx instanceof LdapContext)) {

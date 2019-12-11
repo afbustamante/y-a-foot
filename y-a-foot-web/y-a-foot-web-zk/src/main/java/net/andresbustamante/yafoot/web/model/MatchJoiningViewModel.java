@@ -166,7 +166,7 @@ public class MatchJoiningViewModel extends AbstractViewModel {
 
     private void joinMatch(Match match, Car car) {
         try {
-            matchsJoiningUIService.registerPlayerToMatch(match, car);
+            matchsJoiningUIService.registerPlayer(match, car);
 
             Messagebox.show(Labels.getLabel("match.join.success.detail.text"),
                     Labels.getLabel(DIALOG_INFORMATION_TITLE),

@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.dao.VoitureDAO;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.junit.jupiter.api.Test;
@@ -19,25 +19,25 @@ import static org.mockito.Mockito.any;
 class CarSearchServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private CarSearchServiceImpl rechercheVoituresService;
+    private CarSearchServiceImpl carSearchService;
 
     @Mock
-    private VoitureDAO voitureDAO;
+    private CarDAO carDAO;
 
     @Test
-    void chargerVoituresJoueur() throws Exception {
+    void findCarsByPlayer() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
         List<Voiture> voitures = Arrays.asList(new Voiture(1), new Voiture(2));
-        when(voitureDAO.chargerVoituresJoueur(any(Joueur.class))).thenReturn(voitures);
+        when(carDAO.findCarsByPlayer(any(Joueur.class))).thenReturn(voitures);
 
         // When
-        List<Voiture> voituresCharges = rechercheVoituresService.findCarsByPlayer(joueur, new Contexte());
+        List<Voiture> voituresCharges = carSearchService.findCarsByPlayer(joueur, new UserContext());
 
         // Then
         assertNotNull(voituresCharges);
         assertEquals(voitures, voituresCharges);
 
-        verify(voitureDAO).chargerVoituresJoueur(any(Joueur.class));
+        verify(carDAO).findCarsByPlayer(any(Joueur.class));
     }
 }

@@ -60,7 +60,7 @@ public class CarsManagementUIService extends AbstractUIService {
 
                 if (location != null) {
                     String locationString = location.toString();
-                    car.setId(Integer.valueOf(locationString.substring(locationString.lastIndexOf("/"))));
+                    car.setId(Integer.valueOf(locationString.substring(locationString.lastIndexOf('/'))));
                 }
             }
         } catch (RestClientException e) {

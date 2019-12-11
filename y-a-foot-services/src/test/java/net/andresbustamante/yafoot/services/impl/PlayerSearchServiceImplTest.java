@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.dao.JoueurDAO;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.dao.PlayerDAO;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ class PlayerSearchServiceImplTest extends AbstractServiceTest {
     private PlayerSearchServiceImpl rechercheJoueursService;
 
     @Mock
-    private JoueurDAO joueurDAO;
+    private PlayerDAO playerDAO;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -26,34 +26,34 @@ class PlayerSearchServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void chercherJoueurInexistant() throws Exception {
+    void findInvalidPlayer() throws Exception {
         // Given
         String email = "test@email.com";
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // Then
-        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(null);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
         Joueur joueur = rechercheJoueursService.findPlayerByEmail(email, ctx);
 
         // When
         assertNull(joueur);
-        verify(joueurDAO, times(1)).chercherJoueurParEmail(anyString());
+        verify(playerDAO, times(1)).findPlayerByEmail(anyString());
     }
 
     @Test
-    void chercherJoueurExistant() throws Exception {
+    void findValidPlayer() throws Exception {
         // Given
         String email = "test@email.com";
         Joueur joueur = new Joueur(1);
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // Then
-        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueur);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
         Joueur joueurExistant = rechercheJoueursService.findPlayerByEmail(email, ctx);
 
         // When
         assertNotNull(joueurExistant);
         assertEquals(joueur, joueurExistant);
-        verify(joueurDAO, times(1)).chercherJoueurParEmail(anyString());
+        verify(playerDAO, times(1)).findPlayerByEmail(anyString());
     }
 }

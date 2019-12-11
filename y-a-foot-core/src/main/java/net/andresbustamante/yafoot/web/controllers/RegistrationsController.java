@@ -4,11 +4,12 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.xs.Registration;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
-import net.andresbustamante.yafoot.web.util.ContexteUtils;
+import net.andresbustamante.yafoot.web.util.ContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +50,10 @@ public class RegistrationsController extends AbstractController {
         log.debug("Traitement de nouvelle demande d'inscription");
 
         try {
-            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
+            UserContext userContext = ContextUtils.getUserContext(request);
             net.andresbustamante.yafoot.model.Inscription ins = registrationMapper.map(registration);
             boolean succes = matchManagementService.joinMatch(ins.getJoueur(), ins.getMatch(),
-                    ins.getVoiture(), contexte);
+                    ins.getVoiture(), userContext);
 
             if (succes) {
                 log.info("Le joueur a ete inscrit");
@@ -76,13 +77,13 @@ public class RegistrationsController extends AbstractController {
     public Response unregisterPlayerFromMatch(@PathParam(MATCH_CODE) String matchCode,
                                               @Context HttpServletRequest request) {
         try {
-            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
+            UserContext userContext = ContextUtils.getUserContext(request);
 
-            Match match = matchSearchService.findMatchByCode(matchCode, contexte);
+            Match match = matchSearchService.findMatchByCode(matchCode, userContext);
 
             if (match != null) {
-                Joueur joueur = new Joueur(contexte.getIdUtilisateur());
-                matchManagementService.quitMatch(joueur, match, contexte);
+                Joueur joueur = new Joueur(userContext.getUserId());
+                matchManagementService.quitMatch(joueur, match, userContext);
                 return Response.noContent().build();
             } else {
                 log.warn("Désinscription demandée sur un match non existant avec le code {}", matchCode);

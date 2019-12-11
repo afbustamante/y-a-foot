@@ -2,13 +2,13 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matches;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
-import net.andresbustamante.yafoot.web.util.ContexteUtils;
+import net.andresbustamante.yafoot.web.util.ContextUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,10 +54,10 @@ public class MatchesController extends AbstractController {
     @Path("/{matchCode}")
     @Produces(MediaType.APPLICATION_XML)
     public Response loadMatchByCode(@PathParam(MATCH_CODE) String matchCode,
-                                    @HeaderParam(UTILISATEUR) Integer userId) {
+                                    @HeaderParam(USER) Integer userId) {
         try {
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode,
-                    new Contexte(userId));
+                    new UserContext(userId));
 
             return (match != null) ? Response.ok(matchMapper.map(match)).build() :
                     Response.status(NOT_FOUND).build();
@@ -70,10 +70,10 @@ public class MatchesController extends AbstractController {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Response loadMatchesByPlayer(@QueryParam(PLAYER_ID) Integer playerId,
-                                        @HeaderParam(UTILISATEUR) Integer userId,
+                                        @HeaderParam(USER) Integer userId,
                                         @HeaderParam(TIMEZONE) String timezone) {
         try {
-            Contexte ctx = new Contexte(userId);
+            UserContext ctx = new UserContext(userId);
             ctx.setTimezone(ZoneId.of(timezone));
 
             List<net.andresbustamante.yafoot.model.Match> matchs = matchSearchService.findMatchesByPlayer(playerId,
@@ -99,9 +99,9 @@ public class MatchesController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createMatch(Match match, @Context HttpServletRequest request) {
         try {
-            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
+            UserContext userContext = ContextUtils.getUserContext(request);
             net.andresbustamante.yafoot.model.Match m = matchMapper.map(match);
-            boolean isMatchCree = matchManagementService.saveMatch(m, contexte);
+            boolean isMatchCree = matchManagementService.saveMatch(m, userContext);
 
             if (isMatchCree) {
                 String location = MessageFormat.format(pathRechercheMatchsParCode, m.getCode());

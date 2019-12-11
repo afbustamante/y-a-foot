@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 
 /**
@@ -15,9 +15,9 @@ public interface PlayerSearchService {
      * Chercher un joueur par son address mail unique
      *
      * @param email Adresse mail à chercher
-     * @param contexte
+     * @param userContext
      * @return
      * @throws DatabaseException
      */
-    Joueur findPlayerByEmail(String email, Contexte contexte) throws DatabaseException;
+    Joueur findPlayerByEmail(String email, UserContext userContext) throws DatabaseException;
 }

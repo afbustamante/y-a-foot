@@ -1,12 +1,12 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.dao.JoueurDAO;
+import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.dao.VoitureDAO;
+import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.ldap.UserDAO;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.services.PlayerManagementService;
@@ -23,27 +23,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Autowired
-    private JoueurDAO joueurDAO;
+    private PlayerDAO playerDAO;
 
     @Autowired
-    private UtilisateurDAO utilisateurDAO;
+    private UserDAO userDAO;
 
     @Autowired
     private MatchDAO matchDAO;
 
     @Autowired
-    private VoitureDAO voitureDAO;
+    private CarDAO carDAO;
 
-    private final Logger log = LoggerFactory.getLogger(PlayerManagementService.class);
+    private final Logger log = LoggerFactory.getLogger(PlayerManagementServiceImpl.class);
 
     @Transactional
     @Override
-    public boolean savePlayer(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException {
-        if (!joueurDAO.isJoueurInscrit(joueur.getEmail())) {
+    public boolean savePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException {
+        if (!playerDAO.isPlayerAlreadySignedIn(joueur.getEmail())) {
             // Créer l'utilisateur sur l'annuaire LDAP
-            utilisateurDAO.creerUtilisateur(joueur, RolesEnum.JOUEUR);
+            userDAO.saveUser(joueur, RolesEnum.JOUEUR);
             // Créer le joueur en base de données
-            joueurDAO.creerJoueur(joueur);
+            playerDAO.savePlayer(joueur);
             log.info("Nouveau joueur enregistré avec l'address {}", joueur.getEmail());
             return true;
         } else {
@@ -54,8 +54,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public boolean updatePlayer(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException {
-        Joueur joueurExistant = joueurDAO.chercherJoueurParEmail(joueur.getEmail());
+    public boolean updatePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException {
+        Joueur joueurExistant = playerDAO.findPlayerByEmail(joueur.getEmail());
         boolean isImpactLdap = false;
 
         if (joueurExistant != null) {
@@ -76,9 +76,9 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             }
 
             if (isImpactLdap) {
-                utilisateurDAO.actualiserUtilisateur(joueur);
+                userDAO.updateUser(joueur);
             }
-            joueurDAO.actualiserJoueur(joueurExistant);
+            playerDAO.updatePlayer(joueurExistant);
             log.info("Joueur mis à jour avec l'address {}", joueur.getEmail());
             return true;
         } else {
@@ -89,22 +89,22 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public boolean deactivatePlayer(String emailJoueur, Contexte contexte) throws LdapException, DatabaseException {
-        Joueur joueur = joueurDAO.chercherJoueurParEmail(emailJoueur);
+    public boolean deactivatePlayer(String emailJoueur, UserContext userContext) throws LdapException, DatabaseException {
+        Joueur joueur = playerDAO.findPlayerByEmail(emailJoueur);
 
         if (joueur != null) {
             // Supprimer les données du joueur
-            int nbMatchs = matchDAO.desinscrireJoueur(joueur);
+            int nbMatchs = matchDAO.unregisterPlayerFromAllMatches(joueur);
             log.info("Joueur {} desinscrit de {} matchs", emailJoueur, nbMatchs);
 
-            int nbVoitures = voitureDAO.supprimerVoitures(joueur);
+            int nbVoitures = carDAO.deleteCarsForPlayer(joueur);
             log.info("{} voitures supprimées pour le joueur {}", nbVoitures, emailJoueur);
 
-            int nbJoueursDesactives = joueurDAO.desactiverJoueur(joueur);
+            int nbJoueursDesactives = playerDAO.deactivatePlayer(joueur);
             log.info("{} joueur désactivé", nbJoueursDesactives);
 
             // Supprimer l'entrée LDAP
-            utilisateurDAO.supprimerUtilisateur(joueur, new RolesEnum[]{RolesEnum.JOUEUR});
+            userDAO.deleteUser(joueur, new RolesEnum[]{RolesEnum.JOUEUR});
             return true;
         } else {
             return false;

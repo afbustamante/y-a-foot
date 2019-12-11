@@ -2,14 +2,14 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.xs.Cars;
 import net.andresbustamante.yafoot.model.xs.Car;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.CarSearchService;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
-import net.andresbustamante.yafoot.web.util.ContexteUtils;
+import net.andresbustamante.yafoot.web.util.ContextUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public class CarsController extends AbstractController {
     public Response loadCarList(@QueryParam(PLAYER_ID) Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Voiture> cars =
-                    carSearchService.findCarsByPlayer(new Joueur(idJoueur), new Contexte());
+                    carSearchService.findCarsByPlayer(new Joueur(idJoueur), new UserContext());
 
             Cars carsResponse = new Cars();
 
@@ -69,7 +69,7 @@ public class CarsController extends AbstractController {
     @Path("")
     public Response addNewCar(@Valid Car car, @Context HttpServletRequest request) {
         try {
-            int carId = carManagementService.saveCar(carMapper.map(car), ContexteUtils.getContexte(request));
+            int carId = carManagementService.saveCar(carMapper.map(car), ContextUtils.getUserContext(request));
 
             return Response.created(URI.create(apiPublicUrl + "/cars/" + carId)).build();
         } catch (DatabaseException e) {

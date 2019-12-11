@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.andresbustamante.yafoot.dao.MatchDAO">
-    <select id="isCodeExistant" resultType="boolean">
+    <select id="isCodeAlreadyRegistered" resultType="boolean">
         SELECT COUNT(*)
         FROM t_match mat
         WHERE mat.mat_code = #{code}
     </select>
 
-    <select id="chercherMatchParCode" resultMap="matchComplet">
+    <select id="findMatchByCode" resultMap="matchComplet">
         SELECT mat.mat_id                   AS id,
                mat.mat_code                 AS code,
                mat.mat_date                 AS dateMatch,
@@ -42,7 +42,7 @@
         WHERE mat.mat_code = #{code}
     </select>
 
-    <select id="chercherMatchsParJoueur" resultMap="matchComplet">
+    <select id="findMatchesByPlayer" resultMap="matchComplet">
         SELECT mat.mat_id                   AS id,
                mat.mat_code                 AS code,
                mat.mat_date                 AS dateMatch,
@@ -76,7 +76,7 @@
         WHERE jma.jma_joueur_fk = #{id} AND mat.mat_date > #{date}
     </select>
 
-    <select id="chercherMatchParId" resultMap="matchComplet">
+    <select id="findMatchById" resultMap="matchComplet">
         SELECT mat.mat_id                   AS id,
                mat.mat_code                 AS code,
                mat.mat_date                 AS dateMatch,
@@ -102,7 +102,7 @@
         WHERE mat.mat_id = #{id}
     </select>
 
-    <insert id="creerMatch" useGeneratedKeys="true">
+    <insert id="saveMatch" useGeneratedKeys="true">
         <selectKey keyProperty="match.id" resultType="int" order="BEFORE">
             SELECT NEXTVAL('s_match') AS id;
         </selectKey>
@@ -134,7 +134,7 @@
         )
     </insert>
 
-    <insert id="inscrireJoueurMatch">
+    <insert id="registerPlayer">
         <choose>
             <when test="voiture == null">
                 INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk)
@@ -147,27 +147,27 @@
         </choose>
     </insert>
 
-    <delete id="desinscrireJoueurMatch">
+    <delete id="unregisterPlayer">
         DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{joueur.id} AND jma_match_fk = #{match.id}
     </delete>
 
-    <select id="isJoueurInscritMatch" resultType="boolean">
+    <select id="isPlayerRegistered" resultType="boolean">
         SELECT COUNT(*)
         FROM t_joueur_match jma
         WHERE jma.jma_joueur_fk = #{joueur.id} AND jma.jma_match_fk = #{match.id}
     </select>
 
-    <delete id="desinscrireJoueur">
+    <delete id="unregisterPlayerFromAllMatches">
         DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{joueur.id}
     </delete>
 
-    <update id="notifierInscriptionJoueur">
+    <update id="notifyPlayerRegistry">
         UPDATE t_match
         SET mat_num_joueurs_inscrits = mat_num_joueurs_inscrits + 1
         WHERE mat_id = #{match.id}
     </update>
 
-    <update id="notifierDesinscriptionJoueur">
+    <update id="notifyPlayerLeft">
         UPDATE t_match
         SET mat_num_joueurs_inscrits = mat_num_joueurs_inscrits - 1
         WHERE mat_id = #{match.id}

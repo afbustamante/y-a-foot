@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.uiservices;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.xs.Car;
 import net.andresbustamante.yafoot.model.xs.Player;
 import net.andresbustamante.yafoot.model.xs.Registration;
@@ -41,7 +41,7 @@ public class InscriptionMatchsUIService extends AbstractUIService {
             Client client = ClientBuilder.newClient();
             WebTarget resource = client.target(BASE_URI).path(ConfigProperties.getValue("registrations.api.service.path"));
 
-            return resource.request(MediaType.APPLICATION_JSON).header(Contexte.UTILISATEUR,
+            return resource.request(MediaType.APPLICATION_JSON).header(UserContext.USER_CTX,
                     getUserContext().getUser().getId()).post(Entity.json(registration), Boolean.class);
         } catch (ResponseProcessingException ex) {
             log.error("Erreur lors de l'inscription d'un player à un match", ex);

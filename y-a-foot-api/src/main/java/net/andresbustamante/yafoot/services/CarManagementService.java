@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Voiture;
 
 /**
@@ -17,5 +17,5 @@ public interface CarManagementService {
      * @return
      * @throws DatabaseException
      */
-    int saveCar(Voiture car, Contexte ctx) throws DatabaseException;
+    int saveCar(Voiture car, UserContext ctx) throws DatabaseException;
 }

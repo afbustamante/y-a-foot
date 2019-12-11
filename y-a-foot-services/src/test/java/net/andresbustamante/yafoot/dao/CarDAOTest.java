@@ -15,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DatabaseSetup(value = "classpath:datasets/voituresDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/voituresDataset.xml", type = DELETE_ALL)
-class VoitureDAOTest extends AbstractDAOTest {
+class CarDAOTest extends AbstractDAOTest {
 
     @Autowired
-    private VoitureDAO voitureDAO;
+    private CarDAO carDAO;
 
     private Joueur joueur;
 
@@ -28,9 +28,9 @@ class VoitureDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void chercherVoitureParId() throws Exception {
+    void findCarById() throws Exception {
         // When
-        Voiture voiture1 = voitureDAO.chercherVoitureParId(1001);
+        Voiture voiture1 = carDAO.findCarById(1001);
 
         // Then
         assertNotNull(voiture1);
@@ -40,14 +40,14 @@ class VoitureDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void enregistrerVoiture() throws Exception {
+    void saveCar() throws Exception {
         // Given
         Voiture nouvelleVoiture = new Voiture();
         nouvelleVoiture.setNom("Citroën DS3");
         nouvelleVoiture.setNbPlaces(3);
 
         // When
-        int nbLignesInserees = voitureDAO.enregistrerVoiture(nouvelleVoiture, joueur);
+        int nbLignesInserees = carDAO.saveCar(nouvelleVoiture, joueur);
 
         // Then
         assertEquals(1, nbLignesInserees);
@@ -56,20 +56,20 @@ class VoitureDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void supprimerVoitures() throws Exception {
+    void deleteCarsForPlayer() throws Exception {
         // When
-        int nbVoituresSupprimees = voitureDAO.supprimerVoitures(joueur);
+        int nbVoituresSupprimees = carDAO.deleteCarsForPlayer(joueur);
 
         // Then
         assertEquals(2, nbVoituresSupprimees);
     }
 
     @Test
-    void chargerVoituresJoueur() throws Exception {
+    void findCarsByPlayer() throws Exception {
         // Given
         Joueur joueur = new Joueur(1);
 
-        List<Voiture> voitures = voitureDAO.chargerVoituresJoueur(joueur);
+        List<Voiture> voitures = carDAO.findCarsByPlayer(joueur);
 
         assertNotNull(voitures);
         assertEquals(2, voitures.size());

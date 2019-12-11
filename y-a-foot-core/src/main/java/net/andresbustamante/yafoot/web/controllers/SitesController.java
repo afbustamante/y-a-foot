@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.xs.Sites;
 import net.andresbustamante.yafoot.services.SiteSearchService;
 import net.andresbustamante.yafoot.web.mappers.SiteMapper;
@@ -39,7 +39,7 @@ public class SitesController {
     public Response loadSitesByPlayer(@QueryParam(PLAYER_ID) Integer playerId) {
         try {
             List<net.andresbustamante.yafoot.model.Site> sites = siteSearchService.findSitesByPlayer(playerId,
-                    new Contexte());
+                    new UserContext());
 
             Sites result = new Sites();
 

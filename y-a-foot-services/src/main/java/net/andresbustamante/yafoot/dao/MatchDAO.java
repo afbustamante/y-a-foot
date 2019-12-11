@@ -23,7 +23,7 @@ public interface MatchDAO {
      * @param codeMatch Code à vérifier
      * @return
      */
-    boolean isCodeExistant(@Param(CODE) String codeMatch);
+    boolean isCodeAlreadyRegistered(@Param(CODE) String codeMatch);
 
     /**
      * Récupérer les informations d'un match à partir de son code unique
@@ -31,7 +31,7 @@ public interface MatchDAO {
      * @param codeMatch Code du match à récupérer
      * @return
      */
-    Match chercherMatchParCode(@Param(CODE) String codeMatch);
+    Match findMatchByCode(@Param(CODE) String codeMatch);
 
     /**
      * Trouver les matchs auxquels un joueur a été inscrit depuis la date passée en paramètre
@@ -40,8 +40,7 @@ public interface MatchDAO {
      * @param dateInitiale Date initiale de la recherche
      * @return
      */
-    List<Match> chercherMatchsParJoueur(@Param(ID) Integer idJoueur,
-                                        @Param(DATE) ZonedDateTime dateInitiale);
+    List<Match> findMatchesByPlayer(@Param(ID) Integer idJoueur, @Param(DATE) ZonedDateTime dateInitiale);
 
     /**
      * Récupérer les informations d'un match à partir de son identifiant unique
@@ -49,14 +48,14 @@ public interface MatchDAO {
      * @param id Identifiant du match
      * @return
      */
-    Match chercherMatchParId(@Param(ID) Integer id);
+    Match findMatchById(@Param(ID) Integer id);
 
     /**
      * Créer un match en base des données
      *
      * @param match Match à créer
      */
-    void creerMatch(@Param(MATCH) Match match);
+    void saveMatch(@Param(MATCH) Match match);
 
     /**
      * Inscrire un joueur à un match existant
@@ -65,7 +64,7 @@ public interface MatchDAO {
      * @param match Match auxquel le joueur doit s'inscrire
      * @param voiture Voiture du joueur pour assister au match (optionnelle)
      */
-    void inscrireJoueurMatch(@Param(JOUEUR) Joueur joueur,
+    void registerPlayer(@Param(JOUEUR) Joueur joueur,
                              @Param(MATCH) Match match,
                              @Param(VOITURE) Voiture voiture);
 
@@ -76,7 +75,7 @@ public interface MatchDAO {
      * @param match Match à chercher
      * @return
      */
-    boolean isJoueurInscritMatch(@Param(JOUEUR) Joueur joueur,
+    boolean isPlayerRegistered(@Param(JOUEUR) Joueur joueur,
                                  @Param(MATCH) Match match);
 
     /**
@@ -85,7 +84,7 @@ public interface MatchDAO {
      * @param joueur Joueur à désinscrire
      * @param match Match concerné
      */
-    void desinscrireJoueurMatch(@Param(JOUEUR) Joueur joueur,
+    void unregisterPlayer(@Param(JOUEUR) Joueur joueur,
                                 @Param(MATCH) Match match);
 
     /**
@@ -93,7 +92,7 @@ public interface MatchDAO {
      *
      * @param joueur Joueur à désinscrire
      */
-    int desinscrireJoueur(@Param(JOUEUR) Joueur joueur);
+    int unregisterPlayerFromAllMatches(@Param(JOUEUR) Joueur joueur);
 
     /**
      * Mettre à jour les informations du match passé en paramètre par rapport au nombre de joueurs
@@ -102,7 +101,7 @@ public interface MatchDAO {
      * @param match
      * @return
      */
-    int notifierInscriptionJoueur(@Param(MATCH) Match match);
+    int notifyPlayerRegistry(@Param(MATCH) Match match);
 
     /**
      * Mettre à jour les informations du match passé en paramètre par rapport au nombre de joueurs
@@ -111,5 +110,5 @@ public interface MatchDAO {
      * @param match
      * @return
      */
-    int notifierDesinscriptionJoueur(@Param(MATCH) Match match);
+    int notifyPlayerLeft(@Param(MATCH) Match match);
 }

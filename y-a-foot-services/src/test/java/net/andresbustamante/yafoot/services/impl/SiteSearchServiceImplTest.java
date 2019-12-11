@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.SiteDAO;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Site;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class SiteSearchServiceImplTest extends AbstractServiceTest {
     void chercherSitesParJoueur() throws Exception {
         // Given
         int idJoueur = 1;
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
         when(siteDAO.chercherSitesPourJoueur(anyInt())).thenReturn(Arrays.asList(site1, site2));

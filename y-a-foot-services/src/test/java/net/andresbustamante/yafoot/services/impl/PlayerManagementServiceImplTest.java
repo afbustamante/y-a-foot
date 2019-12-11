@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.dao.JoueurDAO;
+import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.dao.VoitureDAO;
-import net.andresbustamante.yafoot.ldap.UtilisateurDAO;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.ldap.UserDAO;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,16 +21,16 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
     private PlayerManagementServiceImpl gestionJoueursService;
 
     @Mock
-    private JoueurDAO joueurDAO;
+    private PlayerDAO playerDAO;
 
     @Mock
-    private UtilisateurDAO utilisateurDAO;
+    private UserDAO userDAO;
 
     @Mock
     private MatchDAO matchDAO;
 
     @Mock
-    private VoitureDAO voitureDAO;
+    private CarDAO carDAO;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -38,43 +38,43 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void inscrireNouveauJoueur() throws Exception {
+    void registerNewPlayer() throws Exception {
         // Given
         Joueur joueur = new Joueur();
         joueur.setEmail("test@email.com");
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        when(joueurDAO.isJoueurInscrit(anyString())).thenReturn(false);
+        when(playerDAO.isPlayerAlreadySignedIn(anyString())).thenReturn(false);
         boolean succes = gestionJoueursService.savePlayer(joueur, ctx);
 
         // Then
-        verify(joueurDAO, times(1)).isJoueurInscrit(anyString());
-        verify(utilisateurDAO, times(1)).creerUtilisateur(any(), any());
-        verify(joueurDAO, times(1)).creerJoueur(any());
+        verify(playerDAO, times(1)).isPlayerAlreadySignedIn(anyString());
+        verify(userDAO, times(1)).saveUser(any(), any());
+        verify(playerDAO, times(1)).savePlayer(any());
         assertTrue(succes);
     }
 
     @Test
-    void inscrireJoueurDejaInscrit() throws Exception {
+    void registerPlayerAlreadyRegistered() throws Exception {
         // Given
         Joueur joueur = new Joueur();
         joueur.setEmail("test@email.com");
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        when(joueurDAO.isJoueurInscrit(anyString())).thenReturn(true);
+        when(playerDAO.isPlayerAlreadySignedIn(anyString())).thenReturn(true);
         boolean succes = gestionJoueursService.savePlayer(joueur, ctx);
 
         // Then
-        verify(joueurDAO, times(1)).isJoueurInscrit(anyString());
-        verify(utilisateurDAO, times(0)).creerUtilisateur(any(), any());
-        verify(joueurDAO, times(0)).creerJoueur(any());
+        verify(playerDAO, times(1)).isPlayerAlreadySignedIn(anyString());
+        verify(userDAO, times(0)).saveUser(any(), any());
+        verify(playerDAO, times(0)).savePlayer(any());
         assertFalse(succes);
     }
 
     @Test
-    void actualiserJoueurExistant() throws Exception {
+    void updateExistingPlayer() throws Exception {
         // Given
         Joueur joueurExistant = new Joueur(1);
         joueurExistant.setNom("Smith");
@@ -87,21 +87,21 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         joueurMaj.setPrenom("John");
         joueurMaj.setTelephone("0423456789");
         joueurMaj.setEmail("test@email.com");
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueurExistant);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueurExistant);
         boolean succes = gestionJoueursService.updatePlayer(joueurMaj, ctx);
 
         // Then
-        verify(joueurDAO, times(1)).chercherJoueurParEmail(any());
-        verify(utilisateurDAO, times(1)).actualiserUtilisateur(any());
-        verify(joueurDAO, times(1)).actualiserJoueur(any());
+        verify(playerDAO, times(1)).findPlayerByEmail(any());
+        verify(userDAO, times(1)).updateUser(any());
+        verify(playerDAO, times(1)).updatePlayer(any());
         assertTrue(succes);
     }
 
     @Test
-    void actualiserMdpJoueurExistant() throws Exception {
+    void updatePasswordExistingPlayer() throws Exception {
         // Given
         Joueur joueurExistant = new Joueur(1);
         joueurExistant.setEmail("test@email.com");
@@ -110,79 +110,79 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         Joueur joueurMaj = new Joueur(1);
         joueurMaj.setEmail("test@email.com");
         joueurMaj.setMotDePasse("AZERTY123");
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueurExistant);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueurExistant);
         boolean succes = gestionJoueursService.updatePlayer(joueurMaj, ctx);
 
         // Then
-        verify(joueurDAO, times(1)).chercherJoueurParEmail(any());
-        verify(utilisateurDAO, times(1)).actualiserUtilisateur(any());
-        verify(joueurDAO, times(1)).actualiserJoueur(any());
+        verify(playerDAO, times(1)).findPlayerByEmail(any());
+        verify(userDAO, times(1)).updateUser(any());
+        verify(playerDAO, times(1)).updatePlayer(any());
         assertTrue(succes);
     }
 
     @Test
-    void actualiserJoueurInexistant() throws Exception {
+    void updateInvalidPlayer() throws Exception {
         // Given
         Joueur joueurMaj = new Joueur(1);
         joueurMaj.setNom("Doe");
         joueurMaj.setPrenom("John");
         joueurMaj.setEmail("test@email.com");
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(null);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
         boolean succes = gestionJoueursService.updatePlayer(joueurMaj, ctx);
 
         // Then
-        verify(joueurDAO, times(1)).chercherJoueurParEmail(any());
-        verify(utilisateurDAO, times(0)).actualiserUtilisateur(any());
-        verify(joueurDAO, times(0)).actualiserJoueur(any());
+        verify(playerDAO, times(1)).findPlayerByEmail(any());
+        verify(userDAO, times(0)).updateUser(any());
+        verify(playerDAO, times(0)).updatePlayer(any());
         assertFalse(succes);
     }
 
     @Test
-    void desactiverJoueurExistant() throws Exception {
+    void deactivateExistingPlayer() throws Exception {
         // Given
         Joueur joueur1 = new Joueur(1);
         String emailJoueur = "playerNumber1@email.com";
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(joueur1);
-        when(matchDAO.desinscrireJoueur(any())).thenReturn(15);
-        when(voitureDAO.supprimerVoitures(any())).thenReturn(1);
-        when(joueurDAO.desactiverJoueur(any())).thenReturn(1);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur1);
+        when(matchDAO.unregisterPlayerFromAllMatches(any())).thenReturn(15);
+        when(carDAO.deleteCarsForPlayer(any())).thenReturn(1);
+        when(playerDAO.deactivatePlayer(any())).thenReturn(1);
 
         boolean succes = gestionJoueursService.deactivatePlayer(emailJoueur, ctx);
 
         // Then
         assertTrue(succes);
-        verify(joueurDAO, times(1)).chercherJoueurParEmail(anyString());
-        verify(matchDAO, times(1)).desinscrireJoueur(any());
-        verify(voitureDAO, times(1)).supprimerVoitures(any());
-        verify(joueurDAO, times(1)).desactiverJoueur(any());
+        verify(playerDAO, times(1)).findPlayerByEmail(anyString());
+        verify(matchDAO, times(1)).unregisterPlayerFromAllMatches(any());
+        verify(carDAO, times(1)).deleteCarsForPlayer(any());
+        verify(playerDAO, times(1)).deactivatePlayer(any());
     }
 
     @Test
-    void desactiverJoueurInexistant() throws Exception {
+    void deactivateInvalidPlayer() throws Exception {
         // Given
         Joueur autreJoueur = new Joueur(-1);
         String emailJoueur = "playerNumberX@email.com";
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        when(joueurDAO.chercherJoueurParEmail(anyString())).thenReturn(null);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
 
         boolean succes = gestionJoueursService.deactivatePlayer(emailJoueur, ctx);
 
         // Then
         assertFalse(succes);
-        verify(joueurDAO, times(1)).chercherJoueurParEmail(anyString());
-        verify(matchDAO, times(0)).desinscrireJoueur(any());
-        verify(voitureDAO, times(0)).supprimerVoitures(any());
-        verify(joueurDAO, times(0)).desactiverJoueur(any());
+        verify(playerDAO, times(1)).findPlayerByEmail(anyString());
+        verify(matchDAO, times(0)).unregisterPlayerFromAllMatches(any());
+        verify(carDAO, times(0)).deleteCarsForPlayer(any());
+        verify(playerDAO, times(0)).deactivatePlayer(any());
     }
 }

@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Match;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class MatchSearchServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private MatchSearchServiceImpl rechercheMatchsService;
+    private MatchSearchServiceImpl matchSearchService;
 
     @Mock
     private MatchDAO matchDAO;
@@ -30,82 +30,82 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void chercherMatchExistantParCode() throws Exception {
+    void findExistingMatchByCode() throws Exception {
         // Given
         String code = "code";
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
         Match match = new Match(1);
         match.setCode(code);
 
         // When
-        when(matchDAO.chercherMatchParCode(anyString())).thenReturn(match);
-        Match matchExistant = rechercheMatchsService.findMatchByCode(code, ctx);
+        when(matchDAO.findMatchByCode(anyString())).thenReturn(match);
+        Match matchExistant = matchSearchService.findMatchByCode(code, ctx);
 
         // Then
         assertNotNull(matchExistant);
         assertEquals(code, matchExistant.getCode());
-        verify(matchDAO, times(1)).chercherMatchParCode(anyString());
+        verify(matchDAO, times(1)).findMatchByCode(anyString());
     }
 
     @Test
-    void chercherMatchParCodeVide() throws Exception {
+    void findMatchByCodeUsingEmptyCode() throws Exception {
         // Given
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        Match match = rechercheMatchsService.findMatchByCode(null, ctx);
+        Match match = matchSearchService.findMatchByCode(null, ctx);
 
         // Then
         assertNull(match);
-        verify(matchDAO, times(0)).chercherMatchParCode(anyString());
+        verify(matchDAO, times(0)).findMatchByCode(anyString());
     }
 
     @Test
-    void chercherMatchInexistantParCode() throws Exception {
+    void findMatchByCodeUsingInvalidCode() throws Exception {
         // Given
         String code = "code";
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
 
         // When
-        when(matchDAO.chercherMatchParCode(anyString())).thenReturn(null);
-        Match matchExistant = rechercheMatchsService.findMatchByCode(code, ctx);
+        when(matchDAO.findMatchByCode(anyString())).thenReturn(null);
+        Match matchExistant = matchSearchService.findMatchByCode(code, ctx);
 
         // Then
         assertNull(matchExistant);
-        verify(matchDAO, times(1)).chercherMatchParCode(anyString());
+        verify(matchDAO, times(1)).findMatchByCode(anyString());
     }
 
     @Test
-    void chercherMatchsJoueur() throws Exception {
+    void findMatchesByPlayer() throws Exception {
         // Given
         Match match1 = new Match(1);
         Match match2 = new Match(2);
         Integer idJoueur = 1;
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
-        when(matchDAO.chercherMatchsParJoueur(anyInt(), any())).thenReturn(Arrays.asList(match1, match2));
-        List<Match> matchs = rechercheMatchsService.findMatchesByPlayer(idJoueur, ctx);
+        when(matchDAO.findMatchesByPlayer(anyInt(), any())).thenReturn(Arrays.asList(match1, match2));
+        List<Match> matchs = matchSearchService.findMatchesByPlayer(idJoueur, ctx);
 
         // Then
         assertNotNull(matchs);
         assertEquals(2, matchs.size());
-        verify(matchDAO, times(1)).chercherMatchsParJoueur(anyInt(), any());
+        verify(matchDAO, times(1)).findMatchesByPlayer(anyInt(), any());
     }
 
     @Test
-    void chercherMatchsJoueurSansIdJoueur() throws Exception {
+    void findMatchesByPlayerWithNoPlayerId() throws Exception {
         // Given
-        Contexte ctx = new Contexte();
+        UserContext ctx = new UserContext();
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
-        List<Match> matchs = rechercheMatchsService.findMatchesByPlayer(null, ctx);
+        List<Match> matchs = matchSearchService.findMatchesByPlayer(null, ctx);
 
         // Then
         assertNotNull(matchs);
         assertTrue(matchs.isEmpty());
-        verify(matchDAO, times(0)).chercherMatchsParJoueur(anyInt(), any());
+        verify(matchDAO, times(0)).findMatchesByPlayer(anyInt(), any());
     }
 }

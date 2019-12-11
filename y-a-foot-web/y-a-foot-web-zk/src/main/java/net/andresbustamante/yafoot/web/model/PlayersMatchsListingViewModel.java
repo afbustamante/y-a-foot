@@ -28,9 +28,6 @@ import java.util.List;
  */
 public class PlayersMatchsListingViewModel extends AbstractViewModel {
 
-    private List<Match> matchesToPlay;
-    private List<Match> matchesPlayed;
-
     private ListModel<Match> matchesToPlayListModel;
     private ListModel<Match> matchesPlayedListModel;
 
@@ -50,8 +47,8 @@ public class PlayersMatchsListingViewModel extends AbstractViewModel {
         try {
             Matches matches = matchsSearchUIService.findMatchsForPlayer();
 
-            matchesPlayed = new ArrayList<>();
-            matchesToPlay = new ArrayList<>();
+            List<Match> matchesPlayed = new ArrayList<>();
+            List<Match> matchesToPlay = new ArrayList<>();
 
             for (Match match : matches.getMatch()) {
                 if (match.getDate().before(Calendar.getInstance(match.getDate().getTimeZone()))) {

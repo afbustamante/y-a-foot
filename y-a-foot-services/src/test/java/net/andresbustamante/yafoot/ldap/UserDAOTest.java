@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {LdapTestConfig.class, LdapConfig.class})
-class UtilisateurDAOTest {
+class UserDAOTest {
 
     private static final Utilisateur USR_TEST = new Utilisateur("test@email.com", "password", "TEST",
             "Utilisateur", "0123456789");
@@ -33,44 +33,44 @@ class UtilisateurDAOTest {
     private String dnUtilisateurs;
 
     @Autowired
-    private UtilisateurDAO utilisateurDAO;
+    private UserDAO userDAO;
 
     @BeforeEach
     void setUp() throws Exception {
-        utilisateurDAO.creerUtilisateur(USR_TEST, RolesEnum.JOUEUR);
+        userDAO.saveUser(USR_TEST, RolesEnum.JOUEUR);
     }
 
     @AfterEach
     void tearDown() throws Exception {
-        utilisateurDAO.supprimerUtilisateur(USR_TEST, new RolesEnum[]{RolesEnum.JOUEUR});
+        userDAO.deleteUser(USR_TEST, new RolesEnum[]{RolesEnum.JOUEUR});
     }
 
     @Test
-    void creerUtilisateur() throws Exception {
-        Utilisateur nouvelUtilisateur = getNouvelUtilisateur();
+    void saveUser() throws Exception {
+        Utilisateur nouvelUtilisateur = buildNewUser();
 
-        utilisateurDAO.creerUtilisateur(nouvelUtilisateur, RolesEnum.JOUEUR);
+        userDAO.saveUser(nouvelUtilisateur, RolesEnum.JOUEUR);
 
-        Utilisateur utilisateur = utilisateurDAO.chercherUtilisateur(getIdAnnuaire(nouvelUtilisateur).toString());
+        Utilisateur utilisateur = userDAO.findUserByUid(getUid(nouvelUtilisateur).toString());
         assertNotNull(utilisateur);
         assertNotNull(utilisateur.getNom());
         assertNotNull(utilisateur.getPrenom());
         assertNotNull(utilisateur.getEmail());
         assertNull(utilisateur.getMotDePasse());
 
-        utilisateurDAO.supprimerUtilisateur(nouvelUtilisateur, new RolesEnum[]{RolesEnum.JOUEUR});
+        userDAO.deleteUser(nouvelUtilisateur, new RolesEnum[]{RolesEnum.JOUEUR});
     }
 
     @Test
-    void actualiserUtilisateur() throws Exception {
+    void updateUser() throws Exception {
         Utilisateur utilisateurModifie = new Utilisateur();
         utilisateurModifie.setEmail(USR_TEST.getEmail());
         utilisateurModifie.setNom(USR_TEST.getNom() + " autre");
         utilisateurModifie.setPrenom(USR_TEST.getPrenom() + " autre");
 
-        utilisateurDAO.actualiserUtilisateur(utilisateurModifie);
+        userDAO.updateUser(utilisateurModifie);
 
-        Utilisateur utilisateur = utilisateurDAO.chercherUtilisateur(getIdAnnuaire(utilisateurModifie).toString());
+        Utilisateur utilisateur = userDAO.findUserByUid(getUid(utilisateurModifie).toString());
         assertNotNull(utilisateur);
         assertEquals(USR_TEST.getEmail(), utilisateur.getEmail());
         assertNotNull(utilisateur.getNom());
@@ -83,11 +83,11 @@ class UtilisateurDAOTest {
         utilisateur.setNom(USR_TEST.getNom());
         utilisateur.setPrenom(USR_TEST.getPrenom());
         utilisateur.setTelephone(USR_TEST.getTelephone());
-        utilisateurDAO.actualiserUtilisateur(utilisateur);
+        userDAO.updateUser(utilisateur);
     }
 
     @Test
-    void actualiserMotDePasse() throws Exception {
+    void updateUserPassword() throws Exception {
         // Given
         Utilisateur utilisateurModifie = new Utilisateur();
         utilisateurModifie.setEmail(USR_TEST.getEmail());
@@ -96,8 +96,8 @@ class UtilisateurDAOTest {
         utilisateurModifie.setMotDePasse("monNouveauMotDePasse");
 
         // When
-        utilisateurDAO.actualiserUtilisateur(utilisateurModifie);
-        Utilisateur utilisateur = utilisateurDAO.chercherUtilisateur(getIdAnnuaire(utilisateurModifie).toString());
+        userDAO.updateUser(utilisateurModifie);
+        Utilisateur utilisateur = userDAO.findUserByUid(getUid(utilisateurModifie).toString());
 
         // Then
         assertNotNull(utilisateur);
@@ -109,23 +109,23 @@ class UtilisateurDAOTest {
         utilisateur.setNom(USR_TEST.getNom());
         utilisateur.setPrenom(USR_TEST.getPrenom());
         utilisateur.setTelephone(USR_TEST.getTelephone());
-        utilisateurDAO.actualiserUtilisateur(utilisateur);
+        userDAO.updateUser(utilisateur);
     }
 
     @Test
-    void supprimerUtilisateur() throws Exception {
-        Utilisateur nouvelUtilisateur = getNouvelUtilisateur();
-        utilisateurDAO.creerUtilisateur(nouvelUtilisateur, RolesEnum.JOUEUR);
+    void deleteUser() throws Exception {
+        Utilisateur nouvelUtilisateur = buildNewUser();
+        userDAO.saveUser(nouvelUtilisateur, RolesEnum.JOUEUR);
 
-        utilisateurDAO.supprimerUtilisateur(nouvelUtilisateur, new RolesEnum[]{RolesEnum.JOUEUR});
+        userDAO.deleteUser(nouvelUtilisateur, new RolesEnum[]{RolesEnum.JOUEUR});
 
-        Utilisateur utilisateur = utilisateurDAO.chercherUtilisateur(getIdAnnuaire(nouvelUtilisateur).toString());
+        Utilisateur utilisateur = userDAO.findUserByUid(getUid(nouvelUtilisateur).toString());
         assertNull(utilisateur);
     }
 
     @Test
-    void chercherUtilisateur() throws Exception {
-        Utilisateur utilisateur = utilisateurDAO.chercherUtilisateur(getIdAnnuaire(USR_TEST).toString());
+    void findUser() throws Exception {
+        Utilisateur utilisateur = userDAO.findUserByUid(getUid(USR_TEST).toString());
         assertNotNull(utilisateur);
         assertNotNull(utilisateur.getEmail());
         assertEquals(USR_TEST.getEmail(), utilisateur.getEmail());
@@ -137,7 +137,7 @@ class UtilisateurDAOTest {
         assertNull(utilisateur.getMotDePasse());
     }
 
-    private Utilisateur getNouvelUtilisateur() {
+    private Utilisateur buildNewUser() {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setEmail("nouvel.utilisateur@email.com");
         utilisateur.setMotDePasse("motDePasse");
@@ -147,7 +147,7 @@ class UtilisateurDAOTest {
         return utilisateur;
     }
 
-    private Name getIdAnnuaire(Utilisateur usr) {
+    private Name getUid(Utilisateur usr) {
         return LdapNameBuilder.newInstance(dnUtilisateurs).add(LdapConstants.UID, usr.getEmail()).build();
     }
 }

@@ -1,7 +1,6 @@
 package net.andresbustamante.yafoot.web.mappers;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
 
 import java.nio.charset.StandardCharsets;
 

@@ -13,7 +13,7 @@ import static net.andresbustamante.yafoot.util.LdapConstants.*;
 /**
  * LDAP attributes mapper for {@link Utilisateur}
  */
-public class UtilisateurMapper implements AttributesMapper<Utilisateur> {
+public class LdapUserMapper implements AttributesMapper<Utilisateur> {
 
     @Override
     public Utilisateur mapFromAttributes(Attributes attrs) throws NamingException {

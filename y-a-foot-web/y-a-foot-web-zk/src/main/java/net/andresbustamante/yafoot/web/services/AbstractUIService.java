@@ -19,8 +19,8 @@ import org.zkoss.zk.ui.Sessions;
 import java.text.MessageFormat;
 import java.util.Collections;
 
-import static net.andresbustamante.yafoot.model.Contexte.TZ;
-import static net.andresbustamante.yafoot.model.Contexte.UTILISATEUR;
+import static net.andresbustamante.yafoot.model.UserContext.TZ;
+import static net.andresbustamante.yafoot.model.UserContext.USER_CTX;
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 /**
@@ -78,7 +78,7 @@ public abstract class AbstractUIService {
      */
     protected MultiValueMap<String, String> getHeadersMap() throws ApplicationException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.put(UTILISATEUR, Collections.singletonList(getUserContext().getUser().getId().toString()));
+        headers.put(USER_CTX, Collections.singletonList(getUserContext().getUser().getId().toString()));
         headers.put(TZ, Collections.singletonList("CET")); // TODO Injecter la timezone à partir de la session
         return headers;
     }

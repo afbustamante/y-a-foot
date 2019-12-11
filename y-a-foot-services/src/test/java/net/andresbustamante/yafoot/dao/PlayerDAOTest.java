@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DatabaseSetup(value = "classpath:datasets/joueursDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/joueursDataset.xml", type = DELETE_ALL)
-class JoueurDAOTest extends AbstractDAOTest {
+class PlayerDAOTest extends AbstractDAOTest {
 
     private static final String EMAIL = "john.doe@email.com";
     private static final String AUTRE_TELEPHONE = "0423456789";
@@ -24,12 +24,12 @@ class JoueurDAOTest extends AbstractDAOTest {
     private static final Joueur JOHN_DOE = new Joueur(1, "Doe", "John", EMAIL, "01234656789");
 
     @Autowired
-    private JoueurDAO joueurDAO;
+    private PlayerDAO playerDAO;
 
     @Test
-    void creerJoueur() throws Exception {
+    void savePlayer() throws Exception {
         Joueur joueur = getNouveauJoueur();
-        int nbJoueurs = joueurDAO.creerJoueur(joueur);
+        int nbJoueurs = playerDAO.savePlayer(joueur);
 
         // Vérifier que le joueur à un identifiant de base de données attribué
         assertEquals(1, nbJoueurs);
@@ -38,17 +38,17 @@ class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void isJoueurInscrit() throws Exception {
-        boolean isInscrit = joueurDAO.isJoueurInscrit(NOUVEL_EMAIL);
+    void isPlayerAlreadySignedIn() throws Exception {
+        boolean isInscrit = playerDAO.isPlayerAlreadySignedIn(NOUVEL_EMAIL);
         assertFalse(isInscrit);
 
-        isInscrit = joueurDAO.isJoueurInscrit(EMAIL);
+        isInscrit = playerDAO.isPlayerAlreadySignedIn(EMAIL);
         assertTrue(isInscrit);
     }
 
     @Test
-    void chercherJoueurParId() throws Exception {
-        Joueur joueur1 = joueurDAO.chercherJoueurParId(JOHN_DOE.getId());
+    void findPlayerById() throws Exception {
+        Joueur joueur1 = playerDAO.findPlayerById(JOHN_DOE.getId());
         assertNotNull(joueur1);
 
         // Vérifier que les informations sont complètes
@@ -64,8 +64,8 @@ class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void chercherJoueurParEmail() throws Exception {
-        Joueur joueur = joueurDAO.chercherJoueurParEmail(EMAIL);
+    void findPlayerByEmail() throws Exception {
+        Joueur joueur = playerDAO.findPlayerByEmail(EMAIL);
         assertNotNull(joueur);
         assertNotNull(joueur.getNom());
         assertEquals(JOHN_DOE.getNom(), joueur.getNom());
@@ -79,17 +79,17 @@ class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void actualiserJoueur() throws Exception {
+    void updatePlayer() throws Exception {
         // Modifier les informations pour le joueur avec l'ID de John Doe
-        Joueur joueur = joueurDAO.chercherJoueurParEmail(EMAIL);
+        Joueur joueur = playerDAO.findPlayerByEmail(EMAIL);
         joueur.setTelephone(AUTRE_TELEPHONE);
         joueur.setNom(AUTRE_NOM);
         joueur.setPrenom(AUTRE_PRENOM);
         assertNull(joueur.getDateDerniereMaj());
 
-        int nbJoueurs = joueurDAO.actualiserJoueur(joueur);
+        int nbJoueurs = playerDAO.updatePlayer(joueur);
 
-        Joueur joueur1 = joueurDAO.chercherJoueurParEmail(EMAIL);
+        Joueur joueur1 = playerDAO.findPlayerByEmail(EMAIL);
 
         // Les informations du joueur 1 doivent être modifiées
         assertEquals(1, nbJoueurs);
@@ -104,10 +104,10 @@ class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void supprimerJoueur() throws Exception {
+    void deletePlayer() throws Exception {
         // When
-        int nbJoueurs = joueurDAO.supprimerJoueur(JOHN_DOE);
-        Joueur joueur = joueurDAO.chercherJoueurParEmail(EMAIL);
+        int nbJoueurs = playerDAO.deletePlayer(JOHN_DOE);
+        Joueur joueur = playerDAO.findPlayerByEmail(EMAIL);
 
         // Then
         assertEquals(1, nbJoueurs);
@@ -116,10 +116,10 @@ class JoueurDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void desactiverJoueur() throws Exception {
+    void deactivatePlayer() throws Exception {
         // When
-        int nbJoueurs = joueurDAO.desactiverJoueur(JOHN_DOE);
-        Joueur joueur = joueurDAO.chercherJoueurParId(JOHN_DOE.getId());
+        int nbJoueurs = playerDAO.deactivatePlayer(JOHN_DOE);
+        Joueur joueur = playerDAO.findPlayerById(JOHN_DOE.getId());
 
         // Then
         assertEquals(1, nbJoueurs);

@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.uiservices;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Site;
 import net.andresbustamante.yafoot.model.xs.Sites;
@@ -52,7 +52,7 @@ public class OrganisationMatchsUIService extends AbstractUIService {
         try {
             Client client = ClientBuilder.newClient();
             WebTarget webTarget = client.target(BASE_URI).path(ConfigProperties.getValue("matches.api.service.path"));
-            String location = webTarget.request(MediaType.APPLICATION_JSON).header(Contexte.UTILISATEUR,
+            String location = webTarget.request(MediaType.APPLICATION_JSON).header(UserContext.USER_CTX,
                     getUserContext().getUser().getId()).post(Entity.json(match)).getLocation().getPath();
             return location.substring(location.lastIndexOf('/'));
         } catch (ResponseProcessingException ex) {

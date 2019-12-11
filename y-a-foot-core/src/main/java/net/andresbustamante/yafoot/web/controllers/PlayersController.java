@@ -9,7 +9,7 @@ import net.andresbustamante.yafoot.services.PlayerManagementService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.mappers.ContextMapper;
 import net.andresbustamante.yafoot.web.mappers.PlayerMapper;
-import net.andresbustamante.yafoot.web.util.ContexteUtils;
+import net.andresbustamante.yafoot.web.util.ContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +88,8 @@ public class PlayersController extends AbstractController {
                                  @Context HttpServletRequest request) {
         try {
             log.info("Mise à jour des données du joueur {}", email);
-            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            boolean succes = playerManagementService.updatePlayer(playerMapper.map(player), contexte);
+            net.andresbustamante.yafoot.model.UserContext userContext = ContextUtils.getUserContext(request);
+            boolean succes = playerManagementService.updatePlayer(playerMapper.map(player), userContext);
             return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
@@ -104,10 +104,10 @@ public class PlayersController extends AbstractController {
     @Path("/{email}/email")
     @Produces(MediaType.APPLICATION_XML)
     public Response loadPlayerByEmail(@PathParam(EMAIL) String email) {
-        net.andresbustamante.yafoot.model.Contexte contexte = new net.andresbustamante.yafoot.model.Contexte();
+        net.andresbustamante.yafoot.model.UserContext userContext = new net.andresbustamante.yafoot.model.UserContext();
 
         try {
-            net.andresbustamante.yafoot.model.Joueur joueur = playerSearchService.findPlayerByEmail(email, contexte);
+            net.andresbustamante.yafoot.model.Joueur joueur = playerSearchService.findPlayerByEmail(email, userContext);
 
             if (joueur != null) {
                 return Response.ok(playerMapper.map(joueur)).build();
@@ -127,8 +127,8 @@ public class PlayersController extends AbstractController {
                                      @Context HttpServletRequest request) {
         try {
             log.info("Traitement de la demande de désactivation du joueur {}", email);
-            net.andresbustamante.yafoot.model.Contexte contexte = ContexteUtils.getContexte(request);
-            boolean succes = playerManagementService.deactivatePlayer(email, contexte);
+            net.andresbustamante.yafoot.model.UserContext userContext = ContextUtils.getUserContext(request);
+            boolean succes = playerManagementService.deactivatePlayer(email, userContext);
             return (succes) ? Response.noContent().build() : Response.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);

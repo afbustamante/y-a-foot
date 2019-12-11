@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.andresbustamante.yafoot.dao.JoueurDAO">
-    <select id="isJoueurInscrit" resultType="boolean">
+<mapper namespace="net.andresbustamante.yafoot.dao.PlayerDAO">
+    <select id="isPlayerAlreadySignedIn" resultType="boolean">
         SELECT COUNT(*)
         FROM t_joueur jou
         WHERE jou.jou_email = #{email}
     </select>
 
-    <select id="chercherJoueurParId" resultType="net.andresbustamante.yafoot.model.Joueur">
+    <select id="findPlayerById" resultType="net.andresbustamante.yafoot.model.Joueur">
         SELECT
             jou.jou_id                AS id,
             jou.jou_nom               AS nom,
@@ -22,7 +22,7 @@
         WHERE jou.jou_id = #{id}
     </select>
 
-    <select id="chercherJoueurParEmail" resultType="net.andresbustamante.yafoot.model.Joueur">
+    <select id="findPlayerByEmail" resultType="net.andresbustamante.yafoot.model.Joueur">
         SELECT
             jou.jou_id                AS id,
             jou.jou_nom               AS nom,
@@ -36,7 +36,7 @@
         WHERE jou.jou_email = #{email}
     </select>
 
-    <insert id="creerJoueur" useGeneratedKeys="true">
+    <insert id="savePlayer" useGeneratedKeys="true">
         <selectKey keyProperty="joueur.id" resultType="int" order="BEFORE">
             SELECT NEXTVAL('s_joueur') AS id;
         </selectKey>
@@ -46,7 +46,7 @@
         (#{joueur.id}, #{joueur.nom}, #{joueur.prenom}, #{joueur.telephone}, #{joueur.email}, NOW(), true)
     </insert>
 
-    <update id="actualiserJoueur">
+    <update id="updatePlayer">
         UPDATE t_joueur
         SET
         <if test="joueur.nom != null">
@@ -62,12 +62,12 @@
         WHERE jou_email = #{joueur.email}
     </update>
 
-    <delete id="supprimerJoueur">
+    <delete id="deletePlayer">
         DELETE FROM t_joueur
         WHERE jou_id = #{joueur.id}
     </delete>
 
-    <update id="desactiverJoueur">
+    <update id="deactivatePlayer">
         UPDATE t_joueur
         SET jou_prenom    = 'User' || jou_id,
             jou_nom       = 'Foot',

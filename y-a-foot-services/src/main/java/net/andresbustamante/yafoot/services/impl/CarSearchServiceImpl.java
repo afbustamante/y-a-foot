@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.dao.VoitureDAO;
+import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Voiture;
 import net.andresbustamante.yafoot.services.CarSearchService;
@@ -15,10 +15,10 @@ import java.util.List;
 public class CarSearchServiceImpl implements CarSearchService {
 
     @Autowired
-    private VoitureDAO voitureDAO;
+    private CarDAO carDAO;
 
     @Override
-    public List<Voiture> findCarsByPlayer(Joueur player, Contexte userContext) throws DatabaseException {
-        return voitureDAO.chargerVoituresJoueur(player);
+    public List<Voiture> findCarsByPlayer(Joueur player, UserContext userContext) throws DatabaseException {
+        return carDAO.findCarsByPlayer(player);
     }
 }

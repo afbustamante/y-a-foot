@@ -13,7 +13,7 @@ import static net.andresbustamante.yafoot.util.DaoConstants.*;
  *
  * @author andresbustamante
  */
-public interface VoitureDAO {
+public interface CarDAO {
 
     /**
      * Récupérer les informations d'une voiture à partir de son identifiant
@@ -21,7 +21,7 @@ public interface VoitureDAO {
      * @param id Identifiant de la voiture à chercher
      * @return
      */
-    Voiture chercherVoitureParId(@Param(ID) Integer id);
+    Voiture findCarById(@Param(ID) Integer id);
 
     /**
      * Créer une nouvelle voiture en base de données
@@ -29,14 +29,14 @@ public interface VoitureDAO {
      * @param voiture Voiture à enregistrer
      * @param joueur Joueur enregistrant la voiture
      */
-    int enregistrerVoiture(@Param(VOITURE) Voiture voiture, @Param(JOUEUR) Joueur joueur);
+    int saveCar(@Param(VOITURE) Voiture voiture, @Param(JOUEUR) Joueur joueur);
 
     /**
      * Supprimer toutes les voitures enregistrées par un joueur
      *
      * @param joueur
      */
-    int supprimerVoitures(@Param(JOUEUR) Joueur joueur);
+    int deleteCarsForPlayer(@Param(JOUEUR) Joueur joueur);
 
     /**
      * Loads the list of cars that a player has registered in database
@@ -44,5 +44,5 @@ public interface VoitureDAO {
      * @param joueur The player to search
      * @return
      */
-    List<Voiture> chargerVoituresJoueur(@Param(JOUEUR) Joueur joueur);
+    List<Voiture> findCarsByPlayer(@Param(JOUEUR) Joueur joueur);
 }

@@ -31,7 +31,7 @@ public class MatchsJoiningUIService extends AbstractUIService {
      * @param car Voiture dans laquelle le joueur actif va se déplacer
      * @throws ApplicationException
      */
-    public void registerPlayerToMatch(Match match, Car car) throws ApplicationException {
+    public void registerPlayer(Match match, Car car) throws ApplicationException {
         Registration registration = new Registration();
         registration.setMatchId(match.getId());
         registration.setPlayer((Player) getUserContext().getUser());

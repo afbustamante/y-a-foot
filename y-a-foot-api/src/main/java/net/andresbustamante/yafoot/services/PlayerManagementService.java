@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.services;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 
 /**
@@ -16,33 +16,33 @@ public interface PlayerManagementService {
      * Inscrire un joueur dans le système
      *
      * @param joueur Joueur à créer
-     * @param contexte Contexte de l'utilisateur réalisant l'action
+     * @param userContext Contexte de l'utilisateur réalisant l'action
      * @return Succès de l'opération
      * @throws DatabaseException
      * @throws LdapException
      */
-    boolean savePlayer(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException;
+    boolean savePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException;
 
     /**
      * Mettre à jour les informations de base d'un joeur
      *
      * @param joueur Joueur à mettre à jour
-     * @param contexte Contexte de l'utilisateur réalisant l'action
+     * @param userContext Contexte de l'utilisateur réalisant l'action
      * @return Succès de l'opération
      * @throws DatabaseException
      * @throws LdapException
      */
-    boolean updatePlayer(Joueur joueur, Contexte contexte) throws LdapException, DatabaseException;
+    boolean updatePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException;
 
     /**
      * Désactiver un joueur tout en supprimant son historique dans l'application et en supprimant
      * l'entrée dans l'annuaire LDAP
      *
      * @param emailJoueur Email du joueur à supprimer
-     * @param contexte Contexte de l'utilisateur réalisant l'action
+     * @param userContext Contexte de l'utilisateur réalisant l'action
      * @return Succès de l'opération
      * @throws DatabaseException
      * @throws LdapException
      */
-    boolean deactivatePlayer(String emailJoueur, Contexte contexte) throws LdapException, DatabaseException;
+    boolean deactivatePlayer(String emailJoueur, UserContext userContext) throws LdapException, DatabaseException;
 }

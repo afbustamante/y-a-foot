@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.dao.VoitureDAO;
-import net.andresbustamante.yafoot.model.Contexte;
+import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,32 +17,32 @@ class CarManagementServiceImplTest extends AbstractServiceTest {
 
     private Joueur joueur;
 
-    private Contexte contexte;
+    private UserContext userContext;
 
     @InjectMocks
-    private CarManagementServiceImpl gestionVoituresService;
+    private CarManagementServiceImpl carManagementService;
 
     @Mock
-    private VoitureDAO voitureDAO;
+    private CarDAO carDAO;
 
     @BeforeEach
     void setUp() {
         joueur = new Joueur(1);
-        contexte = new Contexte();
-        contexte.setIdUtilisateur(joueur.getId());
+        userContext = new UserContext();
+        userContext.setUserId(joueur.getId());
     }
 
     @Test
-    void enregistrerVoiture() throws Exception {
+    void saveCar() throws Exception {
         // Given
         Voiture voiture = new Voiture(8);
         voiture.setNom("Test car");
         voiture.setNbPlaces(3);
 
-        int idVoiture = gestionVoituresService.saveCar(voiture, contexte);
+        int idVoiture = carManagementService.saveCar(voiture, userContext);
 
         assertEquals(8, idVoiture);
-        verify(voitureDAO).enregistrerVoiture(any(Voiture.class), any(Joueur.class));
+        verify(carDAO).saveCar(any(Voiture.class), any(Joueur.class));
 
     }
 }
