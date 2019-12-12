@@ -712,11 +712,48 @@
             <configuration>
               <rules>
                 <requireJavaVersion>
-                  <version>[1.8,]</version>
+                  <version>[${java.version},]</version>
                 </requireJavaVersion>
               </rules>
               <fail>true</fail>
               <skip>false</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>enforce-banned-dependencies</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <searchTransitive>true</searchTransitive>
+                  <excludes>
+                    <exclude>cglib:cglib</exclude>
+                    <exclude>cglib:cglib-asm</exclude>
+                    <exclude>cglib:cglib-full</exclude>
+                    <exclude>xml-apis:*</exclude>
+                    <exclude>xerces:*</exclude>
+                    <exclude>xalan:*</exclude>
+                    <exclude>javax.xml.bind:jsr173_api</exclude>
+                    <exclude>org.apache.ws.commons:XmlSchema</exclude>
+                    <exclude>net.sf.ehcache:ehcache-core</exclude>
+                    <exclude>org.unitils:unitils</exclude>
+                    <exclude>xmlbeans:xbean</exclude>
+                    <exclude>aspectj:aspectjweaver</exclude>
+                    <exclude>jfree:*</exclude>
+                    <exclude>bouncycastle:*</exclude>
+                    <exclude>org.codehaus.jackson:jackson-core-lgpl</exclude>
+                    <exclude>org.codehaus.jackson:jackson-mapper-lgpl</exclude>
+                    <exclude>org.jboss.netty:netty</exclude>
+                    <exclude>javassist:javassist</exclude>
+                    <exclude>asm:asm</exclude>
+                    <exclude>junit:junit</exclude>
+                  </excludes>
+                  <message>Forbidden libraries</message>
+                </bannedDependencies>
+              </rules>
+              <fail>true</fail>
             </configuration>
           </execution>
           <execution>
