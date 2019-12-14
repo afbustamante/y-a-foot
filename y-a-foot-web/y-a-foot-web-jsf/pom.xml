@@ -46,6 +46,8 @@
   </dependencies>
 
   <build>
+    <finalName>${project.name}</finalName>
+
     <resources>
       <resource>
         <directory>${basedir}/src/main/resources</directory>

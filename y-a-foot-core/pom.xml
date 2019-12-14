@@ -154,6 +154,8 @@
   </dependencies>
 
   <build>
+    <finalName>${project.name}</finalName>
+
     <resources>
       <resource>
         <directory>${basedir}/src/main/resources</directory>
@@ -162,7 +164,6 @@
     </resources>
 
     <filters>
-      <filter>${basedir}/src/main/filters/filter.properties</filter>
       <filter>${basedir}/src/main/filters/filter-${env}.properties</filter>
     </filters>
 
