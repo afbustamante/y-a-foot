@@ -56,7 +56,6 @@
     </resources>
 
     <filters>
-      <filter>${basedir}/src/main/filters/filter.properties</filter>
       <filter>${basedir}/src/main/filters/filter-${env}.properties</filter>
     </filters>
 
