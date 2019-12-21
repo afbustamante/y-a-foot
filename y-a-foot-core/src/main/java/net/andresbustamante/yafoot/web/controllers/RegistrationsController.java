@@ -86,7 +86,7 @@ public class RegistrationsController extends AbstractController {
                 matchManagementService.quitMatch(joueur, match, userContext);
                 return Response.noContent().build();
             } else {
-                log.warn("Désinscription demandée sur un match non existant avec le code {}", matchCode);
+                log.warn("Invalid match code detected for unregistering player");
                 return Response.status(BAD_REQUEST).build();
             }
         } catch (DatabaseException e) {

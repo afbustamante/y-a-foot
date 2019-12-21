@@ -87,7 +87,7 @@ public class PlayersController extends AbstractController {
     public Response updatePlayer(@PathParam(EMAIL) String email, Player player,
                                  @Context HttpServletRequest request) {
         try {
-            log.info("Mise à jour des données du joueur {}", email);
+            log.debug("Player information update requested");
             net.andresbustamante.yafoot.model.UserContext userContext = ContextUtils.getUserContext(request);
             boolean succes = playerManagementService.updatePlayer(playerMapper.map(player), userContext);
             return (succes) ? Response.accepted().build() : Response.status(BAD_REQUEST).build();
@@ -126,7 +126,7 @@ public class PlayersController extends AbstractController {
     public Response deactivatePlayer(@PathParam(EMAIL) String email,
                                      @Context HttpServletRequest request) {
         try {
-            log.info("Traitement de la demande de désactivation du joueur {}", email);
+            log.debug("Player deactivation requested");
             net.andresbustamante.yafoot.model.UserContext userContext = ContextUtils.getUserContext(request);
             boolean succes = playerManagementService.deactivatePlayer(email, userContext);
             return (succes) ? Response.noContent().build() : Response.status(BAD_REQUEST).build();

@@ -94,14 +94,14 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
         if (joueur != null) {
             // Supprimer les données du joueur
-            int nbMatchs = matchDAO.unregisterPlayerFromAllMatches(joueur);
-            log.info("Joueur {} desinscrit de {} matchs", emailJoueur, nbMatchs);
+            int numMatches = matchDAO.unregisterPlayerFromAllMatches(joueur);
+            log.info("Player unregistered from {} matches", numMatches);
 
-            int nbVoitures = carDAO.deleteCarsForPlayer(joueur);
-            log.info("{} voitures supprimées pour le joueur {}", nbVoitures, emailJoueur);
+            int numCars = carDAO.deleteCarsForPlayer(joueur);
+            log.info("{} cars removed for player", numCars);
 
-            int nbJoueursDesactives = playerDAO.deactivatePlayer(joueur);
-            log.info("{} joueur désactivé", nbJoueursDesactives);
+            int numPlayers = playerDAO.deactivatePlayer(joueur);
+            log.info("Players deactivated: {}", numPlayers);
 
             // Supprimer l'entrée LDAP
             userDAO.deleteUser(joueur, new RolesEnum[]{RolesEnum.PLAYER});
