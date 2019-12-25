@@ -5,6 +5,7 @@ import net.andresbustamante.yafoot.model.xs.Player;
 import net.andresbustamante.yafoot.model.xs.UserContext;
 import net.andresbustamante.yafoot.web.util.WebConstants;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -78,6 +79,7 @@ public abstract class AbstractUIService {
      */
     protected MultiValueMap<String, String> getHeadersMap() throws ApplicationException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.put("Content-Type", Collections.singletonList(MediaType.APPLICATION_XML_VALUE));
         headers.put(USER_CTX, Collections.singletonList(getUserContext().getUser().getId().toString()));
         headers.put(TZ, Collections.singletonList("CET")); // TODO Injecter la timezone à partir de la session
         return headers;

@@ -42,7 +42,10 @@ public class MatchsRegistryUIService extends AbstractUIService {
                     .path(sitesServicesPath)
                     .queryParam("pid", getUserContext().getUser().getId());
 
-            ResponseEntity<Sites> response = restTemplate.getForEntity(builder.toUriString(), Sites.class);
+            MultiValueMap<String, String> headers = getHeadersMap();
+            HttpEntity<Void> params = new HttpEntity<>(headers);
+
+            ResponseEntity<Sites> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params, Sites.class);
             return (response.getBody() != null) ? response.getBody().getSite() : Collections.emptyList();
         } catch (RestClientException e) {
             throw new ApplicationException("Erreur lors de la recherche des sites pour un player", e);

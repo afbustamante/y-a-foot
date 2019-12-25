@@ -13,40 +13,44 @@ import net.andresbustamante.yafoot.web.util.ContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static net.andresbustamante.yafoot.web.util.RestConstants.MATCH_CODE;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
  * Web Service REST pour la gestion des inscriptions aux matches
  *
  * @author andresbustamante
  */
-@Path("/registrations")
-public class RegistrationsController extends AbstractController {
+@RestController
+public class RegistrationsController extends AbstractController implements RegistrationsApi {
 
-    @Autowired
     private MatchManagementService matchManagementService;
 
-    @Autowired
     private MatchSearchService matchSearchService;
 
-    @Autowired
     private RegistrationMapper registrationMapper;
+
+    private HttpServletRequest request;
 
     private final Logger log = LoggerFactory.getLogger(RegistrationsController.class);
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response registerPlayerToMatch(Registration registration,
-                                          @Context HttpServletRequest request) {
+    @Autowired
+    public RegistrationsController(MatchManagementService matchManagementService, MatchSearchService matchSearchService,
+                                   RegistrationMapper registrationMapper, HttpServletRequest request) {
+        this.matchManagementService = matchManagementService;
+        this.matchSearchService = matchSearchService;
+        this.registrationMapper = registrationMapper;
+        this.request = request;
+    }
+
+    @Override
+    public ResponseEntity<Void> registerPlayerToMatch(Registration registration, Integer userId) {
         log.debug("Traitement de nouvelle demande d'inscription");
 
         try {
@@ -58,43 +62,41 @@ public class RegistrationsController extends AbstractController {
             if (succes) {
                 log.info("Le joueur a ete inscrit");
                 String location = MessageFormat.format("/players/{0}", ins.getJoueur().getEmail());
-                return Response.created(getLocationURI(location)).build();
+                return ResponseEntity.created(getLocationURI(location)).build();
             } else {
                 log.warn("Le joueur n'a pas pu etre inscrit");
-                return Response.status(BAD_REQUEST).build();
+                return ResponseEntity.status(BAD_REQUEST).build();
             }
         } catch (DatabaseException e) {
             log.error("Erreur de base de données", e);
-            return Response.serverError().build();
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des information du contexte", e);
-            return Response.status(BAD_REQUEST).build();
+            return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
 
-    @DELETE
-    @Path("/{matchCode}")
-    public Response unregisterPlayerFromMatch(@PathParam(MATCH_CODE) String matchCode,
-                                              @Context HttpServletRequest request) {
+    @Override
+    public ResponseEntity<Void> unregisterPlayerFromMatch(String matchCode, Integer userId) {
         try {
             UserContext userContext = ContextUtils.getUserContext(request);
 
-            Match match = matchSearchService.findMatchByCode(matchCode, userContext);
+            Match match = matchSearchService.findMatchByCode(matchCode);
 
             if (match != null) {
                 Joueur joueur = new Joueur(userContext.getUserId());
                 matchManagementService.quitMatch(joueur, match, userContext);
-                return Response.noContent().build();
+                return ResponseEntity.noContent().build();
             } else {
                 log.warn("Invalid match code detected for unregistering player");
-                return Response.status(BAD_REQUEST).build();
+                return ResponseEntity.status(BAD_REQUEST).build();
             }
         } catch (DatabaseException e) {
             log.error("Erreur de base de données", e);
-            return Response.serverError().build();
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des information du contexte", e);
-            return Response.status(BAD_REQUEST).build();
+            return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
 

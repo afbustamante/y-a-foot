@@ -39,7 +39,7 @@
           <row>
             <cell>${c:l('new.match.players.max')}</cell>
             <cell>
-              <spinner id="spbNumPlayersMax" value="@save(vm.numPlayers)"
+              <spinner id="spbNumPlayersMax" value="@save(vm.numPlayersMax)"
                        constraint="no negative" width="90%"/>
             </cell>
             <cell/>

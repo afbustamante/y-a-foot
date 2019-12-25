@@ -15,40 +15,44 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 
-import static net.andresbustamante.yafoot.web.util.RestConstants.PLAYER_ID;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
-@Path("/cars")
-public class CarsController extends AbstractController {
+@RestController
+public class CarsController extends AbstractController implements CarsApi {
 
     @Value("api.public.url")
     private String apiPublicUrl;
 
-    @Autowired
     private CarSearchService carSearchService;
 
-    @Autowired
     private CarManagementService carManagementService;
 
-    @Autowired
     private CarMapper carMapper;
+
+    private HttpServletRequest request;
 
     private final Logger log = LoggerFactory.getLogger(CarsController.class);
 
-    @GET
-    @Path("")
-    public Response loadCarList(@QueryParam(PLAYER_ID) Integer idJoueur) {
+    @Autowired
+    public CarsController(CarSearchService carSearchService, CarManagementService carManagementService,
+                          CarMapper carMapper, HttpServletRequest request) {
+        this.carSearchService = carSearchService;
+        this.carManagementService = carManagementService;
+        this.carMapper = carMapper;
+        this.request = request;
+    }
+
+    @Override
+    public ResponseEntity<Cars> loadCarList(Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Voiture> cars =
                     carSearchService.findCarsByPlayer(new Joueur(idJoueur), new UserContext());
@@ -58,28 +62,27 @@ public class CarsController extends AbstractController {
             if (CollectionUtils.isNotEmpty(cars)) {
                 carsResponse.getCar().addAll(carMapper.map(cars));
             }
-            return Response.ok(carsResponse).build();
+            return ResponseEntity.ok(carsResponse);
         } catch (DatabaseException e) {
             log.error("Error when looking for cars", e);
-            return Response.serverError().build();
+            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
     }
 
-    @POST
-    @Path("")
-    public Response addNewCar(@Valid Car car, @Context HttpServletRequest request) {
+    @Override
+    public ResponseEntity<Void> addNewCar(@Valid Car car, Integer userCtx) {
         try {
             int carId = carManagementService.saveCar(carMapper.map(car), ContextUtils.getUserContext(request));
 
-            return Response.created(URI.create(apiPublicUrl + "/cars/" + carId)).build();
+            return ResponseEntity.created(URI.create(apiPublicUrl + "/cars/" + carId)).build();
         } catch (DatabaseException e) {
             String message = "Database exception when registering a new car";
             log.error(message, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), message).build();
+            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             String message = "Invalid context for player registering a new car";
             log.error(message, e);
-            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), message).build();
+            return new ResponseEntity<>(BAD_REQUEST);
         }
     }
 }

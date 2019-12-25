@@ -3,8 +3,11 @@ package net.andresbustamante.yafoot.web.services;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.xs.Player;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
@@ -29,8 +32,10 @@ public class PlayersRegistryUIService extends AbstractUIService {
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(playersServicesPath);
+            MultiValueMap<String, String> headers = getHeadersMap();
+            HttpEntity<Player> params = new HttpEntity<>(player, headers);
 
-            ResponseEntity<Boolean> response = restTemplate.postForEntity(builder.toUriString(), player, Boolean.class);
+            ResponseEntity<Boolean> response = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, params, Boolean.class);
             boolean succes = (response.getHeaders().getLocation() != null);
 
             return (response.getStatusCode().is2xxSuccessful() && succes);

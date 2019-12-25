@@ -65,7 +65,7 @@ public class MatchRegistryViewModel extends AbstractViewModel {
 
     @Command
     @NotifyChange("siteRegistryEnabled")
-    public void enableSiteRegistration() {
+    public void enableSiteRegistry() {
         siteRegistryEnabled = true;
 
         winNouveauSite = (Window) Executions.createComponents("/sites/dialog_new.zul", null, null);

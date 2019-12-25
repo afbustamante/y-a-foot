@@ -39,8 +39,10 @@ public class MatchsSearchUIService extends AbstractUIService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(matchsServicesPath)
                     .path(MessageFormat.format(matchsParCodeServicesPath, codeMatch));
+            MultiValueMap<String, String> headers = getHeadersMap();
+            HttpEntity<Void> params = new HttpEntity<>(headers);
 
-            ResponseEntity<Match> response = restTemplate.getForEntity(builder.toUriString(), Match.class);
+            ResponseEntity<Match> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params, Match.class);
 
             return (response.getStatusCode().is2xxSuccessful()) ? response.getBody() : null;
         } catch (RestClientException e) {

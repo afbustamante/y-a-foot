@@ -24,7 +24,7 @@ public class MatchSearchServiceImpl implements MatchSearchService {
     private MatchDAO matchDAO;
 
     @Override
-    public Match findMatchByCode(String codeMatch, UserContext userContext) throws DatabaseException {
+    public Match findMatchByCode(String codeMatch) throws DatabaseException {
         if (codeMatch != null) {
             return matchDAO.findMatchByCode(codeMatch);
         } else {

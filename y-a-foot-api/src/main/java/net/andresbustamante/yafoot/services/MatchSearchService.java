@@ -17,11 +17,10 @@ public interface MatchSearchService {
      * Chercher un match par son code unique
      *
      * @param codeMatch Code du match à chercher
-     * @param userContext
      * @return
      * @throws DatabaseException
      */
-    Match findMatchByCode(String codeMatch, UserContext userContext) throws DatabaseException;
+    Match findMatchByCode(String codeMatch) throws DatabaseException;
 
     /**
      * Chercher les matchs à venir pour un joueur dont l'identifiant est passé en paramètre

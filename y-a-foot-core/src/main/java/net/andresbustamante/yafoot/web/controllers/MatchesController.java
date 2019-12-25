@@ -14,64 +14,60 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 import java.time.ZoneId;
 import java.util.List;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static net.andresbustamante.yafoot.web.util.RestConstants.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
  * Web Service REST pour la recherche et consultation des matches
  *
  * @author andresbustamante
  */
-@Path("/matches")
-public class MatchesController extends AbstractController {
+@RestController
+public class MatchesController extends AbstractController implements MatchesApi {
 
-    @Autowired
     private MatchSearchService matchSearchService;
 
-    @Autowired
     private MatchManagementService matchManagementService;
 
-    @Autowired
     private MatchMapper matchMapper;
+
+    private HttpServletRequest request;
 
     @Value("${matches.bycode.api.service.path}")
     private String pathRechercheMatchsParCode;
 
     private final Logger log = LoggerFactory.getLogger(MatchesController.class);
 
-    @GET
-    @Path("/{matchCode}")
-    @Produces(MediaType.APPLICATION_XML)
-    public Response loadMatchByCode(@PathParam(MATCH_CODE) String matchCode,
-                                    @HeaderParam(USER) Integer userId) {
-        try {
-            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode,
-                    new UserContext(userId));
+    @Autowired
+    public MatchesController(MatchSearchService matchSearchService, MatchManagementService matchManagementService,
+                             MatchMapper matchMapper, HttpServletRequest request) {
+        this.matchSearchService = matchSearchService;
+        this.matchManagementService = matchManagementService;
+        this.matchMapper = matchMapper;
+        this.request = request;
+    }
 
-            return (match != null) ? Response.ok(matchMapper.map(match)).build() :
-                    Response.status(NOT_FOUND).build();
+    @Override
+    public ResponseEntity<Match> loadMatchByCode(String matchCode) {
+        try {
+            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+
+            return (match != null) ? ResponseEntity.ok(matchMapper.map(match)) : ResponseEntity.notFound().build();
         } catch (DatabaseException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
-            return Response.serverError().build();
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public Response loadMatchesByPlayer(@QueryParam(PLAYER_ID) Integer playerId,
-                                        @HeaderParam(USER) Integer userId,
-                                        @HeaderParam(TIMEZONE) String timezone) {
+    public ResponseEntity<Matches> loadMatchesByPlayer(Integer playerId, Integer userId, String timezone) {
         try {
             UserContext ctx = new UserContext(userId);
             ctx.setTimezone(ZoneId.of(timezone));
@@ -85,19 +81,17 @@ public class MatchesController extends AbstractController {
                 for (net.andresbustamante.yafoot.model.Match m : matchs) {
                     result.getMatch().add(matchMapper.map(m));
                 }
-                return Response.ok(result).build();
+                return ResponseEntity.ok(result);
             } else {
-                return Response.ok(new Matches()).build();
+                return ResponseEntity.ok(new Matches());
             }
         } catch (DatabaseException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
-            return Response.serverError().build();
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createMatch(Match match, @Context HttpServletRequest request) {
+    public ResponseEntity<Long> createMatch(Match match, Integer userId) {
         try {
             UserContext userContext = ContextUtils.getUserContext(request);
             net.andresbustamante.yafoot.model.Match m = matchMapper.map(match);
@@ -105,16 +99,16 @@ public class MatchesController extends AbstractController {
 
             if (isMatchCree) {
                 String location = MessageFormat.format(pathRechercheMatchsParCode, m.getCode());
-                return Response.created(getLocationURI(location)).build();
+                return ResponseEntity.created(getLocationURI(location)).build();
             } else {
-                return Response.status(BAD_REQUEST).build();
+                return ResponseEntity.status(BAD_REQUEST).build();
             }
         } catch (DatabaseException e) {
             log.error("Erreur lors de la création d'un match", e);
-            return Response.serverError().build();
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des information du contexte", e);
-            return Response.status(BAD_REQUEST).build();
+            return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
 }

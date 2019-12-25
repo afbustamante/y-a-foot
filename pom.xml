@@ -40,10 +40,11 @@
     <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
     <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
+    <swagger-codegen-maven-plugin.version>3.0.14</swagger-codegen-maven-plugin.version>
 
     <!-- Java EE / javax -->
     <javaee-web-api.version>7.0</javaee-web-api.version>
-    <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+    <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
     <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
     <jaxb-api.version>2.3.1</jaxb-api.version>
     <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
@@ -78,10 +79,6 @@
     <commons-logging.version>1.2</commons-logging.version>
     <commons-dbcp2.version>2.2.0</commons-dbcp2.version>
 
-    <!-- Apache CXF -->
-    <cxf.version>3.3.3</cxf.version>
-    <jackson-jaxrs.version>1.9.13</jackson-jaxrs.version>
-
     <!-- Tests -->
     <junit.jupiter.version>5.3.2</junit.jupiter.version>
     <junit-platform.version>1.3.2</junit-platform.version>
@@ -98,6 +95,7 @@
     <slf4j-api.version>1.7.25</slf4j-api.version>
     <javassist.version>3.21.0-GA</javassist.version>
     <logback.version>1.2.3</logback.version>
+    <swagger-annotations.version>1.6.0</swagger-annotations.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
@@ -357,38 +355,6 @@
         <version>${logback.version}</version>
       </dependency>
 
-      <!-- Apache CXF -->
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-core</artifactId>
-        <version>${cxf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>
-        <version>${cxf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-        <version>${cxf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-features-logging</artifactId>
-        <version>${cxf.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-jaxrs</artifactId>
-        <version>${jackson-jaxrs.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-xc</artifactId>
-        <version>${jackson-jaxrs.version}</version>
-      </dependency>
-
       <!-- ICEFaces -->
       <dependency>
         <groupId>org.icefaces</groupId>
@@ -544,6 +510,11 @@
         <artifactId>mapstruct</artifactId>
         <version>${mapstruct.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.swagger</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${swagger-annotations.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -686,9 +657,9 @@
         </plugin>
 
         <plugin>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-java2wadl-plugin</artifactId>
-          <version>${cxf.version}</version>
+          <groupId>io.swagger.codegen.v3</groupId>
+          <artifactId>swagger-codegen-maven-plugin</artifactId>
+          <version>${swagger-codegen-maven-plugin.version}</version>
         </plugin>
 
         <plugin>

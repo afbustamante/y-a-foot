@@ -39,7 +39,6 @@
     <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>javax.activation</groupId>
@@ -86,34 +85,6 @@
       <artifactId>mybatis-spring-boot-starter</artifactId>
     </dependency>
 
-    <!-- Apache CXF -->
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-features-logging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-jaxrs</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-xc</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-
     <!-- JUnit -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -136,20 +107,15 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Mockito -->
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-junit-jupiter</artifactId>
-    </dependency>
-
     <!-- Autres -->
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
@@ -195,29 +161,28 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-java2wadl-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>javax.activation-api</artifactId>
-            <version>${javax.activation-api.version}</version>
-          </dependency>
-        </dependencies>
+        <groupId>io.swagger.codegen.v3</groupId>
+        <artifactId>swagger-codegen-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>process-classes</id>
-            <phase>process-classes</phase>
             <goals>
-              <goal>java2wadl</goal>
+              <goal>generate</goal>
             </goals>
             <configuration>
-              <attachWadl>true</attachWadl>
-              <applicationTitle>Y-a-foot REST API</applicationTitle>
-              <basePackages>net.andresbustamante.yafoot.web.controllers</basePackages>
-              <!--outputFile>${basedir}/src/main/resources/wadl/y-a-foot-core.wadl</outputFile-->
-              <ignoreForwardSlash>false</ignoreForwardSlash>
-              <stylesheetReference>${basedir}/src/main/resources/wadl/wadl.xsl</stylesheetReference>
+              <inputSpec>${project.basedir}/src/main/resources/y-a-foot-api.yml</inputSpec>
+              <language>spring</language>
+              <modelPackage>net.andresbustamante.yafoot.model.xs</modelPackage>
+              <apiPackage>net.andresbustamante.yafoot.web.controllers</apiPackage>
+              <generateModels>false</generateModels>
+              <generateModelTests>false</generateModelTests>
+              <generateSupportingFiles>false</generateSupportingFiles>
+              <generateApiDocumentation>false</generateApiDocumentation>
+              <generateApiTests>false</generateApiTests>
+              <configOptions>
+                <jdk8>true</jdk8>
+                <interfaceOnly>true</interfaceOnly>
+                <defaultInterfaces>false</defaultInterfaces>
+              </configOptions>
             </configuration>
           </execution>
         </executions>

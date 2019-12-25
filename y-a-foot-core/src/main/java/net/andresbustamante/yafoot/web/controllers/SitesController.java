@@ -9,34 +9,35 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
-import static net.andresbustamante.yafoot.web.util.RestConstants.PLAYER_ID;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
+ * REST controller for sites related operations
+ *
  * @author andresbustamante
  */
-@Path("/sites")
-public class SitesController {
+@RestController
+public class SitesController extends AbstractController implements SitesApi {
 
-    @Autowired
     private SiteSearchService siteSearchService;
 
-    @Autowired
     private SiteMapper siteMapper;
 
     private final Logger log = LoggerFactory.getLogger(SitesController.class);
 
-    @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public Response loadSitesByPlayer(@QueryParam(PLAYER_ID) Integer playerId) {
+    @Autowired
+    public SitesController(SiteSearchService siteSearchService, SiteMapper siteMapper) {
+        this.siteSearchService = siteSearchService;
+        this.siteMapper = siteMapper;
+    }
+
+    @Override
+    public ResponseEntity<Sites> loadSitesByPlayer(Integer playerId) {
         try {
             List<net.andresbustamante.yafoot.model.Site> sites = siteSearchService.findSitesByPlayer(playerId,
                     new UserContext());
@@ -48,10 +49,10 @@ public class SitesController {
                     result.getSite().add(siteMapper.map(site));
                 }
             }
-            return Response.ok(result).build();
+            return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
             log.error("Erreur lors de la recherche de sites par joueur", e);
-            return Response.serverError().build();
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
 }

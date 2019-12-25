@@ -39,7 +39,7 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.findMatchByCode(anyString())).thenReturn(match);
-        Match matchExistant = matchSearchService.findMatchByCode(code, ctx);
+        Match matchExistant = matchSearchService.findMatchByCode(code);
 
         // Then
         assertNotNull(matchExistant);
@@ -53,7 +53,7 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
         UserContext ctx = new UserContext();
 
         // When
-        Match match = matchSearchService.findMatchByCode(null, ctx);
+        Match match = matchSearchService.findMatchByCode(null);
 
         // Then
         assertNull(match);
@@ -68,7 +68,7 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.findMatchByCode(anyString())).thenReturn(null);
-        Match matchExistant = matchSearchService.findMatchByCode(code, ctx);
+        Match matchExistant = matchSearchService.findMatchByCode(code);
 
         // Then
         assertNull(matchExistant);

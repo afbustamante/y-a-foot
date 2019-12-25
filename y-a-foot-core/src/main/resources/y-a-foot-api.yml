@@ -1,0 +1,271 @@
+openapi: 3.0.0
+info:
+  title: Y'a foot REST API
+  description: REST controllers API
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api
+  description: Localhost deployment
+paths:
+  /players:
+    post:
+      operationId: createPlayer
+      summary: Create a new player
+      tags:
+      - players
+      parameters:
+      - in: header
+        name: userCtx
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      requestBody:
+        name: player
+        description: Player to save
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: Player
+      responses:
+        '201': # Created
+          description: Player ID
+          content:
+            application/xml:
+              schema:
+                type: long
+  /players/{email}/email:
+    parameters:
+    - in: path
+      name: email
+      required: true
+      schema:
+        type: string
+      description: Email address to identify a player
+    get:
+      operationId: loadPlayerByEmail
+      summary: Loads details for a player
+      tags:
+      - players
+      responses:
+        '200': # OK
+          content:
+            application/xml:
+              schema:
+                type: Player
+    put:
+      operationId: updatePlayer
+      tags:
+      - players
+      parameters:
+      - in: header
+        name: userCtx
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      requestBody:
+        name: player
+        description: Player with updated information
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: Player
+      responses:
+        '202': # Accepted
+          description: Player updated
+    delete:
+      operationId: deactivatePlayer
+      tags:
+      - players
+      parameters:
+      - in: header
+        name: userCtx
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      responses:
+        '204': # No content
+          description: Player deactivated
+  /matches:
+    get:
+      operationId: loadMatchesByPlayer
+      summary: Loads matches for a player
+      tags:
+      - matches
+      parameters:
+      - in: query
+        name: pid
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: userCtx
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      - in: header
+        name: tz
+        schema:
+          type: string
+      responses:
+        '200': # OK
+          content:
+            application/xml:
+              schema:
+                type: Matches
+    post:
+      operationId: createMatch
+      summary: Creates a match
+      tags:
+      - matches
+      parameters:
+      - in: header
+        name: userCtx
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      requestBody:
+        name: match
+        description: Match to create
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: Match
+      responses:
+        '201': # Created
+          description: Player ID
+          content:
+            application/xml:
+              schema:
+                type: long
+  /matches/{matchCode}:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+      description: Unique match code
+    get:
+      operationId: loadMatchByCode
+      summary: Load a match by its unique code
+      tags:
+      - matches
+      responses:
+        '200': # OK
+          content:
+            application/xml:
+              schema:
+                type: Match
+  /sites:
+    get:
+      operationId: loadSitesByPlayer
+      summary: Loads the sites visited or registrated by a player
+      tags:
+      - sites
+      parameters:
+      - in: query
+        name: pid
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200': # OK
+          content:
+            application/xml:
+              schema:
+                type: Sites
+  /registrations:
+    post:
+      operationId: registerPlayerToMatch
+      summary: Registers an existing player to a match
+      tags:
+      - registrations
+      parameters:
+      - in: header
+        name: userCtx
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      requestBody:
+        name: registration
+        description: Registration including informations about the concerned player and the match to impact
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: Registration
+      responses:
+        '201': # Created
+          description: Registration saved
+  /registrations/{matchCode}:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+      description: Unique match code
+    delete:
+      operationId: unregisterPlayerFromMatch
+      tags:
+      - registrations
+      parameters:
+      - in: header
+        name: userCtx
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      responses:
+        '204': # No content
+          description: Player deactivated
+  /cars:
+    get:
+      operationId: loadCarList
+      summary: Loads the list of cars registered by a player
+      tags:
+      - cars
+      parameters:
+      - in: query
+        name: pid
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200': # OK
+          content:
+            application/xml:
+              schema:
+                type: Cars
+    post:
+      operationId: addNewCar
+      summary: Registers a new car for a player
+      tags:
+      - cars
+      parameters:
+      - in: header
+        name: userCtx
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+      requestBody:
+        name: car
+        description: Car to save for a player
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: Car
+      responses:
+        '201': # Created
+          description: Car saved

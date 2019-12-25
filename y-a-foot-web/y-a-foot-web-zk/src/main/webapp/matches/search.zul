@@ -56,7 +56,7 @@
             <cell>
               <label value="@load(vm.match.site.name)"/>
               <separator/>
-              <label value="@load(vm.match.site.adresse)"/>
+              <label value="@load(vm.match.site.address)"/>
             </cell>
             <cell>
               <button id="btnViewMap" label="${c:l('match.search.result.map')}"

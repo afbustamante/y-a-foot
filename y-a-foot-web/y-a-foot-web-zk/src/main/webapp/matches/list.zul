@@ -5,7 +5,7 @@
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window apply="org.zkoss.bind.BindComposer"
-        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.PlayersMatchsSearchViewModel')">
+        viewModel="@id('vm') @init('net.andresbustamante.yafoot.web.model.PlayersMatchsListingViewModel')">
   <caption src="/images/logo.png" sclass="fn-caption" label="${c:l('application.title')}"/>
   <include src="/zul/top.zul"/>
   <div id="content">
@@ -17,7 +17,7 @@
         </tabs>
         <tabpanels>
           <tabpanel id="tbpMatchesToPlay">
-            <listbox id="lbxMatchesToPlay" model="@bind(vm.matchsAJouerListModel)" emptyMessage="${c:l('match.list.empty')}">
+            <listbox id="lbxMatchesToPlay" model="@bind(vm.matchesToPlayListModel)" emptyMessage="${c:l('match.list.empty')}">
               <listhead>
                 <listheader/>
                 <listheader width="30%"/>
@@ -49,7 +49,7 @@
             </listbox>
           </tabpanel>
           <tabpanel id="tbpPlayedMatches">
-            <listbox id="lbxPlayedMatches" model="@bind(vm.matchsJouesListModel)" emptyMessage="${c:l('match.list.empty')}">
+            <listbox id="lbxPlayedMatches" model="@bind(vm.matchesPlayedListModel)" emptyMessage="${c:l('match.list.empty')}">
               <listhead>
                 <listheader label="${c:l('match.list.title.date')}" sort="auto"/>
                 <listheader label="${c:l('match.list.title.place')}" sort="auto"/>
