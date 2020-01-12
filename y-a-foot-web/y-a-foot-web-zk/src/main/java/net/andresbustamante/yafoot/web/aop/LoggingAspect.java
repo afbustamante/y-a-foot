@@ -24,8 +24,8 @@ public class LoggingAspect {
 
     @Before("filtrerServicesUI()")
     public void loggerAppelsUI(JoinPoint joinPoint) {
-        if (joinPoint != null && joinPoint.getSignature() != null) {
-            log.info("Service UI actuel : {}", joinPoint.getSignature().toShortString());
+        if (joinPoint != null && joinPoint.getSignature() != null && log.isInfoEnabled()) {
+            log.info("Active UI service : {}", joinPoint.getSignature().toShortString());
         }
     }
 }

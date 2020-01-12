@@ -21,8 +21,8 @@ public class LoggingAspect {
 
     @Before("filtrerServicesMetier()")
     public void loggingMethodesMetier(JoinPoint joinPoint) {
-        if (joinPoint != null && joinPoint.getSignature() != null) {
-            log.info("Service actuel : {}", joinPoint.getSignature().toShortString());
+        if (joinPoint != null && joinPoint.getSignature() != null && log.isInfoEnabled()) {
+            log.info("Active backend service : {}", joinPoint.getSignature().toShortString());
         }
     }
 }
