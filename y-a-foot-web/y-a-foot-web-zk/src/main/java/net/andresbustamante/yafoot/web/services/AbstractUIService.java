@@ -5,8 +5,7 @@ import net.andresbustamante.yafoot.model.xs.Player;
 import net.andresbustamante.yafoot.model.xs.UserContext;
 import net.andresbustamante.yafoot.web.util.WebConstants;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,6 +17,7 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 
 import java.text.MessageFormat;
+import java.util.Base64;
 import java.util.Collections;
 
 import static net.andresbustamante.yafoot.model.UserContext.TZ;
@@ -31,8 +31,16 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
  */
 public abstract class AbstractUIService {
 
+    private static final String BASIC_AUTH = "Basic ";
+
     @Value("${api.rest.services.url}")
     protected String backendServicesUrl;
+
+    @Value("${api.rest.services.username}")
+    private String backendServicesUsername;
+
+    @Value("${api.rest.services.password}")
+    private String backendServicesPassword;
 
     @Value("${api.rest.players.services.path}")
     private String playersServicesPath;
@@ -73,16 +81,36 @@ public abstract class AbstractUIService {
     }
 
     /**
+     * Build headers map for common user requests
      *
      * @return
      * @throws ApplicationException
      */
     protected MultiValueMap<String, String> getHeadersMap() throws ApplicationException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.put("Content-Type", Collections.singletonList(MediaType.APPLICATION_XML_VALUE));
+        headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_XML_VALUE));
+        headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(BASIC_AUTH + getBase64EncodedPassword()));
         headers.put(USER_CTX, Collections.singletonList(getUserContext().getUser().getId().toString()));
         headers.put(TZ, Collections.singletonList("CET")); // TODO Injecter la timezone à partir de la session
         return headers;
+    }
+
+    /**
+     * Build headers map for anonymous user requests (e.g. sign in)
+     *
+     * @return
+     * @throws ApplicationException
+     */
+    protected MultiValueMap<String, String> getAnonymousHeadersMap() throws ApplicationException {
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_XML_VALUE));
+        headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(BASIC_AUTH + getBase64EncodedPassword()));
+        return headers;
+    }
+
+    private String getBase64EncodedPassword() {
+        String source = backendServicesUsername + ":" + backendServicesPassword;
+        return Base64.getEncoder().encodeToString(source.getBytes());
     }
 
     /**
@@ -99,7 +127,11 @@ public abstract class AbstractUIService {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(playersServicesPath)
                     .path(MessageFormat.format(playersByEmailServicesPath, email));
-            ResponseEntity<Player> response = restTemplate.getForEntity(builder.toUriString(), Player.class);
+            MultiValueMap<String, String> headers = getAnonymousHeadersMap();
+            HttpEntity<Void> params = new HttpEntity<>(headers);
+
+            ResponseEntity<Player> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params,
+                    Player.class);
             return response.getBody();
         } catch (RestClientException e) {
             throw new ApplicationException("Erreur lors de la récupération des informations d'un joueur", e);
