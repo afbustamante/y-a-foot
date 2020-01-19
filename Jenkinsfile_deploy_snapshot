@@ -44,7 +44,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Deploy the frontend artifact
+                sh "cd ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk"
                 sh 'mvn wildfly:deploy -P devel'
+                sh "cd ${WORKSPACE}"
             }
         }
     }
