@@ -22,7 +22,7 @@ pipeline {
             steps {
                 // Undeploy the frontend artifact
                 sh "cd ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk"
-                sh 'mvn wildfly:undeploy -P devel'
+                sh 'mvn -f pom.xml wildfly:undeploy -P devel'
                 sh "cd ${WORKSPACE}"
             }
         }
@@ -45,7 +45,7 @@ pipeline {
             steps {
                 // Deploy the frontend artifact
                 sh "cd ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk"
-                sh 'mvn wildfly:deploy -P devel'
+                sh 'mvn -f pom.xml wildfly:deploy -P devel'
                 sh "cd ${WORKSPACE}"
             }
         }
