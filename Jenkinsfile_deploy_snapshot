@@ -27,11 +27,10 @@ pipeline {
             }
         }
         stage('Build') {
-            def filterDirectoryBase = '/root/workspaces'
-            def filterFile = 'filter-dev.properties'
-            def filterDirectoryDest = 'src/main/filters/'
-
             steps {
+                filterDirectoryBase = '/root/workspaces'
+                filterFile = 'filter-dev.properties'
+                filterDirectoryDest = 'src/main/filters/'
                 // Copy filters files for this environment
                 sh "cp -f ${filterDirectoryBase}/y-a-foot/y-a-foot-core/${filterFile} y-a-foot-core/${filterDirectoryDest}"
                 sh "cp -f ${filterDirectoryBase}/y-a-foot/y-a-foot-web/y-a-foot-web-zk/${filterFile} y-a-foot-web/y-a-foot-web-zk/${filterDirectoryDest}"
