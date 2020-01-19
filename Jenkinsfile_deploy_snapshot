@@ -11,6 +11,11 @@ pipeline {
         retry(3)
     }
 
+    environment {
+        BACKEND_PID_FILE = '/opt/apps/y-a-foot/y-a-foot-core.pid'
+        BACKEND_JAR_FILE = '/opt/apps/y-a-foot/y-a-foot-core.jar'
+    }
+
     stages {
         stage('Prepare') {
             steps {
@@ -22,6 +27,10 @@ pipeline {
             steps {
                 // Undeploy the frontend artifact
                 sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:undeploy -P devel"
+
+                // Stop the backend process
+                sh "kill `cat ${BACKEND_PID_FILE}`"
+                sh "rm -f ${BACKEND_JAR_FILE} ${BACKEND_PID_FILE}"
             }
         }
         stage('Build') {
@@ -41,6 +50,12 @@ pipeline {
         }
         stage('Deploy') {
             steps {
+                // Start the backend process
+                sh "cp -f ${WORKSPACE}/y-a-foot/y-a-foot-core/target/y-a-foot-core.jar ${BACKEND_JAR_FILE}"
+                sh "java -version"
+                sh "nohup java -jar ${BACKEND_JAR_FILE} -server -Xms1024m -Xmx1024m > /var/log/y-a-foot-core.log &"
+                sh "echo \$! > ${BACKEND_PID_FILE}"
+
                 // Deploy the frontend artifact
                 sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:deploy -P devel"
             }
