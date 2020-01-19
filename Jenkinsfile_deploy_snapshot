@@ -51,7 +51,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Start the backend process
-                sh "cp -f ${WORKSPACE}/y-a-foot/y-a-foot-core/target/y-a-foot-core.jar ${BACKEND_JAR_FILE}"
+                sh "cp -f ${WORKSPACE}/y-a-foot-core/target/y-a-foot-core.jar ${BACKEND_JAR_FILE}"
                 sh "java -version"
                 sh "nohup java -jar ${BACKEND_JAR_FILE} -server -Xms1024m -Xmx1024m > /var/log/y-a-foot-core.log &"
                 sh "echo \$! > ${BACKEND_PID_FILE}"
