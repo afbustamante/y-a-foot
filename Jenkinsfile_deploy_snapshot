@@ -21,9 +21,7 @@ pipeline {
         stage('Undeploy') {
             steps {
                 // Undeploy the frontend artifact
-                sh "cd ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk"
-                sh 'mvn -f pom.xml wildfly:undeploy -P devel'
-                sh "cd ${WORKSPACE}"
+                sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:undeploy -P devel"
             }
         }
         stage('Build') {
@@ -44,9 +42,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Deploy the frontend artifact
-                sh "cd ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk"
-                sh 'mvn -f pom.xml wildfly:deploy -P devel'
-                sh "cd ${WORKSPACE}"
+                sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:deploy -P devel"
             }
         }
     }
