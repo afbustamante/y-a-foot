@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JDK-11'
+        maven 'Maven-3.5'
+    }
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        retry(3)
+    }
+
+    stages {
+        stage('Prepare') {
+            steps {
+                // Get code from GitHub repository
+                git branch: 'develop', url: 'https://github.com/afbustamante/y-a-foot'
+            }
+        }
+        stage('Undeploy') {
+            steps {
+                // Undeploy the frontend artifact
+                sh "cd ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk"
+                sh 'mvn wildfly:undeploy -P devel'
+                sh "cd ${WORKSPACE}"
+            }
+        }
+        stage('Build') {
+            steps {
+                def filterDirectoryBase = '/root/workspaces'
+                def filterFile = 'filter-dev.properties'
+                def filterDirectoryDest = 'src/main/filters/'
+                // Copy filters files for this environment
+                sh "cp -f ${filterDirectoryBase}/y-a-foot/y-a-foot-core/${filterFile} y-a-foot-core/${filterDirectoryDest}"
+                sh "cp -f ${filterDirectoryBase}/y-a-foot/y-a-foot-web/y-a-foot-web-zk/${filterFile} y-a-foot-web/y-a-foot-web-zk/${filterDirectoryDest}"
+                // Run the maven build
+                sh 'mvn -DskipTests=true clean install -P devel --batch-mode'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Deploy the frontend artifact
+                sh 'mvn wildfly:deploy -P devel'
+            }
+        }
+    }
+}

@@ -188,6 +188,14 @@
           <path>/</path>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <configuration>
+          <filename>${project.name}.war</filename>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
