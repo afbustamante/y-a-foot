@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JDK-11'
+        maven 'Maven-3.5'
+    }
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+    }
+
+    parameters {
+        string(name: 'SOURCE_BRANCH', defaultValue: 'develop', description: 'Branch to checkout for this release')
+        string(name: 'DEVELOPMENT_VERSION', defaultValue: '1.1.0-SNAPSHOT', description: 'Development version')
+        string(name: 'DEVELOPMENT_VERSION', defaultValue: '1.1.0-SNAPSHOT', description: 'Development version')
+    }
+
+    stages {
+        stage('Prepare') {
+            steps {
+                // Get code from GitHub repository
+                git branch: "${SOURCE_BRANCH}", url: 'https://github.com/afbustamante/y-a-foot'
+            }
+        }
+        stage('Release') {
+            steps {
+                sh "mvn release:prepare -DreleaseVersion=${RELEASE_VERSION} -DdevelopmentVersion=${DEVELOPMENT_VERSION}"
+            }
+        }
+        stage('Clean') {
+            steps {
+                sh "mvn release:clean"
+            }
+        }
+    }
+}
