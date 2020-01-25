@@ -12,7 +12,7 @@ pipeline {
 
     parameters {
         string(name: 'SOURCE_BRANCH', defaultValue: 'develop', description: 'Branch to checkout for this release')
-        string(name: 'DEVELOPMENT_VERSION', defaultValue: '1.1.0-SNAPSHOT', description: 'Development version')
+        string(name: 'RELEASE_VERSION', defaultValue: '1.0.0', description: 'Release version')
         string(name: 'DEVELOPMENT_VERSION', defaultValue: '1.1.0-SNAPSHOT', description: 'Development version')
     }
 
