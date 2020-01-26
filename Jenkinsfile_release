@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Release') {
             steps {
-                sh "mvn release:prepare -DskipTests=true -DreleaseVersion=${RELEASE_VERSION} -DdevelopmentVersion=${DEVELOPMENT_VERSION}"
+                sh "mvn release:prepare -DskipTests=true -P jenkins -DreleaseVersion=${RELEASE_VERSION} -DdevelopmentVersion=${DEVELOPMENT_VERSION}"
             }
         }
         stage('Clean') {
