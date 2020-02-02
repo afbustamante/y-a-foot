@@ -27,13 +27,13 @@ pipeline {
         stage('Release') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'GitHub', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USERNAME')]) {
-                    sh "mvn release:prepare -DskipTests=true -P jenkins -DreleaseVersion=${RELEASE_VERSION} -DdevelopmentVersion=${DEVELOPMENT_VERSION} -Dusername=${GITHUB_USERNAME} -Dpassword=${GITHUB_PASSWORD}"
+                    sh "mvn release:prepare --batch-mode -P jenkins -Dtag=y-a-foot-${RELEASE_VERSION} -DreleaseVersion=${RELEASE_VERSION} -DdevelopmentVersion=${DEVELOPMENT_VERSION} -Dusername=${GITHUB_USERNAME} -Dpassword=${GITHUB_PASSWORD}"
                 }
             }
         }
         stage('Clean') {
             steps {
-                sh "mvn release:clean"
+                sh "mvn release:clean -P jenkins"
             }
         }
     }
