@@ -8,6 +8,7 @@ pipeline {
 
     options {
         timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
     }
 
     parameters {
@@ -25,7 +26,9 @@ pipeline {
         }
         stage('Release') {
             steps {
-                sh "mvn release:prepare -DskipTests=true -P jenkins -DreleaseVersion=${RELEASE_VERSION} -DdevelopmentVersion=${DEVELOPMENT_VERSION}"
+                withCredentials([usernamePassword(credentialsId: 'GitHub', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USERNAME')]) {
+                    sh "mvn release:prepare -DskipTests=true -P jenkins -DreleaseVersion=${RELEASE_VERSION} -DdevelopmentVersion=${DEVELOPMENT_VERSION} -Dusername=${GITHUB_USERNAME} -Dpassword=${GITHUB_PASSWORD}"
+                }
             }
         }
         stage('Clean') {
