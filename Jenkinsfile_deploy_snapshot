@@ -8,14 +8,13 @@ pipeline {
 
     options {
         timeout(time: 1, unit: 'HOURS')
-        retry(3)
+        retry(2)
+        disableConcurrentBuilds()
     }
 
     environment {
-        BACKEND_PID_FILE = '/opt/apps/y-a-foot/y-a-foot-core.pid'
         BACKEND_JAR_FILE = '/opt/apps/y-a-foot/y-a-foot-core.jar'
-        BACKEND_START_FILE_SOURCE = 'install/shell/y-a-foot-core-start.sh'
-        BACKEND_START_FILE = '/opt/apps/y-a-foot/y-a-foot-core-start.sh'
+        BACKEND_SERVICE_CMD = '/etc/init.d/y-a-foot-core'
     }
 
     stages {
@@ -31,8 +30,7 @@ pipeline {
                 sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:undeploy -P devel"
 
                 // Stop the backend process
-                sh "kill `cat ${BACKEND_PID_FILE}`"
-                sh "rm -f ${BACKEND_JAR_FILE} ${BACKEND_PID_FILE}"
+                sh "${BACKEND_SERVICE_CMD} stop"
             }
         }
         stage('Build') {
@@ -52,14 +50,13 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Start the backend process
+                // Replace the backend JAR
                 sh "cp -f ${WORKSPACE}/y-a-foot-core/target/y-a-foot-core.jar ${BACKEND_JAR_FILE}"
-                sh "cp -f ${WORKSPACE}/${BACKEND_START_FILE_SOURCE} ${BACKEND_START_FILE}"
-                sh "java -version"
+                sh "chmod +x ${BACKEND_JAR_FILE}"
 
-                withEnv(['BUILD_ID=dontKillMe']) {
-                    sh "${BACKEND_START_FILE}"
-                }
+                // Start the backend process
+                sh 'java -version'
+                sh "${BACKEND_SERVICE_CMD} start"
 
                 // Deploy the frontend artifact
                 sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:deploy -P devel"
