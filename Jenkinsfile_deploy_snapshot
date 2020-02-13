@@ -56,7 +56,9 @@ pipeline {
 
                 // Start the backend process
                 sh 'java -version'
-                sh "${BACKEND_SERVICE_CMD} start"
+                withEnv(['BUILD_ID=dontKillMe']) {
+                    sh "${BACKEND_SERVICE_CMD} start"
+                }
 
                 // Deploy the frontend artifact
                 sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:deploy -P devel"
