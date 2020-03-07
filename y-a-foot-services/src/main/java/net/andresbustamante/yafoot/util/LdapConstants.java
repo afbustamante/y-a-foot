@@ -10,6 +10,7 @@ public class LdapConstants {
     public static final String MAIL = "mail";
     public static final String DISPLAY_NAME = "displayName";
     public static final String MEMBER = "member";
+    public static final String USER_PASSWORD = "userPassword";
 
     private LdapConstants() {}
 }

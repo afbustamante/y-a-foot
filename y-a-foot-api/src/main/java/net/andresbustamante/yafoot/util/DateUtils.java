@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,8 +14,6 @@ import static net.andresbustamante.yafoot.util.LocaleUtils.*;
  * @author andresbustamante
  */
 public class DateUtils {
-
-    public static final String SEPARATEUR_HEURE = ":";
 
     private static final String FORMAT_DD_MM_YYYY = "dd/MM/yyyy";
     private static final String FORMAT_YYYY_MM_DD = "yyyy-MM-dd";

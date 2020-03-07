@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(config = DtoMapperConfig.class, uses = {UserMapper.class, PlayerMapper.class, StringMapper.class})
+@Mapper(config = DtoMapperConfig.class, uses = {PlayerMapper.class, StringMapper.class})
 public interface CarMapper {
 
     @Mapping(source = "name", target = "nom")

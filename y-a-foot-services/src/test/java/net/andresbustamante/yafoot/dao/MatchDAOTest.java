@@ -56,8 +56,8 @@ class MatchDAOTest extends AbstractDAOTest {
         assertEquals(8, match.getNbJoueursMin().intValue());
         assertEquals(12, match.getNbJoueursMax().intValue());
         assertNotNull(match.getCreateur());
-        assertEquals("Lionel", match.getCreateur().getPrenom());
-        assertEquals("Messi", match.getCreateur().getNom());
+        assertEquals("Lionel", match.getCreateur().getFirstName());
+        assertEquals("Messi", match.getCreateur().getSurname());
     }
 
     @Test
@@ -111,8 +111,8 @@ class MatchDAOTest extends AbstractDAOTest {
         assertEquals("AZERTY-1234", matchs.get(0).getCode());
         assertTrue(matchs.get(0).getDateMatch().isAfter(dateInitiale));
         assertNotNull(matchs.get(0).getCreateur());
-        assertEquals("Cristiano", matchs.get(0).getCreateur().getPrenom());
-        assertEquals("Ronaldo", matchs.get(0).getCreateur().getNom());
+        assertEquals("Cristiano", matchs.get(0).getCreateur().getFirstName());
+        assertEquals("Ronaldo", matchs.get(0).getCreateur().getSurname());
         assertEquals("cr7@email.com", matchs.get(0).getCreateur().getEmail());
     }
 
@@ -150,9 +150,6 @@ class MatchDAOTest extends AbstractDAOTest {
         match.setCreateur(joueur);
         match.setDescription("Match de test");
         match.setSite(site);
-
-        Utilisateur createur = new Utilisateur();
-        createur.setId(1);
 
         // When
         matchDAO.saveMatch(match);

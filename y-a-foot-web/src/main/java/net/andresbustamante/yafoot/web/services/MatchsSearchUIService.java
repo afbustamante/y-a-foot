@@ -50,13 +50,13 @@ public class MatchsSearchUIService extends AbstractUIService {
         }
     }
 
-    public Matches findMatchsForPlayer() throws ApplicationException {
+    public Matches findMatchesForPlayer() throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(matchsServicesPath)
-                    .queryParam("pid", getUserContext().getUser().getId());
+                    .queryParam("pid", getUserContext().getPlayer().getId());
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);

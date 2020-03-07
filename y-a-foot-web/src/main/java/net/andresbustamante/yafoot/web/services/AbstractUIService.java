@@ -72,7 +72,7 @@ public abstract class AbstractUIService {
 
                 if (player != null) {
                     userContext = new UserContext();
-                    userContext.setUser(player);
+                    userContext.setPlayer(player);
                     session.setAttribute(WebConstants.CONTEXTE, userContext);
                 }
             }
@@ -90,7 +90,7 @@ public abstract class AbstractUIService {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_XML_VALUE));
         headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(BASIC_AUTH + getBase64EncodedPassword()));
-        headers.put(USER_CTX, Collections.singletonList(getUserContext().getUser().getId().toString()));
+        headers.put(USER_CTX, Collections.singletonList(getUserContext().getPlayer().getId().toString()));
         headers.put(TZ, Collections.singletonList("CET")); // TODO Injecter la timezone à partir de la session
         return headers;
     }

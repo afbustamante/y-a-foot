@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.ldap;
 
-import net.andresbustamante.yafoot.model.Utilisateur;
+import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 
 /**
@@ -11,24 +11,24 @@ public interface UserDAO {
     /**
      * Ajouter une nouvelle entrée dans l'annuaire avec un nouvel utilisateur
      *
-     * @param usr Utilisateur à créer
+     * @param usr User à créer
      * @param role Rôle de l'utilisateur à déclarer dans l'annuaire
      */
-    void saveUser(Utilisateur usr, RolesEnum role);
+    void saveUser(User usr, RolesEnum role);
 
     /**
      * Mettre à jour les informations basiques d'un utilisateur passé en paramètre dans l'annuaire LDAP
      *
      * @param usr
      */
-    void updateUser(Utilisateur usr);
+    void updateUser(User usr);
 
     /**
      * Supprimer un utilisateur de l'annuaire LDAP
-     *  @param usr Utilisateur à supprimer
+     *  @param usr User à supprimer
      * @param roles Rôles de l'utilisateur à supprimer
      */
-    void deleteUser(Utilisateur usr, RolesEnum[] roles);
+    void deleteUser(User usr, RolesEnum[] roles);
 
     /**
      * Chercher un utilisateur dans l'annuaire à partir de son identifiant
@@ -36,5 +36,22 @@ public interface UserDAO {
      * @param uid Identifiant de l'utilisateur dans l'annuaire
      * @return
      */
-    Utilisateur findUserByUid(String uid);
+    User findUserByUid(String uid);
+
+    /**
+     * Load user's details for authentication and authorisation
+     *
+     * @param uid User's ID
+     * @return User's details including roles
+     */
+    User findUserAuthDetailsByUid(String uid);
+
+    /**
+     * Authenticate user by using his email address and his password
+     *
+     * @param uid User's ID (email address)
+     * @param password User's password
+     * @return Returns if the authentication information is valid or not
+     */
+    boolean authenticateUser(String uid, String password);
 }

@@ -59,19 +59,19 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
         boolean isImpactLdap = false;
 
         if (joueurExistant != null) {
-            if (joueur.getPrenom() != null) {
-                joueurExistant.setPrenom(joueur.getPrenom());
+            if (joueur.getFirstName() != null) {
+                joueurExistant.setFirstName(joueur.getFirstName());
                 isImpactLdap = true;
             }
-            if (joueur.getNom() != null) {
-                joueurExistant.setNom(joueur.getNom());
+            if (joueur.getSurname() != null) {
+                joueurExistant.setSurname(joueur.getSurname());
                 isImpactLdap = true;
             }
-            if (joueur.getTelephone() != null) {
-                joueurExistant.setTelephone(joueur.getTelephone());
+            if (joueur.getPhoneNumber() != null) {
+                joueurExistant.setPhoneNumber(joueur.getPhoneNumber());
             }
-            if (joueur.getMotDePasse() != null) {
-                joueurExistant.setMotDePasse(joueur.getMotDePasse());
+            if (joueur.getPassword() != null) {
+                joueurExistant.setPassword(joueur.getPassword());
                 isImpactLdap = true;
             }
 

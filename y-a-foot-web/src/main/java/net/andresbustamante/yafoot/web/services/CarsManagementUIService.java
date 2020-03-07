@@ -25,12 +25,12 @@ public class CarsManagementUIService extends AbstractUIService {
     @Value("${api.rest.cars.services.path}")
     private String carsServicesPath;
 
-    public List<Car> findCarsByUser() throws ApplicationException {
+    public List<Car> findCarsByPlayer() throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(carsServicesPath).queryParam("pid", getUserContext().getUser().getId());
+                    .path(carsServicesPath).queryParam("pid", getUserContext().getPlayer().getId());
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);

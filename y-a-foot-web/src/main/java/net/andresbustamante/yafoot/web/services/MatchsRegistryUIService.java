@@ -40,7 +40,7 @@ public class MatchsRegistryUIService extends AbstractUIService {
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(sitesServicesPath)
-                    .queryParam("pid", getUserContext().getUser().getId());
+                    .queryParam("pid", getUserContext().getPlayer().getId());
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);

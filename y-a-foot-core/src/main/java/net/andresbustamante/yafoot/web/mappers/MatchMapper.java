@@ -5,7 +5,8 @@ import net.andresbustamante.yafoot.model.Match;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = DtoMapperConfig.class, uses = {CarMapper.class, UserMapper.class, PlayerMapper.class, StringMapper.class, SiteMapper.class, RegistrationMapper.class})
+@Mapper(config = DtoMapperConfig.class, uses = {CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
+        RegistrationMapper.class})
 public interface MatchMapper {
 
     @Mapping(source = "registrations.registration", target = "inscriptions")

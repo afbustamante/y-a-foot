@@ -149,7 +149,7 @@ public class MatchJoiningViewModel extends AbstractViewModel {
         carProposalEnabled = true;
 
         try {
-            List<Car> cars = carsManagementUIService.findCarsByUser();
+            List<Car> cars = carsManagementUIService.findCarsByPlayer();
 
             if (cars != null) {
                 carsListModel = new ListModelArray<>(cars);

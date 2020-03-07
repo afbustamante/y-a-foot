@@ -77,15 +77,15 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
     void updateExistingPlayer() throws Exception {
         // Given
         Joueur joueurExistant = new Joueur(1);
-        joueurExistant.setNom("Smith");
-        joueurExistant.setPrenom("Alan");
-        joueurExistant.setTelephone("0123456789");
+        joueurExistant.setSurname("Smith");
+        joueurExistant.setFirstName("Alan");
+        joueurExistant.setPhoneNumber("0123456789");
         joueurExistant.setEmail("test@email.com");
 
         Joueur joueurMaj = new Joueur(1);
-        joueurMaj.setNom("Doe");
-        joueurMaj.setPrenom("John");
-        joueurMaj.setTelephone("0423456789");
+        joueurMaj.setSurname("Doe");
+        joueurMaj.setFirstName("John");
+        joueurMaj.setPhoneNumber("0423456789");
         joueurMaj.setEmail("test@email.com");
         UserContext ctx = new UserContext();
 
@@ -105,11 +105,11 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Joueur joueurExistant = new Joueur(1);
         joueurExistant.setEmail("test@email.com");
-        joueurExistant.setMotDePasse("QWERTY123");
+        joueurExistant.setPassword("QWERTY123");
 
         Joueur joueurMaj = new Joueur(1);
         joueurMaj.setEmail("test@email.com");
-        joueurMaj.setMotDePasse("AZERTY123");
+        joueurMaj.setPassword("AZERTY123");
         UserContext ctx = new UserContext();
 
         // When
@@ -127,8 +127,8 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
     void updateInvalidPlayer() throws Exception {
         // Given
         Joueur joueurMaj = new Joueur(1);
-        joueurMaj.setNom("Doe");
-        joueurMaj.setPrenom("John");
+        joueurMaj.setSurname("Doe");
+        joueurMaj.setFirstName("John");
         joueurMaj.setEmail("test@email.com");
         UserContext ctx = new UserContext();
 

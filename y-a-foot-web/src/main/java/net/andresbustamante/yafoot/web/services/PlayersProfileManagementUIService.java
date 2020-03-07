@@ -27,7 +27,7 @@ public class PlayersProfileManagementUIService extends AbstractUIService {
     private String playersByEmailServicesPath;
 
     public Player loadProfileForPlayer() throws ApplicationException {
-        return (Player) getUserContext().getUser();
+        return getUserContext().getPlayer();
     }
 
     public boolean updateProfile(Player player) throws ApplicationException {

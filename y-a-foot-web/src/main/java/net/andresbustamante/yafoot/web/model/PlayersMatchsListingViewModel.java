@@ -45,7 +45,7 @@ public class PlayersMatchsListingViewModel extends AbstractViewModel {
     @Init
     public void init() {
         try {
-            Matches matches = matchsSearchUIService.findMatchsForPlayer();
+            Matches matches = matchsSearchUIService.findMatchesForPlayer();
 
             List<Match> matchesPlayed = new ArrayList<>();
             List<Match> matchesToPlay = new ArrayList<>();

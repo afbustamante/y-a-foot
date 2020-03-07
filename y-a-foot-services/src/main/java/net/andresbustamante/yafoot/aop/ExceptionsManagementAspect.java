@@ -19,25 +19,25 @@ import java.text.MessageFormat;
 public class ExceptionsManagementAspect {
 
     @Pointcut("execution(* net.andresbustamante.yafoot.services.impl.*ServiceImpl.*(..))")
-    public void filtrerMethodesServices() {
+    public void filterServicesMethods() {
         // no-op
     }
 
-    @Around("filtrerMethodesServices()")
-    public Object transformerExceptions(ProceedingJoinPoint pjp) throws Throwable {
+    @Around("filterServicesMethods()")
+    public Object transformException(ProceedingJoinPoint pjp) throws Throwable {
         Object retour;
 
         try {
             retour = pjp.proceed();
         } catch (DataAccessException | ConnectException | SQLException e) {
             // Exceptions de base de données
-            String message = MessageFormat.format("Erreur de base de données lors du traitement de la " +
-                    "demande sur {0}", pjp.getSignature().toShortString());
+            String message = MessageFormat.format("Database error when processing the request for {0}",
+                    pjp.getSignature().toShortString());
             throw new DatabaseException(message + System.lineSeparator() + e.getMessage());
         } catch (NamingException e) {
             // Exceptions de l'annuaire LDAP
-            String message = MessageFormat.format("Erreur de l'annuaire LDAP lors du traitement de la " +
-                    "demande sur {0}", pjp.getSignature().toShortString());
+            String message = MessageFormat.format("LDAP directory error when processing the request for {0}",
+                    pjp.getSignature().toShortString());
             throw new LdapException(message + System.lineSeparator() + e.getMessage());
         }
         return retour;

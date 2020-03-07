@@ -7,6 +7,37 @@ servers:
 - url: http://localhost:8080/api
   description: Localhost deployment
 paths:
+  /users/{email}/authenticate:
+    put:
+      operationId: authenticateUser
+      summary: Authenticate a user and return a valid token
+      tags:
+      - users
+      parameters:
+      - in: path
+        name: email
+        required: true
+        schema:
+          type: string
+          format: email
+        description: Email address identifying the user
+      requestBody:
+        name: user
+        description: User to authenticate
+        required: true
+        content:
+          application/json:
+            schema:
+              type: User
+      responses:
+        '202': # Accepted
+          description: User authenticated
+          content:
+            application/json:
+              schema:
+                type: string
+        '401': # Unauthorized
+          description: Invalid credentials
   /players:
     post:
       operationId: createPlayer

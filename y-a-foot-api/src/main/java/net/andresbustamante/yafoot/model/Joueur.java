@@ -1,5 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
+import net.andresbustamante.yafoot.model.api.Identifiable;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,9 +9,12 @@ import java.util.List;
 /**
  * @author andresbustamante
  */
-public class Joueur extends Utilisateur implements Serializable {
+public class Joueur extends User implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1L;
+    private Integer id;
+    private String phoneNumber;
+    private boolean active;
     private LocalDateTime dateCreation;
     private LocalDateTime dateDerniereMaj;
     private List<Voiture> voitures;
@@ -23,10 +28,36 @@ public class Joueur extends Utilisateur implements Serializable {
 
     public Joueur(Integer id, String nom, String prenom, String email, String telephone) {
         this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
+        this.surname = nom;
+        this.firstName = prenom;
         this.email = email;
-        this.telephone = telephone;
+        this.phoneNumber = telephone;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public LocalDateTime getDateCreation() {

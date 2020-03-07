@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.ldap;
 
-import net.andresbustamante.yafoot.model.Utilisateur;
+import net.andresbustamante.yafoot.model.User;
 import org.springframework.ldap.core.AttributesMapper;
 
 import javax.naming.NamingException;
@@ -11,17 +11,17 @@ import javax.naming.directory.BasicAttributes;
 import static net.andresbustamante.yafoot.util.LdapConstants.*;
 
 /**
- * LDAP attributes mapper for {@link Utilisateur}
+ * LDAP attributes mapper for {@link User}
  */
-public class LdapUserMapper implements AttributesMapper<Utilisateur> {
+public class LdapUserMapper implements AttributesMapper<User> {
 
     @Override
-    public Utilisateur mapFromAttributes(Attributes attrs) throws NamingException {
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setNom((String) attrs.get(SN).get());
-        utilisateur.setPrenom((String) attrs.get(GIVEN_NAME).get());
-        utilisateur.setEmail((String) attrs.get(MAIL).get());
-        return utilisateur;
+    public User mapFromAttributes(Attributes attrs) throws NamingException {
+        User user = new User();
+        user.setSurname((String) attrs.get(SN).get());
+        user.setFirstName((String) attrs.get(GIVEN_NAME).get());
+        user.setEmail((String) attrs.get(MAIL).get());
+        return user;
     }
 
     /**
@@ -30,7 +30,7 @@ public class LdapUserMapper implements AttributesMapper<Utilisateur> {
      * @param usr User to process
      * @return
      */
-    public Attributes mapToAttributes(Utilisateur usr) {
+    public Attributes mapToAttributes(User usr) {
         BasicAttribute objectClass = new BasicAttribute(OBJECT_CLASS);
         objectClass.add("top");
         objectClass.add("person");
@@ -42,17 +42,17 @@ public class LdapUserMapper implements AttributesMapper<Utilisateur> {
         attrs.put(UID, usr.getEmail());
         attrs.put(MAIL, usr.getEmail());
 
-        if (usr.getNom() != null) {
-            attrs.put(SN, usr.getNom());
+        if (usr.getSurname() != null) {
+            attrs.put(SN, usr.getSurname());
         }
 
-        if (usr.getPrenom() != null) {
-            attrs.put(CN, usr.getPrenom());
-            attrs.put(GIVEN_NAME, usr.getPrenom());
+        if (usr.getFirstName() != null) {
+            attrs.put(CN, usr.getFirstName());
+            attrs.put(GIVEN_NAME, usr.getFirstName());
         }
 
-        if (usr.getPrenom() != null && usr.getNom() != null) {
-            attrs.put(DISPLAY_NAME, usr.getPrenom() + " " + usr.getNom());
+        if (usr.getFirstName() != null && usr.getSurname() != null) {
+            attrs.put(DISPLAY_NAME, usr.getFirstName() + " " + usr.getSurname());
         }
         return attrs;
     }

@@ -94,6 +94,7 @@
     <javassist.version>3.21.0-GA</javassist.version>
     <logback.version>1.2.3</logback.version>
     <swagger-annotations.version>1.6.0</swagger-annotations.version>
+    <jjwt.version>0.9.1</jjwt.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
@@ -506,6 +507,11 @@
         <groupId>io.swagger</groupId>
         <artifactId>swagger-annotations</artifactId>
         <version>${swagger-annotations.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt</artifactId>
+        <version>${jjwt.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

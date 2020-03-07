@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.ldap;
 
 import net.andresbustamante.yafoot.config.LdapConfig;
 import net.andresbustamante.yafoot.config.LdapTestConfig;
-import net.andresbustamante.yafoot.model.Utilisateur;
+import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.util.LdapConstants;
 import org.junit.jupiter.api.AfterEach;
@@ -26,8 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {LdapTestConfig.class, LdapConfig.class})
 class UserDAOTest {
 
-    private static final Utilisateur USR_TEST = new Utilisateur("test@email.com", "password", "TEST",
-            "Utilisateur", "0123456789");
+    private static final User USR_TEST = new User("test@email.com", "password", "TEST", "User");
 
     @Value("${ldap.config.users.dn}")
     private String dnUtilisateurs;
@@ -47,107 +46,122 @@ class UserDAOTest {
 
     @Test
     void saveUser() throws Exception {
-        Utilisateur nouvelUtilisateur = buildNewUser();
+        User newUser = buildNewUser();
 
-        userDAO.saveUser(nouvelUtilisateur, RolesEnum.PLAYER);
+        userDAO.saveUser(newUser, RolesEnum.PLAYER);
 
-        Utilisateur utilisateur = userDAO.findUserByUid(getUid(nouvelUtilisateur).toString());
-        assertNotNull(utilisateur);
-        assertNotNull(utilisateur.getNom());
-        assertNotNull(utilisateur.getPrenom());
-        assertNotNull(utilisateur.getEmail());
-        assertNull(utilisateur.getMotDePasse());
+        User user = userDAO.findUserByUid(getUid(newUser).toString());
+        assertNotNull(user);
+        assertNotNull(user.getSurname());
+        assertNotNull(user.getFirstName());
+        assertNotNull(user.getEmail());
+        assertNull(user.getPassword());
 
-        userDAO.deleteUser(nouvelUtilisateur, new RolesEnum[]{RolesEnum.PLAYER});
+        userDAO.deleteUser(newUser, new RolesEnum[]{RolesEnum.PLAYER});
     }
 
     @Test
     void updateUser() throws Exception {
-        Utilisateur utilisateurModifie = new Utilisateur();
-        utilisateurModifie.setEmail(USR_TEST.getEmail());
-        utilisateurModifie.setNom(USR_TEST.getNom() + " autre");
-        utilisateurModifie.setPrenom(USR_TEST.getPrenom() + " autre");
+        User updatedUser = new User();
+        updatedUser.setEmail(USR_TEST.getEmail());
+        updatedUser.setSurname(USR_TEST.getSurname() + " autre");
+        updatedUser.setFirstName(USR_TEST.getFirstName() + " autre");
 
-        userDAO.updateUser(utilisateurModifie);
+        userDAO.updateUser(updatedUser);
 
-        Utilisateur utilisateur = userDAO.findUserByUid(getUid(utilisateurModifie).toString());
-        assertNotNull(utilisateur);
-        assertEquals(USR_TEST.getEmail(), utilisateur.getEmail());
-        assertNotNull(utilisateur.getNom());
-        assertEquals(USR_TEST.getNom() + " autre", utilisateur.getNom());
-        assertNotNull(utilisateur.getPrenom());
-        assertEquals(USR_TEST.getPrenom() + " autre", utilisateur.getPrenom());
-        assertNotNull(utilisateur.getNom());
+        User user = userDAO.findUserByUid(getUid(updatedUser).toString());
+        assertNotNull(user);
+        assertEquals(USR_TEST.getEmail(), user.getEmail());
+        assertNotNull(user.getSurname());
+        assertEquals(USR_TEST.getSurname() + " autre", user.getSurname());
+        assertNotNull(user.getFirstName());
+        assertEquals(USR_TEST.getFirstName() + " autre", user.getFirstName());
+        assertNotNull(user.getSurname());
 
-        // Remettre les informations de l'utilisateur
-        utilisateur.setNom(USR_TEST.getNom());
-        utilisateur.setPrenom(USR_TEST.getPrenom());
-        utilisateur.setTelephone(USR_TEST.getTelephone());
-        userDAO.updateUser(utilisateur);
+        // Remettre les informations de l'user
+        user.setSurname(USR_TEST.getSurname());
+        user.setFirstName(USR_TEST.getFirstName());
+        userDAO.updateUser(user);
     }
 
     @Test
     void updateUserPassword() throws Exception {
         // Given
-        Utilisateur utilisateurModifie = new Utilisateur();
-        utilisateurModifie.setEmail(USR_TEST.getEmail());
-        utilisateurModifie.setNom(USR_TEST.getNom() + " autre");
-        utilisateurModifie.setPrenom(USR_TEST.getPrenom() + " autre");
-        utilisateurModifie.setMotDePasse("monNouveauMotDePasse");
+        User updatedUser = new User();
+        updatedUser.setEmail(USR_TEST.getEmail());
+        updatedUser.setSurname(USR_TEST.getSurname() + " autre");
+        updatedUser.setFirstName(USR_TEST.getFirstName() + " autre");
+        updatedUser.setPassword("monNouveauMotDePasse");
 
         // When
-        userDAO.updateUser(utilisateurModifie);
-        Utilisateur utilisateur = userDAO.findUserByUid(getUid(utilisateurModifie).toString());
+        userDAO.updateUser(updatedUser);
+        User user = userDAO.findUserByUid(getUid(updatedUser).toString());
 
         // Then
-        assertNotNull(utilisateur);
-        assertEquals(USR_TEST.getNom(), utilisateur.getNom()); // Non modifié
-        assertEquals(USR_TEST.getPrenom(), utilisateur.getPrenom()); // Non modifié
-        assertNull(utilisateur.getMotDePasse()); // Non chargé pour sécurité
+        assertNotNull(user);
+        assertEquals(USR_TEST.getSurname(), user.getSurname()); // Non modifié
+        assertEquals(USR_TEST.getFirstName(), user.getFirstName()); // Non modifié
+        assertNull(user.getPassword()); // Non chargé pour sécurité
 
-        // Remettre les informations de l'utilisateur
-        utilisateur.setNom(USR_TEST.getNom());
-        utilisateur.setPrenom(USR_TEST.getPrenom());
-        utilisateur.setTelephone(USR_TEST.getTelephone());
-        userDAO.updateUser(utilisateur);
+        // Remettre les informations de l'user
+        user.setSurname(USR_TEST.getSurname());
+        user.setFirstName(USR_TEST.getFirstName());
+        userDAO.updateUser(user);
     }
 
     @Test
     void deleteUser() throws Exception {
-        Utilisateur nouvelUtilisateur = buildNewUser();
-        userDAO.saveUser(nouvelUtilisateur, RolesEnum.PLAYER);
+        User newUser = buildNewUser();
+        userDAO.saveUser(newUser, RolesEnum.PLAYER);
 
-        userDAO.deleteUser(nouvelUtilisateur, new RolesEnum[]{RolesEnum.PLAYER});
+        userDAO.deleteUser(newUser, new RolesEnum[]{RolesEnum.PLAYER});
 
-        Utilisateur utilisateur = userDAO.findUserByUid(getUid(nouvelUtilisateur).toString());
-        assertNull(utilisateur);
+        User user = userDAO.findUserByUid(getUid(newUser).toString());
+        assertNull(user);
     }
 
     @Test
     void findUser() throws Exception {
-        Utilisateur utilisateur = userDAO.findUserByUid(getUid(USR_TEST).toString());
-        assertNotNull(utilisateur);
-        assertNotNull(utilisateur.getEmail());
-        assertEquals(USR_TEST.getEmail(), utilisateur.getEmail());
-        assertNotNull(utilisateur.getNom());
-        assertEquals(USR_TEST.getNom(), utilisateur.getNom());
-        assertNotNull(utilisateur.getPrenom());
-        assertEquals(USR_TEST.getPrenom(), utilisateur.getPrenom());
-        assertNotNull(utilisateur.getNom());
-        assertNull(utilisateur.getMotDePasse());
+        User user = userDAO.findUserByUid(getUid(USR_TEST).toString());
+        assertNotNull(user);
+        assertNotNull(user.getEmail());
+        assertEquals(USR_TEST.getEmail(), user.getEmail());
+        assertNotNull(user.getSurname());
+        assertEquals(USR_TEST.getSurname(), user.getSurname());
+        assertNotNull(user.getFirstName());
+        assertEquals(USR_TEST.getFirstName(), user.getFirstName());
+        assertNotNull(user.getSurname());
+        assertNull(user.getPassword());
     }
 
-    private Utilisateur buildNewUser() {
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setEmail("nouvel.utilisateur@email.com");
-        utilisateur.setMotDePasse("motDePasse");
-        utilisateur.setPrenom("Utilisateur");
-        utilisateur.setNom("NOUVEL");
-        utilisateur.setTelephone("0122334455");
-        return utilisateur;
+    @Test
+    void authenticateValidUser() {
+        boolean authenticated = userDAO.authenticateUser("test@email.com", "password");
+        assertTrue(authenticated);
     }
 
-    private Name getUid(Utilisateur usr) {
+    @Test
+    void authenticateInvalidUsername() {
+        boolean authenticated = userDAO.authenticateUser("unknown@email.com", "otherPassword");
+        assertFalse(authenticated);
+    }
+
+    @Test
+    void authenticateInvalidPassword() {
+        boolean authenticated = userDAO.authenticateUser("test@email.com", "otherPassword");
+        assertFalse(authenticated);
+    }
+
+    private User buildNewUser() {
+        User user = new User();
+        user.setEmail("nouvel.user@email.com");
+        user.setPassword("password");
+        user.setFirstName("User");
+        user.setSurname("NOUVEL");
+        return user;
+    }
+
+    private Name getUid(User usr) {
         return LdapNameBuilder.newInstance(dnUtilisateurs).add(LdapConstants.UID, usr.getEmail()).build();
     }
 }

@@ -193,17 +193,17 @@
                 <result column="longitudeSite" property="longitude"/>
             </association>
         </association>
-        <association property="createur" javaType="net.andresbustamante.yafoot.model.Utilisateur">
+        <association property="createur" javaType="net.andresbustamante.yafoot.model.Joueur">
             <id column="idCreateur" property="id"/>
-            <result column="nomCreateur" property="nom"/>
-            <result column="prenomCreateur" property="prenom"/>
+            <result column="nomCreateur" property="surname"/>
+            <result column="prenomCreateur" property="firstName"/>
             <result column="emailCreateur" property="email"/>
         </association>
         <collection property="inscriptions" ofType="net.andresbustamante.yafoot.model.Inscription">
             <id column="idJoueur" property="id.idJoueur" />
             <association property="joueur" javaType="net.andresbustamante.yafoot.model.Joueur">
                 <id column="idJoueur" property="id" />
-                <result column="prenomJoueur" property="prenom" />
+                <result column="prenomJoueur" property="firstName" />
                 <result column="emailJoueur" property="email" />
             </association>
             <association property="voiture" javaType="net.andresbustamante.yafoot.model.Voiture">

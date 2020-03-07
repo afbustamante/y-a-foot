@@ -52,13 +52,13 @@ class PlayerDAOTest extends AbstractDAOTest {
         assertNotNull(joueur1);
 
         // Vérifier que les informations sont complètes
-        assertNotNull(joueur1.getNom());
-        assertEquals(JOHN_DOE.getNom(), joueur1.getNom());
-        assertNotNull(joueur1.getPrenom());
-        assertEquals(JOHN_DOE.getPrenom(), joueur1.getPrenom());
-        assertNotNull(joueur1.getTelephone());
+        assertNotNull(joueur1.getSurname());
+        assertEquals(JOHN_DOE.getSurname(), joueur1.getSurname());
+        assertNotNull(joueur1.getFirstName());
+        assertEquals(JOHN_DOE.getFirstName(), joueur1.getFirstName());
+        assertNotNull(joueur1.getPhoneNumber());
         assertNotNull(joueur1.getEmail());
-        assertEquals(JOHN_DOE.getTelephone(), joueur1.getTelephone());
+        assertEquals(JOHN_DOE.getPhoneNumber(), joueur1.getPhoneNumber());
         assertNotNull(joueur1.getDateCreation());
         assertEquals(LocalDateTime.of(2019, 1, 2, 12, 34, 56), joueur1.getDateCreation());
     }
@@ -67,12 +67,12 @@ class PlayerDAOTest extends AbstractDAOTest {
     void findPlayerByEmail() throws Exception {
         Joueur joueur = playerDAO.findPlayerByEmail(EMAIL);
         assertNotNull(joueur);
-        assertNotNull(joueur.getNom());
-        assertEquals(JOHN_DOE.getNom(), joueur.getNom());
-        assertNotNull(joueur.getPrenom());
-        assertEquals(JOHN_DOE.getPrenom(), joueur.getPrenom());
-        assertNotNull(joueur.getTelephone());
-        assertEquals(JOHN_DOE.getTelephone(), joueur.getTelephone());
+        assertNotNull(joueur.getSurname());
+        assertEquals(JOHN_DOE.getSurname(), joueur.getSurname());
+        assertNotNull(joueur.getFirstName());
+        assertEquals(JOHN_DOE.getFirstName(), joueur.getFirstName());
+        assertNotNull(joueur.getPhoneNumber());
+        assertEquals(JOHN_DOE.getPhoneNumber(), joueur.getPhoneNumber());
         assertNotNull(joueur.getEmail());
         assertEquals(JOHN_DOE.getEmail(), joueur.getEmail());
         assertNotNull(joueur.getDateCreation());
@@ -82,9 +82,9 @@ class PlayerDAOTest extends AbstractDAOTest {
     void updatePlayer() throws Exception {
         // Modifier les informations pour le joueur avec l'ID de John Doe
         Joueur joueur = playerDAO.findPlayerByEmail(EMAIL);
-        joueur.setTelephone(AUTRE_TELEPHONE);
-        joueur.setNom(AUTRE_NOM);
-        joueur.setPrenom(AUTRE_PRENOM);
+        joueur.setPhoneNumber(AUTRE_TELEPHONE);
+        joueur.setSurname(AUTRE_NOM);
+        joueur.setFirstName(AUTRE_PRENOM);
         assertNull(joueur.getDateDerniereMaj());
 
         int nbJoueurs = playerDAO.updatePlayer(joueur);
@@ -93,12 +93,12 @@ class PlayerDAOTest extends AbstractDAOTest {
 
         // Les informations du joueur 1 doivent être modifiées
         assertEquals(1, nbJoueurs);
-        assertNotNull(joueur1.getTelephone());
-        assertEquals(AUTRE_TELEPHONE, joueur1.getTelephone());
-        assertNotNull(joueur1.getNom());
-        assertEquals(AUTRE_NOM, joueur1.getNom());
-        assertNotNull(joueur1.getPrenom());
-        assertEquals(AUTRE_PRENOM, joueur1.getPrenom());
+        assertNotNull(joueur1.getPhoneNumber());
+        assertEquals(AUTRE_TELEPHONE, joueur1.getPhoneNumber());
+        assertNotNull(joueur1.getSurname());
+        assertEquals(AUTRE_NOM, joueur1.getSurname());
+        assertNotNull(joueur1.getFirstName());
+        assertEquals(AUTRE_PRENOM, joueur1.getFirstName());
         assertNotNull(joueur1.getDateDerniereMaj());
         assertTrue(joueur.getDateCreation().isBefore(joueur1.getDateDerniereMaj()));
     }
@@ -124,11 +124,11 @@ class PlayerDAOTest extends AbstractDAOTest {
         // Then
         assertEquals(1, nbJoueurs);
         assertNotNull(joueur);
-        assertTrue(joueur.getPrenom().startsWith("User"));
-        assertTrue(joueur.getPrenom().endsWith(joueur.getId().toString()));
-        assertEquals("Foot", joueur.getNom());
-        assertFalse(joueur.isActif());
-        assertNull(joueur.getTelephone());
+        assertTrue(joueur.getFirstName().startsWith("User"));
+        assertTrue(joueur.getFirstName().endsWith(joueur.getId().toString()));
+        assertEquals("Foot", joueur.getSurname());
+        assertFalse(joueur.isActive());
+        assertNull(joueur.getPhoneNumber());
         assertTrue(joueur.getEmail().startsWith(JOHN_DOE.getEmail()));
         assertNotEquals(JOHN_DOE.getEmail(), joueur.getEmail());
         assertTrue(joueur.getEmail().endsWith(".old"));
@@ -142,9 +142,9 @@ class PlayerDAOTest extends AbstractDAOTest {
     private Joueur getNouveauJoueur() {
         Joueur joueur = new Joueur();
         joueur.setEmail("hope.solo@test.com");
-        joueur.setPrenom("Hope");
-        joueur.setNom("Solo");
-        joueur.setTelephone("0122334455");
+        joueur.setFirstName("Hope");
+        joueur.setSurname("Solo");
+        joueur.setPhoneNumber("0122334455");
         return joueur;
     }
 }
