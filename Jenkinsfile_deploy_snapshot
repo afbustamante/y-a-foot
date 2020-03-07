@@ -27,7 +27,7 @@ pipeline {
         stage('Undeploy') {
             steps {
                 // Undeploy the frontend artifact
-                sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:undeploy -P devel"
+                sh "mvn -f ${WORKSPACE}/y-a-foot-web/pom.xml wildfly:undeploy -P devel"
 
                 // Stop the backend process
                 sh "${BACKEND_SERVICE_CMD} stop"
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 // Copy filters files for this environment
                 sh "cp -f ${FILTER_DIRECTORY_BASE}/y-a-foot/y-a-foot-core/${FILTER_FILE} y-a-foot-core/${FILTER_DIRECTORY_DEST}"
-                sh "cp -f ${FILTER_DIRECTORY_BASE}/y-a-foot/y-a-foot-web/y-a-foot-web-zk/${FILTER_FILE} y-a-foot-web/y-a-foot-web-zk/${FILTER_DIRECTORY_DEST}"
+                sh "cp -f ${FILTER_DIRECTORY_BASE}/y-a-foot/y-a-foot-web/${FILTER_FILE} y-a-foot-web/${FILTER_DIRECTORY_DEST}"
                 // Run the maven build
                 sh 'mvn -DskipTests=true clean install -P devel --batch-mode'
             }
@@ -61,7 +61,7 @@ pipeline {
                 }
 
                 // Deploy the frontend artifact
-                sh "mvn -f ${WORKSPACE}/y-a-foot-web/y-a-foot-web-zk/pom.xml wildfly:deploy -P devel"
+                sh "mvn -f ${WORKSPACE}/y-a-foot-web/pom.xml wildfly:deploy -P devel"
             }
         }
     }
