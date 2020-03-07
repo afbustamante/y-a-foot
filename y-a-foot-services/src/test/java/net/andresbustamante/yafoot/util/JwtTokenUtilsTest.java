@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,16 +63,7 @@ class JwtTokenUtilsTest {
 
     @Test
     void testGetExpirationDateFromExpiredToken() {
-        try {
-            // When
-            jwtTokenUtils.getExpirationDateFromToken(EXPIRED_TOKEN);
-            fail("Undetected expired date");
-        } catch (ExpiredJwtException e) {
-            // Then
-            assertTrue(e.getMessage().contains("expired at"));
-            assertTrue(e.getMessage().contains(LocalDate.of(2020, 3, 7).format(DateTimeFormatter.ISO_DATE)));
-            assertTrue(e.getMessage().contains("16:32:28"));
-        }
+        assertThrows(ExpiredJwtException.class, () -> jwtTokenUtils.getExpirationDateFromToken(EXPIRED_TOKEN));
     }
 
     @Test
