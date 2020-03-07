@@ -10,11 +10,13 @@
   <artifactId>y-a-foot-web-zk</artifactId>
   <packaging>war</packaging>
 
+  <name>y-a-foot-web-zk</name>
+
   <dependencies>
     <dependency>
       <groupId>net.andresbustamante</groupId>
       <artifactId>y-a-foot-api</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- Java EE / javax -->
