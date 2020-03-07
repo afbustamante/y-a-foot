@@ -60,9 +60,6 @@
     <jackson-databind.version>2.9.10.3</jackson-databind.version>
     <spring-boot.version>2.1.13.RELEASE</spring-boot.version>
 
-    <!-- ICEFaces -->
-    <icefaces.version>4.1.1</icefaces.version>
-
     <!-- ZK -->
     <zk.version>8.6.0.1</zk.version>
     <zkspring-core.version>3.2.0</zkspring-core.version>
@@ -359,23 +356,6 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logback.version}</version>
-      </dependency>
-
-      <!-- ICEFaces -->
-      <dependency>
-        <groupId>org.icefaces</groupId>
-        <artifactId>icefaces</artifactId>
-        <version>${icefaces.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.icefaces</groupId>
-        <artifactId>icefaces-ace</artifactId>
-        <version>${icefaces.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.icefaces.ace-themes</groupId>
-        <artifactId>ace-redmond</artifactId>
-        <version>${icefaces.version}</version>
       </dependency>
 
       <!-- ZK -->
