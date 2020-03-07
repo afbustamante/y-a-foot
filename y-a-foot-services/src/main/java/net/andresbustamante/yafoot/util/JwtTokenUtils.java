@@ -1,7 +1,6 @@
 package net.andresbustamante.yafoot.util;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +35,7 @@ public class JwtTokenUtils {
         return generateToken(claims, username);
     }
 
-    public Boolean isValidToken(String token, String username) {
+    public boolean isValidToken(String token, String username) {
         final String tokenUsername = getUsernameFromToken(token);
         return (tokenUsername.equals(username) && !isTokenExpired(token));
     }

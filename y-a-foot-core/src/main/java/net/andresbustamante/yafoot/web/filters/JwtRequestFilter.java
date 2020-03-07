@@ -3,6 +3,8 @@ package net.andresbustamante.yafoot.web.filters;
 import io.jsonwebtoken.ExpiredJwtException;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
 import net.andresbustamante.yafoot.web.services.JwtUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+
+    private final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
 
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
@@ -45,12 +49,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtils.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                log.error("Unable to get JWT Token", e);
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT token has expired");
+                log.error("JWT token has expired", e);
             }
         } else {
-            logger.warn("JWT token does not begin with Bearer string");
+            log.warn("JWT token does not begin with Bearer string");
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
