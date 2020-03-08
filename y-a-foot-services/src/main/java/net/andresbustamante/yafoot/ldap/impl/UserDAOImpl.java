@@ -83,11 +83,17 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean authenticateUser(String uid, String password) {
+    public User authenticateUser(String uid, String password) {
         try {
-            return ldapTemplate.authenticate(usersDn, "(uid=" + uid + ")", password);
+            boolean authenticated = ldapTemplate.authenticate(usersDn, "(uid=" + uid + ")", password);
+
+            if (authenticated) {
+                User user = new User(uid);
+                return findUserByUid(getUid(user).toString());
+            }
+            return null;
         } catch (NameNotFoundException e) {
-            return false;
+            return null;
         }
     }
 

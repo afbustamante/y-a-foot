@@ -9,7 +9,6 @@ import net.andresbustamante.yafoot.services.PlayerManagementService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.mappers.ContextMapper;
 import net.andresbustamante.yafoot.web.mappers.PlayerMapper;
-import net.andresbustamante.yafoot.web.util.ContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
      * @return
      */
     @Override
-    public ResponseEntity<Long> createPlayer(Player player, Integer userId) {
+    public ResponseEntity<Long> createPlayer(Player player) {
         try {
             log.info("Demande de création d'un nouveau joueur avec l'address {}", player.getEmail());
             net.andresbustamante.yafoot.model.Joueur nouveauJoueur = playerMapper.map(player);
@@ -85,10 +84,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
      * @return
      */
     @Override
-    public ResponseEntity<Void> updatePlayer(Player player, Integer userId, String email) {
+    public ResponseEntity<Void> updatePlayer(Player player, String email) {
         try {
             log.debug("Player information update requested");
-            net.andresbustamante.yafoot.model.UserContext userContext = ContextUtils.getUserContext(request);
+            net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
             boolean succes = playerManagementService.updatePlayer(playerMapper.map(player), userContext);
             return (succes) ? ResponseEntity.accepted().build() : ResponseEntity.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
@@ -119,10 +118,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
     }
 
     @Override
-    public ResponseEntity<Void> deactivatePlayer(String email, Integer userId) {
+    public ResponseEntity<Void> deactivatePlayer(String email) {
         try {
             log.debug("Player deactivation requested");
-            net.andresbustamante.yafoot.model.UserContext userContext = ContextUtils.getUserContext(request);
+            net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
             boolean succes = playerManagementService.deactivatePlayer(email, userContext);
             return (succes) ? ResponseEntity.noContent().build() : ResponseEntity.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {

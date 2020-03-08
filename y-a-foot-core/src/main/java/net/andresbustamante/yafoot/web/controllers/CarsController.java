@@ -9,7 +9,6 @@ import net.andresbustamante.yafoot.model.xs.Car;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.CarSearchService;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
-import net.andresbustamante.yafoot.web.util.ContextUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,9 +69,9 @@ public class CarsController extends AbstractController implements CarsApi {
     }
 
     @Override
-    public ResponseEntity<Void> addNewCar(@Valid Car car, Integer userCtx) {
+    public ResponseEntity<Void> addNewCar(@Valid Car car) {
         try {
-            int carId = carManagementService.saveCar(carMapper.map(car), ContextUtils.getUserContext(request));
+            int carId = carManagementService.saveCar(carMapper.map(car), getUserContext(request));
 
             return ResponseEntity.created(URI.create(apiPublicUrl + "/cars/" + carId)).build();
         } catch (DatabaseException e) {

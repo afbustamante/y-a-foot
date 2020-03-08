@@ -8,8 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(config = DtoMapperConfig.class)
 public interface ContextMapper {
 
-    @Mapping(source = "player.id", target = "userId")
-    @Mapping(source = "player.email", target = "userEmail")
+    @Mapping(source = "player.email", target = "username")
     @Mapping(target = "timezone", ignore = true)
     UserContext map(net.andresbustamante.yafoot.model.xs.UserContext userContext);
 }

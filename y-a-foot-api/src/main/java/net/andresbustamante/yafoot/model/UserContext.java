@@ -7,33 +7,23 @@ import java.time.ZoneId;
  */
 public class UserContext {
 
-    public static final String USER_CTX = "userCtx";
     public static final String TZ = "tz";
 
-    private Integer userId;
-    private String userEmail;
+    private String username;
     private ZoneId timezone;
 
     public UserContext() {}
 
-    public UserContext(Integer userId) {
-        this.userId = userId;
+    public UserContext(String username) {
+        this.username = username;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public ZoneId getTimezone() {

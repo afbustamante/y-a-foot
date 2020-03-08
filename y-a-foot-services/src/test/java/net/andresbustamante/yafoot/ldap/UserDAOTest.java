@@ -136,20 +136,26 @@ class UserDAOTest {
 
     @Test
     void authenticateValidUser() {
-        boolean authenticated = userDAO.authenticateUser("test@email.com", "password");
-        assertTrue(authenticated);
+        User authenticatedUser = userDAO.authenticateUser("test@email.com", "password");
+        assertNotNull(authenticatedUser);
+        assertNotNull(authenticatedUser.getEmail());
+        assertEquals("test@email.com", authenticatedUser.getEmail());
+        assertNotNull(authenticatedUser.getFirstName());
+        assertEquals("User", authenticatedUser.getFirstName());
+        assertNotNull(authenticatedUser.getSurname());
+        assertEquals("TEST", authenticatedUser.getSurname());
     }
 
     @Test
     void authenticateInvalidUsername() {
-        boolean authenticated = userDAO.authenticateUser("unknown@email.com", "otherPassword");
-        assertFalse(authenticated);
+        User authenticatedUser = userDAO.authenticateUser("unknown@email.com", "otherPassword");
+        assertNull(authenticatedUser);
     }
 
     @Test
     void authenticateInvalidPassword() {
-        boolean authenticated = userDAO.authenticateUser("test@email.com", "otherPassword");
-        assertFalse(authenticated);
+        User authenticatedUser = userDAO.authenticateUser("test@email.com", "otherPassword");
+        assertNull(authenticatedUser);
     }
 
     private User buildNewUser() {

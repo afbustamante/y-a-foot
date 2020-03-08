@@ -229,6 +229,7 @@
 		<xs:sequence>
 			<xs:element name="email" type="emailAddress"/>
 			<xs:element name="password" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="token" type="xs:base64Binary" minOccurs="0"/>
 			<xs:element name="surname" minOccurs="0">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">

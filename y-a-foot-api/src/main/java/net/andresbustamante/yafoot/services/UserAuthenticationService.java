@@ -13,9 +13,9 @@ public interface UserAuthenticationService {
      * Authenticate a user and return a JWT token
      *
      * @param user User to authenticate
-     * @return Authentication token (JWT)
+     * @return Authenticated user including a JWT token
      */
-    String authenticate(User user) throws InvalidCredentialsException;
+    User authenticate(User user) throws InvalidCredentialsException;
 
     /**
      * Load a user for authentication by using his email address

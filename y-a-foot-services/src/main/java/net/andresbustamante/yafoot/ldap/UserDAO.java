@@ -51,7 +51,7 @@ public interface UserDAO {
      *
      * @param uid User's ID (email address)
      * @param password User's password
-     * @return Returns if the authentication information is valid or not
+     * @return Returns user's details only if the authentication information is valid
      */
-    boolean authenticateUser(String uid, String password);
+    User authenticateUser(String uid, String password);
 }

@@ -7,7 +7,7 @@ servers:
 - url: http://localhost:8080/api
   description: Localhost deployment
 paths:
-  /users/{email}/authenticate:
+  /users/{email}/auth:
     put:
       operationId: authenticateUser
       summary: Authenticate a user and return a valid token
@@ -35,7 +35,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                type: User
         '401': # Unauthorized
           description: Invalid credentials
   /players:
@@ -44,26 +44,19 @@ paths:
       summary: Create a new player
       tags:
       - players
-      parameters:
-      - in: header
-        name: userCtx
-        required: true
-        schema:
-          type: integer
-          minimum: 1
       requestBody:
         name: player
         description: Player to save
         required: true
         content:
-          application/xml:
+          application/json:
             schema:
               type: Player
       responses:
         '201': # Created
           description: Player ID
           content:
-            application/xml:
+            application/json:
               schema:
                 type: long
   /players/{email}/email:
@@ -82,26 +75,19 @@ paths:
       responses:
         '200': # OK
           content:
-            application/xml:
+            application/json:
               schema:
                 type: Player
     put:
       operationId: updatePlayer
       tags:
       - players
-      parameters:
-      - in: header
-        name: userCtx
-        required: true
-        schema:
-          type: integer
-          minimum: 1
       requestBody:
         name: player
         description: Player with updated information
         required: true
         content:
-          application/xml:
+          application/json:
             schema:
               type: Player
       responses:
@@ -111,13 +97,6 @@ paths:
       operationId: deactivatePlayer
       tags:
       - players
-      parameters:
-      - in: header
-        name: userCtx
-        required: true
-        schema:
-          type: integer
-          minimum: 1
       responses:
         '204': # No content
           description: Player deactivated
@@ -133,20 +112,10 @@ paths:
         required: true
         schema:
           type: integer
-      - in: header
-        name: userCtx
-        required: true
-        schema:
-          type: integer
-          minimum: 1
-      - in: header
-        name: tz
-        schema:
-          type: string
       responses:
         '200': # OK
           content:
-            application/xml:
+            application/json:
               schema:
                 type: Matches
     post:
@@ -154,26 +123,19 @@ paths:
       summary: Creates a match
       tags:
       - matches
-      parameters:
-      - in: header
-        name: userCtx
-        required: true
-        schema:
-          type: integer
-          minimum: 1
       requestBody:
         name: match
         description: Match to create
         required: true
         content:
-          application/xml:
+          application/json:
             schema:
               type: Match
       responses:
         '201': # Created
           description: Player ID
           content:
-            application/xml:
+            application/json:
               schema:
                 type: long
   /matches/{matchCode}:
@@ -192,9 +154,54 @@ paths:
       responses:
         '200': # OK
           content:
-            application/xml:
+            application/json:
               schema:
                 type: Match
+  /matches/{matchCode}/players:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+      description: Unique match code
+    post:
+      operationId: registerPlayerToMatch
+      summary: Registers an existing player to a match
+      tags:
+      - matches
+      requestBody:
+        name: playerRegistration
+        description: Player registration including informations about the car proposed to assist to the match
+        required: true
+        content:
+          application/json:
+            schema:
+              type: Registration
+      responses:
+        '201': # Created
+          description: Registration saved
+  /matches/{matchCode}/players/{playerId}:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+      description: Unique match code
+    - in: path
+      name: playerId
+      required: true
+      schema:
+        type: integer
+      description: Unique player ID
+    delete:
+      operationId: unregisterPlayerFromMatch
+      tags:
+      - matches
+      responses:
+        '204': # No content
+          description: Player unregistered
   /sites:
     get:
       operationId: loadSitesByPlayer
@@ -210,55 +217,11 @@ paths:
       responses:
         '200': # OK
           content:
-            application/xml:
+            application/json:
               schema:
                 type: Sites
   /registrations:
-    post:
-      operationId: registerPlayerToMatch
-      summary: Registers an existing player to a match
-      tags:
-      - registrations
-      parameters:
-      - in: header
-        name: userCtx
-        required: true
-        schema:
-          type: integer
-          minimum: 1
-      requestBody:
-        name: registration
-        description: Registration including informations about the concerned player and the match to impact
-        required: true
-        content:
-          application/xml:
-            schema:
-              type: Registration
-      responses:
-        '201': # Created
-          description: Registration saved
-  /registrations/{matchCode}:
-    parameters:
-    - in: path
-      name: matchCode
-      required: true
-      schema:
-        type: string
-      description: Unique match code
-    delete:
-      operationId: unregisterPlayerFromMatch
-      tags:
-      - registrations
-      parameters:
-      - in: header
-        name: userCtx
-        required: true
-        schema:
-          type: integer
-          minimum: 1
-      responses:
-        '204': # No content
-          description: Player deactivated
+
   /cars:
     get:
       operationId: loadCarList
@@ -274,7 +237,7 @@ paths:
       responses:
         '200': # OK
           content:
-            application/xml:
+            application/json:
               schema:
                 type: Cars
     post:
@@ -282,19 +245,12 @@ paths:
       summary: Registers a new car for a player
       tags:
       - cars
-      parameters:
-      - in: header
-        name: userCtx
-        required: true
-        schema:
-          type: integer
-          minimum: 1
       requestBody:
         name: car
         description: Car to save for a player
         required: true
         content:
-          application/xml:
+          application/json:
             schema:
               type: Car
       responses:

@@ -16,5 +16,6 @@ public interface PlayerMapper {
     Joueur map(Player player);
 
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "token", ignore = true)
     Player map(Joueur joueur);
 }

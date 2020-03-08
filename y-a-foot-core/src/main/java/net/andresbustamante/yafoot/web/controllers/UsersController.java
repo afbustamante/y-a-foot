@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
-import net.andresbustamante.yafoot.model.User;
+import net.andresbustamante.yafoot.model.xs.User;
 import net.andresbustamante.yafoot.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.web.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,15 @@ public class UsersController extends AbstractController implements UsersApi {
     private UserMapper userMapper;
 
     @Override
-    public ResponseEntity<String> authenticateUser(@Valid net.andresbustamante.yafoot.model.xs.User user, String email) {
+    public ResponseEntity<User> authenticateUser(@Valid User user, String email) {
         try {
-            User u = userMapper.map(user);
-            String token = userAuthenticationService.authenticate(u);
-            return ResponseEntity.accepted().body(token);
+            net.andresbustamante.yafoot.model.User authenticatedUser = userAuthenticationService.authenticate(userMapper.map(user));
+
+            if (authenticatedUser == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.accepted().body(userMapper.map(authenticatedUser));
         } catch (InvalidCredentialsException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

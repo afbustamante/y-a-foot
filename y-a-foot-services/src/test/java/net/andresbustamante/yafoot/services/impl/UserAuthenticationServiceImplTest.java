@@ -61,10 +61,11 @@ class UserAuthenticationServiceImplTest {
     @Test
     void testAuthenticateValidUser() throws InvalidCredentialsException {
         // When
-        String authToken = userAuthenticationService.authenticate(USR_TEST);
+        User authUser = userAuthenticationService.authenticate(USR_TEST);
 
         // Then
-        assertNotNull(authToken);
+        assertNotNull(authUser);
+        assertNotNull(authUser.getToken());
     }
 
     @Test

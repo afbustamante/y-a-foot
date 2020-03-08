@@ -20,8 +20,11 @@ import java.text.MessageFormat;
 @SessionScope
 public class MatchsJoiningUIService extends AbstractUIService {
 
-    @Value("${api.rest.registrations.services.path}")
-    private String registrationsServicesPath;
+    @Value("${api.rest.matches.services.path}")
+    private String matchsServicesPath;
+
+    @Value("${api.rest.matches.bycode.services.path}")
+    private String matchsServicesByCodePath;
 
     /**
      * Inscrire le joueur actif dans la session au match passé en paramètre
@@ -43,7 +46,7 @@ public class MatchsJoiningUIService extends AbstractUIService {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(registrationsServicesPath);
+                    .path(matchsServicesPath).path(MessageFormat.format(matchsServicesByCodePath, match.getCode())).path("/players");
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Registration> params = new HttpEntity<>(registration, headers);
@@ -65,8 +68,9 @@ public class MatchsJoiningUIService extends AbstractUIService {
             RestTemplate restTemplate = new RestTemplate();
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
-                    .path(registrationsServicesPath)
-                    .path(MessageFormat.format("/{0}", match.getCode()));
+                    .path(matchsServicesPath)
+                    .path(MessageFormat.format(matchsServicesByCodePath, match.getCode()))
+                    .path(MessageFormat.format("/players/{0}", "0")); // TODO Implement player ID recovery
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Registration> params = new HttpEntity<>(headers);

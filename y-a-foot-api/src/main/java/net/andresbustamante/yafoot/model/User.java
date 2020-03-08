@@ -8,10 +8,17 @@ import java.util.Objects;
  */
 public class User implements Serializable {
 
+    /**
+     * Authentication ID
+     */
     protected String email;
     protected String password;
     protected String surname;
     protected String firstName;
+    /**
+     * Authentication token
+     */
+    protected String token;
 
     public User() {}
 
@@ -40,6 +47,14 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getSurname() {

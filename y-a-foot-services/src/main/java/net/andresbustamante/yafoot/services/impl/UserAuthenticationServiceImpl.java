@@ -22,11 +22,12 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     }
 
     @Override
-    public String authenticate(User user) throws InvalidCredentialsException {
-        boolean authenticated = userDAO.authenticateUser(user.getEmail(), user.getPassword());
+    public User authenticate(User user) throws InvalidCredentialsException {
+        User authenticatedUser = userDAO.authenticateUser(user.getEmail(), user.getPassword());
 
-        if (authenticated) {
-            return jwtTokenUtils.generateToken(user.getEmail());
+        if (authenticatedUser != null) {
+            authenticatedUser.setToken(jwtTokenUtils.generateToken(user.getEmail()));
+            return authenticatedUser;
         } else {
             throw new InvalidCredentialsException();
         }

@@ -21,7 +21,6 @@ import java.util.Base64;
 import java.util.Collections;
 
 import static net.andresbustamante.yafoot.model.UserContext.TZ;
-import static net.andresbustamante.yafoot.model.UserContext.USER_CTX;
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 /**
@@ -88,9 +87,8 @@ public abstract class AbstractUIService {
      */
     protected MultiValueMap<String, String> getHeadersMap() throws ApplicationException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_XML_VALUE));
+        headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
         headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(BASIC_AUTH + getBase64EncodedPassword()));
-        headers.put(USER_CTX, Collections.singletonList(getUserContext().getPlayer().getId().toString()));
         headers.put(TZ, Collections.singletonList("CET")); // TODO Injecter la timezone à partir de la session
         return headers;
     }
@@ -103,7 +101,7 @@ public abstract class AbstractUIService {
      */
     protected MultiValueMap<String, String> getAnonymousHeadersMap() throws ApplicationException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_XML_VALUE));
+        headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
         headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(BASIC_AUTH + getBase64EncodedPassword()));
         return headers;
     }

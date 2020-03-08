@@ -51,12 +51,12 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
         match.setCode(codeMatch);
 
-        Joueur createur = playerDAO.findPlayerById(userContext.getUserId());
+        Joueur createur = playerDAO.findPlayerByEmail(userContext.getUsername());
 
         if (createur != null) {
             match.setCreateur(createur);
         } else {
-            throw new DatabaseException("Identifiant d'utilisateur non trouvé en BDD : " + userContext.getUserId());
+            throw new DatabaseException("Identifiant d'utilisateur non trouvé en BDD : " + userContext.getUsername());
         }
 
         if (match.getSite().getId() != null && !match.getSite().getId().equals(NOUVEL_ID)) {

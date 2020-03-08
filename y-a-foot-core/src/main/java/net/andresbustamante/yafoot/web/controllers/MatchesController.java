@@ -2,13 +2,15 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.xs.Match;
 import net.andresbustamante.yafoot.model.xs.Matches;
+import net.andresbustamante.yafoot.model.xs.Registration;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
-import net.andresbustamante.yafoot.web.util.ContextUtils;
+import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.time.ZoneId;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -39,19 +40,22 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     private MatchMapper matchMapper;
 
+    private RegistrationMapper registrationMapper;
+
     private HttpServletRequest request;
 
     @Value("${matches.bycode.api.service.path}")
-    private String pathRechercheMatchsParCode;
+    private String matchByCodeApiPath;
 
     private final Logger log = LoggerFactory.getLogger(MatchesController.class);
 
     @Autowired
     public MatchesController(MatchSearchService matchSearchService, MatchManagementService matchManagementService,
-                             MatchMapper matchMapper, HttpServletRequest request) {
+                             MatchMapper matchMapper, RegistrationMapper registrationMapper, HttpServletRequest request) {
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
         this.matchMapper = matchMapper;
+        this.registrationMapper = registrationMapper;
         this.request = request;
     }
 
@@ -67,10 +71,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
         }
     }
 
-    public ResponseEntity<Matches> loadMatchesByPlayer(Integer playerId, Integer userId, String timezone) {
+    @Override
+    public ResponseEntity<Matches> loadMatchesByPlayer(Integer playerId) {
         try {
-            UserContext ctx = new UserContext(userId);
-            ctx.setTimezone(ZoneId.of(timezone));
+            UserContext ctx = getUserContext(request);
 
             List<net.andresbustamante.yafoot.model.Match> matchs = matchSearchService.findMatchesByPlayer(playerId,
                     ctx);
@@ -88,23 +92,83 @@ public class MatchesController extends AbstractController implements MatchesApi 
         } catch (DatabaseException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+        } catch (ApplicationException e) {
+            log.error("Error while loading context information", e);
+            return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
 
-    public ResponseEntity<Long> createMatch(Match match, Integer userId) {
+    @Override
+    public ResponseEntity<Long> createMatch(Match match) {
         try {
-            UserContext userContext = ContextUtils.getUserContext(request);
+            UserContext userContext = getUserContext(request);
             net.andresbustamante.yafoot.model.Match m = matchMapper.map(match);
             boolean isMatchCree = matchManagementService.saveMatch(m, userContext);
 
             if (isMatchCree) {
-                String location = MessageFormat.format(pathRechercheMatchsParCode, m.getCode());
+                String location = MessageFormat.format(matchByCodeApiPath, m.getCode());
                 return ResponseEntity.created(getLocationURI(location)).build();
             } else {
                 return ResponseEntity.status(BAD_REQUEST).build();
             }
         } catch (DatabaseException e) {
             log.error("Erreur lors de la création d'un match", e);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+        } catch (ApplicationException e) {
+            log.error("Erreur lors de la récupération des information du contexte", e);
+            return ResponseEntity.status(BAD_REQUEST).build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> registerPlayerToMatch(Registration registration, String matchCode) {
+        try {
+            UserContext userContext = getUserContext(request);
+            net.andresbustamante.yafoot.model.Inscription ins = registrationMapper.map(registration);
+
+            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+
+            if (match == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            boolean succes = matchManagementService.joinMatch(ins.getJoueur(), match,
+                    ins.getVoiture(), userContext);
+
+            if (succes) {
+                log.info("Player registered to match");
+                String location = MessageFormat.format(matchByCodeApiPath + "/players/{0}", ins.getJoueur().getId());
+                return ResponseEntity.created(getLocationURI(location)).build();
+            } else {
+                log.warn("Le joueur n'a pas pu etre inscrit");
+                return ResponseEntity.status(BAD_REQUEST).build();
+            }
+        } catch (DatabaseException e) {
+            log.error("Erreur de base de données", e);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+        } catch (ApplicationException e) {
+            log.error("Erreur lors de la récupération des information du contexte", e);
+            return ResponseEntity.status(BAD_REQUEST).build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> unregisterPlayerFromMatch(String matchCode, Integer playerId) {
+        try {
+            UserContext userContext = getUserContext(request);
+
+            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+
+            if (match != null) {
+                Joueur joueur = new Joueur(playerId);
+                matchManagementService.quitMatch(joueur, match, userContext);
+                return ResponseEntity.noContent().build();
+            } else {
+                log.warn("Invalid match code detected for unregistering player");
+                return ResponseEntity.status(BAD_REQUEST).build();
+            }
+        } catch (DatabaseException e) {
+            log.error("Erreur de base de données", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des information du contexte", e);
