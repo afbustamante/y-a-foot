@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.services.impl;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.ldap.UserDAO;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
@@ -46,13 +47,12 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.isPlayerAlreadySignedIn(anyString())).thenReturn(false);
-        boolean succes = gestionJoueursService.savePlayer(joueur, ctx);
+        gestionJoueursService.savePlayer(joueur, ctx);
 
         // Then
         verify(playerDAO, times(1)).isPlayerAlreadySignedIn(anyString());
         verify(userDAO, times(1)).saveUser(any(), any());
         verify(playerDAO, times(1)).savePlayer(any());
-        assertTrue(succes);
     }
 
     @Test
@@ -64,13 +64,12 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.isPlayerAlreadySignedIn(anyString())).thenReturn(true);
-        boolean succes = gestionJoueursService.savePlayer(joueur, ctx);
+        assertThrows(ApplicationException.class, () -> gestionJoueursService.savePlayer(joueur, ctx));
 
         // Then
         verify(playerDAO, times(1)).isPlayerAlreadySignedIn(anyString());
         verify(userDAO, times(0)).saveUser(any(), any());
         verify(playerDAO, times(0)).savePlayer(any());
-        assertFalse(succes);
     }
 
     @Test
@@ -147,20 +146,18 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
     void deactivateExistingPlayer() throws Exception {
         // Given
         Joueur joueur1 = new Joueur(1);
-        String emailJoueur = "playerNumber1@email.com";
         UserContext ctx = new UserContext();
 
         // When
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur1);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(joueur1);
         when(matchDAO.unregisterPlayerFromAllMatches(any())).thenReturn(15);
         when(carDAO.deleteCarsForPlayer(any())).thenReturn(1);
         when(playerDAO.deactivatePlayer(any())).thenReturn(1);
 
-        boolean succes = gestionJoueursService.deactivatePlayer(emailJoueur, ctx);
+        gestionJoueursService.deactivatePlayer(1, ctx);
 
         // Then
-        assertTrue(succes);
-        verify(playerDAO, times(1)).findPlayerByEmail(anyString());
+        verify(playerDAO, times(1)).findPlayerById(anyInt());
         verify(matchDAO, times(1)).unregisterPlayerFromAllMatches(any());
         verify(carDAO, times(1)).deleteCarsForPlayer(any());
         verify(playerDAO, times(1)).deactivatePlayer(any());
@@ -169,18 +166,15 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
     @Test
     void deactivateInvalidPlayer() throws Exception {
         // Given
-        Joueur autreJoueur = new Joueur(-1);
-        String emailJoueur = "playerNumberX@email.com";
         UserContext ctx = new UserContext();
 
         // When
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(null);
 
-        boolean succes = gestionJoueursService.deactivatePlayer(emailJoueur, ctx);
+        gestionJoueursService.deactivatePlayer(-1, ctx);
 
         // Then
-        assertFalse(succes);
-        verify(playerDAO, times(1)).findPlayerByEmail(anyString());
+        verify(playerDAO, times(1)).findPlayerById(anyInt());
         verify(matchDAO, times(0)).unregisterPlayerFromAllMatches(any());
         verify(carDAO, times(0)).deleteCarsForPlayer(any());
         verify(playerDAO, times(0)).deactivatePlayer(any());

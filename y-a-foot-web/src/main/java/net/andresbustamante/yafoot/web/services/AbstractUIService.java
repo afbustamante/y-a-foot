@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Player;
-import net.andresbustamante.yafoot.model.xs.UserContext;
+import net.andresbustamante.yafoot.web.dto.Player;
+import net.andresbustamante.yafoot.web.dto.UserContext;
 import net.andresbustamante.yafoot.web.util.WebConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -16,7 +16,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 
-import java.text.MessageFormat;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -43,9 +42,6 @@ public abstract class AbstractUIService {
 
     @Value("${api.rest.players.services.path}")
     private String playersServicesPath;
-
-    @Value("${api.rest.players.byemail.services.path}")
-    private String playersByEmailServicesPath;
 
     private UserContext userContext;
 
@@ -124,7 +120,7 @@ public abstract class AbstractUIService {
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(playersServicesPath)
-                    .path(MessageFormat.format(playersByEmailServicesPath, email));
+                    .queryParam("email", email);
             MultiValueMap<String, String> headers = getAnonymousHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);
 

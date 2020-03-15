@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Player;
+import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.web.services.PlayersProfileManagementUIService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

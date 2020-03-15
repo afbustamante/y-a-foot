@@ -10,8 +10,8 @@ public interface UserMapper {
 
     @Mapping(target = "surname", ignore = true)
     @Mapping(target = "firstName", ignore = true)
-    User map(net.andresbustamante.yafoot.model.xs.User usr);
+    User map(net.andresbustamante.yafoot.web.dto.User usr);
 
     @Mapping(target = "password", ignore = true)
-    net.andresbustamante.yafoot.model.xs.User map(User usr);
+    net.andresbustamante.yafoot.web.dto.User map(User usr);
 }

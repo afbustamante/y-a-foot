@@ -10,5 +10,5 @@ public interface ContextMapper {
 
     @Mapping(source = "player.email", target = "username")
     @Mapping(target = "timezone", ignore = true)
-    UserContext map(net.andresbustamante.yafoot.model.xs.UserContext userContext);
+    UserContext map(net.andresbustamante.yafoot.web.dto.UserContext userContext);
 }

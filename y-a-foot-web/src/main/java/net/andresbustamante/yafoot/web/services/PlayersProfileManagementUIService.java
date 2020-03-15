@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Player;
+import net.andresbustamante.yafoot.web.dto.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -23,9 +23,6 @@ public class PlayersProfileManagementUIService extends AbstractUIService {
     @Value("${api.rest.players.services.path}")
     private String playersServicesPath;
 
-    @Value("${api.rest.players.byemail.services.path}")
-    private String playersByEmailServicesPath;
-
     public Player loadProfileForPlayer() throws ApplicationException {
         return getUserContext().getPlayer();
     }
@@ -36,7 +33,7 @@ public class PlayersProfileManagementUIService extends AbstractUIService {
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(playersServicesPath)
-                    .path(MessageFormat.format(playersByEmailServicesPath, player.getEmail()));
+                    .path(MessageFormat.format("/{0}", player.getId()));
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Player> params = new HttpEntity<>(player, headers);
@@ -56,7 +53,7 @@ public class PlayersProfileManagementUIService extends AbstractUIService {
 
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(backendServicesUrl)
                     .path(playersServicesPath)
-                    .path(MessageFormat.format(playersByEmailServicesPath, player.getEmail()));
+                    .path(MessageFormat.format("/{0}", player.getId()));
 
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Player> params = new HttpEntity<>(headers);

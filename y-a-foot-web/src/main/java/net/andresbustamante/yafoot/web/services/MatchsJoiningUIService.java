@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Registration;
-import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Car;
+import net.andresbustamante.yafoot.web.dto.Registration;
+import net.andresbustamante.yafoot.web.dto.Match;
+import net.andresbustamante.yafoot.web.dto.Car;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

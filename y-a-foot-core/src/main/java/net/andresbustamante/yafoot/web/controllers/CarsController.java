@@ -1,11 +1,11 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Joueur;
-import net.andresbustamante.yafoot.model.xs.Cars;
-import net.andresbustamante.yafoot.model.xs.Car;
+import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.CarSearchService;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -51,21 +53,31 @@ public class CarsController extends AbstractController implements CarsApi {
     }
 
     @Override
-    public ResponseEntity<Cars> loadCarList(Integer idJoueur) {
+    public ResponseEntity<List<Car>> loadCarList(Integer idJoueur) {
         try {
             List<net.andresbustamante.yafoot.model.Voiture> cars =
                     carSearchService.findCarsByPlayer(new Joueur(idJoueur), new UserContext());
 
-            Cars carsResponse = new Cars();
+            List<Car> result = new ArrayList<>();
 
             if (CollectionUtils.isNotEmpty(cars)) {
-                carsResponse.getCar().addAll(carMapper.map(cars));
+                result.addAll(carMapper.map(cars));
             }
-            return ResponseEntity.ok(carsResponse);
+            return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
             log.error("Error when looking for cars", e);
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public Optional<ObjectMapper> getObjectMapper() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<HttpServletRequest> getRequest() {
+        return Optional.of(request);
     }
 
     @Override

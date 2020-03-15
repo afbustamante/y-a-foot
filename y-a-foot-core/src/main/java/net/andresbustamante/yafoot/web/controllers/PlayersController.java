@@ -1,10 +1,11 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.model.xs.Player;
-import net.andresbustamante.yafoot.model.xs.UserContext;
+import net.andresbustamante.yafoot.web.dto.Player;
+import net.andresbustamante.yafoot.web.dto.UserContext;
 import net.andresbustamante.yafoot.services.PlayerManagementService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.mappers.ContextMapper;
@@ -14,10 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -28,6 +31,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author andresbustamante
  */
 @RestController
+@CrossOrigin
 public class PlayersController extends AbstractController implements PlayersApi {
 
     private PlayerManagementService playerManagementService;
@@ -40,8 +44,8 @@ public class PlayersController extends AbstractController implements PlayersApi 
 
     private HttpServletRequest request;
 
-    @Value("${players.byemail.api.service.path}")
-    private String pathRechercheJoueursParAdresseMail;
+    @Value("${players.byid.api.service.path}")
+    private String playerApiPath;
 
     private final Logger log = LoggerFactory.getLogger(PlayersController.class);
 
@@ -55,6 +59,16 @@ public class PlayersController extends AbstractController implements PlayersApi 
         this.request = request;
     }
 
+    @Override
+    public Optional<ObjectMapper> getObjectMapper() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<HttpServletRequest> getRequest() {
+        return Optional.of(request);
+    }
+
     /**
      * @param player
      * @return
@@ -64,15 +78,14 @@ public class PlayersController extends AbstractController implements PlayersApi 
         try {
             log.info("Demande de création d'un nouveau joueur avec l'address {}", player.getEmail());
             net.andresbustamante.yafoot.model.Joueur nouveauJoueur = playerMapper.map(player);
-            boolean inscrit = playerManagementService.savePlayer(nouveauJoueur,
+            int id = playerManagementService.savePlayer(nouveauJoueur,
                     contextMapper.map(new UserContext()));
 
-            if (inscrit) {
-                String location = MessageFormat.format(pathRechercheJoueursParAdresseMail, player.getEmail());
-                return ResponseEntity.created(getLocationURI(location)).build();
-            } else {
-                return ResponseEntity.status(BAD_REQUEST).build();
-            }
+            String location = MessageFormat.format(playerApiPath, id);
+            return ResponseEntity.created(getLocationURI(location)).build();
+        } catch (ApplicationException e) {
+            log.error("User not created", e);
+            return ResponseEntity.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'inscription d'un joueur", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
@@ -84,7 +97,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
      * @return
      */
     @Override
-    public ResponseEntity<Void> updatePlayer(Player player, String email) {
+    public ResponseEntity<Void> updatePlayer(Player player, Integer id) {
         try {
             log.debug("Player information update requested");
             net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
@@ -118,12 +131,12 @@ public class PlayersController extends AbstractController implements PlayersApi 
     }
 
     @Override
-    public ResponseEntity<Void> deactivatePlayer(String email) {
+    public ResponseEntity<Void> deactivatePlayer(Integer id) {
         try {
             log.debug("Player deactivation requested");
             net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
-            boolean succes = playerManagementService.deactivatePlayer(email, userContext);
-            return (succes) ? ResponseEntity.noContent().build() : ResponseEntity.status(BAD_REQUEST).build();
+            playerManagementService.deactivatePlayer(id, userContext);
+            return ResponseEntity.noContent().build();
         } catch (DatabaseException | LdapException e) {
             log.error("Erreur lors de l'actualisation d'un joueur", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();

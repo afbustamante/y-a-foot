@@ -1,8 +1,9 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.xs.Sites;
+import net.andresbustamante.yafoot.web.dto.Site;
 import net.andresbustamante.yafoot.services.SiteSearchService;
 import net.andresbustamante.yafoot.web.mappers.SiteMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -37,16 +41,26 @@ public class SitesController extends AbstractController implements SitesApi {
     }
 
     @Override
-    public ResponseEntity<Sites> loadSitesByPlayer(Integer playerId) {
+    public Optional<ObjectMapper> getObjectMapper() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<HttpServletRequest> getRequest() {
+        return Optional.empty();
+    }
+
+    @Override
+    public ResponseEntity<List<Site>> loadSitesByPlayer(Integer playerId) {
         try {
             List<net.andresbustamante.yafoot.model.Site> sites = siteSearchService.findSitesByPlayer(playerId,
                     new UserContext());
 
-            Sites result = new Sites();
+            List<Site> result = new ArrayList<>();
 
             if (CollectionUtils.isNotEmpty(sites)) {
                 for (net.andresbustamante.yafoot.model.Site site : sites) {
-                    result.getSite().add(siteMapper.map(site));
+                    result.add(siteMapper.map(site));
                 }
             }
             return ResponseEntity.ok(result);

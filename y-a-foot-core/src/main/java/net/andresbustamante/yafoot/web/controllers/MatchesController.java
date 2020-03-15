@@ -1,12 +1,12 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Matches;
-import net.andresbustamante.yafoot.model.xs.Registration;
+import net.andresbustamante.yafoot.web.dto.Match;
+import net.andresbustamante.yafoot.web.dto.Registration;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -72,7 +75,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Matches> loadMatchesByPlayer(Integer playerId) {
+    public ResponseEntity<List<Match>> loadMatchesByPlayer(Integer playerId) {
         try {
             UserContext ctx = getUserContext(request);
 
@@ -80,14 +83,14 @@ public class MatchesController extends AbstractController implements MatchesApi 
                     ctx);
 
             if (CollectionUtils.isNotEmpty(matchs)) {
-                Matches result = new Matches();
+                List<Match> result = new ArrayList<>();
 
                 for (net.andresbustamante.yafoot.model.Match m : matchs) {
-                    result.getMatch().add(matchMapper.map(m));
+                    result.add(matchMapper.map(m));
                 }
                 return ResponseEntity.ok(result);
             } else {
-                return ResponseEntity.ok(new Matches());
+                return ResponseEntity.ok(Collections.emptyList());
             }
         } catch (DatabaseException e) {
             log.error("Erreur de BD pour la recherche d'un match.", e);
@@ -96,6 +99,16 @@ public class MatchesController extends AbstractController implements MatchesApi 
             log.error("Error while loading context information", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         }
+    }
+
+    @Override
+    public Optional<ObjectMapper> getObjectMapper() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<HttpServletRequest> getRequest() {
+        return Optional.of(request);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Player;
+import net.andresbustamante.yafoot.web.dto.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.model.UserContext;
@@ -17,11 +18,11 @@ public interface PlayerManagementService {
      *
      * @param joueur Joueur à créer
      * @param userContext Contexte de l'utilisateur réalisant l'action
-     * @return Succès de l'opération
+     * @return New player's identifier
      * @throws DatabaseException
      * @throws LdapException
      */
-    boolean savePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException;
+    Integer savePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
 
     /**
      * Mettre à jour les informations de base d'un joeur
@@ -38,11 +39,10 @@ public interface PlayerManagementService {
      * Désactiver un joueur tout en supprimant son historique dans l'application et en supprimant
      * l'entrée dans l'annuaire LDAP
      *
-     * @param emailJoueur Email du joueur à supprimer
+     * @param playerId Player's identifier
      * @param userContext Contexte de l'utilisateur réalisant l'action
-     * @return Succès de l'opération
      * @throws DatabaseException
      * @throws LdapException
      */
-    boolean deactivatePlayer(String emailJoueur, UserContext userContext) throws LdapException, DatabaseException;
+    void deactivatePlayer(Integer playerId, UserContext userContext) throws LdapException, DatabaseException;
 }

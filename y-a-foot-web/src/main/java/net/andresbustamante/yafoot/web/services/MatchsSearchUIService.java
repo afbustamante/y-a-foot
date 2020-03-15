@@ -1,8 +1,7 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Matches;
+import net.andresbustamante.yafoot.web.dto.Match;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -15,6 +14,8 @@ import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author andresbustamante
@@ -50,7 +51,7 @@ public class MatchsSearchUIService extends AbstractUIService {
         }
     }
 
-    public Matches findMatchesForPlayer() throws ApplicationException {
+    public List<Match> findMatchesForPlayer() throws ApplicationException {
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -61,9 +62,10 @@ public class MatchsSearchUIService extends AbstractUIService {
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);
 
-            ResponseEntity<Matches> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params, Matches.class);
+            ResponseEntity<Match[]> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params, Match[].class);
 
-            return (response.getStatusCode().is2xxSuccessful()) ? response.getBody() : null;
+            return (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) ?
+                    Arrays.asList(response.getBody()) : null;
         } catch (RestClientException e) {
             throw new ApplicationException("Erreur lors de la recherche des matchs pour un joueur", e);
         }

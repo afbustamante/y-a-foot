@@ -2,7 +2,10 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import net.andresbustamante.yafoot.model.*;
+import net.andresbustamante.yafoot.model.Inscription;
+import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.model.Site;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -52,7 +55,7 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(match);
         assertEquals(2, match.getId().intValue());
-        assertEquals(ZonedDateTime.of(dateMatch, ZoneId.systemDefault()), match.getDateMatch());
+        assertEquals(OffsetDateTime.of(dateMatch, ZoneId.systemDefault().getRules().getOffset(dateMatch)), match.getDateMatch());
         assertEquals(8, match.getNbJoueursMin().intValue());
         assertEquals(12, match.getNbJoueursMax().intValue());
         assertNotNull(match.getCreateur());
@@ -99,7 +102,7 @@ class MatchDAOTest extends AbstractDAOTest {
         // Given
         Integer idJoueur = 1;
         LocalDateTime date = LocalDate.of(2018, 10, 2).atStartOfDay();
-        ZonedDateTime dateInitiale = ZonedDateTime.of(date, ZoneId.systemDefault());
+        OffsetDateTime dateInitiale = OffsetDateTime.of(date, ZoneId.systemDefault().getRules().getOffset(date));
 
         // When
         List<Match> matchs = matchDAO.findMatchesByPlayer(idJoueur, dateInitiale);
@@ -136,7 +139,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void saveMatch() throws Exception {
         // Given
-        ZonedDateTime maintenant = ZonedDateTime.now();
+        OffsetDateTime maintenant = OffsetDateTime.now();
         Joueur joueur = playerDAO.findPlayerById(1);
         Site site = siteDAO.chercherSiteParId(1);
 
@@ -206,7 +209,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
         Joueur joueur = playerDAO.findPlayerById(1);
-        ZonedDateTime dateTime = ZonedDateTime.now().minusYears(5L); // Il y a 5 ans
+        OffsetDateTime dateTime = OffsetDateTime.now().minusYears(5L); // Il y a 5 ans
 
         // When
         int nbLignes = matchDAO.unregisterPlayerFromAllMatches(joueur);

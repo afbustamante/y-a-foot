@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.web.mappers;
 
 import net.andresbustamante.yafoot.config.DtoMapperConfig;
 import net.andresbustamante.yafoot.model.Joueur;
-import net.andresbustamante.yafoot.model.xs.Player;
+import net.andresbustamante.yafoot.web.dto.Player;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

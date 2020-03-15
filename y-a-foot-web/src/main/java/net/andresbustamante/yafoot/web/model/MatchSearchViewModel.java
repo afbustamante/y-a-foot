@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Registration;
-import net.andresbustamante.yafoot.model.xs.Match;
+import net.andresbustamante.yafoot.web.dto.Registration;
+import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.services.MatchsSearchUIService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -61,8 +61,8 @@ public class MatchSearchViewModel extends AbstractViewModel {
                 matchFound = true;
                 boolean dejaInscrit = false;
 
-                List<Registration> registrations = (match.getRegistrations().getRegistration() != null) ?
-                        match.getRegistrations().getRegistration() : Collections.emptyList();
+                List<Registration> registrations = (match.getRegistrations() != null) ?
+                        match.getRegistrations() : Collections.emptyList();
 
                 String nomUtilisateur = getActiveUsername();
 
@@ -124,7 +124,7 @@ public class MatchSearchViewModel extends AbstractViewModel {
 
     public int getNumPlayersLeft() {
         if ((numPlayersLeft == 0) && (match != null) && (match.getRegistrations() != null)) {
-            numPlayersLeft = Math.max(0, match.getNumPlayersMax() - match.getRegistrations().getRegistration().size());
+            numPlayersLeft = Math.max(0, match.getNumPlayersMax() - match.getRegistrations().size());
         }
         return numPlayersLeft;
     }

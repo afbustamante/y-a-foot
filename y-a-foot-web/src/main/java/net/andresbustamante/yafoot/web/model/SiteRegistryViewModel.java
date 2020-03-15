@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.web.model;
 
-import net.andresbustamante.yafoot.model.xs.Site;
+import net.andresbustamante.yafoot.web.dto.Site;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zk.ui.Executions;

@@ -1,8 +1,7 @@
 package net.andresbustamante.yafoot.web.services;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Car;
-import net.andresbustamante.yafoot.model.xs.Cars;
+import net.andresbustamante.yafoot.web.dto.Car;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -15,6 +14,7 @@ import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,9 +35,9 @@ public class CarsManagementUIService extends AbstractUIService {
             MultiValueMap<String, String> headers = getHeadersMap();
             HttpEntity<Void> params = new HttpEntity<>(headers);
 
-            ResponseEntity<Cars> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params,
-                    Cars.class);
-            return (response.getBody() != null) ? response.getBody().getCar() : Collections.emptyList();
+            ResponseEntity<Car[]> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, params,
+                    Car[].class);
+            return (response.getBody() != null) ? Arrays.asList(response.getBody()) : Collections.emptyList();
         } catch (RestClientException e) {
             throw new ApplicationException("REST client error when asking for cars from user", e);
         }

@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.dao.PlayerDAO;
-import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.dao.MatchDAO;
+import net.andresbustamante.yafoot.dao.PlayerDAO;
+import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -45,7 +45,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Joueur joueur = new Joueur(1);
         Site site = new Site(1);
         Match match = new Match();
-        match.setDateMatch(ZonedDateTime.now().plusDays(1));
+        match.setDateMatch(OffsetDateTime.now().plusDays(1));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -74,7 +74,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Joueur joueur = new Joueur(1);
         Site site = new Site();
         Match match = new Match();
-        match.setDateMatch(ZonedDateTime.now().plusDays(1));
+        match.setDateMatch(OffsetDateTime.now().plusDays(1));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");

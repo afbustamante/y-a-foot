@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.web.mappers;
 
 import net.andresbustamante.yafoot.config.DtoMapperConfig;
 import net.andresbustamante.yafoot.model.Inscription;
-import net.andresbustamante.yafoot.model.xs.Registration;
+import net.andresbustamante.yafoot.web.dto.Registration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

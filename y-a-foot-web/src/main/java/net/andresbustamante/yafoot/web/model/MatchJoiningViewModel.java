@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Car;
-import net.andresbustamante.yafoot.model.xs.Registration;
+import net.andresbustamante.yafoot.web.dto.Car;
+import net.andresbustamante.yafoot.web.dto.Registration;
 import net.andresbustamante.yafoot.web.enums.MatchJoinModeEnum;
-import net.andresbustamante.yafoot.model.xs.Match;
+import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.services.CarsManagementUIService;
 import net.andresbustamante.yafoot.web.services.MatchsJoiningUIService;
 import net.andresbustamante.yafoot.web.services.MatchsSearchUIService;
@@ -68,8 +68,8 @@ public class MatchJoiningViewModel extends AbstractViewModel {
 
             processJoinMode(Executions.getCurrent().getParameter("mode"));
 
-            List<Registration> registrations = (match.getRegistrations().getRegistration() != null) ?
-                    match.getRegistrations().getRegistration() : Collections.emptyList();
+            List<Registration> registrations = (match.getRegistrations() != null) ?
+                    match.getRegistrations() : Collections.emptyList();
 
             String nomUtilisateur = getActiveUsername();
             playerAlreadyListed = false;

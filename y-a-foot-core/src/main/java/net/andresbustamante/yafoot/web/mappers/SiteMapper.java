@@ -12,11 +12,11 @@ public interface SiteMapper {
     @Mapping(source = "address", target = "adresse")
     @Mapping(source = "phoneNumber", target = "telephone")
     @Mapping(source = "location", target = "localisation")
-    Site map(net.andresbustamante.yafoot.model.xs.Site site);
+    Site map(net.andresbustamante.yafoot.web.dto.Site site);
 
     @Mapping(target = "name", source = "nom")
     @Mapping(target = "address", source = "adresse")
     @Mapping(target = "phoneNumber", source = "telephone")
     @Mapping(target = "location", source = "localisation")
-    net.andresbustamante.yafoot.model.xs.Site map(Site site);
+    net.andresbustamante.yafoot.web.dto.Site map(Site site);
 }

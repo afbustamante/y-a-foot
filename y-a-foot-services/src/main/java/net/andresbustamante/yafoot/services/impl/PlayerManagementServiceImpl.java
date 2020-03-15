@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.services.impl;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.ldap.UserDAO;
@@ -38,17 +39,17 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public boolean savePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException {
+    public Integer savePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
         if (!playerDAO.isPlayerAlreadySignedIn(joueur.getEmail())) {
             // Créer l'utilisateur sur l'annuaire LDAP
             userDAO.saveUser(joueur, RolesEnum.PLAYER);
             // Créer le joueur en base de données
             playerDAO.savePlayer(joueur);
-            log.info("Nouveau joueur enregistré avec l'address {}", joueur.getEmail());
-            return true;
+            log.info("New player registered with the address {}", joueur.getEmail());
+            return joueur.getId();
         } else {
-            log.info("Rejet : Joueur existant avec l'address {}", joueur.getEmail());
-            return false;
+            log.info("Existing player with the address {}", joueur.getEmail());
+            throw new ApplicationException("A player already exists for this email address");
         }
     }
 
@@ -89,8 +90,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public boolean deactivatePlayer(String emailJoueur, UserContext userContext) throws LdapException, DatabaseException {
-        Joueur joueur = playerDAO.findPlayerByEmail(emailJoueur);
+    public void deactivatePlayer(Integer playerId, UserContext userContext) throws LdapException, DatabaseException {
+        Joueur joueur = playerDAO.findPlayerById(playerId);
 
         if (joueur != null) {
             // Supprimer les données du joueur
@@ -105,9 +106,6 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
             // Supprimer l'entrée LDAP
             userDAO.deleteUser(joueur, new RolesEnum[]{RolesEnum.PLAYER});
-            return true;
-        } else {
-            return false;
         }
     }
 }

@@ -1,8 +1,9 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Site;
+import net.andresbustamante.yafoot.web.dto.Match;
+import net.andresbustamante.yafoot.web.dto.Site;
+import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.web.services.MatchsRegistryUIService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,8 @@ import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import java.util.Calendar;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 
@@ -92,8 +94,7 @@ public class MatchRegistryViewModel extends AbstractViewModel {
                 return;
             }
 
-            Calendar dateMatch = Calendar.getInstance();
-            dateMatch.setTime(date);
+            OffsetDateTime dateMatch = OffsetDateTime.of(DateUtils.toLocalDateTime(date), ZoneOffset.of("CET"));
 
             Match match = new Match();
             match.setDate(dateMatch);

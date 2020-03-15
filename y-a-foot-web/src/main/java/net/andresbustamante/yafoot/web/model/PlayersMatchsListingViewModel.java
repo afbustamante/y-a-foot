@@ -1,8 +1,7 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.model.xs.Match;
-import net.andresbustamante.yafoot.model.xs.Matches;
+import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.services.MatchsJoiningUIService;
 import net.andresbustamante.yafoot.web.services.MatchsRegistryUIService;
 import net.andresbustamante.yafoot.web.services.MatchsSearchUIService;
@@ -19,8 +18,8 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Messagebox;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -45,13 +44,17 @@ public class PlayersMatchsListingViewModel extends AbstractViewModel {
     @Init
     public void init() {
         try {
-            Matches matches = matchsSearchUIService.findMatchesForPlayer();
+            List<Match> matches = matchsSearchUIService.findMatchesForPlayer();
+
+            if (matches == null) {
+                matches = new ArrayList<>();
+            }
 
             List<Match> matchesPlayed = new ArrayList<>();
             List<Match> matchesToPlay = new ArrayList<>();
 
-            for (Match match : matches.getMatch()) {
-                if (match.getDate().before(Calendar.getInstance(match.getDate().getTimeZone()))) {
+            for (Match match : matches) {
+                if (match.getDate().isBefore(OffsetDateTime.now().minusHours(2))) {
                     matchesPlayed.add(match);
                 } else {
                     matchesToPlay.add(match);

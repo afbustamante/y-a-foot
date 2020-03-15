@@ -39,6 +39,25 @@ paths:
         '401': # Unauthorized
           description: Invalid credentials
   /players:
+    get:
+      operationId: loadPlayerByEmail
+      summary: Loads details for a player
+      parameters:
+      - in: query
+        name: email
+        required: true
+        schema:
+          type: string
+        description: Email address to identify a player
+      tags:
+      - players
+      responses:
+        '200': # OK
+          content:
+            application/json:
+              schema:
+                type: Player
+        '404': # Not found
     post:
       operationId: createPlayer
       summary: Create a new player
@@ -59,25 +78,14 @@ paths:
             application/json:
               schema:
                 type: long
-  /players/{email}/email:
+  /players/{playerId}:
     parameters:
     - in: path
-      name: email
+      name: playerId
       required: true
       schema:
-        type: string
-      description: Email address to identify a player
-    get:
-      operationId: loadPlayerByEmail
-      summary: Loads details for a player
-      tags:
-      - players
-      responses:
-        '200': # OK
-          content:
-            application/json:
-              schema:
-                type: Player
+        type: integer
+      description: Player's numeric identifier
     put:
       operationId: updatePlayer
       tags:
@@ -117,7 +125,9 @@ paths:
           content:
             application/json:
               schema:
-                type: Matches
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
     post:
       operationId: createMatch
       summary: Creates a match
@@ -219,9 +229,9 @@ paths:
           content:
             application/json:
               schema:
-                type: Sites
-  /registrations:
-
+                type: array
+                items:
+                  $ref: '#/components/schemas/Site'
   /cars:
     get:
       operationId: loadCarList
@@ -239,7 +249,9 @@ paths:
           content:
             application/json:
               schema:
-                type: Cars
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
     post:
       operationId: addNewCar
       summary: Registers a new car for a player
@@ -256,3 +268,128 @@ paths:
       responses:
         '201': # Created
           description: Car saved
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: byte
+        token:
+          type: string
+        firstName:
+          type: string
+        surname:
+          type: string
+    Player:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            id:
+              type: integer
+            phoneNumber:
+              type: string
+    Site:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        address:
+          type: string
+        phoneNumber:
+          type: string
+        location:
+          type: GpsCoordinates
+    Car:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: int
+        name:
+          type: string
+        numSeats:
+          type: integer
+        driver:
+          type: Player
+        passengers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+    Registration:
+      type: object
+      required:
+        - player
+        - car
+      properties:
+        matchId:
+          type: integer
+        playerId:
+          type: integer
+        player:
+          type: Player
+        car:
+          type: Car
+    Match:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        date:
+          type: string
+          format: date-time
+        description:
+          type: string
+        numPlayersMin:
+          type: integer
+        numPlayersMax:
+          type: integer
+        numRegisteredPlayers:
+          type: integer
+        site:
+          type: Site
+        author:
+          type: Player
+        registrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Registration'
+        carpoolingEnabled:
+          type: boolean
+        sharingEnabled:
+          type: boolean
+    GpsCoordinates:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+    UserContext:
+      type: object
+      properties:
+        player:
+          type: Player
+        timezone:
+          type: string
+        language:
+          type: string
