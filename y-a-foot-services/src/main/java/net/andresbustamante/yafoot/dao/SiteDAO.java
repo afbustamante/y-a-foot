@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.dao;
 
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Site;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,10 +16,10 @@ public interface SiteDAO {
     /**
      * Chercher des sites d'intérêt pour un joueur.
      *
-     * @param idJoueur Identifiant du joueur
+     * @param player Player to use for the research
      * @return Liste de sites ayant un lien avec le joueur passé en paramètre
      */
-    List<Site> chercherSitesPourJoueur(@Param(PLAYER) Integer idJoueur);
+    List<Site> findSitesByPlayer(@Param(PLAYER) Player player);
 
     /**
      * Chercher un site par ID

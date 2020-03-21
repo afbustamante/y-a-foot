@@ -2,6 +2,7 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Site;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,10 @@ class SiteDAOTest extends AbstractDAOTest {
     @Test
     void chercherSitesParJoueur() throws Exception {
         // Given
-        Integer idJoueur = 1;
+        Player player1 = new Player(1);
 
         // When
-        List<Site> sites = siteDAO.chercherSitesPourJoueur(idJoueur);
+        List<Site> sites = siteDAO.findSitesByPlayer(player1);
 
         // Then
         assertNotNull(sites);

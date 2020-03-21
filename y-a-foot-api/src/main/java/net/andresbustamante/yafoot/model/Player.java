@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author andresbustamante
  */
-public class Joueur extends User implements Serializable, Identifiable {
+public class Player extends User implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -19,19 +19,18 @@ public class Joueur extends User implements Serializable, Identifiable {
     private LocalDateTime dateDerniereMaj;
     private List<Voiture> voitures;
 
-    public Joueur() {
-    }
+    public Player() {}
 
-    public Joueur(Integer id) {
+    public Player(Integer id) {
         this.id = id;
     }
 
-    public Joueur(Integer id, String nom, String prenom, String email, String telephone) {
+    public Player(Integer id, String surname, String firstName, String email, String phoneNumber) {
         this.id = id;
-        this.surname = nom;
-        this.firstName = prenom;
+        this.surname = surname;
+        this.firstName = firstName;
         this.email = email;
-        this.phoneNumber = telephone;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
@@ -93,10 +92,10 @@ public class Joueur extends User implements Serializable, Identifiable {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Joueur)) {
+        if (!(object instanceof Player)) {
             return false;
         }
-        Joueur other = (Joueur) object;
+        Player other = (Player) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -105,7 +104,7 @@ public class Joueur extends User implements Serializable, Identifiable {
 
     @Override
     public String toString() {
-        return "net.andresbustamante.yafoot.model.Joueur[ jouId=" + id + " ]";
+        return "net.andresbustamante.yafoot.model.Player[ jouId=" + id + " ]";
     }
 
 }

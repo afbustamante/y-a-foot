@@ -115,11 +115,11 @@ paths:
       tags:
       - matches
       parameters:
-      - in: query
-        name: pid
+      - in: header
+        name: player
         required: true
         schema:
-          type: integer
+          type: string
       responses:
         '200': # OK
           content:
@@ -219,11 +219,12 @@ paths:
       tags:
       - sites
       parameters:
-      - in: query
-        name: pid
+      - in: header
+        name: player
         required: true
         schema:
-          type: integer
+          type: string
+          format: email
       responses:
         '200': # OK
           content:
@@ -234,16 +235,17 @@ paths:
                   $ref: '#/components/schemas/Site'
   /cars:
     get:
-      operationId: loadCarList
+      operationId: loadCarsByPlayer
       summary: Loads the list of cars registered by a player
       tags:
       - cars
       parameters:
-      - in: query
-        name: pid
+      - in: header
+        name: player
         required: true
         schema:
-          type: integer
+          type: string
+          format: email
       responses:
         '200': # OK
           content:

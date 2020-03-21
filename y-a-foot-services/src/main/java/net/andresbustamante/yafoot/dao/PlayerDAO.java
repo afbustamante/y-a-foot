@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.dao;
 
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Player;
 import org.apache.ibatis.annotations.Param;
 
 import static net.andresbustamante.yafoot.util.DaoConstants.*;
@@ -15,10 +15,10 @@ public interface PlayerDAO {
     /**
      * Chercher un joueur par son identifiant dans le système
      *
-     * @param idJoueur Identifiant du joueur
+     * @param playerId Identifiant du joueur
      * @return Le joueur correspondant à l'identifiant passé en paramètre. Null si l'identifiant n'est pas utilisé
      */
-    Joueur findPlayerById(@Param(ID) Integer idJoueur);
+    Player findPlayerById(@Param(ID) Integer playerId);
 
     /**
      * Vérifier si une address mail est déjà utilisée par un joueur inscrit
@@ -29,39 +29,39 @@ public interface PlayerDAO {
     boolean isPlayerAlreadySignedIn(@Param(EMAIL) String email);
 
     /**
-     * Créer un joueur en base des données
+     * Créer un player en base des données
      *
-     * @param joueur Joueur à créer
+     * @param player Player à créer
      */
-    int savePlayer(@Param(PLAYER) Joueur joueur);
+    int savePlayer(@Param(PLAYER) Player player);
 
     /**
-     * Mettre à jour les informations personnelles d'un joueur passé en paramètre
+     * Mettre à jour les informations personnelles d'un player passé en paramètre
      *
-     * @param joueur Joueur à mettre à jour
+     * @param player Player à mettre à jour
      */
-    int updatePlayer(@Param(PLAYER) Joueur joueur);
+    int updatePlayer(@Param(PLAYER) Player player);
 
     /**
      * Chercher un joueur en base des données à partir de son address mail
      *
      * @param email Adresse mail à chercher
-     * @return Joueur associé à l'address mail passée en paramètre
+     * @return Player associé à l'address mail passée en paramètre
      */
-    Joueur findPlayerByEmail(@Param(EMAIL) String email);
+    Player findPlayerByEmail(@Param(EMAIL) String email);
 
     /**
-     * Supprimer définitivement un joueur de la base des données
+     * Supprimer définitivement un player de la base des données
      *
-     * @param joueur Joueur à supprimer
+     * @param player Player à supprimer
      */
-    int deletePlayer(@Param(PLAYER) Joueur joueur);
+    int deletePlayer(@Param(PLAYER) Player player);
 
 
     /**
-     * Anonymiser les données d'un joueur et désactiver de mannière logique
+     * Anonymiser les données d'un player et désactiver de mannière logique
      *
-     * @param joueur Joueur à désactiver
+     * @param player Player à désactiver
      */
-    int deactivatePlayer(@Param(PLAYER) Joueur joueur);
+    int deactivatePlayer(@Param(PLAYER) Player player);
 }

@@ -3,8 +3,9 @@ package net.andresbustamante.yafoot.web.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
+import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.dto.Registration;
 import net.andresbustamante.yafoot.services.MatchManagementService;
@@ -39,6 +40,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     private MatchSearchService matchSearchService;
 
+    private PlayerSearchService playerSearchService;
+
     private MatchManagementService matchManagementService;
 
     private MatchMapper matchMapper;
@@ -53,10 +56,12 @@ public class MatchesController extends AbstractController implements MatchesApi 
     private final Logger log = LoggerFactory.getLogger(MatchesController.class);
 
     @Autowired
-    public MatchesController(MatchSearchService matchSearchService, MatchManagementService matchManagementService,
+    public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
+                             MatchManagementService matchManagementService,
                              MatchMapper matchMapper, RegistrationMapper registrationMapper, HttpServletRequest request) {
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
+        this.playerSearchService = playerSearchService;
         this.matchMapper = matchMapper;
         this.registrationMapper = registrationMapper;
         this.request = request;
@@ -75,11 +80,13 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<List<Match>> loadMatchesByPlayer(Integer playerId) {
+    public ResponseEntity<List<Match>> loadMatchesByPlayer(String email) {
         try {
             UserContext ctx = getUserContext(request);
 
-            List<net.andresbustamante.yafoot.model.Match> matchs = matchSearchService.findMatchesByPlayer(playerId,
+            Player player = playerSearchService.findPlayerByEmail(email);
+
+            List<net.andresbustamante.yafoot.model.Match> matchs = matchSearchService.findMatchesByPlayer(player,
                     ctx);
 
             if (CollectionUtils.isNotEmpty(matchs)) {
@@ -145,12 +152,12 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.notFound().build();
             }
 
-            boolean succes = matchManagementService.joinMatch(ins.getJoueur(), match,
+            boolean succes = matchManagementService.joinMatch(ins.getPlayer(), match,
                     ins.getVoiture(), userContext);
 
             if (succes) {
                 log.info("Player registered to match");
-                String location = MessageFormat.format(matchByCodeApiPath + "/players/{0}", ins.getJoueur().getId());
+                String location = MessageFormat.format(matchByCodeApiPath + "/players/{0}", ins.getPlayer().getId());
                 return ResponseEntity.created(getLocationURI(location)).build();
             } else {
                 log.warn("Le joueur n'a pas pu etre inscrit");
@@ -173,8 +180,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
             if (match != null) {
-                Joueur joueur = new Joueur(playerId);
-                matchManagementService.quitMatch(joueur, match, userContext);
+                Player player = new Player(playerId);
+                matchManagementService.quitMatch(player, match, userContext);
                 return ResponseEntity.noContent().build();
             } else {
                 log.warn("Invalid match code detected for unregistering player");

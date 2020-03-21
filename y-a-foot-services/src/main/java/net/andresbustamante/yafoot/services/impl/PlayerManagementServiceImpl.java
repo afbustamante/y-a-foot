@@ -7,8 +7,8 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.ldap.UserDAO;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.services.PlayerManagementService;
 import org.slf4j.Logger;
@@ -39,51 +39,51 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public Integer savePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
-        if (!playerDAO.isPlayerAlreadySignedIn(joueur.getEmail())) {
+    public Integer savePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
+        if (!playerDAO.isPlayerAlreadySignedIn(player.getEmail())) {
             // Créer l'utilisateur sur l'annuaire LDAP
-            userDAO.saveUser(joueur, RolesEnum.PLAYER);
-            // Créer le joueur en base de données
-            playerDAO.savePlayer(joueur);
-            log.info("New player registered with the address {}", joueur.getEmail());
-            return joueur.getId();
+            userDAO.saveUser(player, RolesEnum.PLAYER);
+            // Créer le player en base de données
+            playerDAO.savePlayer(player);
+            log.info("New player registered with the address {}", player.getEmail());
+            return player.getId();
         } else {
-            log.info("Existing player with the address {}", joueur.getEmail());
+            log.info("Existing player with the address {}", player.getEmail());
             throw new ApplicationException("A player already exists for this email address");
         }
     }
 
     @Transactional
     @Override
-    public boolean updatePlayer(Joueur joueur, UserContext userContext) throws LdapException, DatabaseException {
-        Joueur joueurExistant = playerDAO.findPlayerByEmail(joueur.getEmail());
+    public boolean updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException {
+        Player existingPlayer = playerDAO.findPlayerByEmail(player.getEmail());
         boolean isImpactLdap = false;
 
-        if (joueurExistant != null) {
-            if (joueur.getFirstName() != null) {
-                joueurExistant.setFirstName(joueur.getFirstName());
+        if (existingPlayer != null) {
+            if (player.getFirstName() != null) {
+                existingPlayer.setFirstName(player.getFirstName());
                 isImpactLdap = true;
             }
-            if (joueur.getSurname() != null) {
-                joueurExistant.setSurname(joueur.getSurname());
+            if (player.getSurname() != null) {
+                existingPlayer.setSurname(player.getSurname());
                 isImpactLdap = true;
             }
-            if (joueur.getPhoneNumber() != null) {
-                joueurExistant.setPhoneNumber(joueur.getPhoneNumber());
+            if (player.getPhoneNumber() != null) {
+                existingPlayer.setPhoneNumber(player.getPhoneNumber());
             }
-            if (joueur.getPassword() != null) {
-                joueurExistant.setPassword(joueur.getPassword());
+            if (player.getPassword() != null) {
+                existingPlayer.setPassword(player.getPassword());
                 isImpactLdap = true;
             }
 
             if (isImpactLdap) {
-                userDAO.updateUser(joueur);
+                userDAO.updateUser(player);
             }
-            playerDAO.updatePlayer(joueurExistant);
-            log.info("Joueur mis à jour avec l'address {}", joueur.getEmail());
+            playerDAO.updatePlayer(existingPlayer);
+            log.info("Player mis à jour avec l'address {}", player.getEmail());
             return true;
         } else {
-            log.info("Rejet : Joueur inexistant avec l'address {}", joueur.getEmail());
+            log.info("Rejet : Player inexistant avec l'address {}", player.getEmail());
             return false;
         }
     }
@@ -91,21 +91,21 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     @Transactional
     @Override
     public void deactivatePlayer(Integer playerId, UserContext userContext) throws LdapException, DatabaseException {
-        Joueur joueur = playerDAO.findPlayerById(playerId);
+        Player player = playerDAO.findPlayerById(playerId);
 
-        if (joueur != null) {
-            // Supprimer les données du joueur
-            int numMatches = matchDAO.unregisterPlayerFromAllMatches(joueur);
+        if (player != null) {
+            // Supprimer les données du player
+            int numMatches = matchDAO.unregisterPlayerFromAllMatches(player);
             log.info("Player unregistered from {} matches", numMatches);
 
-            int numCars = carDAO.deleteCarsForPlayer(joueur);
+            int numCars = carDAO.deleteCarsByPlayer(player);
             log.info("{} cars removed for player", numCars);
 
-            int numPlayers = playerDAO.deactivatePlayer(joueur);
+            int numPlayers = playerDAO.deactivatePlayer(player);
             log.info("Players deactivated: {}", numPlayers);
 
             // Supprimer l'entrée LDAP
-            userDAO.deleteUser(joueur, new RolesEnum[]{RolesEnum.PLAYER});
+            userDAO.deleteUser(player, new RolesEnum[]{RolesEnum.PLAYER});
         }
     }
 }

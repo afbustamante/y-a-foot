@@ -12,8 +12,8 @@ public class Voiture implements Serializable {
     private Integer id;
     private String nom;
     private Integer nbPlaces;
-    private Joueur chauffeur;
-    private List<Joueur> passagers;
+    private Player chauffeur;
+    private List<Player> passagers;
 
     public Voiture() {
     }
@@ -46,19 +46,19 @@ public class Voiture implements Serializable {
         this.nbPlaces = nbPlaces;
     }
 
-    public Joueur getChauffeur() {
+    public Player getChauffeur() {
         return chauffeur;
     }
 
-    public void setChauffeur(Joueur chauffeur) {
+    public void setChauffeur(Player chauffeur) {
         this.chauffeur = chauffeur;
     }
 
-    public List<Joueur> getPassagers() {
+    public List<Player> getPassagers() {
         return passagers;
     }
 
-    public void setPassagers(List<Joueur> passagers) {
+    public void setPassagers(List<Player> passagers) {
         this.passagers = passagers;
     }
 

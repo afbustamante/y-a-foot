@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.services;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.Joueur;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Voiture;
 
@@ -23,24 +23,24 @@ public interface MatchManagementService {
     boolean saveMatch(Match match, UserContext userContext) throws DatabaseException;
 
     /**
-     * Inscrire un joueur à un match existant
+     * Inscrire un player à un match existant
      *
-     * @param joueur Joueur à inscrire dans le match
+     * @param player Player à inscrire dans le match
      * @param match Match à impacter avec cette inscription
-     * @param voiture Voiture dans laquelle le joueur va se déplacer vers le site de jeu
+     * @param voiture Voiture dans laquelle le player va se déplacer vers le site de jeu
      * @param userContext
      * @throws DatabaseException
      */
-    boolean joinMatch(Joueur joueur, Match match, Voiture voiture, UserContext userContext) throws DatabaseException;
+    boolean joinMatch(Player player, Match match, Voiture voiture, UserContext userContext) throws DatabaseException;
 
     /**
-     * Désinscrire un joueur d'un match
+     * Désinscrire un player d'un match
      *
-     * @param joueur Joueur à désinscrire
+     * @param player Player à désinscrire
      * @param match Match concerné
      * @param userContext
      * @return
      * @throws DatabaseException
      */
-    boolean quitMatch(Joueur joueur, Match match, UserContext userContext) throws DatabaseException;
+    boolean quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException;
 }

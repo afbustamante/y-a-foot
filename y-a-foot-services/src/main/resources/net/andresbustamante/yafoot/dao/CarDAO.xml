@@ -17,13 +17,13 @@
     </selectKey>
 
     INSERT INTO t_voiture (voi_id, voi_nom, voi_num_places, voi_chauffeur_fk)
-    VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.nbPlaces}, #{joueur.id})
+    VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.nbPlaces}, #{player.id})
   </insert>
 
-  <delete id="deleteCarsForPlayer">
+  <delete id="deleteCarsByPlayer">
     DELETE
     FROM t_voiture
-    WHERE voi_chauffeur_fk = #{joueur.id}
+    WHERE voi_chauffeur_fk = #{player.id}
   </delete>
 
   <select id="findCarsByPlayer" resultType="net.andresbustamante.yafoot.model.Voiture">
@@ -32,6 +32,6 @@
       voi_nom        AS nom,
       voi_num_places AS nbPlaces
     FROM t_voiture
-    WHERE voi_chauffeur_fk = #{joueur.id}
+    WHERE voi_chauffeur_fk = #{player.id}
   </select>
 </mapper>

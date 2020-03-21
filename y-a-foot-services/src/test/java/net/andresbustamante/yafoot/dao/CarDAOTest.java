@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,11 +20,11 @@ class CarDAOTest extends AbstractDAOTest {
     @Autowired
     private CarDAO carDAO;
 
-    private Joueur joueur;
+    private Player player;
 
     @BeforeEach
     void setUp() {
-        joueur = new Joueur(1);
+        player = new Player(1);
     }
 
     @Test
@@ -47,7 +47,7 @@ class CarDAOTest extends AbstractDAOTest {
         nouvelleVoiture.setNbPlaces(3);
 
         // When
-        int nbLignesInserees = carDAO.saveCar(nouvelleVoiture, joueur);
+        int nbLignesInserees = carDAO.saveCar(nouvelleVoiture, player);
 
         // Then
         assertEquals(1, nbLignesInserees);
@@ -58,7 +58,7 @@ class CarDAOTest extends AbstractDAOTest {
     @Test
     void deleteCarsForPlayer() throws Exception {
         // When
-        int nbVoituresSupprimees = carDAO.deleteCarsForPlayer(joueur);
+        int nbVoituresSupprimees = carDAO.deleteCarsByPlayer(player);
 
         // Then
         assertEquals(2, nbVoituresSupprimees);
@@ -67,9 +67,9 @@ class CarDAOTest extends AbstractDAOTest {
     @Test
     void findCarsByPlayer() throws Exception {
         // Given
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
 
-        List<Voiture> voitures = carDAO.findCarsByPlayer(joueur);
+        List<Voiture> voitures = carDAO.findCarsByPlayer(player);
 
         assertNotNull(voitures);
         assertEquals(2, voitures.size());

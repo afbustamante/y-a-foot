@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.dao;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.model.Inscription;
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Site;
 import org.junit.jupiter.api.Test;
@@ -78,7 +78,7 @@ class MatchDAOTest extends AbstractDAOTest {
 
         for (Inscription ins : match.getInscriptions()) {
             assertNull(ins.getMatch());
-            assertNotNull(ins.getJoueur());
+            assertNotNull(ins.getPlayer());
             assertNotNull(ins.getId());
         }
     }
@@ -86,10 +86,10 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void chercherMatchsSansInscriptions() throws Exception {
         // Given
-        Integer idMatch = 3;
+        Integer matchId = 3;
 
         // When
-        Match match = matchDAO.findMatchById(idMatch);
+        Match match = matchDAO.findMatchById(matchId);
 
         // Then
         assertNotNull(match);
@@ -100,12 +100,12 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void findMatchesByPlayer() throws Exception {
         // Given
-        Integer idJoueur = 1;
+        Player player1 = new Player(1);
         LocalDateTime date = LocalDate.of(2018, 10, 2).atStartOfDay();
         OffsetDateTime dateInitiale = OffsetDateTime.of(date, ZoneId.systemDefault().getRules().getOffset(date));
 
         // When
-        List<Match> matchs = matchDAO.findMatchesByPlayer(idJoueur, dateInitiale);
+        List<Match> matchs = matchDAO.findMatchesByPlayer(player1, dateInitiale);
 
         // Then
         assertNotNull(matchs);
@@ -122,7 +122,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void findMatchById() throws Exception {
         // Given
-        Integer idMatch = 1;
+        Integer matchId = 1;
 
         // When
         Match match = matchDAO.findMatchById(1);
@@ -140,7 +140,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void saveMatch() throws Exception {
         // Given
         OffsetDateTime maintenant = OffsetDateTime.now();
-        Joueur joueur = playerDAO.findPlayerById(1);
+        Player player = playerDAO.findPlayerById(1);
         Site site = siteDAO.chercherSiteParId(1);
 
         Match match = new Match();
@@ -150,7 +150,7 @@ class MatchDAOTest extends AbstractDAOTest {
         match.setNbJoueursMax(12);
         match.setCovoiturageActif(true);
         match.setPartageActif(false);
-        match.setCreateur(joueur);
+        match.setCreateur(player);
         match.setDescription("Match de test");
         match.setSite(site);
 
@@ -165,26 +165,26 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void registerPlayerSansVoiture() throws Exception {
         // Given
-        Joueur joueur = playerDAO.findPlayerById(1);
+        Player player = playerDAO.findPlayerById(1);
         Match match = matchDAO.findMatchById(2);
 
         // When
-        matchDAO.registerPlayer(joueur, match, null);
+        matchDAO.registerPlayer(player, match, null);
 
         // Then
-        assertTrue(matchDAO.isPlayerRegistered(joueur, match));
+        assertTrue(matchDAO.isPlayerRegistered(player, match));
     }
 
     @Test
     void isPlayerRegistered() throws Exception {
         // Given
-        Joueur joueurInscrit = playerDAO.findPlayerById(1);
-        Joueur joueurNonInscrit = playerDAO.findPlayerById(2);
+        Player registeredPlayer = playerDAO.findPlayerById(1);
+        Player unregisteredPlayer = playerDAO.findPlayerById(2);
         Match match = matchDAO.findMatchById(1);
 
         // When
-        boolean test1 = matchDAO.isPlayerRegistered(joueurInscrit, match);
-        boolean test2 = matchDAO.isPlayerRegistered(joueurNonInscrit, match);
+        boolean test1 = matchDAO.isPlayerRegistered(registeredPlayer, match);
+        boolean test2 = matchDAO.isPlayerRegistered(unregisteredPlayer, match);
 
         // Then
         assertTrue(test1);
@@ -194,26 +194,26 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void unregisterPlayer() throws Exception {
         // Given
-        Joueur joueur = playerDAO.findPlayerById(1);
+        Player player = playerDAO.findPlayerById(1);
         Match match = matchDAO.findMatchById(1);
-        assertTrue(matchDAO.isPlayerRegistered(joueur, match));
+        assertTrue(matchDAO.isPlayerRegistered(player, match));
 
         // When
-        matchDAO.unregisterPlayer(joueur, match);
+        matchDAO.unregisterPlayer(player, match);
 
         // Then
-        assertFalse(matchDAO.isPlayerRegistered(joueur, match));
+        assertFalse(matchDAO.isPlayerRegistered(player, match));
     }
 
     @Test
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
-        Joueur joueur = playerDAO.findPlayerById(1);
+        Player player = playerDAO.findPlayerById(1);
         OffsetDateTime dateTime = OffsetDateTime.now().minusYears(5L); // Il y a 5 ans
 
         // When
-        int nbLignes = matchDAO.unregisterPlayerFromAllMatches(joueur);
-        List<Match> matchsJoueur = matchDAO.findMatchesByPlayer(joueur.getId(), dateTime);
+        int nbLignes = matchDAO.unregisterPlayerFromAllMatches(player);
+        List<Match> matchsJoueur = matchDAO.findMatchesByPlayer(player, dateTime);
 
         // Then
         assertEquals(1, nbLignes);

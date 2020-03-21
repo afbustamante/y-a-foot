@@ -77,8 +77,8 @@ public class PlayersController extends AbstractController implements PlayersApi 
     public ResponseEntity<Long> createPlayer(Player player) {
         try {
             log.info("Demande de création d'un nouveau joueur avec l'address {}", player.getEmail());
-            net.andresbustamante.yafoot.model.Joueur nouveauJoueur = playerMapper.map(player);
-            int id = playerManagementService.savePlayer(nouveauJoueur,
+            net.andresbustamante.yafoot.model.Player newPlayer = playerMapper.map(player);
+            int id = playerManagementService.savePlayer(newPlayer,
                     contextMapper.map(new UserContext()));
 
             String location = MessageFormat.format(playerApiPath, id);
@@ -117,10 +117,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
         net.andresbustamante.yafoot.model.UserContext userContext = new net.andresbustamante.yafoot.model.UserContext();
 
         try {
-            net.andresbustamante.yafoot.model.Joueur joueur = playerSearchService.findPlayerByEmail(email, userContext);
+            net.andresbustamante.yafoot.model.Player player = playerSearchService.findPlayerByEmail(email);
 
-            if (joueur != null) {
-                return ResponseEntity.ok(playerMapper.map(joueur));
+            if (player != null) {
+                return ResponseEntity.ok(playerMapper.map(player));
             } else {
                 return ResponseEntity.notFound().build();
             }

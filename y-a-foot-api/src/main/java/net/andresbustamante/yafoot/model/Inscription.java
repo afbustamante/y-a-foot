@@ -11,17 +11,16 @@ public class Inscription implements Serializable {
     private IdInscription id;
     private Voiture voiture;
     private Match match;
-    private Joueur joueur;
+    private Player player;
 
-    public Inscription() {
-    }
+    public Inscription() {}
 
     public Inscription(IdInscription id) {
         this.id = id;
     }
 
-    public Inscription(int idMatch, int idJoueur) {
-        this.id = new IdInscription(idMatch, idJoueur);
+    public Inscription(int matchId, int playerId) {
+        this.id = new IdInscription(matchId, playerId);
     }
 
     public IdInscription getId() {
@@ -48,12 +47,12 @@ public class Inscription implements Serializable {
         this.match = match;
     }
 
-    public Joueur getJoueur() {
-        return joueur;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setJoueur(Joueur joueur) {
-        this.joueur = joueur;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     @Override

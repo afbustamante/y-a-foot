@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.services.impl;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 class CarManagementServiceImplTest extends AbstractServiceTest {
 
-    private Joueur joueur;
+    private Player player;
 
     private UserContext userContext;
 
@@ -33,7 +33,7 @@ class CarManagementServiceImplTest extends AbstractServiceTest {
 
     @BeforeEach
     void setUp() {
-        joueur = new Joueur(1);
+        player = new Player(1);
         userContext = new UserContext();
         userContext.setUsername("test@email.com");
     }
@@ -46,12 +46,12 @@ class CarManagementServiceImplTest extends AbstractServiceTest {
         voiture.setNbPlaces(3);
 
         // When
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
 
         int idVoiture = carManagementService.saveCar(voiture, userContext);
 
         assertEquals(8, idVoiture);
-        verify(carDAO).saveCar(any(Voiture.class), any(Joueur.class));
+        verify(carDAO).saveCar(any(Voiture.class), any(Player.class));
 
     }
 }

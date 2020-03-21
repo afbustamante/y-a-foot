@@ -3,8 +3,8 @@ package net.andresbustamante.yafoot.web.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Player;
+import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.CarSearchService;
@@ -35,6 +35,8 @@ public class CarsController extends AbstractController implements CarsApi {
 
     private CarSearchService carSearchService;
 
+    private PlayerSearchService playerSearchService;
+
     private CarManagementService carManagementService;
 
     private CarMapper carMapper;
@@ -44,19 +46,21 @@ public class CarsController extends AbstractController implements CarsApi {
     private final Logger log = LoggerFactory.getLogger(CarsController.class);
 
     @Autowired
-    public CarsController(CarSearchService carSearchService, CarManagementService carManagementService,
+    public CarsController(CarSearchService carSearchService, PlayerSearchService playerSearchService,
+                          CarManagementService carManagementService,
                           CarMapper carMapper, HttpServletRequest request) {
         this.carSearchService = carSearchService;
+        this.playerSearchService = playerSearchService;
         this.carManagementService = carManagementService;
         this.carMapper = carMapper;
         this.request = request;
     }
 
     @Override
-    public ResponseEntity<List<Car>> loadCarList(Integer idJoueur) {
+    public ResponseEntity<List<Car>> loadCarsByPlayer(String email) {
         try {
-            List<net.andresbustamante.yafoot.model.Voiture> cars =
-                    carSearchService.findCarsByPlayer(new Joueur(idJoueur), new UserContext());
+            Player player = playerSearchService.findPlayerByEmail(email);
+            List<net.andresbustamante.yafoot.model.Voiture> cars = carSearchService.findCarsByPlayer(player);
 
             List<Car> result = new ArrayList<>();
 

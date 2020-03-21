@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.services.impl;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,11 @@ public class MatchSearchServiceImpl implements MatchSearchService {
     }
 
     @Override
-    public List<Match> findMatchesByPlayer(Integer idJoueur, UserContext userContext) throws DatabaseException {
-        if (idJoueur != null && idJoueur > 0) {
+    public List<Match> findMatchesByPlayer(Player player, UserContext userContext) throws DatabaseException {
+        if (player != null && player.getId() > 0) {
             // Chercher les matchs programmés pour le joueur depuis 1 an
             OffsetDateTime date = OffsetDateTime.now().minusYears(1L);
-            return matchDAO.findMatchesByPlayer(idJoueur, date);
+            return matchDAO.findMatchesByPlayer(player, date);
         } else {
             return Collections.emptyList();
         }

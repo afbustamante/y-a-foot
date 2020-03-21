@@ -7,38 +7,37 @@ import java.io.Serializable;
  */
 public class IdInscription implements Serializable {
 
-    private Integer idMatch;
-    private Integer idJoueur;
+    private Integer matchId;
+    private Integer playerId;
 
-    public IdInscription() {
+    public IdInscription() {}
+
+    public IdInscription(Integer matchId, Integer playerId) {
+        this.matchId = matchId;
+        this.playerId = playerId;
     }
 
-    public IdInscription(Integer idMatch, Integer idJoueur) {
-        this.idMatch = idMatch;
-        this.idJoueur = idJoueur;
+    public Integer getMatchId() {
+        return matchId;
     }
 
-    public Integer getIdMatch() {
-        return idMatch;
+    public void setMatchId(Integer matchId) {
+        this.matchId = matchId;
     }
 
-    public void setIdMatch(Integer idMatch) {
-        this.idMatch = idMatch;
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public Integer getIdJoueur() {
-        return idJoueur;
-    }
-
-    public void setIdJoueur(Integer idJoueur) {
-        this.idJoueur = idJoueur;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += idMatch;
-        hash += idJoueur;
+        hash += matchId;
+        hash += playerId;
         return hash;
     }
 
@@ -48,10 +47,10 @@ public class IdInscription implements Serializable {
             return false;
         }
         IdInscription other = (IdInscription) object;
-        if (!this.idMatch.equals(other.idMatch)) {
+        if (!this.matchId.equals(other.matchId)) {
             return false;
         }
-        if (!this.idJoueur.equals(other.idJoueur)) {
+        if (!this.playerId.equals(other.playerId)) {
             return false;
         }
         return true;
@@ -59,7 +58,7 @@ public class IdInscription implements Serializable {
 
     @Override
     public String toString() {
-        return "IdInscription [ idMatch=" + idMatch + ", idJoueur=" + idJoueur + " ]";
+        return "IdInscription [ matchId=" + matchId + ", playerId=" + playerId + " ]";
     }
 
 }

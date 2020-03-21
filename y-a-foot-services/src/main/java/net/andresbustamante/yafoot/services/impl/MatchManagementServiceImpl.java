@@ -51,7 +51,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
         match.setCode(codeMatch);
 
-        Joueur createur = playerDAO.findPlayerByEmail(userContext.getUsername());
+        Player createur = playerDAO.findPlayerByEmail(userContext.getUsername());
 
         if (createur != null) {
             match.setCreateur(createur);
@@ -81,9 +81,9 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public boolean joinMatch(Joueur joueur, Match match, Voiture voiture, UserContext userContext)
+    public boolean joinMatch(Player player, Match match, Voiture voiture, UserContext userContext)
             throws DatabaseException {
-        if (joueur == null || joueur.getId() == null || match == null || match.getId() == null) {
+        if (player == null || player.getId() == null || match == null || match.getId() == null) {
             return false;
         }
 
@@ -96,40 +96,40 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
             if (voitureExistante == null) {
                 // Enregistrer la voiture en base
-                carDAO.saveCar(voiture, joueur);
+                carDAO.saveCar(voiture, player);
             }
         }
 
-        boolean isJoueurExistant = (playerDAO.findPlayerById(joueur.getId()) != null);
+        boolean isJoueurExistant = (playerDAO.findPlayerById(player.getId()) != null);
         boolean isMatchExistant = (matchDAO.findMatchById(match.getId()) != null);
 
-        if (isJoueurExistant && isMatchExistant && (!matchDAO.isPlayerRegistered(joueur, match))) {
-            matchDAO.registerPlayer(joueur, match, voiture);
+        if (isJoueurExistant && isMatchExistant && (!matchDAO.isPlayerRegistered(player, match))) {
+            matchDAO.registerPlayer(player, match, voiture);
             matchDAO.notifyPlayerRegistry(match);
-            log.info("Joueur inscrit au match");
+            log.info("Player inscrit au match");
             return true;
         } else {
-            throw new DatabaseException("Impossible d'inscrire le joueur : objet inexistant");
+            throw new DatabaseException("Impossible d'inscrire le player : objet inexistant");
         }
     }
 
     @Transactional
     @Override
-    public boolean quitMatch(Joueur joueur, Match match, UserContext userContext) throws DatabaseException {
-        if (joueur == null || joueur.getId() == null || match == null || match.getCode() == null) {
+    public boolean quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException {
+        if (player == null || player.getId() == null || match == null || match.getCode() == null) {
             return false;
         }
 
-        boolean isJoueurExistant = (playerDAO.findPlayerById(joueur.getId()) != null);
+        boolean isJoueurExistant = (playerDAO.findPlayerById(player.getId()) != null);
         boolean isMatchExistant = (matchDAO.findMatchByCode(match.getCode()) != null);
 
-        if (isJoueurExistant && isMatchExistant && matchDAO.isPlayerRegistered(joueur, match)) {
-            matchDAO.unregisterPlayer(joueur, match);
+        if (isJoueurExistant && isMatchExistant && matchDAO.isPlayerRegistered(player, match)) {
+            matchDAO.unregisterPlayer(player, match);
             matchDAO.notifyPlayerLeft(match);
-            log.info("Joueur désinscrit du match");
+            log.info("Player désinscrit du match");
             return true;
         } else {
-            throw new DatabaseException("Impossible d'inscrire le joueur : objet inexistant");
+            throw new DatabaseException("Impossible d'inscrire le player : objet inexistant");
         }
     }
 

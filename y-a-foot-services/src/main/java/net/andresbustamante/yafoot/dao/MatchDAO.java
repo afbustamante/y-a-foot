@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.dao;
 
-import net.andresbustamante.yafoot.model.Joueur;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.apache.ibatis.annotations.Param;
@@ -36,11 +36,11 @@ public interface MatchDAO {
     /**
      * Trouver les matchs auxquels un joueur a été inscrit depuis la date passée en paramètre
      *
-     * @param idJoueur Identifiant du joueur à chercher
+     * @param player Player to use for the research
      * @param dateInitiale Date initiale de la recherche
      * @return
      */
-    List<Match> findMatchesByPlayer(@Param(ID) Integer idJoueur, @Param(DATE) OffsetDateTime dateInitiale);
+    List<Match> findMatchesByPlayer(@Param(PLAYER) Player player, @Param(DATE) OffsetDateTime dateInitiale);
 
     /**
      * Récupérer les informations d'un match à partir de son identifiant unique
@@ -60,39 +60,39 @@ public interface MatchDAO {
     /**
      * Inscrire un joueur à un match existant
      *
-     * @param joueur Joueur à inscrire
-     * @param match Match auxquel le joueur doit s'inscrire
-     * @param voiture Voiture du joueur pour assister au match (optionnelle)
+     * @param player Player to register
+     * @param match Match auxquel le player doit s'inscrire
+     * @param voiture Voiture du player pour assister au match (optionnelle)
      */
-    void registerPlayer(@Param(PLAYER) Joueur joueur,
+    void registerPlayer(@Param(PLAYER) Player player,
                              @Param(MATCH) Match match,
                              @Param(CAR) Voiture voiture);
 
     /**
      * Vérifier si un joueur est déjà inscrit à un match passé en paramètre
      *
-     * @param joueur Joueur à vérifier
+     * @param player Player to search
      * @param match Match à chercher
      * @return
      */
-    boolean isPlayerRegistered(@Param(PLAYER) Joueur joueur,
+    boolean isPlayerRegistered(@Param(PLAYER) Player player,
                                  @Param(MATCH) Match match);
 
     /**
-     * Désinscrire un joueur d'un match
+     * Désinscrire un player d'un match
      *
-     * @param joueur Joueur à désinscrire
+     * @param player Player to unregister
      * @param match Match concerné
      */
-    void unregisterPlayer(@Param(PLAYER) Joueur joueur,
+    void unregisterPlayer(@Param(PLAYER) Player player,
                                 @Param(MATCH) Match match);
 
     /**
      * Désinscrire un joueur de tous les matchs auxquels il était inscrit même dans le passé
      *
-     * @param joueur Joueur à désinscrire
+     * @param player Player to unregister
      */
-    int unregisterPlayerFromAllMatches(@Param(PLAYER) Joueur joueur);
+    int unregisterPlayerFromAllMatches(@Param(PLAYER) Player player);
 
     /**
      * Mettre à jour les informations du match passé en paramètre par rapport au nombre de joueurs

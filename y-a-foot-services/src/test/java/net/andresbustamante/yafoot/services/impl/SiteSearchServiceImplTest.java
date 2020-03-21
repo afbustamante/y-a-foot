@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.SiteDAO;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Site;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,15 +35,15 @@ class SiteSearchServiceImplTest extends AbstractServiceTest {
     @Test
     void chercherSitesParJoueur() throws Exception {
         // Given
-        int idJoueur = 1;
+        Player player1 = new Player(1);
         UserContext ctx = new UserContext();
 
         // When
-        when(siteDAO.chercherSitesPourJoueur(anyInt())).thenReturn(Arrays.asList(site1, site2));
-        List<Site> sites = rechercheSitesService.findSitesByPlayer(idJoueur, ctx);
+        when(siteDAO.findSitesByPlayer(any(Player.class))).thenReturn(Arrays.asList(site1, site2));
+        List<Site> sites = rechercheSitesService.findSitesByPlayer(player1);
 
         // Then
-        verify(siteDAO, times(1)).chercherSitesPourJoueur(1);
+        verify(siteDAO, times(1)).findSitesByPlayer(any(Player.class));
         assertNotNull(sites);
         assertEquals(2, sites.size());
     }

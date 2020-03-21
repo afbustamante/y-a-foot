@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.MatchDAO;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Match;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,18 +81,18 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
         // Given
         Match match1 = new Match(1);
         Match match2 = new Match(2);
-        Integer idJoueur = 1;
+        Player player1 = new Player(1);
         UserContext ctx = new UserContext();
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
-        when(matchDAO.findMatchesByPlayer(anyInt(), any())).thenReturn(Arrays.asList(match1, match2));
-        List<Match> matchs = matchSearchService.findMatchesByPlayer(idJoueur, ctx);
+        when(matchDAO.findMatchesByPlayer(any(Player.class), any())).thenReturn(Arrays.asList(match1, match2));
+        List<Match> matchs = matchSearchService.findMatchesByPlayer(player1, ctx);
 
         // Then
         assertNotNull(matchs);
         assertEquals(2, matchs.size());
-        verify(matchDAO, times(1)).findMatchesByPlayer(anyInt(), any());
+        verify(matchDAO, times(1)).findMatchesByPlayer(any(Player.class), any());
     }
 
     @Test
@@ -106,6 +107,6 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
         // Then
         assertNotNull(matchs);
         assertTrue(matchs.isEmpty());
-        verify(matchDAO, times(0)).findMatchesByPlayer(anyInt(), any());
+        verify(matchDAO, times(0)).findMatchesByPlayer(any(Player.class), any());
     }
 }

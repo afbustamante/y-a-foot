@@ -42,7 +42,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
     @Test
     void saveMatchUsingExistingSite() throws Exception {
         // Given
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
         Site site = new Site(1);
         Match match = new Match();
         match.setDateMatch(OffsetDateTime.now().plusDays(1));
@@ -52,8 +52,8 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.isCodeAlreadyRegistered(anyString())).thenReturn(false);
-        //when(playerDAO.findPlayerById(anyInt())).thenReturn(joueur);
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
+        //when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
         when(siteDAO.chercherSiteParId(anyInt())).thenReturn(site);
         boolean succes = matchManagementService.saveMatch(match, ctx);
 
@@ -64,14 +64,14 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreateur());
-        assertEquals(joueur, match.getCreateur());
+        assertEquals(player, match.getCreateur());
         assertTrue(succes);
     }
 
     @Test
     void saveMatchUsingNewSite() throws Exception {
         // Given
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
         Site site = new Site();
         Match match = new Match();
         match.setDateMatch(OffsetDateTime.now().plusDays(1));
@@ -81,8 +81,8 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.isCodeAlreadyRegistered(anyString())).thenReturn(false);
-        //when(playerDAO.findPlayerById(anyInt())).thenReturn(joueur);
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
+        //when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
         boolean succes = matchManagementService.saveMatch(match, ctx);
 
         // Then
@@ -91,36 +91,36 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreateur());
-        assertEquals(joueur, match.getCreateur());
+        assertEquals(player, match.getCreateur());
         assertTrue(succes);
     }
 
     @Test
     void registerPlayerWithNoCar() throws Exception {
         // Given
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
         Match match = new Match(1);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(joueur);
-        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
+        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
         when(matchDAO.findMatchById(anyInt())).thenReturn(match);
         when(matchDAO.isPlayerRegistered(any(), any())).thenReturn(false);
-        boolean succes = matchManagementService.joinMatch(joueur, match, null, ctx);
+        boolean succes = matchManagementService.joinMatch(player, match, null, ctx);
 
         // Then
         assertTrue(succes);
         verify(carDAO, times(0)).findCarById(anyInt());
-        verify(carDAO, times(0)).saveCar(any(Voiture.class), any(Joueur.class));
-        verify(matchDAO, times(1)).registerPlayer(joueur, match, null);
+        verify(carDAO, times(0)).saveCar(any(Voiture.class), any(Player.class));
+        verify(matchDAO, times(1)).registerPlayer(player, match, null);
     }
 
     @Test
     void registerPlayerWithExistingCar() throws Exception {
         // Given
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
         Match match = new Match(1);
         Voiture voiture = new Voiture(1);
         UserContext ctx = new UserContext();
@@ -128,57 +128,57 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(carDAO.findCarById(anyInt())).thenReturn(voiture);
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(joueur);
-        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
+        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
         when(matchDAO.findMatchById(anyInt())).thenReturn(match);
         when(matchDAO.isPlayerRegistered(any(), any())).thenReturn(false);
-        boolean succes = matchManagementService.joinMatch(joueur, match, voiture, ctx);
+        boolean succes = matchManagementService.joinMatch(player, match, voiture, ctx);
 
         // Then
         assertTrue(succes);
         verify(carDAO, times(1)).findCarById(anyInt());
-        verify(carDAO, times(0)).saveCar(any(Voiture.class), any(Joueur.class));
-        verify(matchDAO, times(1)).registerPlayer(joueur, match, voiture);
+        verify(carDAO, times(0)).saveCar(any(Voiture.class), any(Player.class));
+        verify(matchDAO, times(1)).registerPlayer(player, match, voiture);
     }
 
     @Test
     void registerPlayerWithNewCar() throws Exception {
         // Given
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
         Match match = new Match(1);
         Voiture voiture = new Voiture();
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(joueur);
-        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
+        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
         when(matchDAO.findMatchById(anyInt())).thenReturn(match);
         when(matchDAO.isPlayerRegistered(any(), any())).thenReturn(false);
-        boolean succes = matchManagementService.joinMatch(joueur, match, voiture, ctx);
+        boolean succes = matchManagementService.joinMatch(player, match, voiture, ctx);
 
         // Then
         assertTrue(succes);
         verify(carDAO, times(0)).findCarById(anyInt());
-        verify(carDAO, times(1)).saveCar(any(Voiture.class), any(Joueur.class));
-        verify(matchDAO, times(1)).registerPlayer(joueur, match, voiture);
+        verify(carDAO, times(1)).saveCar(any(Voiture.class), any(Player.class));
+        verify(matchDAO, times(1)).registerPlayer(player, match, voiture);
     }
 
     @Test
     void unregisterPlayer() throws Exception {
         // Given
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
         Match match = new Match(1);
         match.setCode("code");
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // Then
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(joueur);
-        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
+        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
         when(matchDAO.findMatchByCode(anyString())).thenReturn(match);
-        when(matchDAO.isPlayerRegistered(joueur, match)).thenReturn(true);
-        boolean succes = matchManagementService.quitMatch(joueur, match, ctx);
+        when(matchDAO.isPlayerRegistered(player, match)).thenReturn(true);
+        boolean succes = matchManagementService.quitMatch(player, match, ctx);
 
         // When
         assertTrue(succes);
@@ -190,23 +190,23 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
     @Test
     void unregisterPlayerFromAllMatchesWithNoRegistry() throws Exception {
         // Given
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
         Match match = new Match(1);
         match.setCode("code");
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // Then
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(joueur);
-        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
+        //when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
         when(matchDAO.findMatchByCode(anyString())).thenReturn(match);
-        when(matchDAO.isPlayerRegistered(joueur, match)).thenReturn(false);
+        when(matchDAO.isPlayerRegistered(player, match)).thenReturn(false);
 
         try {
-            matchManagementService.quitMatch(joueur, match, ctx);
+            matchManagementService.quitMatch(player, match, ctx);
             fail();
         } catch (DatabaseException e) {
-            assertEquals("Impossible d'inscrire le joueur : objet inexistant", e.getMessage());
+            assertEquals("Impossible d'inscrire le player : objet inexistant", e.getMessage());
         }
     }
 }

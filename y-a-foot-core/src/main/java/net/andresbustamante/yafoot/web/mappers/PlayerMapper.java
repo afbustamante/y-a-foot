@@ -1,8 +1,7 @@
 package net.andresbustamante.yafoot.web.mappers;
 
 import net.andresbustamante.yafoot.config.DtoMapperConfig;
-import net.andresbustamante.yafoot.model.Joueur;
-import net.andresbustamante.yafoot.web.dto.Player;
+import net.andresbustamante.yafoot.model.Player;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,9 +12,9 @@ public interface PlayerMapper {
     @Mapping(target = "dateCreation", ignore = true)
     @Mapping(target = "dateDerniereMaj", ignore = true)
     @Mapping(target = "voitures", ignore = true)
-    Joueur map(Player player);
+    Player map(net.andresbustamante.yafoot.web.dto.Player player);
 
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "token", ignore = true)
-    Player map(Joueur joueur);
+    net.andresbustamante.yafoot.web.dto.Player map(Player player);
 }

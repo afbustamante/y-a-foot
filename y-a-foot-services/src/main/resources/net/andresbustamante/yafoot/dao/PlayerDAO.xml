@@ -8,7 +8,7 @@
         WHERE jou.jou_email = #{email}
     </select>
 
-    <select id="findPlayerById" resultType="net.andresbustamante.yafoot.model.Joueur">
+    <select id="findPlayerById" resultType="net.andresbustamante.yafoot.model.Player">
         SELECT
             jou.jou_id                AS id,
             jou.jou_nom               AS surname,
@@ -22,7 +22,7 @@
         WHERE jou.jou_id = #{id}
     </select>
 
-    <select id="findPlayerByEmail" resultType="net.andresbustamante.yafoot.model.Joueur">
+    <select id="findPlayerByEmail" resultType="net.andresbustamante.yafoot.model.Player">
         SELECT
             jou.jou_id                AS id,
             jou.jou_nom               AS surname,
@@ -37,34 +37,34 @@
     </select>
 
     <insert id="savePlayer" useGeneratedKeys="true">
-        <selectKey keyProperty="joueur.id" resultType="int" order="BEFORE">
+        <selectKey keyProperty="player.id" resultType="int" order="BEFORE">
             SELECT NEXTVAL('s_joueur') AS id;
         </selectKey>
 
         INSERT INTO t_joueur (jou_id, jou_nom, jou_prenom, jou_telephone, jou_email, jou_date_creation, jou_actif)
         VALUES
-        (#{joueur.id}, #{joueur.surname}, #{joueur.firstName}, #{joueur.phoneNumber}, #{joueur.email}, NOW(), true)
+        (#{player.id}, #{player.surname}, #{player.firstName}, #{player.phoneNumber}, #{player.email}, NOW(), true)
     </insert>
 
     <update id="updatePlayer">
         UPDATE t_joueur
         SET
-        <if test="joueur.surname != null">
-            jou_nom = #{joueur.surname},
+        <if test="player.surname != null">
+            jou_nom = #{player.surname},
         </if>
-        <if test="joueur.firstName != null">
-            jou_prenom = #{joueur.firstName},
+        <if test="player.firstName != null">
+            jou_prenom = #{player.firstName},
         </if>
-        <if test="joueur.phoneNumber != null">
-            jou_telephone = #{joueur.phoneNumber},
+        <if test="player.phoneNumber != null">
+            jou_telephone = #{player.phoneNumber},
         </if>
         jou_date_derniere_maj = NOW()
-        WHERE jou_email = #{joueur.email}
+        WHERE jou_email = #{player.email}
     </update>
 
     <delete id="deletePlayer">
         DELETE FROM t_joueur
-        WHERE jou_id = #{joueur.id}
+        WHERE jou_id = #{player.id}
     </delete>
 
     <update id="deactivatePlayer">
@@ -75,6 +75,6 @@
             jou_telephone = null,
             jou_actif     = false,
             jou_date_derniere_maj = NOW()
-        WHERE jou_id = #{joueur.id}
+        WHERE jou_id = #{player.id}
     </update>
 </mapper>

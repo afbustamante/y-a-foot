@@ -28,7 +28,7 @@
                cre.jou_nom                  AS nomCreateur,
                cre.jou_prenom               AS prenomCreateur,
                cre.jou_email                AS emailCreateur,
-               jou.jou_id                   AS idJoueur,
+               jou.jou_id                   AS playerId,
                jou.jou_prenom               AS prenomJoueur,
                jou.jou_email                AS emailJoueur,
                voi.voi_id                   AS idVoiture,
@@ -62,7 +62,7 @@
                cre.jou_nom                  AS nomCreateur,
                cre.jou_prenom               AS prenomCreateur,
                cre.jou_email                AS emailCreateur,
-               jou.jou_id                   AS idJoueur,
+               jou.jou_id                   AS playerId,
                jou.jou_prenom               AS prenomJoueur,
                jou.jou_email                AS emailJoueur,
                voi.voi_id                   AS idVoiture,
@@ -73,7 +73,7 @@
             JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
             LEFT JOIN t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
             LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
-        WHERE jma.jma_joueur_fk = #{id} AND mat.mat_date > #{date}
+        WHERE jma.jma_joueur_fk = #{player.id} AND mat.mat_date > #{date}
     </select>
 
     <select id="findMatchById" resultMap="matchComplet">
@@ -138,27 +138,27 @@
         <choose>
             <when test="voiture == null">
                 INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk)
-                VALUES (#{match.id}, #{joueur.id})
+                VALUES (#{match.id}, #{player.id})
             </when>
             <otherwise>
                 INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk, jma_voiture_fk)
-                VALUES (#{match.id}, #{joueur.id}, #{voiture.id})
+                VALUES (#{match.id}, #{player.id}, #{voiture.id})
             </otherwise>
         </choose>
     </insert>
 
     <delete id="unregisterPlayer">
-        DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{joueur.id} AND jma_match_fk = #{match.id}
+        DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{player.id} AND jma_match_fk = #{match.id}
     </delete>
 
     <select id="isPlayerRegistered" resultType="boolean">
         SELECT COUNT(*)
         FROM t_joueur_match jma
-        WHERE jma.jma_joueur_fk = #{joueur.id} AND jma.jma_match_fk = #{match.id}
+        WHERE jma.jma_joueur_fk = #{player.id} AND jma.jma_match_fk = #{match.id}
     </select>
 
     <delete id="unregisterPlayerFromAllMatches">
-        DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{joueur.id}
+        DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{player.id}
     </delete>
 
     <update id="notifyPlayerRegistry">
@@ -193,16 +193,16 @@
                 <result column="longitudeSite" property="longitude"/>
             </association>
         </association>
-        <association property="createur" javaType="net.andresbustamante.yafoot.model.Joueur">
+        <association property="createur" javaType="net.andresbustamante.yafoot.model.Player">
             <id column="idCreateur" property="id"/>
             <result column="nomCreateur" property="surname"/>
             <result column="prenomCreateur" property="firstName"/>
             <result column="emailCreateur" property="email"/>
         </association>
         <collection property="inscriptions" ofType="net.andresbustamante.yafoot.model.Inscription">
-            <id column="idJoueur" property="id.idJoueur" />
-            <association property="joueur" javaType="net.andresbustamante.yafoot.model.Joueur">
-                <id column="idJoueur" property="id" />
+            <id column="playerId" property="id.playerId" />
+            <association property="player" javaType="net.andresbustamante.yafoot.model.Player">
+                <id column="playerId" property="id" />
                 <result column="prenomJoueur" property="firstName" />
                 <result column="emailJoueur" property="email" />
             </association>

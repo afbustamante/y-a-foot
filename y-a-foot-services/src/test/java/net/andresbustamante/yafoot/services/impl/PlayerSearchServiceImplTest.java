@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.PlayerDAO;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.Joueur;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,10 +33,10 @@ class PlayerSearchServiceImplTest extends AbstractServiceTest {
 
         // Then
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
-        Joueur joueur = rechercheJoueursService.findPlayerByEmail(email, ctx);
+        Player player = rechercheJoueursService.findPlayerByEmail(email);
 
         // When
-        assertNull(joueur);
+        assertNull(player);
         verify(playerDAO, times(1)).findPlayerByEmail(anyString());
     }
 
@@ -44,16 +44,16 @@ class PlayerSearchServiceImplTest extends AbstractServiceTest {
     void findValidPlayer() throws Exception {
         // Given
         String email = "test@email.com";
-        Joueur joueur = new Joueur(1);
+        Player player = new Player(1);
         UserContext ctx = new UserContext();
 
         // Then
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(joueur);
-        Joueur joueurExistant = rechercheJoueursService.findPlayerByEmail(email, ctx);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
+        Player existingPlayer = rechercheJoueursService.findPlayerByEmail(email);
 
         // When
-        assertNotNull(joueurExistant);
-        assertEquals(joueur, joueurExistant);
+        assertNotNull(existingPlayer);
+        assertEquals(player, existingPlayer);
         verify(playerDAO, times(1)).findPlayerByEmail(anyString());
     }
 }
