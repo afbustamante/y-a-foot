@@ -2,10 +2,21 @@ openapi: 3.0.0
 info:
   title: Y'a foot REST API
   description: REST controllers API
-  version: 1.0.0
+  version: "2.0.0"
 servers:
 - url: http://localhost:8080/api
   description: Localhost deployment
+tags:
+  - name: users
+    description: Users management API. Allows to register and authenticate users
+  - name: players
+    description: Players management API. Allows to manage players' details
+  - name: matches
+    description: Matches management API. Allows to create and update the detail of matches organised by players
+  - name: sites
+    description: Sites management API. Allows to manage information about the sites for playing football between friends
+  - name: cars
+    description: Cars management API. Allows to add new cars from players organising new matches.
 paths:
   /users/{email}/auth:
     put:
@@ -22,21 +33,20 @@ paths:
           format: email
         description: Email address identifying the user
       requestBody:
-        name: user
         description: User to authenticate
         required: true
         content:
           application/json:
             schema:
-              type: User
+              $ref: '#/components/schemas/User'
       responses:
-        '202': # Accepted
+        202: # Accepted
           description: User authenticated
           content:
             application/json:
               schema:
-                type: User
-        '401': # Unauthorized
+                $ref: '#/components/schemas/User'
+        401: # Unauthorized
           description: Invalid credentials
   /players:
     get:
@@ -52,32 +62,33 @@ paths:
       tags:
       - players
       responses:
-        '200': # OK
+        200: # OK
+          description: Player details
           content:
             application/json:
               schema:
-                type: Player
-        '404': # Not found
+                $ref: '#/components/schemas/Player'
+        404: # Not found
+          description: No player found for the given ID
     post:
       operationId: createPlayer
       summary: Create a new player
       tags:
       - players
       requestBody:
-        name: player
         description: Player to save
         required: true
         content:
           application/json:
             schema:
-              type: Player
+              $ref: '#/components/schemas/Player'
       responses:
-        '201': # Created
+        201: # Created
           description: Player ID
           content:
             application/json:
               schema:
-                type: long
+                type: integer
   /players/{playerId}:
     parameters:
     - in: path
@@ -91,15 +102,14 @@ paths:
       tags:
       - players
       requestBody:
-        name: player
         description: Player with updated information
         required: true
         content:
           application/json:
             schema:
-              type: Player
+              $ref: '#/components/schemas/Player'
       responses:
-        '202': # Accepted
+        202: # Accepted
           description: Player updated
     delete:
       operationId: deactivatePlayer
@@ -107,7 +117,7 @@ paths:
       - players
       responses:
         '204': # No content
-          description: Player deactivated
+          description: Player successfully deactivated
   /matches:
     get:
       operationId: loadMatchesByPlayer
@@ -121,7 +131,8 @@ paths:
         schema:
           type: string
       responses:
-        '200': # OK
+        200: # OK
+          description: List of matches found for a player
           content:
             application/json:
               schema:
@@ -134,20 +145,19 @@ paths:
       tags:
       - matches
       requestBody:
-        name: match
         description: Match to create
         required: true
         content:
           application/json:
             schema:
-              type: Match
+              $ref: '#/components/schemas/Match'
       responses:
-        '201': # Created
-          description: Player ID
+        201: # Created
+          description: Player successfully created. Player ID returned with header Location
           content:
             application/json:
               schema:
-                type: long
+                type: integer
   /matches/{matchCode}:
     parameters:
     - in: path
@@ -162,11 +172,12 @@ paths:
       tags:
       - matches
       responses:
-        '200': # OK
+        200: # OK
+          description: Match details
           content:
             application/json:
               schema:
-                type: Match
+                $ref: '#/components/schemas/Match'
   /matches/{matchCode}/players:
     parameters:
     - in: path
@@ -181,15 +192,14 @@ paths:
       tags:
       - matches
       requestBody:
-        name: playerRegistration
         description: Player registration including informations about the car proposed to assist to the match
         required: true
         content:
           application/json:
             schema:
-              type: Registration
+              $ref: '#/components/schemas/Registration'
       responses:
-        '201': # Created
+        201: # Created
           description: Registration saved
   /matches/{matchCode}/players/{playerId}:
     parameters:
@@ -210,7 +220,7 @@ paths:
       tags:
       - matches
       responses:
-        '204': # No content
+        204: # No content
           description: Player unregistered
   /sites:
     get:
@@ -226,7 +236,8 @@ paths:
           type: string
           format: email
       responses:
-        '200': # OK
+        200: # OK
+          description: List of sites found for the player
           content:
             application/json:
               schema:
@@ -247,7 +258,8 @@ paths:
           type: string
           format: email
       responses:
-        '200': # OK
+        200: # OK
+          description: List of cars found for the player
           content:
             application/json:
               schema:
@@ -260,16 +272,15 @@ paths:
       tags:
       - cars
       requestBody:
-        name: car
         description: Car to save for a player
         required: true
         content:
           application/json:
             schema:
-              type: Car
+              $ref: '#/components/schemas/Car'
       responses:
-        '201': # Created
-          description: Car saved
+        201: # Created
+          description: Car successfully saved
 components:
   schemas:
     User:
@@ -312,20 +323,20 @@ components:
         phoneNumber:
           type: string
         location:
-          type: GpsCoordinates
+          $ref: '#/components/schemas/GpsCoordinates'
     Car:
       type: object
       required:
         - name
       properties:
         id:
-          type: int
+          type: integer
         name:
           type: string
         numSeats:
           type: integer
         driver:
-          type: Player
+          $ref: '#/components/schemas/Player'
         passengers:
           type: array
           items:
@@ -341,9 +352,9 @@ components:
         playerId:
           type: integer
         player:
-          type: Player
+          $ref: '#/components/schemas/Player'
         car:
-          type: Car
+          $ref: '#/components/schemas/Car'
     Match:
       type: object
       properties:
@@ -353,7 +364,7 @@ components:
           type: string
         date:
           type: string
-          format: date-time
+          #format: date-time
         description:
           type: string
         numPlayersMin:
@@ -363,9 +374,9 @@ components:
         numRegisteredPlayers:
           type: integer
         site:
-          type: Site
+          $ref: '#/components/schemas/Site'
         author:
-          type: Player
+          $ref: '#/components/schemas/Player'
         registrations:
           type: array
           items:
@@ -390,7 +401,7 @@ components:
       type: object
       properties:
         player:
-          type: Player
+          $ref: '#/components/schemas/Player'
         timezone:
           type: string
         language:

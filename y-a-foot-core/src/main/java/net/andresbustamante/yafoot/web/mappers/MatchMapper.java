@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = DtoMapperConfig.class, uses = {CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
-        RegistrationMapper.class})
+        RegistrationMapper.class, DateMapper.class})
 public interface MatchMapper {
 
     @Mapping(source = "registrations", target = "inscriptions")

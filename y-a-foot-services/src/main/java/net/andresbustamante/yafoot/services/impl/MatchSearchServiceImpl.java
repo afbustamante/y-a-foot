@@ -9,7 +9,7 @@ import net.andresbustamante.yafoot.services.MatchSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class MatchSearchServiceImpl implements MatchSearchService {
     public List<Match> findMatchesByPlayer(Player player, UserContext userContext) throws DatabaseException {
         if (player != null && player.getId() > 0) {
             // Chercher les matchs programmés pour le joueur depuis 1 an
-            OffsetDateTime date = OffsetDateTime.now().minusYears(1L);
+            ZonedDateTime date = ZonedDateTime.now().minusYears(1L);
             return matchDAO.findMatchesByPlayer(player, date);
         } else {
             return Collections.emptyList();

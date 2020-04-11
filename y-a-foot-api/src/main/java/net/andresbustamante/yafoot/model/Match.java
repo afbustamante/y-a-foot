@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -11,7 +11,7 @@ public class Match implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private OffsetDateTime dateMatch;
+    private ZonedDateTime dateMatch;
     private String code;
     private String description;
     private Integer nbJoueursMin;
@@ -30,7 +30,7 @@ public class Match implements Serializable {
         this.id = id;
     }
 
-    public Match(Integer id, OffsetDateTime dateMatch) {
+    public Match(Integer id, ZonedDateTime dateMatch) {
         this.id = id;
         this.dateMatch = dateMatch;
     }
@@ -43,11 +43,11 @@ public class Match implements Serializable {
         this.id = matId;
     }
 
-    public OffsetDateTime getDateMatch() {
+    public ZonedDateTime getDateMatch() {
         return dateMatch;
     }
 
-    public void setDateMatch(OffsetDateTime date) {
+    public void setDateMatch(ZonedDateTime date) {
         this.dateMatch = date;
     }
 

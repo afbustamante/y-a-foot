@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.util;
 
-public class LocaleUtils {
+class LocaleUtils {
 
-    public static final String ESPAGNOL = "es";
-    public static final String FRANCAIS = "fr";
-    public static final String ANGLAIS = "en";
+    static final String SPANISH = "es";
+    static final String FRENCH = "fr";
+    static final String ENGLISH = "en";
 
     private LocaleUtils() {}
 }

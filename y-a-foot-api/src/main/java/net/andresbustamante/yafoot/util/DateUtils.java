@@ -3,70 +3,92 @@ package net.andresbustamante.yafoot.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
-import static net.andresbustamante.yafoot.util.LocaleUtils.*;
+import static net.andresbustamante.yafoot.util.LocaleUtils.ENGLISH;
+import static net.andresbustamante.yafoot.util.LocaleUtils.SPANISH;
+import static net.andresbustamante.yafoot.util.LocaleUtils.FRENCH;
 
 /**
  * @author andresbustamante
  */
 public class DateUtils {
 
-    private static final String FORMAT_DD_MM_YYYY = "dd/MM/yyyy";
-    private static final String FORMAT_YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String DATE_STYLE = "date";
+    public static final String DATE_TIME_STYLE = "date-time";
+    private static final String DD_MM_YYYY = "dd/MM/yyyy";
+    private static final String RFC_3339_DATE = "yyyy-MM-dd";
+    private static final String RFC_3339_DATE_TIME = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
     private DateUtils() {}
 
-    public static String formater(Date date) {
-        DateFormat formatDate = new SimpleDateFormat(FORMAT_DD_MM_YYYY);
-        return (date != null) ? formatDate.format(date) : "";
+    public static String format(Date date, String style) {
+        if (date == null) {
+            return null;
+        }
+        DateFormat dateFormat = (DATE_STYLE.equals(style)) ? new SimpleDateFormat(DD_MM_YYYY) : new SimpleDateFormat(RFC_3339_DATE_TIME);
+        return dateFormat.format(date);
     }
 
-    public static Date transformer(String texte) {
+    public static String format(ZonedDateTime dateTime) {
+        if (dateTime == null) {
+            return null;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RFC_3339_DATE_TIME);
+        return formatter.format(dateTime);
+    }
+
+    public static String format(LocalDate date) {
+        if (date == null) {
+            return null;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RFC_3339_DATE);
+        return date.format(formatter);
+    }
+
+    public static Date parse(String texte) {
         try {
-            DateFormat formatDate = new SimpleDateFormat(FORMAT_DD_MM_YYYY);
+            DateFormat formatDate = new SimpleDateFormat(DD_MM_YYYY);
             return (texte != null) ? formatDate.parse(texte) : null;
         } catch (ParseException e) {
             return null;
         }
     }
 
-    public static String getPatternDate(String langue) {
-        if (langue == null) {
-            return FORMAT_YYYY_MM_DD;
+    public static ZonedDateTime toZonedDateTime(String text) {
+        if (text == null) {
+            return null;
         }
 
-        switch (langue) {
-            case ESPAGNOL:
-            case FRANCAIS:
-                return FORMAT_DD_MM_YYYY;
-            case ANGLAIS:
-                return FORMAT_YYYY_MM_DD;
-            default:
-                return FORMAT_YYYY_MM_DD;
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RFC_3339_DATE_TIME);
+        return ZonedDateTime.from(formatter.parse(text));
     }
 
-    public static String getPatternDateHeure(String langue) {
-        if (langue == null) {
+    public static String getDateTimePattern(String language) {
+        if (language == null) {
             return "yyyy-MM-dd H:mm";
         }
 
-        switch (langue) {
-            case ESPAGNOL:
+        switch (language) {
+            case SPANISH:
                 return "dd/MM/yyyy h:mm a";
-            case FRANCAIS:
+            case FRENCH:
                 return "dd/MM/yyyy H:mm";
-            case ANGLAIS:
+            case ENGLISH:
                 return "yyyy-MM-dd h:mm a";
             default:
                 return "yyyy-MM-dd H:mm";
         }
     }
 
-    public static Date premiereMinuteDuJour(Date date) {
+    public static Date firstTimeOfDay(Date date) {
         if (date == null) {
             return null;
         }

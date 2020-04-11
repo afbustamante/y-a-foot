@@ -55,7 +55,7 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(match);
         assertEquals(2, match.getId().intValue());
-        assertEquals(OffsetDateTime.of(dateMatch, ZoneId.systemDefault().getRules().getOffset(dateMatch)), match.getDateMatch());
+        assertEquals(ZonedDateTime.of(dateMatch, ZoneId.systemDefault()), match.getDateMatch());
         assertEquals(8, match.getNbJoueursMin().intValue());
         assertEquals(12, match.getNbJoueursMax().intValue());
         assertNotNull(match.getCreateur());
@@ -102,7 +102,7 @@ class MatchDAOTest extends AbstractDAOTest {
         // Given
         Player player1 = new Player(1);
         LocalDateTime date = LocalDate.of(2018, 10, 2).atStartOfDay();
-        OffsetDateTime dateInitiale = OffsetDateTime.of(date, ZoneId.systemDefault().getRules().getOffset(date));
+        ZonedDateTime dateInitiale = ZonedDateTime.of(date, ZoneId.systemDefault());
 
         // When
         List<Match> matchs = matchDAO.findMatchesByPlayer(player1, dateInitiale);
@@ -139,7 +139,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void saveMatch() throws Exception {
         // Given
-        OffsetDateTime maintenant = OffsetDateTime.now();
+        ZonedDateTime maintenant = ZonedDateTime.now();
         Player player = playerDAO.findPlayerById(1);
         Site site = siteDAO.chercherSiteParId(1);
 
@@ -209,7 +209,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
         Player player = playerDAO.findPlayerById(1);
-        OffsetDateTime dateTime = OffsetDateTime.now().minusYears(5L); // Il y a 5 ans
+        ZonedDateTime dateTime = ZonedDateTime.now().minusYears(5L); // Il y a 5 ans
 
         // When
         int nbLignes = matchDAO.unregisterPlayerFromAllMatches(player);

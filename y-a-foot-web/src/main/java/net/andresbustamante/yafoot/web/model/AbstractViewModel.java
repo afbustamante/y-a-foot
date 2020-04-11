@@ -50,7 +50,7 @@ public abstract class AbstractViewModel {
         if (obj != null) {
             return (DateFormat) obj;
         } else {
-            DateFormat dateFormat = new SimpleDateFormat(DateUtils.getPatternDateHeure(getUserLocale().getLanguage()),
+            DateFormat dateFormat = new SimpleDateFormat(DateUtils.getDateTimePattern(getUserLocale().getLanguage()),
                     getUserLocale());
             session.setAttribute(WebConstants.DATE_FORMAT, dateFormat);
             return dateFormat;

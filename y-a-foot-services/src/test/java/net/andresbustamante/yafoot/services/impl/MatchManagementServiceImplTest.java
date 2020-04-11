@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -45,7 +45,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Player player = new Player(1);
         Site site = new Site(1);
         Match match = new Match();
-        match.setDateMatch(OffsetDateTime.now().plusDays(1));
+        match.setDateMatch(ZonedDateTime.now().plusDays(1));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -74,7 +74,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Player player = new Player(1);
         Site site = new Site();
         Match match = new Match();
-        match.setDateMatch(OffsetDateTime.now().plusDays(1));
+        match.setDateMatch(ZonedDateTime.now().plusDays(1));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");

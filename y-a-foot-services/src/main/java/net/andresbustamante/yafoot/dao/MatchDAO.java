@@ -5,7 +5,7 @@ import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Voiture;
 import org.apache.ibatis.annotations.Param;
 
-import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static net.andresbustamante.yafoot.util.DaoConstants.*;
@@ -40,7 +40,7 @@ public interface MatchDAO {
      * @param dateInitiale Date initiale de la recherche
      * @return
      */
-    List<Match> findMatchesByPlayer(@Param(PLAYER) Player player, @Param(DATE) OffsetDateTime dateInitiale);
+    List<Match> findMatchesByPlayer(@Param(PLAYER) Player player, @Param(DATE) ZonedDateTime dateInitiale);
 
     /**
      * Récupérer les informations d'un match à partir de son identifiant unique

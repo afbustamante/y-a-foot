@@ -19,8 +19,6 @@ import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 
@@ -94,10 +92,10 @@ public class MatchRegistryViewModel extends AbstractViewModel {
                 return;
             }
 
-            OffsetDateTime dateMatch = OffsetDateTime.of(DateUtils.toLocalDateTime(date), ZoneOffset.of("CET"));
+            String matchDate = DateUtils.format(date, DateUtils.DATE_TIME_STYLE);
 
             Match match = new Match();
-            match.setDate(dateMatch);
+            match.setDate(matchDate);
             match.setNumPlayersMin(numPlayersMin);
             match.setNumPlayersMax(numPlayersMax);
             match.setSite(site);

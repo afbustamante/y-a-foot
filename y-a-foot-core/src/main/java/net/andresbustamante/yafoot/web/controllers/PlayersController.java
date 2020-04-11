@@ -74,7 +74,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
      * @return
      */
     @Override
-    public ResponseEntity<Long> createPlayer(Player player) {
+    public ResponseEntity<Integer> createPlayer(Player player) {
         try {
             log.info("Demande de création d'un nouveau joueur avec l'address {}", player.getEmail());
             net.andresbustamante.yafoot.model.Player newPlayer = playerMapper.map(player);
