@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author andresbustamante
  */
 @RestController
+@CrossOrigin
 public class MatchesController extends AbstractController implements MatchesApi {
 
     private MatchSearchService matchSearchService;
