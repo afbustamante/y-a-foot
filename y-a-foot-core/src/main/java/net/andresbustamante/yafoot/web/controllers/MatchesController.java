@@ -119,7 +119,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Integer> createMatch(Match match) {
+    public ResponseEntity<Void> createMatch(Match match) {
         try {
             UserContext userContext = getUserContext(request);
             net.andresbustamante.yafoot.model.Match m = matchMapper.map(match);

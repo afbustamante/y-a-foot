@@ -84,11 +84,7 @@ paths:
               $ref: '#/components/schemas/Player'
       responses:
         201: # Created
-          description: Player ID
-          content:
-            application/json:
-              schema:
-                type: integer
+          description: Player successfully created. Player's ID is returned in Location header
   /players/{playerId}:
     parameters:
     - in: path
@@ -110,7 +106,7 @@ paths:
               $ref: '#/components/schemas/Player'
       responses:
         202: # Accepted
-          description: Player updated
+          description: Player successfully updated
     delete:
       operationId: deactivatePlayer
       tags:
@@ -153,11 +149,7 @@ paths:
               $ref: '#/components/schemas/Match'
       responses:
         201: # Created
-          description: Player successfully created. Player ID returned with header Location
-          content:
-            application/json:
-              schema:
-                type: integer
+          description: Match successfully created. Match code returned in Location header
   /matches/{matchCode}:
     parameters:
     - in: path
@@ -221,7 +213,7 @@ paths:
       - matches
       responses:
         204: # No content
-          description: Player unregistered
+          description: Player unregistered from match
   /sites:
     get:
       operationId: loadSitesByPlayer
@@ -280,7 +272,7 @@ paths:
               $ref: '#/components/schemas/Car'
       responses:
         201: # Created
-          description: Car successfully saved
+          description: Car successfully saved. Car's ID is returned in Location header
 components:
   schemas:
     User:
