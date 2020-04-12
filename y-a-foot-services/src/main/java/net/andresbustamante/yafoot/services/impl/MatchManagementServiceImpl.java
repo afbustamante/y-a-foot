@@ -4,6 +4,7 @@ import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarManagementService;
@@ -49,7 +50,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public boolean saveMatch(Match match, UserContext userContext) throws DatabaseException {
+    public void saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
         String codeMatch;
         boolean codeDejaUtilise;
         do {
@@ -84,15 +85,14 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         log.info("Nouveau match enregistré avec l'ID {}", match.getId());
 
         joinMatch(createur, match, null, userContext);
-        return true;
     }
 
     @Transactional
     @Override
-    public boolean joinMatch(Player player, Match match, Voiture voiture, UserContext userContext)
-            throws DatabaseException {
+    public void joinMatch(Player player, Match match, Voiture voiture, UserContext userContext)
+            throws ApplicationException, DatabaseException {
         if (player == null || player.getId() == null || match == null || match.getId() == null) {
-            return false;
+            throw new ApplicationException("Invalid arguments to join a match");
         }
 
         Voiture voitureExistante = null;
@@ -115,7 +115,6 @@ public class MatchManagementServiceImpl implements MatchManagementService {
             matchDAO.registerPlayer(player, match, voiture);
             matchDAO.notifyPlayerRegistry(match);
             log.info("Player inscrit au match");
-            return true;
         } else {
             throw new DatabaseException("Impossible d'inscrire le player : objet inexistant");
         }
@@ -123,9 +122,9 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public boolean quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException {
+    public void quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException, ApplicationException {
         if (player == null || player.getId() == null || match == null || match.getCode() == null) {
-            return false;
+            throw new ApplicationException("Invalid arguments to quit a match");
         }
 
         boolean isJoueurExistant = (playerDAO.findPlayerById(player.getId()) != null);
@@ -135,7 +134,6 @@ public class MatchManagementServiceImpl implements MatchManagementService {
             matchDAO.unregisterPlayer(player, match);
             matchDAO.notifyPlayerLeft(match);
             log.info("Player désinscrit du match");
-            return true;
         } else {
             throw new DatabaseException("Impossible d'inscrire le player : objet inexistant");
         }

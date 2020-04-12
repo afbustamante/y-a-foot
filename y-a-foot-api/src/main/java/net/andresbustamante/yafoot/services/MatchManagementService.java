@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
@@ -19,8 +20,9 @@ public interface MatchManagementService {
      * @param match Match à créer
      * @param userContext
      * @throws DatabaseException
+     * @throws ApplicationException Invalid arguments
      */
-    boolean saveMatch(Match match, UserContext userContext) throws DatabaseException;
+    void saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException;
 
     /**
      * Inscrire un player à un match existant
@@ -30,8 +32,9 @@ public interface MatchManagementService {
      * @param voiture Voiture dans laquelle le player va se déplacer vers le site de jeu
      * @param userContext
      * @throws DatabaseException
+     * @throws ApplicationException Invalid arguments
      */
-    boolean joinMatch(Player player, Match match, Voiture voiture, UserContext userContext) throws DatabaseException;
+    void joinMatch(Player player, Match match, Voiture voiture, UserContext userContext) throws ApplicationException, DatabaseException;
 
     /**
      * Désinscrire un player d'un match
@@ -41,8 +44,16 @@ public interface MatchManagementService {
      * @param userContext
      * @return
      * @throws DatabaseException
+     * @throws ApplicationException Invalid arguments
      */
-    boolean quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException;
+    void quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException, ApplicationException;
 
+    /**
+     * Unregister a player from all matches
+     *
+     * @param player Player to search
+     * @param userContext User context
+     * @throws DatabaseException
+     */
     void quitAllMatches(Player player, UserContext userContext) throws DatabaseException;
 }

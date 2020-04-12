@@ -55,7 +55,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
     private HttpServletRequest request;
 
     @Value("${match.api.service.path}")
-    private String matchByCodeApiPath;
+    private String matchApiPath;
+
+    @Value("${match.player.api.service.path}")
+    private String matchPlayerApiPath;
 
     private final Logger log = LoggerFactory.getLogger(MatchesController.class);
 
@@ -128,14 +131,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
         try {
             UserContext userContext = getUserContext(request);
             net.andresbustamante.yafoot.model.Match m = matchMapper.map(match);
-            boolean isMatchCree = matchManagementService.saveMatch(m, userContext);
+            matchManagementService.saveMatch(m, userContext);
 
-            if (isMatchCree) {
-                String location = MessageFormat.format(matchByCodeApiPath, m.getCode());
-                return ResponseEntity.created(getLocationURI(location)).build();
-            } else {
-                return ResponseEntity.status(BAD_REQUEST).build();
-            }
+            String location = MessageFormat.format(matchApiPath, m.getCode());
+            return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Erreur lors de la création d'un match", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
@@ -158,17 +157,12 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.notFound().build();
             }
 
-            boolean succes = matchManagementService.joinMatch(ins.getPlayer(), match,
+            matchManagementService.joinMatch(ins.getPlayer(), match,
                     ins.getVoiture(), userContext);
 
-            if (succes) {
-                log.info("Player registered to match");
-                String location = MessageFormat.format(matchByCodeApiPath + "/players/{0}", ins.getPlayer().getId());
-                return ResponseEntity.created(getLocationURI(location)).build();
-            } else {
-                log.warn("Le joueur n'a pas pu etre inscrit");
-                return ResponseEntity.status(BAD_REQUEST).build();
-            }
+            log.info("Player registered to match");
+            String location = MessageFormat.format(matchPlayerApiPath, match.getCode(), ins.getPlayer().getId());
+            return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Database error while trying to register a player to a match", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
