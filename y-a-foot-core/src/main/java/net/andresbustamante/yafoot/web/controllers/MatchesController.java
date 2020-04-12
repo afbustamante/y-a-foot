@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -87,21 +86,16 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<List<Match>> loadMatchesByPlayer(String email) {
+    public ResponseEntity<List<Match>> loadMatches() {
         try {
             UserContext ctx = getUserContext(request);
 
-            Player player = playerSearchService.findPlayerByEmail(email);
+            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
 
-            List<net.andresbustamante.yafoot.model.Match> matchs = matchSearchService.findMatchesByPlayer(player,
-                    ctx);
+            List<net.andresbustamante.yafoot.model.Match> matches = matchSearchService.findMatchesByPlayer(player);
 
-            if (CollectionUtils.isNotEmpty(matchs)) {
-                List<Match> result = new ArrayList<>();
-
-                for (net.andresbustamante.yafoot.model.Match m : matchs) {
-                    result.add(matchMapper.map(m));
-                }
+            if (CollectionUtils.isNotEmpty(matches)) {
+                List<Match> result = matchMapper.map(matches);
                 return ResponseEntity.ok(result);
             } else {
                 return ResponseEntity.ok(Collections.emptyList());

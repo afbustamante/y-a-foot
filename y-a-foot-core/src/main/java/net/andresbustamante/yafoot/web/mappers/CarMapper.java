@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.web.mappers;
 
-import net.andresbustamante.yafoot.config.DtoMapperConfig;
+import net.andresbustamante.yafoot.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.model.Voiture;
 import net.andresbustamante.yafoot.web.dto.Car;
 import org.mapstruct.Mapper;
@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(config = DtoMapperConfig.class, uses = {PlayerMapper.class, StringMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {PlayerMapper.class, StringMapper.class})
 public interface CarMapper {
 
     @Mapping(source = "name", target = "nom")

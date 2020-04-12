@@ -74,9 +74,10 @@ public class SitesController extends AbstractController implements SitesApi {
     }
 
     @Override
-    public ResponseEntity<List<Site>> loadSitesByPlayer(String email) {
+    public ResponseEntity<List<Site>> loadSites() {
         try {
-            Player player = playerSearchService.findPlayerByEmail(email);
+            UserContext ctx = getUserContext(request);
+            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
             List<net.andresbustamante.yafoot.model.Site> sites = siteSearchService.findSitesByPlayer(player);
 
             List<Site> result = new ArrayList<>();
@@ -90,6 +91,9 @@ public class SitesController extends AbstractController implements SitesApi {
         } catch (DatabaseException e) {
             log.error("Database error while looking for a player's list of available sites", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+        } catch (ApplicationException e) {
+            log.error("Invalid user context", e);
+            return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
 

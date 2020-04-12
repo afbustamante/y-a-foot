@@ -1,12 +1,12 @@
 package net.andresbustamante.yafoot.web.mappers;
 
-import net.andresbustamante.yafoot.config.DtoMapperConfig;
+import net.andresbustamante.yafoot.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.model.Inscription;
 import net.andresbustamante.yafoot.web.dto.Registration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = DtoMapperConfig.class, uses = {PlayerMapper.class, CarMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {PlayerMapper.class, CarMapper.class})
 public interface RegistrationMapper {
 
     @Mapping(source = "matchId", target = "id.matchId")

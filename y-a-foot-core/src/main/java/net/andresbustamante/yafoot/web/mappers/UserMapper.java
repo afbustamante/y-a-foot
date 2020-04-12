@@ -1,11 +1,11 @@
 package net.andresbustamante.yafoot.web.mappers;
 
-import net.andresbustamante.yafoot.config.DtoMapperConfig;
+import net.andresbustamante.yafoot.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = DtoMapperConfig.class, uses = {StringMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {StringMapper.class})
 public interface UserMapper {
 
     @Mapping(target = "surname", ignore = true)

@@ -116,19 +116,13 @@ paths:
           description: Player successfully deactivated
   /matches:
     get:
-      operationId: loadMatchesByPlayer
-      summary: Loads matches for a player
+      operationId: loadMatches
+      summary: Loads the matches available for the active player
       tags:
       - matches
-      parameters:
-      - in: header
-        name: player
-        required: true
-        schema:
-          type: string
       responses:
         200: # OK
-          description: List of matches found for a player
+          description: List of matches found for the active player
           content:
             application/json:
               schema:
@@ -216,20 +210,13 @@ paths:
           description: Player unregistered from match
   /sites:
     get:
-      operationId: loadSitesByPlayer
-      summary: Loads the sites visited or registrated by a player
+      operationId: loadSites
+      summary: Loads the sites visited or registrated by the active player
       tags:
       - sites
-      parameters:
-      - in: header
-        name: player
-        required: true
-        schema:
-          type: string
-          format: email
       responses:
         200: # OK
-          description: List of sites found for the player
+          description: List of sites found for the active player
           content:
             application/json:
               schema:
@@ -257,20 +244,13 @@ paths:
           description: A database error occurred while saving site's information
   /cars:
     get:
-      operationId: loadCarsByPlayer
-      summary: Loads the list of cars registered by a player
+      operationId: loadCars
+      summary: Loads the list of cars registered by the active player
       tags:
       - cars
-      parameters:
-      - in: header
-        name: player
-        required: true
-        schema:
-          type: string
-          format: email
       responses:
         200: # OK
-          description: List of cars found for the player
+          description: List of cars found for the active player
           content:
             application/json:
               schema:
@@ -368,6 +348,9 @@ components:
           $ref: '#/components/schemas/Car'
     Match:
       type: object
+      required:
+      - date
+      - site
       properties:
         id:
           type: integer

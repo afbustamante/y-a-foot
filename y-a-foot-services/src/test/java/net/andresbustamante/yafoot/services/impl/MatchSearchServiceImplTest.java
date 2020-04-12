@@ -87,7 +87,7 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.findMatchesByPlayer(any(Player.class), any())).thenReturn(Arrays.asList(match1, match2));
-        List<Match> matchs = matchSearchService.findMatchesByPlayer(player1, ctx);
+        List<Match> matchs = matchSearchService.findMatchesByPlayer(player1);
 
         // Then
         assertNotNull(matchs);
@@ -102,7 +102,7 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
-        List<Match> matchs = matchSearchService.findMatchesByPlayer(null, ctx);
+        List<Match> matchs = matchSearchService.findMatchesByPlayer(null);
 
         // Then
         assertNotNull(matchs);

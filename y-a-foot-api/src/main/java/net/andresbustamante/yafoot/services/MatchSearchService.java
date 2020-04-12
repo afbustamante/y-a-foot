@@ -2,7 +2,6 @@ package net.andresbustamante.yafoot.services;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Match;
 
 import java.util.List;
@@ -27,9 +26,8 @@ public interface MatchSearchService {
      * Chercher les matchs à venir pour un joueur dont l'identifiant est passé en paramètre
      *
      * @param player Player to use for the research
-     * @param userContext
      * @return
      * @throws DatabaseException
      */
-    List<Match> findMatchesByPlayer(Player player, UserContext userContext) throws DatabaseException;
+    List<Match> findMatchesByPlayer(Player player) throws DatabaseException;
 }

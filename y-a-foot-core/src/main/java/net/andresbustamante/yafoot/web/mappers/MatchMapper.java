@@ -1,11 +1,13 @@
 package net.andresbustamante.yafoot.web.mappers;
 
-import net.andresbustamante.yafoot.config.DtoMapperConfig;
+import net.andresbustamante.yafoot.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.model.Match;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = DtoMapperConfig.class, uses = {CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
+import java.util.List;
+
+@Mapper(config = SpringMapperConfig.class, uses = {CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
         RegistrationMapper.class, DateMapper.class})
 public interface MatchMapper {
 
@@ -28,4 +30,6 @@ public interface MatchMapper {
     @Mapping(target = "carpoolingEnabled", source = "covoiturageActif")
     @Mapping(target = "sharingEnabled", source = "partageActif")
     net.andresbustamante.yafoot.web.dto.Match map(Match match);
+
+    List<net.andresbustamante.yafoot.web.dto.Match> map(List<Match> matches);
 }

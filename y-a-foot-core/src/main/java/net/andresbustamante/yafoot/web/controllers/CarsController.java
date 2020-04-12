@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.services.CarManagementService;
@@ -59,9 +60,10 @@ public class CarsController extends AbstractController implements CarsApi {
     }
 
     @Override
-    public ResponseEntity<List<Car>> loadCarsByPlayer(String email) {
+    public ResponseEntity<List<Car>> loadCars() {
         try {
-            Player player = playerSearchService.findPlayerByEmail(email);
+            UserContext ctx = getUserContext(request);
+            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
             List<net.andresbustamante.yafoot.model.Voiture> cars = carSearchService.findCarsByPlayer(player);
 
             List<Car> result = new ArrayList<>();
@@ -73,6 +75,9 @@ public class CarsController extends AbstractController implements CarsApi {
         } catch (DatabaseException e) {
             log.error("Error when looking for cars", e);
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+        } catch (ApplicationException e) {
+            log.error("Invalid user context", e);
+            return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
 
