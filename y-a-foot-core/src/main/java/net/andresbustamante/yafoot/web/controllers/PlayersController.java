@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +45,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
 
     private HttpServletRequest request;
 
-    @Value("${players.byid.api.service.path}")
+    @Value("${player.api.service.path}")
     private String playerApiPath;
 
     private final Logger log = LoggerFactory.getLogger(PlayersController.class);
@@ -69,14 +70,11 @@ public class PlayersController extends AbstractController implements PlayersApi 
         return Optional.of(request);
     }
 
-    /**
-     * @param player
-     * @return
-     */
+    @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
     public ResponseEntity<Void> createPlayer(Player player) {
         try {
-            log.info("Demande de création d'un nouveau joueur avec l'address {}", player.getEmail());
+            log.info("New player registration for email address {}", player.getEmail());
             net.andresbustamante.yafoot.model.Player newPlayer = playerMapper.map(player);
             int id = playerManagementService.savePlayer(newPlayer,
                     contextMapper.map(new UserContext()));
@@ -87,15 +85,11 @@ public class PlayersController extends AbstractController implements PlayersApi 
             log.error("User not created", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
-            log.error("Erreur lors de l'inscription d'un joueur", e);
+            log.error("Database/LDAP error when registering a new player", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    /**
-     * @param player
-     * @return
-     */
     @Override
     public ResponseEntity<Void> updatePlayer(Player player, Integer id) {
         try {
@@ -104,18 +98,16 @@ public class PlayersController extends AbstractController implements PlayersApi 
             boolean succes = playerManagementService.updatePlayer(playerMapper.map(player), userContext);
             return (succes) ? ResponseEntity.accepted().build() : ResponseEntity.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
-            log.error("Erreur lors de l'actualisation d'un joueur", e);
+            log.error("An error occurred while updating a player's information", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
-            log.error("Erreur lors de la récupération des information du contexte", e);
+            log.error("User context error for updating a player's information", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
 
     @Override
     public ResponseEntity<Player> loadPlayerByEmail(String email) {
-        net.andresbustamante.yafoot.model.UserContext userContext = new net.andresbustamante.yafoot.model.UserContext();
-
         try {
             net.andresbustamante.yafoot.model.Player player = playerSearchService.findPlayerByEmail(email);
 
@@ -125,7 +117,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
                 return ResponseEntity.notFound().build();
             }
         } catch (DatabaseException e) {
-            log.error("Erreur lors de la recherche d'un utilisateur", e);
+            log.error("Database error while looking for a player", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -138,10 +130,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             playerManagementService.deactivatePlayer(id, userContext);
             return ResponseEntity.noContent().build();
         } catch (DatabaseException | LdapException e) {
-            log.error("Erreur lors de l'actualisation d'un joueur", e);
+            log.error("Database/LDAP error while deactivating a player", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
-            log.error("Erreur lors de la récupération des information du contexte", e);
+            log.error("User context error for deactivating a player", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         }
     }

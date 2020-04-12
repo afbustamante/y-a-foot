@@ -27,12 +27,12 @@ public interface SiteDAO {
      * @param id Identifiant du site
      * @return Site associé à l'identifiant passé en paramètre
      */
-    Site chercherSiteParId(@Param(ID) Integer id);
+    Site findSiteById(@Param(ID) Integer id);
 
     /**
      * Créer le site passé en paramètre
      *
      * @param site Site à créer
      */
-    void creerSite(@Param(SITE) Site site);
+    int saveSite(@Param(SITE) Site site);
 }

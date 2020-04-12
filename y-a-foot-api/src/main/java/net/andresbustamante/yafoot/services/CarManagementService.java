@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.services;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Voiture;
 
@@ -18,4 +19,13 @@ public interface CarManagementService {
      * @throws DatabaseException
      */
     int saveCar(Voiture car, UserContext ctx) throws DatabaseException;
+
+    /**
+     * Deletes all cars registered by a player
+     *
+     * @param player Player to look for
+     * @param ctx User context for the responsible of this operation
+     * @throws DatabaseException
+     */
+    void deleteCarsByPlayer(Player player, UserContext ctx) throws DatabaseException;
 }

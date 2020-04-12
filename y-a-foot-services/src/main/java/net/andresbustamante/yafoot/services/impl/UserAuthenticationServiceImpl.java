@@ -7,6 +7,7 @@ import net.andresbustamante.yafoot.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserAuthenticationServiceImpl implements UserAuthenticationService {
@@ -21,6 +22,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         this.userDAO = userDAO;
     }
 
+    @Transactional
     @Override
     public User authenticate(User user) throws InvalidCredentialsException {
         User authenticatedUser = userDAO.authenticateUser(user.getEmail(), user.getPassword());
@@ -33,6 +35,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findUserByEmail(String email) {
         return userDAO.findUserAuthDetailsByUid(email);

@@ -8,6 +8,7 @@ import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -22,6 +23,7 @@ public class MatchSearchServiceImpl implements MatchSearchService {
     @Autowired
     private MatchDAO matchDAO;
 
+    @Transactional(readOnly = true)
     @Override
     public Match findMatchByCode(String codeMatch) throws DatabaseException {
         if (codeMatch != null) {
@@ -31,6 +33,7 @@ public class MatchSearchServiceImpl implements MatchSearchService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Match> findMatchesByPlayer(Player player, UserContext userContext) throws DatabaseException {
         if (player != null && player.getId() > 0) {

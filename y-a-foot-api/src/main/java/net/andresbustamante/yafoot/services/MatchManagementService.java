@@ -43,4 +43,6 @@ public interface MatchManagementService {
      * @throws DatabaseException
      */
     boolean quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException;
+
+    void quitAllMatches(Player player, UserContext userContext) throws DatabaseException;
 }

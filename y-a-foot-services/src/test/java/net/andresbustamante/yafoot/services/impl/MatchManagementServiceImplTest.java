@@ -6,6 +6,8 @@ import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
+import net.andresbustamante.yafoot.services.CarManagementService;
+import net.andresbustamante.yafoot.services.SiteManagementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,6 +34,12 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
     private CarDAO carDAO;
 
     @Mock
+    private SiteManagementService siteManagementService;
+
+    @Mock
+    private CarManagementService carManagementService;
+
+    @Mock
     private PlayerDAO playerDAO;
 
     @BeforeEach
@@ -54,13 +62,13 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         when(matchDAO.isCodeAlreadyRegistered(anyString())).thenReturn(false);
         //when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
-        when(siteDAO.chercherSiteParId(anyInt())).thenReturn(site);
+        when(siteDAO.findSiteById(anyInt())).thenReturn(site);
         boolean succes = matchManagementService.saveMatch(match, ctx);
 
         // Then
         verify(matchDAO, times(1)).isCodeAlreadyRegistered(anyString());
-        verify(siteDAO, times(1)).chercherSiteParId(any());
-        verify(siteDAO, times(0)).creerSite(any());
+        verify(siteDAO, times(1)).findSiteById(any());
+        verify(siteDAO, times(0)).saveSite(any());
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreateur());
@@ -87,7 +95,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // Then
         verify(matchDAO, times(1)).isCodeAlreadyRegistered(anyString());
-        verify(siteDAO, times(0)).chercherSiteParId(any());
+        verify(siteDAO, times(0)).findSiteById(any());
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreateur());
@@ -160,7 +168,6 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         assertTrue(succes);
         verify(carDAO, times(0)).findCarById(anyInt());
-        verify(carDAO, times(1)).saveCar(any(Voiture.class), any(Player.class));
         verify(matchDAO, times(1)).registerPlayer(player, match, voiture);
     }
 

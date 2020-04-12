@@ -5,11 +5,11 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
+import net.andresbustamante.yafoot.services.MatchManagementService;
+import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.dto.Registration;
-import net.andresbustamante.yafoot.services.MatchManagementService;
-import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -17,11 +17,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +54,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     private HttpServletRequest request;
 
-    @Value("${matches.bycode.api.service.path}")
+    @Value("${match.api.service.path}")
     private String matchByCodeApiPath;
 
     private final Logger log = LoggerFactory.getLogger(MatchesController.class);
@@ -76,7 +78,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
             return (match != null) ? ResponseEntity.ok(matchMapper.map(match)) : ResponseEntity.notFound().build();
         } catch (DatabaseException e) {
-            log.error("Erreur de BD pour la recherche d'un match.", e);
+            log.error("Database error while looking for a match", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -102,10 +104,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.ok(Collections.emptyList());
             }
         } catch (DatabaseException e) {
-            log.error("Erreur de BD pour la recherche d'un match.", e);
+            log.error("Database error while looking for a player matches", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
-            log.error("Error while loading context information", e);
+            log.error("User context error for loading a player's matches", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
@@ -120,8 +122,9 @@ public class MatchesController extends AbstractController implements MatchesApi 
         return Optional.of(request);
     }
 
+    @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> createMatch(Match match) {
+    public ResponseEntity<Void> createMatch(@Valid Match match) {
         try {
             UserContext userContext = getUserContext(request);
             net.andresbustamante.yafoot.model.Match m = matchMapper.map(match);
@@ -142,6 +145,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
         }
     }
 
+    @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
     public ResponseEntity<Void> registerPlayerToMatch(Registration registration, String matchCode) {
         try {
@@ -166,10 +170,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.status(BAD_REQUEST).build();
             }
         } catch (DatabaseException e) {
-            log.error("Erreur de base de données", e);
+            log.error("Database error while trying to register a player to a match", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
-            log.error("Erreur lors de la récupération des information du contexte", e);
+            log.error("User context error for registering a player to a match", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
@@ -190,10 +194,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.status(BAD_REQUEST).build();
             }
         } catch (DatabaseException e) {
-            log.error("Erreur de base de données", e);
+            log.error("Database error while unregistering a player from a match", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
-            log.error("Erreur lors de la récupération des information du contexte", e);
+            log.error("User context error for unregistering a player from a match", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         }
     }

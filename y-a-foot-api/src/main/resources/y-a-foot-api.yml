@@ -236,6 +236,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Site'
+    post:
+      operationId: addNewSite
+      summary: Registers a new site for a player
+      tags:
+      - sites
+      requestBody:
+        description: Site to save
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Site'
+      responses:
+        201: # Created
+          description: Site successfully saved. Site's ID is returned in Location header
+        400: # Bad request
+          description: Missing user information
+        500: # Internal server error
+          description: A database error occurred while saving site's information
   /cars:
     get:
       operationId: loadCarsByPlayer

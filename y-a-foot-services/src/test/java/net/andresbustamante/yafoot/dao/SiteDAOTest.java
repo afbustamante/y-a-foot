@@ -38,7 +38,7 @@ class SiteDAOTest extends AbstractDAOTest {
     void chercherSiteParId() throws Exception {
         // Given
         // When
-        Site site = siteDAO.chercherSiteParId(1);
+        Site site = siteDAO.findSiteById(1);
 
         // Then
         assertNotNull(site);
@@ -53,7 +53,7 @@ class SiteDAOTest extends AbstractDAOTest {
         Site nouveauSite = new Site("Nouveau site", "123 Rue du site", "0412345678", null);
 
         // When
-        siteDAO.creerSite(nouveauSite);
+        siteDAO.saveSite(nouveauSite);
 
         // Then
         assertNotNull(nouveauSite.getId());

@@ -14,7 +14,7 @@
         WHERE jma.jma_joueur_fk = #{player.id}
     </select>
 
-    <select id="chercherSiteParId" resultType="net.andresbustamante.yafoot.model.Site">
+    <select id="findSiteById" resultType="net.andresbustamante.yafoot.model.Site">
         SELECT
             sit.sit_id        AS id,
             sit.sit_nom       AS nom,
@@ -24,7 +24,7 @@
         WHERE sit.sit_id = #{id}
     </select>
 
-    <insert id="creerSite" useGeneratedKeys="true">
+    <insert id="saveSite" useGeneratedKeys="true">
         <selectKey keyProperty="site.id" resultType="int" order="BEFORE">
             SELECT NEXTVAL('s_site') AS id;
         </selectKey>

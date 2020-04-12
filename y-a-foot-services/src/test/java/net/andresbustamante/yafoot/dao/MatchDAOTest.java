@@ -141,7 +141,7 @@ class MatchDAOTest extends AbstractDAOTest {
         // Given
         ZonedDateTime maintenant = ZonedDateTime.now();
         Player player = playerDAO.findPlayerById(1);
-        Site site = siteDAO.chercherSiteParId(1);
+        Site site = siteDAO.findSiteById(1);
 
         Match match = new Match();
         match.setCode("C-" + (Instant.now().toEpochMilli() / 1000));

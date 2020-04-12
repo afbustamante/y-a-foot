@@ -7,6 +7,8 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.ldap.UserDAO;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
+import net.andresbustamante.yafoot.services.CarManagementService;
+import net.andresbustamante.yafoot.services.MatchManagementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,10 +30,10 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
     private UserDAO userDAO;
 
     @Mock
-    private MatchDAO matchDAO;
+    private MatchManagementService matchManagementService;
 
     @Mock
-    private CarDAO carDAO;
+    private CarManagementService carManagementService;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -150,16 +152,12 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.findPlayerById(anyInt())).thenReturn(player1);
-        when(matchDAO.unregisterPlayerFromAllMatches(any())).thenReturn(15);
-        when(carDAO.deleteCarsByPlayer(any())).thenReturn(1);
         when(playerDAO.deactivatePlayer(any())).thenReturn(1);
 
         gestionJoueursService.deactivatePlayer(1, ctx);
 
         // Then
         verify(playerDAO, times(1)).findPlayerById(anyInt());
-        verify(matchDAO, times(1)).unregisterPlayerFromAllMatches(any());
-        verify(carDAO, times(1)).deleteCarsByPlayer(any());
         verify(playerDAO, times(1)).deactivatePlayer(any());
     }
 
@@ -175,8 +173,6 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // Then
         verify(playerDAO, times(1)).findPlayerById(anyInt());
-        verify(matchDAO, times(0)).unregisterPlayerFromAllMatches(any());
-        verify(carDAO, times(0)).deleteCarsByPlayer(any());
         verify(playerDAO, times(0)).deactivatePlayer(any());
     }
 }

@@ -1,7 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.PlayerDAO;
-import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
@@ -10,11 +9,14 @@ import net.andresbustamante.yafoot.ldap.UserDAO;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.services.CarManagementService;
+import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.PlayerManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -30,14 +32,14 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     private UserDAO userDAO;
 
     @Autowired
-    private MatchDAO matchDAO;
+    private MatchManagementService matchManagementService;
 
     @Autowired
-    private CarDAO carDAO;
+    private CarManagementService carManagementService;
 
     private final Logger log = LoggerFactory.getLogger(PlayerManagementServiceImpl.class);
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Integer savePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
         if (!playerDAO.isPlayerAlreadySignedIn(player.getEmail())) {
@@ -94,12 +96,9 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
         Player player = playerDAO.findPlayerById(playerId);
 
         if (player != null) {
-            // Supprimer les données du player
-            int numMatches = matchDAO.unregisterPlayerFromAllMatches(player);
-            log.info("Player unregistered from {} matches", numMatches);
-
-            int numCars = carDAO.deleteCarsByPlayer(player);
-            log.info("{} cars removed for player", numCars);
+            // Delete all data from player
+            matchManagementService.quitAllMatches(player, userContext);
+            carManagementService.deleteCarsByPlayer(player, userContext);
 
             int numPlayers = playerDAO.deactivatePlayer(player);
             log.info("Players deactivated: {}", numPlayers);

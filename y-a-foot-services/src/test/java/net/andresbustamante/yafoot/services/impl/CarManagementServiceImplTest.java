@@ -52,6 +52,17 @@ class CarManagementServiceImplTest extends AbstractServiceTest {
 
         assertEquals(8, idVoiture);
         verify(carDAO).saveCar(any(Voiture.class), any(Player.class));
+    }
 
+    @Test
+    void deleteCarsByPlayer() throws Exception {
+        // Given
+        Player player = new Player(1);
+
+        // When
+        carManagementService.deleteCarsByPlayer(player, userContext);
+
+        // Then
+        verify(carDAO).deleteCarsByPlayer(any(Player.class));
     }
 }

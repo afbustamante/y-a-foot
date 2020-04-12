@@ -6,7 +6,9 @@ import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
+import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.MatchManagementService;
+import net.andresbustamante.yafoot.services.SiteManagementService;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +36,13 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     private SiteDAO siteDAO;
 
     @Autowired
+    private SiteManagementService siteManagementService;
+
+    @Autowired
     private CarDAO carDAO;
+
+    @Autowired
+    private CarManagementService carManagementService;
 
     @Autowired
     private PlayerDAO playerDAO;
@@ -60,16 +68,16 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         }
 
         if (match.getSite().getId() != null && !match.getSite().getId().equals(NOUVEL_ID)) {
-            Site siteExistant = siteDAO.chercherSiteParId(match.getSite().getId());
+            Site siteExistant = siteDAO.findSiteById(match.getSite().getId());
 
             if (siteExistant != null) {
                 match.setSite(siteExistant);
             } else {
                 // Créer aussi le site
-                siteDAO.creerSite(match.getSite());
+                siteManagementService.saveSite(match.getSite(), userContext);
             }
         } else {
-            siteDAO.creerSite(match.getSite());
+            siteManagementService.saveSite(match.getSite(), userContext);
         }
 
         matchDAO.saveMatch(match);
@@ -96,7 +104,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
             if (voitureExistante == null) {
                 // Enregistrer la voiture en base
-                carDAO.saveCar(voiture, player);
+                carManagementService.saveCar(voiture, userContext);
             }
         }
 
@@ -131,6 +139,13 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         } else {
             throw new DatabaseException("Impossible d'inscrire le player : objet inexistant");
         }
+    }
+
+    @Transactional
+    @Override
+    public void quitAllMatches(Player player, UserContext userContext) throws DatabaseException {
+        int numMatches = matchDAO.unregisterPlayerFromAllMatches(player);
+        log.info("Player unregistered from {} matches", numMatches);
     }
 
     /**
