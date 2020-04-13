@@ -80,6 +80,14 @@
       <if test="endDate != null">
         AND mat.mat_date &lt;= #{endDate}
       </if>
+      <choose>
+        <when test="startDate != null">
+          ORDER BY mat.mat_date ASC
+        </when>
+        <otherwise>
+          ORDER BY mat.mat_date DESC
+        </otherwise>
+      </choose>
     </select>
 
     <select id="findMatchById" resultMap="matchComplet">
