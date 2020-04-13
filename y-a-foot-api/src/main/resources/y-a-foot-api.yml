@@ -373,7 +373,7 @@ components:
           type: string
         date:
           type: string
-          #format: date-time
+          format: date-time
         description:
           type: string
         numPlayersMin:

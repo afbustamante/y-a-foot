@@ -19,6 +19,7 @@ import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class MatchRegistryViewModel extends AbstractViewModel {
                 return;
             }
 
-            String matchDate = DateUtils.format(date, DateUtils.DATE_TIME_STYLE);
+            OffsetDateTime matchDate = OffsetDateTime.from(DateUtils.toLocalDateTime(date));
 
             Match match = new Match();
             match.setDate(matchDate);

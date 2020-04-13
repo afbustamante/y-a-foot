@@ -1,7 +1,6 @@
 package net.andresbustamante.yafoot.web.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.util.DateUtils;
 import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.services.MatchsJoiningUIService;
 import net.andresbustamante.yafoot.web.services.MatchsRegistryUIService;
@@ -19,7 +18,7 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Messagebox;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,9 +54,7 @@ public class PlayersMatchsListingViewModel extends AbstractViewModel {
             List<Match> matchesToPlay = new ArrayList<>();
 
             for (Match match : matches) {
-                ZonedDateTime matchDate = DateUtils.toZonedDateTime(match.getDate());
-
-                if (matchDate.isBefore(ZonedDateTime.now().minusHours(2))) {
+                if (match.getDate().isBefore(OffsetDateTime.now().minusHours(2))) {
                     matchesPlayed.add(match);
                 } else {
                     matchesToPlay.add(match);
