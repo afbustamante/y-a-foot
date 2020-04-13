@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -34,11 +36,11 @@ public class MatchSearchServiceImpl implements MatchSearchService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Match> findMatchesByPlayer(Player player) throws DatabaseException {
+    public List<Match> findMatchesByPlayer(Player player, LocalDate startDate, LocalDate endDate) throws DatabaseException {
         if (player != null && player.getId() > 0) {
-            // Chercher les matchs programmés pour le joueur depuis 1 an
-            ZonedDateTime date = ZonedDateTime.now().minusYears(1L);
-            return matchDAO.findMatchesByPlayer(player, date);
+            ZonedDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay(ZoneId.systemDefault()) : null;
+            ZonedDateTime endDateTime = (endDate != null) ? endDate.plusDays(1L).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1L) : null;
+            return matchDAO.findMatchesByPlayer(player, startDateTime, endDateTime);
         } else {
             return Collections.emptyList();
         }

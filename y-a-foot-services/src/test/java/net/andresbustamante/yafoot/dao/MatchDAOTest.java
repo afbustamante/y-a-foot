@@ -98,21 +98,41 @@ class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void findMatchesByPlayer() throws Exception {
+    void findMatchesByPlayerAndStartDate() throws Exception {
         // Given
         Player player1 = new Player(1);
-        LocalDateTime date = LocalDate.of(2018, 10, 2).atStartOfDay();
-        ZonedDateTime dateInitiale = ZonedDateTime.of(date, ZoneId.systemDefault());
+        ZonedDateTime startDate = LocalDate.of(2018, 10, 2).atStartOfDay(ZoneId.systemDefault());
 
         // When
-        List<Match> matchs = matchDAO.findMatchesByPlayer(player1, dateInitiale);
+        List<Match> matchs = matchDAO.findMatchesByPlayer(player1, startDate, null);
 
         // Then
         assertNotNull(matchs);
         assertEquals(1 ,matchs.size());
         assertNotNull(matchs.get(0));
         assertEquals("AZERTY-1234", matchs.get(0).getCode());
-        assertTrue(matchs.get(0).getDateMatch().isAfter(dateInitiale));
+        assertTrue(matchs.get(0).getDateMatch().isAfter(startDate));
+        assertNotNull(matchs.get(0).getCreateur());
+        assertEquals("Cristiano", matchs.get(0).getCreateur().getFirstName());
+        assertEquals("Ronaldo", matchs.get(0).getCreateur().getSurname());
+        assertEquals("cr7@email.com", matchs.get(0).getCreateur().getEmail());
+    }
+
+    @Test
+    void findMatchesByPlayerAndEndDate() throws Exception {
+        // Given
+        Player player2 = new Player(2);
+        ZonedDateTime endDate = LocalDate.of(2018, 10, 3).atStartOfDay(ZoneId.systemDefault());
+
+        // When
+        List<Match> matchs = matchDAO.findMatchesByPlayer(player2, null, endDate);
+
+        // Then
+        assertNotNull(matchs);
+        assertEquals(1 ,matchs.size());
+        assertNotNull(matchs.get(0));
+        assertEquals("AZERTY-1234", matchs.get(0).getCode());
+        assertEquals(LocalDate.of(2018, 10, 2), LocalDate.from(matchs.get(0).getDateMatch()));
         assertNotNull(matchs.get(0).getCreateur());
         assertEquals("Cristiano", matchs.get(0).getCreateur().getFirstName());
         assertEquals("Ronaldo", matchs.get(0).getCreateur().getSurname());
@@ -163,7 +183,7 @@ class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void registerPlayerSansVoiture() throws Exception {
+    void registerPlayerWithNoCar() throws Exception {
         // Given
         Player player = playerDAO.findPlayerById(1);
         Match match = matchDAO.findMatchById(2);
@@ -179,7 +199,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void isPlayerRegistered() throws Exception {
         // Given
         Player registeredPlayer = playerDAO.findPlayerById(1);
-        Player unregisteredPlayer = playerDAO.findPlayerById(2);
+        Player unregisteredPlayer = playerDAO.findPlayerById(3);
         Match match = matchDAO.findMatchById(1);
 
         // When
@@ -209,16 +229,16 @@ class MatchDAOTest extends AbstractDAOTest {
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
         Player player = playerDAO.findPlayerById(1);
-        ZonedDateTime dateTime = ZonedDateTime.now().minusYears(5L); // Il y a 5 ans
+        ZonedDateTime startDate = ZonedDateTime.now().minusYears(5L); // 5 years ago
 
         // When
-        int nbLignes = matchDAO.unregisterPlayerFromAllMatches(player);
-        List<Match> matchsJoueur = matchDAO.findMatchesByPlayer(player, dateTime);
+        int numLines = matchDAO.unregisterPlayerFromAllMatches(player);
+        List<Match> matchesByPlayer = matchDAO.findMatchesByPlayer(player, startDate, null);
 
         // Then
-        assertEquals(1, nbLignes);
-        assertNotNull(matchsJoueur);
-        assertTrue(matchsJoueur.isEmpty());
+        assertEquals(1, numLines);
+        assertNotNull(matchesByPlayer);
+        assertTrue(matchesByPlayer.isEmpty());
     }
 
     @Test
@@ -228,11 +248,11 @@ class MatchDAOTest extends AbstractDAOTest {
         assertEquals(1, match.getNbJoueursInscrits().intValue());
 
         // When
-        int nbMatchs = matchDAO.notifyPlayerRegistry(match);
+        int numMatches = matchDAO.notifyPlayerRegistry(match);
         match = matchDAO.findMatchById(1);
 
         // Then
-        assertEquals(1, nbMatchs);
+        assertEquals(1, numMatches);
         assertEquals(2, match.getNbJoueursInscrits().intValue());
     }
 }

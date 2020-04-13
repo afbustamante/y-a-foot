@@ -34,13 +34,15 @@ public interface MatchDAO {
     Match findMatchByCode(@Param(CODE) String codeMatch);
 
     /**
-     * Trouver les matchs auxquels un joueur a été inscrit depuis la date passée en paramètre
+     * Find the list of matches associated to a player by optionally using a date interval
      *
      * @param player Player to use for the research
-     * @param dateInitiale Date initiale de la recherche
-     * @return
+     * @param startDate Start date for the research
+     * @param endDate Limit date for the research
+     * @return List of matches returned by the research
      */
-    List<Match> findMatchesByPlayer(@Param(PLAYER) Player player, @Param(DATE) ZonedDateTime dateInitiale);
+    List<Match> findMatchesByPlayer(@Param(PLAYER) Player player, @Param(START_DATE) ZonedDateTime startDate,
+                                    @Param(END_DATE) ZonedDateTime endDate);
 
     /**
      * Récupérer les informations d'un match à partir de son identifiant unique

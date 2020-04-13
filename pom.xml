@@ -40,7 +40,7 @@
     <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
     <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
-    <swagger-codegen-maven-plugin.version>3.0.14</swagger-codegen-maven-plugin.version>
+    <swagger-codegen-maven-plugin.version>3.0.19</swagger-codegen-maven-plugin.version>
     <wildfly-maven-plugin.version>2.1.0.Beta1</wildfly-maven-plugin.version>
 
     <!-- Java EE / javax -->
@@ -59,6 +59,7 @@
     <spring-data-commons.version>2.1.16.RELEASE</spring-data-commons.version>
     <spring-security.version>5.1.6.RELEASE</spring-security.version>
     <jackson-databind.version>2.9.10.3</jackson-databind.version>
+    <jackson-datatype-jsr310.version>2.10.3</jackson-datatype-jsr310.version>
     <spring-boot.version>2.1.13.RELEASE</spring-boot.version>
 
     <!-- ZK -->
@@ -94,7 +95,7 @@
     <slf4j-api.version>1.7.25</slf4j-api.version>
     <javassist.version>3.21.0-GA</javassist.version>
     <logback.version>1.2.3</logback.version>
-    <swagger-annotations.version>1.6.0</swagger-annotations.version>
+    <swagger-annotations.version>1.6.1</swagger-annotations.version>
     <jjwt.version>0.9.1</jjwt.version>
 
     <!-- JaCoCo + Sonar -->
@@ -267,6 +268,11 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
         <version>${jackson-databind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson-datatype-jsr310.version}</version>
       </dependency>
 
       <!-- Spring Boot -->

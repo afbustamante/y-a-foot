@@ -73,7 +73,13 @@
             JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
             LEFT JOIN t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
             LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
-        WHERE jma.jma_joueur_fk = #{player.id} AND mat.mat_date > #{date}
+        WHERE jma.jma_joueur_fk = #{player.id}
+      <if test="startDate != null">
+        AND mat.mat_date &gt;= #{startDate}
+      </if>
+      <if test="endDate != null">
+        AND mat.mat_date &lt;= #{endDate}
+      </if>
     </select>
 
     <select id="findMatchById" resultMap="matchComplet">

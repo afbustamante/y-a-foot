@@ -4,6 +4,7 @@ import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Match;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -26,8 +27,10 @@ public interface MatchSearchService {
      * Chercher les matchs à venir pour un joueur dont l'identifiant est passé en paramètre
      *
      * @param player Player to use for the research
+     * @param startDate Start date for the research
+     * @param endDate End date for the research
      * @return
      * @throws DatabaseException
      */
-    List<Match> findMatchesByPlayer(Player player) throws DatabaseException;
+    List<Match> findMatchesByPlayer(Player player, LocalDate startDate, LocalDate endDate) throws DatabaseException;
 }

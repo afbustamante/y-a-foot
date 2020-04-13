@@ -22,6 +22,7 @@
              mat_date_creation="2019-01-02" mat_covoiturage_actif="false" mat_partage_actif="true"/>
 
     <t_joueur_match jma_match_fk="1" jma_joueur_fk="1"/>
+    <t_joueur_match jma_match_fk="1" jma_joueur_fk="2"/>
     <t_joueur_match jma_match_fk="2" jma_joueur_fk="2"/>
     <t_joueur_match jma_match_fk="2" jma_joueur_fk="3"/>
 </dataset>

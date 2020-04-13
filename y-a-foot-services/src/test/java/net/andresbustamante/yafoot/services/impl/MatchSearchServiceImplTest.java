@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
@@ -86,27 +87,27 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
-        when(matchDAO.findMatchesByPlayer(any(Player.class), any())).thenReturn(Arrays.asList(match1, match2));
-        List<Match> matchs = matchSearchService.findMatchesByPlayer(player1);
+        when(matchDAO.findMatchesByPlayer(any(Player.class), any(), any())).thenReturn(Arrays.asList(match1, match2));
+        List<Match> matchs = matchSearchService.findMatchesByPlayer(player1, null, LocalDate.now());
 
         // Then
         assertNotNull(matchs);
         assertEquals(2, matchs.size());
-        verify(matchDAO, times(1)).findMatchesByPlayer(any(Player.class), any());
+        verify(matchDAO).findMatchesByPlayer(any(Player.class), any(), any());
     }
 
     @Test
     void findMatchesByPlayerWithNoPlayerId() throws Exception {
         // Given
         UserContext ctx = new UserContext();
-        ctx.setTimezone(ZoneId.of("UTC"));
+        ctx.setTimezone(ZoneId.systemDefault());
 
         // When
-        List<Match> matchs = matchSearchService.findMatchesByPlayer(null);
+        List<Match> matchs = matchSearchService.findMatchesByPlayer(null, null, null);
 
         // Then
         assertNotNull(matchs);
         assertTrue(matchs.isEmpty());
-        verify(matchDAO, times(0)).findMatchesByPlayer(any(Player.class), any());
+        verify(matchDAO, never()).findMatchesByPlayer(any(Player.class), any(), any());
     }
 }

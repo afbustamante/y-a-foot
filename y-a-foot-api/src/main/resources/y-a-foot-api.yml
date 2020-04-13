@@ -120,6 +120,21 @@ paths:
       summary: Loads the matches available for the active player
       tags:
       - matches
+      parameters:
+      - in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Start date for the research
+      - in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date
+        description: End date for the research
       responses:
         200: # OK
           description: List of matches found for the active player

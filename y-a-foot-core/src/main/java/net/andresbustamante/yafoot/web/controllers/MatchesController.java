@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,10 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -86,13 +89,15 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<List<Match>> loadMatches() {
+    public ResponseEntity<List<Match>> loadMatches(@DateTimeFormat(iso = DATE) LocalDate startDate,
+                                                   @DateTimeFormat(iso = DATE) LocalDate endDate) {
         try {
             UserContext ctx = getUserContext(request);
 
             Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
 
-            List<net.andresbustamante.yafoot.model.Match> matches = matchSearchService.findMatchesByPlayer(player);
+            List<net.andresbustamante.yafoot.model.Match> matches = matchSearchService.findMatchesByPlayer(player,
+                    startDate, endDate);
 
             if (CollectionUtils.isNotEmpty(matches)) {
                 List<Match> result = matchMapper.map(matches);
