@@ -6,15 +6,15 @@ import java.math.BigDecimal;
 /**
  * @author andresbustamante
  */
-public class CoordonneesGPS implements Serializable {
+public class GpsCoordinates implements Serializable {
 
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    public CoordonneesGPS() {
+    public GpsCoordinates() {
     }
 
-    public CoordonneesGPS(BigDecimal latitude, BigDecimal longitude) {
+    public GpsCoordinates(BigDecimal latitude, BigDecimal longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

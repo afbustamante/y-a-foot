@@ -69,7 +69,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(matchDAO, times(1)).isCodeAlreadyRegistered(anyString());
         verify(siteDAO, times(1)).findSiteById(any());
-        verify(siteDAO, times(0)).saveSite(any());
+        verify(siteDAO, never()).saveSite(any(Site.class), any(Player.class));
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreateur());

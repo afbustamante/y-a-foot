@@ -33,6 +33,7 @@ public interface SiteDAO {
      * Créer le site passé en paramètre
      *
      * @param site Site à créer
+     * @param author Player creating the site
      */
-    int saveSite(@Param(SITE) Site site);
+    int saveSite(@Param(SITE) Site site, @Param(PLAYER) Player author);
 }

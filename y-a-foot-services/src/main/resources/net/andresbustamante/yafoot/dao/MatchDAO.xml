@@ -18,10 +18,10 @@
                mat.mat_num_joueurs_inscrits AS nbJoueursInscrits,
                mat.mat_covoiturage_actif    AS covoiturageActif,
                mat.mat_partage_actif        AS partageActif,
-               sit.sit_id                   AS idSite,
-               sit.sit_nom                  AS nomSite,
-               sit.sit_adresse              AS adresseSite,
-               sit.sit_telephone            AS telephoneSite,
+               sit.sit_id                   AS siteId,
+               sit.sit_name                 AS siteName,
+               sit.sit_address              AS siteAddress,
+               sit.sit_phone_number         AS sitePhoneNumber,
                sit.sit_latitude             AS latitudeSite,
                sit.sit_longitude            AS longitudeSite,
                cre.jou_id                   AS idCreateur,
@@ -52,10 +52,10 @@
                mat.mat_num_joueurs_inscrits AS nbJoueursInscrits,
                mat.mat_covoiturage_actif    AS covoiturageActif,
                mat.mat_partage_actif        AS partageActif,
-               sit.sit_id                   AS idSite,
-               sit.sit_nom                  AS nomSite,
-               sit.sit_adresse              AS adresseSite,
-               sit.sit_telephone            AS telephoneSite,
+               sit.sit_id                   AS siteId,
+               sit.sit_name                 AS siteName,
+               sit.sit_address              AS siteAddress,
+               sit.sit_phone_number         AS sitePhoneNumber,
                sit.sit_latitude             AS latitudeSite,
                sit.sit_longitude            AS longitudeSite,
                cre.jou_id                   AS idCreateur,
@@ -104,10 +104,10 @@
                cre.jou_nom                  AS nomCreateur,
                cre.jou_prenom               AS prenomCreateur,
                cre.jou_email                AS emailCreateur,
-               sit.sit_id                   AS idSite,
-               sit.sit_nom                  AS nomSite,
-               sit.sit_adresse              AS adresseSite,
-               sit.sit_telephone            AS telephoneSite,
+               sit.sit_id                   AS siteId,
+               sit.sit_name                 AS siteName,
+               sit.sit_address              AS siteAddress,
+               sit.sit_phone_number         AS sitePhoneNumber,
                sit.sit_latitude             AS latitudeSite,
                sit.sit_longitude            AS longitudeSite
         FROM t_match mat
@@ -198,11 +198,11 @@
         <result property="covoiturageActif" column="covoiturageActif"/>
         <result property="partageActif" column="partageActif"/>
         <association property="site" javaType="net.andresbustamante.yafoot.model.Site">
-            <id column="idSite" property="id"/>
-            <result column="nomSite" property="nom"/>
-            <result column="adresseSite" property="adresse"/>
-            <result column="telephoneSite" property="telephone"/>
-            <association property="localisation" javaType="net.andresbustamante.yafoot.model.CoordonneesGPS">
+            <id column="siteId" property="id"/>
+            <result column="siteName" property="name"/>
+            <result column="siteAddress" property="address"/>
+            <result column="sitePhoneNumber" property="phoneNumber"/>
+            <association property="location" javaType="net.andresbustamante.yafoot.model.GpsCoordinates">
                 <result column="latitudeSite" property="latitude"/>
                 <result column="longitudeSite" property="longitude"/>
             </association>

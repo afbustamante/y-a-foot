@@ -12,10 +12,10 @@ public class Site implements Locatable, Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private String nom;
-    private String adresse;
-    private String telephone;
-    private CoordonneesGPS localisation;
+    private String name;
+    private String address;
+    private String phoneNumber;
+    private GpsCoordinates location;
 
     public Site() {
     }
@@ -24,11 +24,11 @@ public class Site implements Locatable, Serializable {
         this.id = id;
     }
 
-    public Site(String nom, String adresse, String telephone, CoordonneesGPS localisation) {
-        this.nom = nom;
-        this.adresse = adresse;
-        this.telephone = telephone;
-        this.localisation = localisation;
+    public Site(String name, String address, String phoneNumber, GpsCoordinates location) {
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.location = location;
     }
 
     public Integer getId() {
@@ -39,38 +39,37 @@ public class Site implements Locatable, Serializable {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public String getName() {
+        return name;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAdresse() {
-        return adresse;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    @Override
-    public CoordonneesGPS getLocalisation() {
-        return localisation;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
-    public void setLocalisation(CoordonneesGPS localisation) {
-        this.localisation = localisation;
+    public GpsCoordinates getLocation() {
+        return location;
+    }
+
+    public void setLocation(GpsCoordinates location) {
+        this.location = location;
     }
 
     @Override

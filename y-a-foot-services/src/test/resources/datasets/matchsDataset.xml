@@ -8,8 +8,8 @@
               jou_email="griezmann@email.com"
               jou_date_creation="2019-01-03"/>
 
-    <t_site sit_id="1" sit_nom="Foot-à-5 de la ville" sit_adresse="9 Rue du sport" sit_telephone="1234567890"/>
-    <t_site sit_id="2" sit_nom="Foot-à-5 de l'autre ville" sit_adresse="5 Rue des fous" sit_telephone="1434567890"/>
+    <t_site sit_id="1" sit_name="Foot-à-5 de la ville" sit_address="9 Rue du sport" sit_phone_number="1234567890" sit_creator_id="1"/>
+    <t_site sit_id="2" sit_name="Foot-à-5 de l'autre ville" sit_address="5 Rue des fous" sit_phone_number="1434567890"/>
 
     <t_match mat_id="1" mat_date="2018-10-02 18:30:00" mat_code="AZERTY-1234" mat_description="Mon match dans le passé"
              mat_num_joueurs_min="9" mat_num_joueurs_inscrits="1" mat_site_fk="1" mat_createur_fk="1" mat_date_creation="2019-01-02"

@@ -20,7 +20,7 @@ class SiteDAOTest extends AbstractDAOTest {
     private SiteDAO siteDAO;
 
     @Test
-    void chercherSitesParJoueur() throws Exception {
+    void findSitesByPlayer() throws Exception {
         // Given
         Player player1 = new Player(1);
 
@@ -31,32 +31,33 @@ class SiteDAOTest extends AbstractDAOTest {
         assertNotNull(sites);
         assertEquals(1, sites.size());
         assertEquals(1, sites.get(0).getId().intValue());
-        assertEquals("1234567890", sites.get(0).getTelephone());
+        assertEquals("1234567890", sites.get(0).getPhoneNumber());
     }
 
     @Test
-    void chercherSiteParId() throws Exception {
+    void findSiteById() throws Exception {
         // Given
         // When
         Site site = siteDAO.findSiteById(1);
 
         // Then
         assertNotNull(site);
-        assertEquals("1234567890", site.getTelephone());
-        assertEquals("9 Rue du sport", site.getAdresse());
-        assertEquals("Foot-à-5 de la ville", site.getNom());
+        assertEquals("1234567890", site.getPhoneNumber());
+        assertEquals("9 Rue du sport", site.getAddress());
+        assertEquals("Foot-à-5 de la ville", site.getName());
     }
 
     @Test
-    void creerSite() throws Exception {
+    void saveSite() throws Exception {
         // Given
-        Site nouveauSite = new Site("Nouveau site", "123 Rue du site", "0412345678", null);
+        Site newSite = new Site("Nouveau site", "123 Rue du site", "0412345678", null);
+        Player player1 = new Player(1);
 
         // When
-        siteDAO.saveSite(nouveauSite);
+        siteDAO.saveSite(newSite, player1);
 
         // Then
-        assertNotNull(nouveauSite.getId());
-        assertTrue(nouveauSite.getId() > 0);
+        assertNotNull(newSite.getId());
+        assertTrue(newSite.getId() > 0);
     }
 }
