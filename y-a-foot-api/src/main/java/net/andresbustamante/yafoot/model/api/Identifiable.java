@@ -1,8 +1,7 @@
 package net.andresbustamante.yafoot.model.api;
 
+@FunctionalInterface
 public interface Identifiable {
     
     Integer getId();
-    
-    void setId(Integer id);
 }

@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.model;
 
+import net.andresbustamante.yafoot.model.api.Identifiable;
 import net.andresbustamante.yafoot.model.api.Locatable;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.io.Serializable;
  *
  * @author andresbustamante
  */
-public class Site implements Locatable, Serializable {
+public class Site implements Locatable, Identifiable, Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -31,6 +32,7 @@ public class Site implements Locatable, Serializable {
         this.location = location;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

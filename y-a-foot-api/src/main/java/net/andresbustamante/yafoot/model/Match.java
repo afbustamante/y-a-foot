@@ -1,5 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
+import net.andresbustamante.yafoot.model.api.Identifiable;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 /**
  * @author andresbustamante
  */
-public class Match implements Serializable {
+public class Match implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -35,6 +37,7 @@ public class Match implements Serializable {
         this.dateMatch = dateMatch;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

@@ -1,12 +1,14 @@
 package net.andresbustamante.yafoot.model;
 
+import net.andresbustamante.yafoot.model.api.Identifiable;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author andresbustamante
  */
-public class Voiture implements Serializable {
+public class Voiture implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -22,6 +24,7 @@ public class Voiture implements Serializable {
         this.id = id;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

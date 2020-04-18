@@ -38,7 +38,6 @@ public class Player extends User implements Serializable, Identifiable {
         return id;
     }
 
-    @Override
     public void setId(Integer id) {
         this.id = id;
     }
