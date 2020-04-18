@@ -7,19 +7,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DatabaseSetup(value = "classpath:datasets/joueursDataset.xml")
-@DatabaseTearDown(value = "classpath:datasets/joueursDataset.xml", type = DELETE_ALL)
+@DatabaseSetup(value = "classpath:datasets/playersDataset.xml")
+@DatabaseTearDown(value = "classpath:datasets/playersDataset.xml", type = DELETE_ALL)
 class PlayerDAOTest extends AbstractDAOTest {
 
     private static final String EMAIL = "john.doe@email.com";
-    private static final String AUTRE_TELEPHONE = "0423456789";
-    private static final String AUTRE_NOM = "Smith";
-    private static final String AUTRE_PRENOM = "Alan";
-    private static final String NOUVEL_EMAIL = "nonInscrit@email.com";
+    private static final String PHONE_NUMBER = "0423456789";
+    private static final String SURNAME = "Smith";
+    private static final String FIRST_NAME = "Alan";
+    private static final String NEW_EMAIL = "nonInscrit@email.com";
 
     private static final Player JOHN_DOE = new Player(1, "Doe", "John", EMAIL, "01234656789");
 
@@ -28,22 +30,22 @@ class PlayerDAOTest extends AbstractDAOTest {
 
     @Test
     void savePlayer() throws Exception {
-        Player player = getNouveauJoueur();
-        int nbJoueurs = playerDAO.savePlayer(player);
+        Player player = buildNewPlayer();
+        int numPlayers = playerDAO.savePlayer(player);
 
         // Vérifier que le player à un identifiant de base de données attribué
-        assertEquals(1, nbJoueurs);
+        assertEquals(1, numPlayers);
         assertNotNull(player.getId());
         assertTrue(player.getId() > 0);
     }
 
     @Test
     void isPlayerAlreadySignedIn() throws Exception {
-        boolean isInscrit = playerDAO.isPlayerAlreadySignedIn(NOUVEL_EMAIL);
-        assertFalse(isInscrit);
+        boolean alreadySignedUp = playerDAO.isPlayerAlreadySignedUp(NEW_EMAIL);
+        assertFalse(alreadySignedUp);
 
-        isInscrit = playerDAO.isPlayerAlreadySignedIn(EMAIL);
-        assertTrue(isInscrit);
+        alreadySignedUp = playerDAO.isPlayerAlreadySignedUp(EMAIL);
+        assertTrue(alreadySignedUp);
     }
 
     @Test
@@ -59,8 +61,8 @@ class PlayerDAOTest extends AbstractDAOTest {
         assertNotNull(player1.getPhoneNumber());
         assertNotNull(player1.getEmail());
         assertEquals(JOHN_DOE.getPhoneNumber(), player1.getPhoneNumber());
-        assertNotNull(player1.getDateCreation());
-        assertEquals(LocalDateTime.of(2019, 1, 2, 12, 34, 56), player1.getDateCreation());
+        assertNotNull(player1.getCreationDate());
+        assertEquals(ZonedDateTime.of(2019, 1, 2, 12, 34, 56, 0, ZoneId.systemDefault()), player1.getCreationDate());
     }
 
     @Test
@@ -75,42 +77,42 @@ class PlayerDAOTest extends AbstractDAOTest {
         assertEquals(JOHN_DOE.getPhoneNumber(), player.getPhoneNumber());
         assertNotNull(player.getEmail());
         assertEquals(JOHN_DOE.getEmail(), player.getEmail());
-        assertNotNull(player.getDateCreation());
+        assertNotNull(player.getCreationDate());
     }
 
     @Test
     void updatePlayer() throws Exception {
         // Modifier les informations pour le player avec l'ID de John Doe
         Player player = playerDAO.findPlayerByEmail(EMAIL);
-        player.setPhoneNumber(AUTRE_TELEPHONE);
-        player.setSurname(AUTRE_NOM);
-        player.setFirstName(AUTRE_PRENOM);
-        assertNull(player.getDateDerniereMaj());
+        player.setPhoneNumber(PHONE_NUMBER);
+        player.setSurname(SURNAME);
+        player.setFirstName(FIRST_NAME);
+        assertNull(player.getLastUpdateDate());
 
-        int nbJoueurs = playerDAO.updatePlayer(player);
+        int numPlayers = playerDAO.updatePlayer(player);
 
         Player player1 = playerDAO.findPlayerByEmail(EMAIL);
 
         // Les informations du player 1 doivent être modifiées
-        assertEquals(1, nbJoueurs);
+        assertEquals(1, numPlayers);
         assertNotNull(player1.getPhoneNumber());
-        assertEquals(AUTRE_TELEPHONE, player1.getPhoneNumber());
+        assertEquals(PHONE_NUMBER, player1.getPhoneNumber());
         assertNotNull(player1.getSurname());
-        assertEquals(AUTRE_NOM, player1.getSurname());
+        assertEquals(SURNAME, player1.getSurname());
         assertNotNull(player1.getFirstName());
-        assertEquals(AUTRE_PRENOM, player1.getFirstName());
-        assertNotNull(player1.getDateDerniereMaj());
-        assertTrue(player.getDateCreation().isBefore(player1.getDateDerniereMaj()));
+        assertEquals(FIRST_NAME, player1.getFirstName());
+        assertNotNull(player1.getLastUpdateDate());
+        assertTrue(player.getCreationDate().isBefore(player1.getLastUpdateDate()));
     }
 
     @Test
     void deletePlayer() throws Exception {
         // When
-        int nbJoueurs = playerDAO.deletePlayer(JOHN_DOE);
+        int numPlayers = playerDAO.deletePlayer(JOHN_DOE);
         Player player = playerDAO.findPlayerByEmail(EMAIL);
 
         // Then
-        assertEquals(1, nbJoueurs);
+        assertEquals(1, numPlayers);
         // Le player n'existe plus
         assertNull(player);
     }
@@ -118,11 +120,11 @@ class PlayerDAOTest extends AbstractDAOTest {
     @Test
     void deactivatePlayer() throws Exception {
         // When
-        int nbJoueurs = playerDAO.deactivatePlayer(JOHN_DOE);
+        int numPlayers = playerDAO.deactivatePlayer(JOHN_DOE);
         Player player = playerDAO.findPlayerById(JOHN_DOE.getId());
 
         // Then
-        assertEquals(1, nbJoueurs);
+        assertEquals(1, numPlayers);
         assertNotNull(player);
         assertTrue(player.getFirstName().startsWith("User"));
         assertTrue(player.getFirstName().endsWith(player.getId().toString()));
@@ -139,7 +141,7 @@ class PlayerDAOTest extends AbstractDAOTest {
      *
      * @return Nouveau joueur avec les informations de base
      */
-    private Player getNouveauJoueur() {
+    private Player buildNewPlayer() {
         Player player = new Player();
         player.setEmail("hope.solo@test.com");
         player.setFirstName("Hope");

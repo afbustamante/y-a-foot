@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.model;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -15,9 +15,9 @@ public class Player extends User implements Serializable, Identifiable {
     private Integer id;
     private String phoneNumber;
     private boolean active;
-    private LocalDateTime dateCreation;
-    private LocalDateTime dateDerniereMaj;
-    private List<Voiture> voitures;
+    private ZonedDateTime creationDate;
+    private ZonedDateTime lastUpdateDate;
+    private List<Voiture> cars;
 
     public Player() {}
 
@@ -58,28 +58,28 @@ public class Player extends User implements Serializable, Identifiable {
         this.active = active;
     }
 
-    public LocalDateTime getDateCreation() {
-        return dateCreation;
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
     }
 
-    public void setDateCreation(LocalDateTime dateCreation) {
-        this.dateCreation = dateCreation;
+    public void setCreationDate(ZonedDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public LocalDateTime getDateDerniereMaj() {
-        return dateDerniereMaj;
+    public ZonedDateTime getLastUpdateDate() {
+        return lastUpdateDate;
     }
 
-    public void setDateDerniereMaj(LocalDateTime dateDerniereMaj) {
-        this.dateDerniereMaj = dateDerniereMaj;
+    public void setLastUpdateDate(ZonedDateTime lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 
-    public List<Voiture> getVoitures() {
-        return voitures;
+    public List<Voiture> getCars() {
+        return cars;
     }
 
-    public void setVoitures(List<Voiture> voitureList) {
-        this.voitures = voitureList;
+    public void setCars(List<Voiture> voitureList) {
+        this.cars = voitureList;
     }
 
     @Override

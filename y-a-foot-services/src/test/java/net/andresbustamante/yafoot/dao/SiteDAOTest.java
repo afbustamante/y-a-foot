@@ -12,8 +12,8 @@ import java.util.List;
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DatabaseSetup(value = "classpath:datasets/matchsDataset.xml")
-@DatabaseTearDown(value = "classpath:datasets/matchsDataset.xml", type = DELETE_ALL)
+@DatabaseSetup(value = "classpath:datasets/matchesDataset.xml")
+@DatabaseTearDown(value = "classpath:datasets/matchesDataset.xml", type = DELETE_ALL)
 class SiteDAOTest extends AbstractDAOTest {
 
     @Autowired

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataset>
-  <t_joueur jou_id="1" jou_nom="Doe" jou_prenom="John" jou_telephone="01234656789" jou_email="john.doe@email.com"
-            jou_date_creation="2019-01-02 12:34:56" jou_actif="true"/>
-  <t_joueur jou_id="2" jou_nom="Smith" jou_prenom="James" jou_telephone="04234656789" jou_email="james.smith@email.com"
-            jou_date_creation="2018-01-02 12:34:56" jou_date_derniere_maj="2019-05-02 10:31:22" jou_actif="false"/>
-</dataset>

@@ -5,13 +5,13 @@ import net.andresbustamante.yafoot.model.Player;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = SpringMapperConfig.class, uses = {StringMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {StringMapper.class, DateMapper.class})
 public interface PlayerMapper {
 
     @Mapping(target = "active", ignore = true)
-    @Mapping(target = "dateCreation", ignore = true)
-    @Mapping(target = "dateDerniereMaj", ignore = true)
-    @Mapping(target = "voitures", ignore = true)
+    @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "lastUpdateDate", ignore = true)
+    @Mapping(target = "cars", ignore = true)
     Player map(net.andresbustamante.yafoot.web.dto.Player player);
 
     @Mapping(target = "password", ignore = true)

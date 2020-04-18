@@ -2,38 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.andresbustamante.yafoot.dao.PlayerDAO">
-    <select id="isPlayerAlreadySignedIn" resultType="boolean">
+    <select id="isPlayerAlreadySignedUp" resultType="boolean">
         SELECT COUNT(*)
-        FROM t_joueur jou
-        WHERE jou.jou_email = #{email}
+        FROM t_player p
+        WHERE p.ply_email = #{email}
     </select>
 
     <select id="findPlayerById" resultType="net.andresbustamante.yafoot.model.Player">
         SELECT
-            jou.jou_id                AS id,
-            jou.jou_nom               AS surname,
-            jou.jou_prenom            AS firstName,
-            jou.jou_email             AS email,
-            jou.jou_telephone         AS phoneNumber,
-            jou.jou_date_creation     AS dateCreation,
-            jou.jou_date_derniere_maj AS dateDerniereMaj,
-            jou.jou_actif             AS active
-        FROM t_joueur jou
-        WHERE jou.jou_id = #{id}
+            p.ply_id                AS id,
+            p.ply_surname           AS surname,
+            p.ply_first_name        AS firstName,
+            p.ply_email             AS email,
+            p.ply_phone_number      AS phoneNumber,
+            p.ply_created_at        AS creationDate,
+            p.ply_last_updated      AS lastUpdateDate,
+            p.ply_active            AS active
+        FROM t_player p
+        WHERE p.ply_id = #{id}
     </select>
 
     <select id="findPlayerByEmail" resultType="net.andresbustamante.yafoot.model.Player">
         SELECT
-            jou.jou_id                AS id,
-            jou.jou_nom               AS surname,
-            jou.jou_prenom            AS firstName,
-            jou.jou_email             AS email,
-            jou.jou_telephone         AS phoneNumber,
-            jou.jou_date_creation     AS dateCreation,
-            jou.jou_date_derniere_maj AS dateDerniereMaj,
-            jou.jou_actif             AS active
-        FROM t_joueur jou
-        WHERE jou.jou_email = #{email}
+            p.ply_id                AS id,
+            p.ply_surname           AS surname,
+            p.ply_first_name        AS firstName,
+            p.ply_email             AS email,
+            p.ply_phone_number      AS phoneNumber,
+            p.ply_created_at        AS creationDate,
+            p.ply_last_updated      AS lastUpdateDate,
+            p.ply_active            AS active
+        FROM t_player p
+        WHERE p.ply_email = #{email}
     </select>
 
     <insert id="savePlayer" useGeneratedKeys="true">
@@ -41,40 +41,40 @@
             SELECT NEXTVAL('s_joueur') AS id;
         </selectKey>
 
-        INSERT INTO t_joueur (jou_id, jou_nom, jou_prenom, jou_telephone, jou_email, jou_date_creation, jou_actif)
+        INSERT INTO t_player (ply_id, ply_surname, ply_first_name, ply_phone_number, ply_email, ply_created_at, ply_active)
         VALUES
         (#{player.id}, #{player.surname}, #{player.firstName}, #{player.phoneNumber}, #{player.email}, NOW(), true)
     </insert>
 
     <update id="updatePlayer">
-        UPDATE t_joueur
+        UPDATE t_player
         SET
         <if test="player.surname != null">
-            jou_nom = #{player.surname},
+            ply_surname = #{player.surname},
         </if>
         <if test="player.firstName != null">
-            jou_prenom = #{player.firstName},
+            ply_first_name = #{player.firstName},
         </if>
         <if test="player.phoneNumber != null">
-            jou_telephone = #{player.phoneNumber},
+            ply_phone_number = #{player.phoneNumber},
         </if>
-        jou_date_derniere_maj = NOW()
-        WHERE jou_email = #{player.email}
+        ply_last_updated = NOW()
+        WHERE ply_email = #{player.email}
     </update>
 
     <delete id="deletePlayer">
-        DELETE FROM t_joueur
-        WHERE jou_id = #{player.id}
+        DELETE FROM t_player
+        WHERE ply_id = #{player.id}
     </delete>
 
     <update id="deactivatePlayer">
-        UPDATE t_joueur
-        SET jou_prenom    = 'User' || jou_id,
-            jou_nom       = 'Foot',
-            jou_email     = jou_email || '.' || CURRENT_DATE || '.old',
-            jou_telephone = null,
-            jou_actif     = false,
-            jou_date_derniere_maj = NOW()
-        WHERE jou_id = #{player.id}
+        UPDATE t_player
+        SET ply_first_name = 'User' || ply_id,
+            ply_surname    = 'Foot',
+            ply_email      = ply_email || '.' || CURRENT_DATE || '.old',
+            ply_phone_number  = null,
+            ply_active        = false,
+            ply_last_updated  = NOW()
+        WHERE ply_id = #{player.id}
     </update>
 </mapper>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <t_joueur jou_id="1" jou_nom="Ronaldo" jou_prenom="Cristiano" jou_telephone="01234656789" jou_email="cr7@email.com"
-              jou_date_creation="2019-01-01"/>
-    <t_joueur jou_id="2" jou_nom="Messi" jou_prenom="Lionel" jou_telephone="02234656789" jou_email="messi@email.com"
-              jou_date_creation="2019-01-02"/>
-    <t_joueur jou_id="3" jou_nom="Griezmann" jou_prenom="Antoine" jou_telephone="03234656789"
-              jou_email="griezmann@email.com"
-              jou_date_creation="2019-01-03"/>
+    <t_player ply_id="1" ply_surname="Ronaldo" ply_first_name="Cristiano" ply_phone_number="01234656789" ply_email="cr7@email.com"
+              ply_created_at="2019-01-01"/>
+    <t_player ply_id="2" ply_surname="Messi" ply_first_name="Lionel" ply_phone_number="02234656789" ply_email="messi@email.com"
+              ply_created_at="2019-01-02"/>
+    <t_player ply_id="3" ply_surname="Griezmann" ply_first_name="Antoine" ply_phone_number="03234656789"
+              ply_email="griezmann@email.com"
+              ply_created_at="2019-01-03"/>
 
     <t_site sit_id="1" sit_name="Foot-à-5 de la ville" sit_address="9 Rue du sport" sit_phone_number="1234567890" sit_creator_id="1"/>
     <t_site sit_id="2" sit_name="Foot-à-5 de l'autre ville" sit_address="5 Rue des fous" sit_phone_number="1434567890"/>

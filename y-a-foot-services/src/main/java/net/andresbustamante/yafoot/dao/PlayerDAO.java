@@ -26,7 +26,7 @@ public interface PlayerDAO {
      * @param email Adresse mail à chercher
      * @return True si un joueur existe avec l'address mail passée en paramètre
      */
-    boolean isPlayerAlreadySignedIn(@Param(EMAIL) String email);
+    boolean isPlayerAlreadySignedUp(@Param(EMAIL) String email);
 
     /**
      * Créer un player en base des données

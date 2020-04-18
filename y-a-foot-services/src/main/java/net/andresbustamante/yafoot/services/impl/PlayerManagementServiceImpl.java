@@ -41,7 +41,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Integer savePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
-        if (!playerDAO.isPlayerAlreadySignedIn(player.getEmail())) {
+        if (!playerDAO.isPlayerAlreadySignedUp(player.getEmail())) {
             // Créer l'utilisateur sur l'annuaire LDAP
             userDAO.saveUser(player, RolesEnum.PLAYER);
             // Créer le player en base de données

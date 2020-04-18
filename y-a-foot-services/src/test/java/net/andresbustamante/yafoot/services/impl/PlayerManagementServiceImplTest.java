@@ -1,8 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.PlayerDAO;
-import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.ldap.UserDAO;
 import net.andresbustamante.yafoot.model.Player;
@@ -48,11 +46,11 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         UserContext ctx = new UserContext();
 
         // When
-        when(playerDAO.isPlayerAlreadySignedIn(anyString())).thenReturn(false);
+        when(playerDAO.isPlayerAlreadySignedUp(anyString())).thenReturn(false);
         gestionJoueursService.savePlayer(player, ctx);
 
         // Then
-        verify(playerDAO, times(1)).isPlayerAlreadySignedIn(anyString());
+        verify(playerDAO, times(1)).isPlayerAlreadySignedUp(anyString());
         verify(userDAO, times(1)).saveUser(any(), any());
         verify(playerDAO, times(1)).savePlayer(any());
     }
@@ -65,11 +63,11 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         UserContext ctx = new UserContext();
 
         // When
-        when(playerDAO.isPlayerAlreadySignedIn(anyString())).thenReturn(true);
+        when(playerDAO.isPlayerAlreadySignedUp(anyString())).thenReturn(true);
         assertThrows(ApplicationException.class, () -> gestionJoueursService.savePlayer(player, ctx));
 
         // Then
-        verify(playerDAO, times(1)).isPlayerAlreadySignedIn(anyString());
+        verify(playerDAO, times(1)).isPlayerAlreadySignedUp(anyString());
         verify(userDAO, times(0)).saveUser(any(), any());
         verify(playerDAO, times(0)).savePlayer(any());
     }

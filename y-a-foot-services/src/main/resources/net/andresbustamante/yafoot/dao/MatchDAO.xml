@@ -24,20 +24,20 @@
                sit.sit_phone_number         AS sitePhoneNumber,
                sit.sit_latitude             AS latitudeSite,
                sit.sit_longitude            AS longitudeSite,
-               cre.jou_id                   AS idCreateur,
-               cre.jou_nom                  AS nomCreateur,
-               cre.jou_prenom               AS prenomCreateur,
-               cre.jou_email                AS emailCreateur,
-               jou.jou_id                   AS playerId,
-               jou.jou_prenom               AS prenomJoueur,
-               jou.jou_email                AS emailJoueur,
+               cre.ply_id                   AS creatorId,
+               cre.ply_surname              AS creatorSurname,
+               cre.ply_first_name           AS creatorFirstName,
+               cre.ply_email                AS creatorEmail,
+               ply.ply_id                   AS playerId,
+               ply.ply_first_name           AS playerFirstName,
+               ply.ply_email                AS playerEmail,
                voi.voi_id                   AS idVoiture,
                voi.voi_num_places           AS nbPlacesVoiture
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
-            JOIN t_joueur cre ON mat.mat_createur_fk = cre.jou_id
+            JOIN t_player cre ON mat.mat_createur_fk = cre.ply_id
             LEFT JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
-            LEFT JOIN t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
+            LEFT JOIN t_player ply ON jma.jma_joueur_fk = ply.ply_id
             LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
         WHERE mat.mat_code = #{code}
     </select>
@@ -58,20 +58,20 @@
                sit.sit_phone_number         AS sitePhoneNumber,
                sit.sit_latitude             AS latitudeSite,
                sit.sit_longitude            AS longitudeSite,
-               cre.jou_id                   AS idCreateur,
-               cre.jou_nom                  AS nomCreateur,
-               cre.jou_prenom               AS prenomCreateur,
-               cre.jou_email                AS emailCreateur,
-               jou.jou_id                   AS playerId,
-               jou.jou_prenom               AS prenomJoueur,
-               jou.jou_email                AS emailJoueur,
+               cre.ply_id                   AS creatorId,
+               cre.ply_surname              AS creatorSurname,
+               cre.ply_first_name           AS creatorFirstName,
+               cre.ply_email                AS creatorEmail,
+               ply.ply_id                   AS playerId,
+               ply.ply_first_name           AS playerFirstName,
+               ply.ply_email                AS playerEmail,
                voi.voi_id                   AS idVoiture,
                voi.voi_num_places           AS nbPlacesVoiture
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
-            JOIN t_joueur cre ON mat.mat_createur_fk = cre.jou_id
+            JOIN t_player cre ON mat.mat_createur_fk = cre.ply_id
             JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
-            LEFT JOIN t_joueur jou ON jma.jma_joueur_fk = jou.jou_id
+            LEFT JOIN t_player ply ON jma.jma_joueur_fk = ply.ply_id
             LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
         WHERE jma.jma_joueur_fk = #{player.id}
       <if test="startDate != null">
@@ -100,10 +100,10 @@
                mat.mat_num_joueurs_inscrits AS nbJoueursInscrits,
                mat.mat_covoiturage_actif    AS covoiturageActif,
                mat.mat_partage_actif        AS partageActif,
-               cre.jou_id                   AS idCreateur,
-               cre.jou_nom                  AS nomCreateur,
-               cre.jou_prenom               AS prenomCreateur,
-               cre.jou_email                AS emailCreateur,
+               cre.ply_id                   AS creatorId,
+               cre.ply_surname              AS creatorSurname,
+               cre.ply_first_name           AS creatorFirstName,
+               cre.ply_email                AS creatorEmail,
                sit.sit_id                   AS siteId,
                sit.sit_name                 AS siteName,
                sit.sit_address              AS siteAddress,
@@ -112,7 +112,7 @@
                sit.sit_longitude            AS longitudeSite
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_fk = sit.sit_id
-            JOIN t_joueur cre on mat.mat_createur_fk = cre.jou_id
+            JOIN t_player cre on mat.mat_createur_fk = cre.ply_id
         WHERE mat.mat_id = #{id}
     </select>
 
@@ -208,17 +208,17 @@
             </association>
         </association>
         <association property="createur" javaType="net.andresbustamante.yafoot.model.Player">
-            <id column="idCreateur" property="id"/>
-            <result column="nomCreateur" property="surname"/>
-            <result column="prenomCreateur" property="firstName"/>
-            <result column="emailCreateur" property="email"/>
+            <id column="creatorId" property="id"/>
+            <result column="creatorSurname" property="surname"/>
+            <result column="creatorFirstName" property="firstName"/>
+            <result column="creatorEmail" property="email"/>
         </association>
         <collection property="inscriptions" ofType="net.andresbustamante.yafoot.model.Inscription">
             <id column="playerId" property="id.playerId" />
             <association property="player" javaType="net.andresbustamante.yafoot.model.Player">
                 <id column="playerId" property="id" />
-                <result column="prenomJoueur" property="firstName" />
-                <result column="emailJoueur" property="email" />
+                <result column="playerFirstName" property="firstName" />
+                <result column="playerEmail" property="email" />
             </association>
             <association property="voiture" javaType="net.andresbustamante.yafoot.model.Voiture">
                 <id column="idVoiture" property="id" />
