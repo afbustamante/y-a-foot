@@ -3,35 +3,35 @@
 
 <mapper namespace="net.andresbustamante.yafoot.dao.CarDAO">
 
-  <select id="findCarById" resultType="net.andresbustamante.yafoot.model.Voiture">
-    SELECT voi_id         AS id,
-           voi_nom        AS nom,
-           voi_num_places AS nbPlaces
-    FROM t_voiture
-    WHERE voi_id = #{id}
+  <select id="findCarById" resultType="net.andresbustamante.yafoot.model.Car">
+    SELECT
+      car_id        AS id,
+      car_name      AS name,
+      car_num_seats AS numSeats
+    FROM t_car
+    WHERE car_id = #{id}
   </select>
 
   <insert id="saveCar" useGeneratedKeys="true">
-    <selectKey keyProperty="voiture.id" resultType="int" order="BEFORE">
+    <selectKey keyProperty="car.id" resultType="int" order="BEFORE">
       SELECT NEXTVAL('s_voiture') AS id;
     </selectKey>
 
-    INSERT INTO t_voiture (voi_id, voi_nom, voi_num_places, voi_chauffeur_fk)
-    VALUES (#{voiture.id}, #{voiture.nom}, #{voiture.nbPlaces}, #{player.id})
+    INSERT INTO t_car (car_id, car_name, car_num_seats, car_driver_id)
+    VALUES (#{car.id}, #{car.name}, #{car.numSeats}, #{player.id})
   </insert>
 
   <delete id="deleteCarsByPlayer">
-    DELETE
-    FROM t_voiture
-    WHERE voi_chauffeur_fk = #{player.id}
+    DELETE FROM t_car
+    WHERE car_driver_id = #{player.id}
   </delete>
 
-  <select id="findCarsByPlayer" resultType="net.andresbustamante.yafoot.model.Voiture">
+  <select id="findCarsByPlayer" resultType="net.andresbustamante.yafoot.model.Car">
     SELECT
-      voi_id         AS id,
-      voi_nom        AS nom,
-      voi_num_places AS nbPlaces
-    FROM t_voiture
-    WHERE voi_chauffeur_fk = #{player.id}
+      car_id        AS id,
+      car_name      AS name,
+      car_num_seats AS numSeats
+    FROM t_car
+    WHERE car_driver_id = #{player.id}
   </select>
 </mapper>

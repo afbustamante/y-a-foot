@@ -32,14 +32,14 @@
           ply.ply_id                     AS playerId,
           ply.ply_first_name             AS playerFirstName,
           ply.ply_email                  AS playerEmail,
-          voi.voi_id                     AS idVoiture,
-          voi.voi_num_places             AS nbPlacesVoiture
+          car.car_id                     AS carId,
+          car.car_num_seats              AS carNumSeats
         FROM t_match mat
           JOIN t_site sit ON mat.mat_site_id = sit.sit_id
           JOIN t_player cre ON mat.mat_creator_id = cre.ply_id
           LEFT JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
           LEFT JOIN t_player ply ON jma.jma_joueur_fk = ply.ply_id
-          LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
+          LEFT JOIN t_car car ON jma.jma_voiture_fk = car.car_id
         WHERE mat.mat_code = #{code}
     </select>
 
@@ -66,14 +66,14 @@
                ply.ply_id                   AS playerId,
                ply.ply_first_name           AS playerFirstName,
                ply.ply_email                AS playerEmail,
-               voi.voi_id                   AS idVoiture,
-               voi.voi_num_places           AS nbPlacesVoiture
+               car.car_id                   AS carId,
+               car.car_num_seats            AS carNumSeats
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_id = sit.sit_id
             JOIN t_player cre ON mat.mat_creator_id = cre.ply_id
             JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
             LEFT JOIN t_player ply ON jma.jma_joueur_fk = ply.ply_id
-            LEFT JOIN t_voiture voi ON jma.jma_voiture_fk = voi.voi_id
+            LEFT JOIN t_car car ON jma.jma_voiture_fk = car.car_id
         WHERE jma.jma_joueur_fk = #{player.id}
       <if test="startDate != null">
         AND mat.mat_date &gt;= #{startDate}
@@ -152,13 +152,13 @@
 
     <insert id="registerPlayer">
         <choose>
-            <when test="voiture == null">
+            <when test="car == null">
                 INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk)
                 VALUES (#{match.id}, #{player.id})
             </when>
             <otherwise>
                 INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk, jma_voiture_fk)
-                VALUES (#{match.id}, #{player.id}, #{voiture.id})
+                VALUES (#{match.id}, #{player.id}, #{car.id})
             </otherwise>
         </choose>
     </insert>
@@ -222,9 +222,9 @@
                 <result column="playerFirstName" property="firstName" />
                 <result column="playerEmail" property="email" />
             </association>
-            <association property="voiture" javaType="net.andresbustamante.yafoot.model.Voiture">
-                <id column="idVoiture" property="id" />
-                <result column="nbPlacesVoiture" property="nbPlaces" />
+            <association property="car" javaType="net.andresbustamante.yafoot.model.Car">
+                <id column="carId" property="id" />
+                <result column="carNumSeats" property="numSeats" />
             </association>
         </collection>
     </resultMap>

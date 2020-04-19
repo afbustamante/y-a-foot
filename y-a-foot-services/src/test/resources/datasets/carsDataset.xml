@@ -2,6 +2,6 @@
 <dataset>
   <t_player ply_id="1" ply_surname="Doe" ply_first_name="John" ply_phone_number="01234656789" ply_email="john.doe@email.com"
             ply_created_at="2019-01-02 12:34:56"/>
-  <t_voiture voi_id="1001" voi_nom="Peugeot 207" voi_num_places="4" voi_chauffeur_fk="1" />
-  <t_voiture voi_id="1002" voi_nom="Renault Mégane GTi" voi_num_places="3" voi_chauffeur_fk="1" />
+  <t_car car_id="1001" car_name="Peugeot 207" car_num_seats="4" car_driver_id="1" />
+  <t_car car_id="1002" car_name="Renault Mégane GTi" car_num_seats="3" car_driver_id="1" />
 </dataset>

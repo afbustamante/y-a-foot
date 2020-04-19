@@ -2,9 +2,9 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
+import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.Voiture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -41,17 +41,17 @@ class CarManagementServiceImplTest extends AbstractServiceTest {
     @Test
     void saveCar() throws Exception {
         // Given
-        Voiture voiture = new Voiture(8);
-        voiture.setNom("Test car");
-        voiture.setNbPlaces(3);
+        Car car = new Car(8);
+        car.setName("Test car");
+        car.setNumSeats(3);
 
         // When
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
 
-        int idVoiture = carManagementService.saveCar(voiture, userContext);
+        int carId = carManagementService.saveCar(car, userContext);
 
-        assertEquals(8, idVoiture);
-        verify(carDAO).saveCar(any(Voiture.class), any(Player.class));
+        assertEquals(8, carId);
+        verify(carDAO).saveCar(any(Car.class), any(Player.class));
     }
 
     @Test

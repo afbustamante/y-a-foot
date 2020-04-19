@@ -3,9 +3,9 @@ package net.andresbustamante.yafoot.services.impl;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.Voiture;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +26,10 @@ public class CarManagementServiceImpl implements CarManagementService {
 
     @Transactional
     @Override
-    public int saveCar(Voiture voiture, UserContext ctx) throws DatabaseException {
+    public int saveCar(Car car, UserContext ctx) throws DatabaseException {
         Player player = playerDAO.findPlayerByEmail(ctx.getUsername());
-        carDAO.saveCar(voiture, player);
-        return voiture.getId();
+        carDAO.saveCar(car, player);
+        return car.getId();
     }
 
     @Transactional

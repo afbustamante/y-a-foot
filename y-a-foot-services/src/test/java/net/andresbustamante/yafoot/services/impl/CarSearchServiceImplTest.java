@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.Voiture;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,15 +27,15 @@ class CarSearchServiceImplTest extends AbstractServiceTest {
     void findCarsByPlayer() throws Exception {
         // Given
         Player player = new Player(1);
-        List<Voiture> voitures = Arrays.asList(new Voiture(1), new Voiture(2));
-        when(carDAO.findCarsByPlayer(any(Player.class))).thenReturn(voitures);
+        List<Car> cars = Arrays.asList(new Car(1), new Car(2));
+        when(carDAO.findCarsByPlayer(any(Player.class))).thenReturn(cars);
 
         // When
-        List<Voiture> voituresCharges = carSearchService.findCarsByPlayer(player);
+        List<Car> voituresCharges = carSearchService.findCarsByPlayer(player);
 
         // Then
         assertNotNull(voituresCharges);
-        assertEquals(voitures, voituresCharges);
+        assertEquals(cars, voituresCharges);
 
         verify(carDAO).findCarsByPlayer(any(Player.class));
     }

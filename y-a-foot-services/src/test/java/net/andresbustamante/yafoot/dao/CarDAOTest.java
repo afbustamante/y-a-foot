@@ -2,8 +2,8 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.Voiture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,8 @@ import java.util.List;
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DatabaseSetup(value = "classpath:datasets/voituresDataset.xml")
-@DatabaseTearDown(value = "classpath:datasets/voituresDataset.xml", type = DELETE_ALL)
+@DatabaseSetup(value = "classpath:datasets/carsDataset.xml")
+@DatabaseTearDown(value = "classpath:datasets/carsDataset.xml", type = DELETE_ALL)
 class CarDAOTest extends AbstractDAOTest {
 
     @Autowired
@@ -30,29 +30,29 @@ class CarDAOTest extends AbstractDAOTest {
     @Test
     void findCarById() throws Exception {
         // When
-        Voiture voiture1 = carDAO.findCarById(1001);
+        Car car1 = carDAO.findCarById(1001);
 
         // Then
-        assertNotNull(voiture1);
-        assertEquals("Peugeot 207", voiture1.getNom());
-        assertNotNull(voiture1.getNbPlaces());
-        assertEquals(4, voiture1.getNbPlaces().intValue());
+        assertNotNull(car1);
+        assertEquals("Peugeot 207", car1.getName());
+        assertNotNull(car1.getNumSeats());
+        assertEquals(4, car1.getNumSeats().intValue());
     }
 
     @Test
     void saveCar() throws Exception {
         // Given
-        Voiture nouvelleVoiture = new Voiture();
-        nouvelleVoiture.setNom("Citroën DS3");
-        nouvelleVoiture.setNbPlaces(3);
+        Car newCar = new Car();
+        newCar.setName("Citroën DS3");
+        newCar.setNumSeats(3);
 
         // When
-        int nbLignesInserees = carDAO.saveCar(nouvelleVoiture, player);
+        int nbLignesInserees = carDAO.saveCar(newCar, player);
 
         // Then
         assertEquals(1, nbLignesInserees);
-        assertNotNull(nouvelleVoiture.getId());
-        assertTrue(nouvelleVoiture.getId() > 0);
+        assertNotNull(newCar.getId());
+        assertTrue(newCar.getId() > 0);
     }
 
     @Test
@@ -69,16 +69,16 @@ class CarDAOTest extends AbstractDAOTest {
         // Given
         Player player = new Player(1);
 
-        List<Voiture> voitures = carDAO.findCarsByPlayer(player);
+        List<Car> cars = carDAO.findCarsByPlayer(player);
 
-        assertNotNull(voitures);
-        assertEquals(2, voitures.size());
+        assertNotNull(cars);
+        assertEquals(2, cars.size());
 
-        for (Voiture voiture : voitures) {
-            assertNotNull(voiture.getId());
-            assertTrue(voiture.getId() > 0);
-            assertNotNull(voiture.getNom());
-            assertNotNull(voiture.getNbPlaces());
+        for (Car car : cars) {
+            assertNotNull(car.getId());
+            assertTrue(car.getId() > 0);
+            assertNotNull(car.getName());
+            assertNotNull(car.getNumSeats());
         }
     }
 }

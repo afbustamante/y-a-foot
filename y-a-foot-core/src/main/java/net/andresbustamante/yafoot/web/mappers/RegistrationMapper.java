@@ -12,11 +12,9 @@ public interface RegistrationMapper {
     @Mapping(source = "matchId", target = "id.matchId")
     @Mapping(source = "matchId", target = "match.id")
     @Mapping(source = "playerId", target = "id.playerId")
-    @Mapping(source = "car", target = "voiture")
     Inscription map(Registration registration);
 
     @Mapping(source = "id.matchId", target = "matchId")
     @Mapping(source = "id.playerId", target = "playerId")
-    @Mapping(source = "voiture", target = "car")
     Registration map(Inscription inscription);
 }

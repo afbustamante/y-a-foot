@@ -156,8 +156,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.notFound().build();
             }
 
-            matchManagementService.joinMatch(ins.getPlayer(), match,
-                    ins.getVoiture(), userContext);
+            matchManagementService.joinMatch(ins.getPlayer(), match, ins.getCar(), userContext);
 
             log.info("Player registered to match");
             String location = MessageFormat.format(matchPlayerApiPath, match.getCode(), ins.getPlayer().getId());

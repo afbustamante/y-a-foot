@@ -64,7 +64,7 @@ public class CarsController extends AbstractController implements CarsApi {
         try {
             UserContext ctx = getUserContext(request);
             Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
-            List<net.andresbustamante.yafoot.model.Voiture> cars = carSearchService.findCarsByPlayer(player);
+            List<net.andresbustamante.yafoot.model.Car> cars = carSearchService.findCarsByPlayer(player);
 
             List<Car> result = new ArrayList<>();
 

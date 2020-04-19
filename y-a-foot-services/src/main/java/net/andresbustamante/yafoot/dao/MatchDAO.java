@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.dao;
 
+import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Voiture;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.ZonedDateTime;
@@ -64,11 +64,11 @@ public interface MatchDAO {
      *
      * @param player Player to register
      * @param match Match auxquel le player doit s'inscrire
-     * @param voiture Voiture du player pour assister au match (optionnelle)
+     * @param car Voiture du player pour assister au match (optionnelle)
      */
     void registerPlayer(@Param(PLAYER) Player player,
                              @Param(MATCH) Match match,
-                             @Param(CAR) Voiture voiture);
+                             @Param(CAR) Car car);
 
     /**
      * Vérifier si un joueur est déjà inscrit à un match passé en paramètre

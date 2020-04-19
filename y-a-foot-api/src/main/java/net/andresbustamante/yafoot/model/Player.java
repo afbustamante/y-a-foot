@@ -17,7 +17,7 @@ public class Player extends User implements Serializable, Identifiable {
     private boolean active;
     private ZonedDateTime creationDate;
     private ZonedDateTime lastUpdateDate;
-    private List<Voiture> cars;
+    private List<Car> cars;
 
     public Player() {}
 
@@ -74,12 +74,12 @@ public class Player extends User implements Serializable, Identifiable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public List<Voiture> getCars() {
+    public List<Car> getCars() {
         return cars;
     }
 
-    public void setCars(List<Voiture> voitureList) {
-        this.cars = voitureList;
+    public void setCars(List<Car> carList) {
+        this.cars = carList;
     }
 
     @Override

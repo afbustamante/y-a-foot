@@ -9,7 +9,7 @@ public class Inscription implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private IdInscription id;
-    private Voiture voiture;
+    private Car car;
     private Match match;
     private Player player;
 
@@ -31,12 +31,12 @@ public class Inscription implements Serializable {
         this.id = id;
     }
 
-    public Voiture getVoiture() {
-        return voiture;
+    public Car getCar() {
+        return car;
     }
 
-    public void setVoiture(Voiture voiture) {
-        this.voiture = voiture;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     public Match getMatch() {

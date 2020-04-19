@@ -5,7 +5,7 @@ import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Voiture;
+import net.andresbustamante.yafoot.model.Car;
 
 /**
  * Service de gestion des matchs
@@ -15,9 +15,9 @@ import net.andresbustamante.yafoot.model.Voiture;
 public interface MatchManagementService {
 
     /**
-     * Créer un match dans le système
+     * Create a new match in database
      *
-     * @param match Match à créer
+     * @param match Match to create
      * @param userContext
      * @throws DatabaseException
      * @throws ApplicationException Invalid arguments
@@ -25,22 +25,22 @@ public interface MatchManagementService {
     void saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException;
 
     /**
-     * Inscrire un player à un match existant
+     * Register a player to an existing match
      *
-     * @param player Player à inscrire dans le match
-     * @param match Match à impacter avec cette inscription
-     * @param voiture Voiture dans laquelle le player va se déplacer vers le site de jeu
+     * @param player Player to register
+     * @param match Match to search
+     * @param car Car used by the player to assist to the match
      * @param userContext
      * @throws DatabaseException
      * @throws ApplicationException Invalid arguments
      */
-    void joinMatch(Player player, Match match, Voiture voiture, UserContext userContext) throws ApplicationException, DatabaseException;
+    void joinMatch(Player player, Match match, Car car, UserContext userContext) throws ApplicationException, DatabaseException;
 
     /**
-     * Désinscrire un player d'un match
+     * Unregister a player from a match
      *
-     * @param player Player à désinscrire
-     * @param match Match concerné
+     * @param player Player to unregister
+     * @param match Match to search
      * @param userContext
      * @return
      * @throws DatabaseException

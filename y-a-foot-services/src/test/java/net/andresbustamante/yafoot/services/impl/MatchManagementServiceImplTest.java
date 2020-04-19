@@ -119,7 +119,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // Then
         verify(carDAO, times(0)).findCarById(anyInt());
-        verify(carDAO, times(0)).saveCar(any(Voiture.class), any(Player.class));
+        verify(carDAO, times(0)).saveCar(any(Car.class), any(Player.class));
         verify(matchDAO, times(1)).registerPlayer(player, match, null);
     }
 
@@ -128,21 +128,21 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
-        Voiture voiture = new Voiture(1);
+        Car car = new Car(1);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
-        when(carDAO.findCarById(anyInt())).thenReturn(voiture);
+        when(carDAO.findCarById(anyInt())).thenReturn(car);
         when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
         when(matchDAO.findMatchById(anyInt())).thenReturn(match);
         when(matchDAO.isPlayerRegistered(any(), any())).thenReturn(false);
-        matchManagementService.joinMatch(player, match, voiture, ctx);
+        matchManagementService.joinMatch(player, match, car, ctx);
 
         // Then
         verify(carDAO, times(1)).findCarById(anyInt());
-        verify(carDAO, times(0)).saveCar(any(Voiture.class), any(Player.class));
-        verify(matchDAO, times(1)).registerPlayer(player, match, voiture);
+        verify(carDAO, times(0)).saveCar(any(Car.class), any(Player.class));
+        verify(matchDAO, times(1)).registerPlayer(player, match, car);
     }
 
     @Test
@@ -150,7 +150,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
-        Voiture voiture = new Voiture();
+        Car car = new Car();
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
@@ -158,11 +158,11 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
         when(matchDAO.findMatchById(anyInt())).thenReturn(match);
         when(matchDAO.isPlayerRegistered(any(), any())).thenReturn(false);
-        matchManagementService.joinMatch(player, match, voiture, ctx);
+        matchManagementService.joinMatch(player, match, car, ctx);
 
         // Then
         verify(carDAO, times(0)).findCarById(anyInt());
-        verify(matchDAO, times(1)).registerPlayer(player, match, voiture);
+        verify(matchDAO, times(1)).registerPlayer(player, match, car);
     }
 
     @Test

@@ -14,7 +14,7 @@ public class DaoConstants {
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";
     public static final String MATCH = "match";
-    public static final String CAR = "voiture";
+    public static final String CAR = "car";
 
     private DaoConstants() {}
 }

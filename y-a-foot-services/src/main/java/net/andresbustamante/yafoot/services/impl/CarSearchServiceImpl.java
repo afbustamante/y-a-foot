@@ -2,8 +2,8 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.Voiture;
 import net.andresbustamante.yafoot.services.CarSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class CarSearchServiceImpl implements CarSearchService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Voiture> findCarsByPlayer(Player player) throws DatabaseException {
+    public List<Car> findCarsByPlayer(Player player) throws DatabaseException {
         return carDAO.findCarsByPlayer(player);
     }
 }

@@ -89,22 +89,22 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public void joinMatch(Player player, Match match, Voiture voiture, UserContext userContext)
+    public void joinMatch(Player player, Match match, Car car, UserContext userContext)
             throws ApplicationException, DatabaseException {
         if (player == null || player.getId() == null || match == null || match.getId() == null) {
             throw new ApplicationException("Invalid arguments to join a match");
         }
 
-        Voiture voitureExistante = null;
+        Car existingCar = null;
 
-        if (voiture != null) {
-            if (voiture.getId() != null) {
-                voitureExistante = carDAO.findCarById(voiture.getId());
+        if (car != null) {
+            if (car.getId() != null) {
+                existingCar = carDAO.findCarById(car.getId());
             }
 
-            if (voitureExistante == null) {
+            if (existingCar == null) {
                 // Enregistrer la voiture en base
-                carManagementService.saveCar(voiture, userContext);
+                carManagementService.saveCar(car, userContext);
             }
         }
 
@@ -112,7 +112,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         boolean isMatchExistant = (matchDAO.findMatchById(match.getId()) != null);
 
         if (isJoueurExistant && isMatchExistant && (!matchDAO.isPlayerRegistered(player, match))) {
-            matchDAO.registerPlayer(player, match, voiture);
+            matchDAO.registerPlayer(player, match, car);
             matchDAO.notifyPlayerRegistry(match);
             log.info("Player inscrit au match");
         } else {

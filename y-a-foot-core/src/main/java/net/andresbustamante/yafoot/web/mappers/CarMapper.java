@@ -1,8 +1,7 @@
 package net.andresbustamante.yafoot.web.mappers;
 
 import net.andresbustamante.yafoot.config.SpringMapperConfig;
-import net.andresbustamante.yafoot.model.Voiture;
-import net.andresbustamante.yafoot.web.dto.Car;
+import net.andresbustamante.yafoot.model.Car;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -11,17 +10,9 @@ import java.util.List;
 @Mapper(config = SpringMapperConfig.class, uses = {PlayerMapper.class, StringMapper.class})
 public interface CarMapper {
 
-    @Mapping(source = "name", target = "nom")
-    @Mapping(source = "numSeats", target = "nbPlaces")
-    @Mapping(source = "driver", target = "chauffeur")
-    @Mapping(source = "passengers", target = "passagers")
-    Voiture map(Car car);
+    Car map(net.andresbustamante.yafoot.web.dto.Car car);
 
-    @Mapping(target = "name", source = "nom")
-    @Mapping(target = "numSeats", source = "nbPlaces")
-    @Mapping(target = "driver", source = "chauffeur")
-    @Mapping(target = "passengers", source = "passagers")
-    Car map(Voiture voiture);
+    net.andresbustamante.yafoot.web.dto.Car map(Car car);
     
-    List<Car> map(List<Voiture> voitures);
+    List<net.andresbustamante.yafoot.web.dto.Car> map(List<Car> cars);
 }

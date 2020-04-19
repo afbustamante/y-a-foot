@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.dao;
 
+import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.Voiture;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,15 +21,15 @@ public interface CarDAO {
      * @param id Identifiant de la voiture à chercher
      * @return
      */
-    Voiture findCarById(@Param(ID) Integer id);
+    Car findCarById(@Param(ID) Integer id);
 
     /**
      * Créer une nouvelle voiture en base de données
      *
-     * @param voiture Voiture à enregistrer
+     * @param car Voiture à enregistrer
      * @param player Player registering the car
      */
-    int saveCar(@Param(CAR) Voiture voiture, @Param(PLAYER) Player player);
+    int saveCar(@Param(CAR) Car car, @Param(PLAYER) Player player);
 
     /**
      * Deletes all the cars registered by a player
@@ -44,5 +44,5 @@ public interface CarDAO {
      * @param player The player to use for the research
      * @return
      */
-    List<Voiture> findCarsByPlayer(@Param(PLAYER) Player player);
+    List<Car> findCarsByPlayer(@Param(PLAYER) Player player);
 }

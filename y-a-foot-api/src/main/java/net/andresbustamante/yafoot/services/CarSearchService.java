@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.services;
 
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.Voiture;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ public interface CarSearchService {
      * @return
      * @throws DatabaseException
      */
-    List<Voiture> findCarsByPlayer(Player player) throws DatabaseException;
+    List<Car> findCarsByPlayer(Player player) throws DatabaseException;
 }
