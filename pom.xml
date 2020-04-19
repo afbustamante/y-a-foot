@@ -800,7 +800,7 @@
                     <limit>
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.68</minimum>
+                      <minimum>0.70</minimum>
                     </limit>
                   </limits>
                 </rule>
@@ -812,13 +812,9 @@
                     <exclude>*Constants</exclude>
                     <exclude>*Test</exclude>
                     <exclude>*Exception</exclude>
-                    <exclude>*Bean</exclude>
                     <exclude>*ViewModel</exclude>
                     <exclude>*UIService</exclude>
                     <exclude>*Mapper</exclude>
-                    <exclude>*Request</exclude>
-                    <exclude>net.andresbustamante.yafoot.model.*</exclude>
-                    <exclude>org.w3.*</exclude>
                   </excludes>
                   <limits>
                     <limit>
