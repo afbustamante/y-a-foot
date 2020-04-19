@@ -63,7 +63,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         Player createur = playerDAO.findPlayerByEmail(userContext.getUsername());
 
         if (createur != null) {
-            match.setCreateur(createur);
+            match.setCreator(createur);
         } else {
             throw new DatabaseException("Identifiant d'utilisateur non trouvé en BDD : " + userContext.getUsername());
         }

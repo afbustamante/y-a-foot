@@ -11,24 +11,12 @@ import java.util.List;
         RegistrationMapper.class, DateMapper.class})
 public interface MatchMapper {
 
-    @Mapping(source = "registrations", target = "inscriptions")
-    @Mapping(source = "date", target = "dateMatch")
-    @Mapping(source = "numPlayersMin", target = "nbJoueursMin")
-    @Mapping(source = "numPlayersMax", target = "nbJoueursMax")
-    @Mapping(source = "numRegisteredPlayers", target = "nbJoueursInscrits")
-    @Mapping(source = "author", target = "createur")
-    @Mapping(source = "carpoolingEnabled", target = "covoiturageActif")
-    @Mapping(source = "sharingEnabled", target = "partageActif")
+    @Mapping(source = "author", target = "creator")
+    @Mapping(source = "sharingEnabled", target = "codeSharingEnabled")
     Match map(net.andresbustamante.yafoot.web.dto.Match match);
 
-    @Mapping(target = "registrations", source = "inscriptions")
-    @Mapping(target = "date", source = "dateMatch")
-    @Mapping(target = "numPlayersMin", source = "nbJoueursMin")
-    @Mapping(target = "numPlayersMax", source = "nbJoueursMax")
-    @Mapping(target = "numRegisteredPlayers", source = "nbJoueursInscrits")
-    @Mapping(target = "author", source = "createur")
-    @Mapping(target = "carpoolingEnabled", source = "covoiturageActif")
-    @Mapping(target = "sharingEnabled", source = "partageActif")
+    @Mapping(target = "author", source = "creator")
+    @Mapping(target = "sharingEnabled", source = "codeSharingEnabled")
     net.andresbustamante.yafoot.web.dto.Match map(Match match);
 
     List<net.andresbustamante.yafoot.web.dto.Match> map(List<Match> matches);

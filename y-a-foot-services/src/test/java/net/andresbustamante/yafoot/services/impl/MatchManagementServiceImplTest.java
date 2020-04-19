@@ -53,7 +53,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Player player = new Player(1);
         Site site = new Site(1);
         Match match = new Match(1);
-        match.setDateMatch(ZonedDateTime.now().plusDays(1));
+        match.setDate(ZonedDateTime.now().plusDays(1));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -72,8 +72,8 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         verify(siteDAO, never()).saveSite(any(Site.class), any(Player.class));
 
         assertNotNull(match.getCode());
-        assertNotNull(match.getCreateur());
-        assertEquals(player, match.getCreateur());
+        assertNotNull(match.getCreator());
+        assertEquals(player, match.getCreator());
     }
 
     @Test
@@ -82,7 +82,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Player player = new Player(1);
         Site site = new Site();
         Match match = new Match(1);
-        match.setDateMatch(ZonedDateTime.now().plusDays(1));
+        match.setDate(ZonedDateTime.now().plusDays(1));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -99,8 +99,8 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         verify(siteDAO, times(0)).findSiteById(any());
 
         assertNotNull(match.getCode());
-        assertNotNull(match.getCreateur());
-        assertEquals(player, match.getCreateur());
+        assertNotNull(match.getCreator());
+        assertEquals(player, match.getCreator());
     }
 
     @Test

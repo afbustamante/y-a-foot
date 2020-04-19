@@ -55,12 +55,12 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(match);
         assertEquals(2, match.getId().intValue());
-        assertEquals(ZonedDateTime.of(dateMatch, ZoneId.systemDefault()), match.getDateMatch());
-        assertEquals(8, match.getNbJoueursMin().intValue());
-        assertEquals(12, match.getNbJoueursMax().intValue());
-        assertNotNull(match.getCreateur());
-        assertEquals("Lionel", match.getCreateur().getFirstName());
-        assertEquals("Messi", match.getCreateur().getSurname());
+        assertEquals(ZonedDateTime.of(dateMatch, ZoneId.systemDefault()), match.getDate());
+        assertEquals(8, match.getNumPlayersMin().intValue());
+        assertEquals(12, match.getNumPlayersMax().intValue());
+        assertNotNull(match.getCreator());
+        assertEquals("Lionel", match.getCreator().getFirstName());
+        assertEquals("Messi", match.getCreator().getSurname());
     }
 
     @Test
@@ -73,10 +73,10 @@ class MatchDAOTest extends AbstractDAOTest {
 
         // Then
         assertNotNull(match);
-        assertNotNull(match.getInscriptions());
-        assertEquals(2, match.getInscriptions().size());
+        assertNotNull(match.getRegistrations());
+        assertEquals(2, match.getRegistrations().size());
 
-        for (Inscription ins : match.getInscriptions()) {
+        for (Inscription ins : match.getRegistrations()) {
             assertNull(ins.getMatch());
             assertNotNull(ins.getPlayer());
             assertNotNull(ins.getId());
@@ -93,8 +93,8 @@ class MatchDAOTest extends AbstractDAOTest {
 
         // Then
         assertNotNull(match);
-        assertNotNull(match.getInscriptions());
-        assertTrue(match.getInscriptions().isEmpty());
+        assertNotNull(match.getRegistrations());
+        assertTrue(match.getRegistrations().isEmpty());
     }
 
     @Test
@@ -111,11 +111,11 @@ class MatchDAOTest extends AbstractDAOTest {
         assertEquals(1 ,matchs.size());
         assertNotNull(matchs.get(0));
         assertEquals("AZERTY-1234", matchs.get(0).getCode());
-        assertTrue(matchs.get(0).getDateMatch().isAfter(startDate));
-        assertNotNull(matchs.get(0).getCreateur());
-        assertEquals("Cristiano", matchs.get(0).getCreateur().getFirstName());
-        assertEquals("Ronaldo", matchs.get(0).getCreateur().getSurname());
-        assertEquals("cr7@email.com", matchs.get(0).getCreateur().getEmail());
+        assertTrue(matchs.get(0).getDate().isAfter(startDate));
+        assertNotNull(matchs.get(0).getCreator());
+        assertEquals("Cristiano", matchs.get(0).getCreator().getFirstName());
+        assertEquals("Ronaldo", matchs.get(0).getCreator().getSurname());
+        assertEquals("cr7@email.com", matchs.get(0).getCreator().getEmail());
     }
 
     @Test
@@ -132,11 +132,11 @@ class MatchDAOTest extends AbstractDAOTest {
         assertEquals(1 ,matchs.size());
         assertNotNull(matchs.get(0));
         assertEquals("AZERTY-1234", matchs.get(0).getCode());
-        assertEquals(LocalDate.of(2018, 10, 2), LocalDate.from(matchs.get(0).getDateMatch()));
-        assertNotNull(matchs.get(0).getCreateur());
-        assertEquals("Cristiano", matchs.get(0).getCreateur().getFirstName());
-        assertEquals("Ronaldo", matchs.get(0).getCreateur().getSurname());
-        assertEquals("cr7@email.com", matchs.get(0).getCreateur().getEmail());
+        assertEquals(LocalDate.of(2018, 10, 2), LocalDate.from(matchs.get(0).getDate()));
+        assertNotNull(matchs.get(0).getCreator());
+        assertEquals("Cristiano", matchs.get(0).getCreator().getFirstName());
+        assertEquals("Ronaldo", matchs.get(0).getCreator().getSurname());
+        assertEquals("cr7@email.com", matchs.get(0).getCreator().getEmail());
     }
 
     @Test
@@ -151,8 +151,8 @@ class MatchDAOTest extends AbstractDAOTest {
         assertNotNull(match);
         assertEquals("AZERTY-1234", match.getCode());
         assertNotNull(match.getSite());
-        assertNotNull(match.getNbJoueursMin());
-        assertNotNull(match.getNbJoueursInscrits());
+        assertNotNull(match.getNumPlayersMin());
+        assertNotNull(match.getNumRegisteredPlayers());
         assertEquals(1, match.getSite().getId().intValue());
     }
 
@@ -165,12 +165,12 @@ class MatchDAOTest extends AbstractDAOTest {
 
         Match match = new Match();
         match.setCode("C-" + (Instant.now().toEpochMilli() / 1000));
-        match.setDateMatch(maintenant);
-        match.setNbJoueursMin(10);
-        match.setNbJoueursMax(12);
-        match.setCovoiturageActif(true);
-        match.setPartageActif(false);
-        match.setCreateur(player);
+        match.setDate(maintenant);
+        match.setNumPlayersMin(10);
+        match.setNumPlayersMax(12);
+        match.setCarpoolingEnabled(true);
+        match.setCodeSharingEnabled(false);
+        match.setCreator(player);
         match.setDescription("Match de test");
         match.setSite(site);
 
@@ -245,7 +245,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void notifyPlayerRegistry() throws Exception {
         // Given
         Match match = matchDAO.findMatchById(1);
-        assertEquals(1, match.getNbJoueursInscrits().intValue());
+        assertEquals(1, match.getNumRegisteredPlayers().intValue());
 
         // When
         int numMatches = matchDAO.notifyPlayerRegistry(match);
@@ -253,6 +253,6 @@ class MatchDAOTest extends AbstractDAOTest {
 
         // Then
         assertEquals(1, numMatches);
-        assertEquals(2, match.getNbJoueursInscrits().intValue());
+        assertEquals(2, match.getNumRegisteredPlayers().intValue());
     }
 }

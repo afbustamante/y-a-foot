@@ -13,17 +13,17 @@ public class Match implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private ZonedDateTime dateMatch;
+    private ZonedDateTime date;
     private String code;
     private String description;
-    private Integer nbJoueursMin;
-    private Integer nbJoueursMax;
-    private Integer nbJoueursInscrits;
-    private List<Inscription> inscriptions;
+    private Integer numPlayersMin;
+    private Integer numPlayersMax;
+    private Integer numRegisteredPlayers;
+    private List<Inscription> registrations;
     private Site site;
-    private Player createur;
-    private boolean covoiturageActif;
-    private boolean partageActif;
+    private Player creator;
+    private boolean carpoolingEnabled;
+    private boolean codeSharingEnabled;
 
     public Match() {
     }
@@ -32,9 +32,9 @@ public class Match implements Serializable, Identifiable {
         this.id = id;
     }
 
-    public Match(Integer id, ZonedDateTime dateMatch) {
+    public Match(Integer id, ZonedDateTime date) {
         this.id = id;
-        this.dateMatch = dateMatch;
+        this.date = date;
     }
 
     @Override
@@ -46,12 +46,12 @@ public class Match implements Serializable, Identifiable {
         this.id = matId;
     }
 
-    public ZonedDateTime getDateMatch() {
-        return dateMatch;
+    public ZonedDateTime getDate() {
+        return date;
     }
 
-    public void setDateMatch(ZonedDateTime date) {
-        this.dateMatch = date;
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
     }
 
     public String getCode() {
@@ -70,36 +70,36 @@ public class Match implements Serializable, Identifiable {
         this.description = matDescription;
     }
 
-    public Integer getNbJoueursMin() {
-        return nbJoueursMin;
+    public Integer getNumPlayersMin() {
+        return numPlayersMin;
     }
 
-    public void setNbJoueursMin(Integer matNumJoueursMin) {
-        this.nbJoueursMin = matNumJoueursMin;
+    public void setNumPlayersMin(Integer matNumJoueursMin) {
+        this.numPlayersMin = matNumJoueursMin;
     }
 
-    public Integer getNbJoueursMax() {
-        return nbJoueursMax;
+    public Integer getNumPlayersMax() {
+        return numPlayersMax;
     }
 
-    public void setNbJoueursMax(Integer matNumJoueursMax) {
-        this.nbJoueursMax = matNumJoueursMax;
+    public void setNumPlayersMax(Integer matNumJoueursMax) {
+        this.numPlayersMax = matNumJoueursMax;
     }
 
-    public Integer getNbJoueursInscrits() {
-        return nbJoueursInscrits;
+    public Integer getNumRegisteredPlayers() {
+        return numRegisteredPlayers;
     }
 
-    public void setNbJoueursInscrits(Integer nbJoueursInscrits) {
-        this.nbJoueursInscrits = nbJoueursInscrits;
+    public void setNumRegisteredPlayers(Integer numRegisteredPlayers) {
+        this.numRegisteredPlayers = numRegisteredPlayers;
     }
 
-    public List<Inscription> getInscriptions() {
-        return inscriptions;
+    public List<Inscription> getRegistrations() {
+        return registrations;
     }
 
-    public void setInscriptions(List<Inscription> inscription) {
-        this.inscriptions = inscription;
+    public void setRegistrations(List<Inscription> inscription) {
+        this.registrations = inscription;
     }
 
     public Site getSite() {
@@ -110,28 +110,28 @@ public class Match implements Serializable, Identifiable {
         this.site = site;
     }
 
-    public Player getCreateur() {
-        return createur;
+    public Player getCreator() {
+        return creator;
     }
 
-    public void setCreateur(Player createur) {
-        this.createur = createur;
+    public void setCreator(Player creator) {
+        this.creator = creator;
     }
 
-    public boolean isCovoiturageActif() {
-        return covoiturageActif;
+    public boolean isCarpoolingEnabled() {
+        return carpoolingEnabled;
     }
 
-    public void setCovoiturageActif(boolean covoiturageActif) {
-        this.covoiturageActif = covoiturageActif;
+    public void setCarpoolingEnabled(boolean carpoolingEnabled) {
+        this.carpoolingEnabled = carpoolingEnabled;
     }
 
-    public boolean isPartageActif() {
-        return partageActif;
+    public boolean isCodeSharingEnabled() {
+        return codeSharingEnabled;
     }
 
-    public void setPartageActif(boolean partageActif) {
-        this.partageActif = partageActif;
+    public void setCodeSharingEnabled(boolean codeSharingEnabled) {
+        this.codeSharingEnabled = codeSharingEnabled;
     }
 
     @Override
