@@ -10,8 +10,8 @@
           sit.sit_phone_number AS phoneNumber
         FROM t_site sit
             JOIN t_match mat ON sit.sit_id = mat.mat_site_id
-            JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
-        WHERE jma.jma_joueur_fk = #{player.id}
+            JOIN t_player_match pma ON mat.mat_id = pma.pma_match_id
+        WHERE pma.pma_player_id = #{player.id}
         UNION
         SELECT DISTINCT
           sit.sit_id           AS id,

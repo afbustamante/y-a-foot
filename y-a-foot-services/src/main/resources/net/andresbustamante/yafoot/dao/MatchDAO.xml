@@ -37,9 +37,9 @@
         FROM t_match mat
           JOIN t_site sit ON mat.mat_site_id = sit.sit_id
           JOIN t_player cre ON mat.mat_creator_id = cre.ply_id
-          LEFT JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
-          LEFT JOIN t_player ply ON jma.jma_joueur_fk = ply.ply_id
-          LEFT JOIN t_car car ON jma.jma_voiture_fk = car.car_id
+          LEFT JOIN t_player_match pma ON mat.mat_id = pma.pma_match_id
+          LEFT JOIN t_player ply ON pma.pma_player_id = ply.ply_id
+          LEFT JOIN t_car car ON pma.pma_car_id = car.car_id
         WHERE mat.mat_code = #{code}
     </select>
 
@@ -71,10 +71,10 @@
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_id = sit.sit_id
             JOIN t_player cre ON mat.mat_creator_id = cre.ply_id
-            JOIN t_joueur_match jma ON mat.mat_id = jma.jma_match_fk
-            LEFT JOIN t_player ply ON jma.jma_joueur_fk = ply.ply_id
-            LEFT JOIN t_car car ON jma.jma_voiture_fk = car.car_id
-        WHERE jma.jma_joueur_fk = #{player.id}
+            JOIN t_player_match pma ON mat.mat_id = pma.pma_match_id
+            LEFT JOIN t_player ply ON pma.pma_player_id = ply.ply_id
+            LEFT JOIN t_car car ON pma.pma_car_id = car.car_id
+        WHERE pma.pma_player_id = #{player.id}
       <if test="startDate != null">
         AND mat.mat_date &gt;= #{startDate}
       </if>
@@ -153,28 +153,28 @@
     <insert id="registerPlayer">
         <choose>
             <when test="car == null">
-                INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk)
+                INSERT INTO t_player_match (pma_match_id, pma_player_id)
                 VALUES (#{match.id}, #{player.id})
             </when>
             <otherwise>
-                INSERT INTO t_joueur_match (jma_match_fk, jma_joueur_fk, jma_voiture_fk)
+                INSERT INTO t_player_match (pma_match_id, pma_player_id, pma_car_id)
                 VALUES (#{match.id}, #{player.id}, #{car.id})
             </otherwise>
         </choose>
     </insert>
 
     <delete id="unregisterPlayer">
-        DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{player.id} AND jma_match_fk = #{match.id}
+        DELETE FROM t_player_match WHERE pma_player_id = #{player.id} AND pma_match_id = #{match.id}
     </delete>
 
     <select id="isPlayerRegistered" resultType="boolean">
         SELECT COUNT(*)
-        FROM t_joueur_match jma
-        WHERE jma.jma_joueur_fk = #{player.id} AND jma.jma_match_fk = #{match.id}
+        FROM t_player_match pma
+        WHERE pma.pma_player_id = #{player.id} AND pma.pma_match_id = #{match.id}
     </select>
 
     <delete id="unregisterPlayerFromAllMatches">
-        DELETE FROM t_joueur_match WHERE jma_joueur_fk = #{player.id}
+        DELETE FROM t_player_match WHERE pma_player_id = #{player.id}
     </delete>
 
     <update id="notifyPlayerRegistry">
