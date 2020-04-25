@@ -12,13 +12,6 @@
   <packaging>jar</packaging>
 
   <dependencies>
-    <!-- Java EE / javax -->
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
     <!-- Apache Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
