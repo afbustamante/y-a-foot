@@ -29,8 +29,16 @@ import java.util.Optional;
  */
 public abstract class AbstractController {
 
+    /* Common context headers */
     protected static final String CTX_MESSAGES = "ctx-messages";
 
+    /* Common error messages */
+    protected static final String DATABASE_BASIC_ERROR = "database.basic.error";
+    protected static final String INVALID_USER_ERROR = "invalid.user.error";
+
+    /**
+     * Injected request (constructors only)
+     */
     protected HttpServletRequest request;
 
     @Autowired

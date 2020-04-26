@@ -89,10 +89,10 @@ public class SitesController extends AbstractController implements SitesApi {
             return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
             log.error("Database error while looking for a player's list of available sites", e);
-            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("Invalid user context", e);
-            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
+            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
         }
     }
 
@@ -107,10 +107,10 @@ public class SitesController extends AbstractController implements SitesApi {
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Database error while creating a new site", e);
-            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("User context error for creating a new site", e);
-            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
+            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
         }
     }
 }

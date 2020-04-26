@@ -85,7 +85,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
             return new ResponseEntity<>(buildMessageHeader("email.already.registered.error", new String[]{player.getEmail()}), BAD_REQUEST);
         } catch (DatabaseException | LdapException e) {
             log.error("Database/LDAP error when registering a new player", e);
-            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -98,10 +98,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             return (succes) ? ResponseEntity.accepted().build() : ResponseEntity.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
             log.error("An error occurred while updating a player's information", e);
-            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("User context error for updating a player's information", e);
-            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
+            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
         }
     }
 
@@ -117,7 +117,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
             }
         } catch (DatabaseException e) {
             log.error("Database error while looking for a player", e);
-            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -130,10 +130,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             return ResponseEntity.noContent().build();
         } catch (DatabaseException | LdapException e) {
             log.error("Database/LDAP error while deactivating a player", e);
-            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("User context error for deactivating a player", e);
-            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
+            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
         }
     }
 }

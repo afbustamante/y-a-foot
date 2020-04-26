@@ -74,7 +74,7 @@ public class CarsController extends AbstractController implements CarsApi {
             return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
             log.error("Error when looking for cars", e);
-            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("Invalid user context", e);
             return ResponseEntity.status(BAD_REQUEST).build();
@@ -101,7 +101,7 @@ public class CarsController extends AbstractController implements CarsApi {
         } catch (DatabaseException e) {
             String message = "Database exception when registering a new car";
             log.error(message, e);
-            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             String message = "Invalid context for player registering a new car";
             log.error(message, e);
