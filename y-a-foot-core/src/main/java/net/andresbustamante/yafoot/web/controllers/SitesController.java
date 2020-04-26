@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -35,7 +36,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author andresbustamante
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(exposedHeaders = {CTX_MESSAGES})
 public class SitesController extends AbstractController implements SitesApi {
 
     private SiteSearchService siteSearchService;
@@ -45,8 +46,6 @@ public class SitesController extends AbstractController implements SitesApi {
     private PlayerSearchService playerSearchService;
 
     private SiteMapper siteMapper;
-
-    private HttpServletRequest request;
 
     @Value("${site.api.service.path}")
     private String siteApiPath;
@@ -90,10 +89,10 @@ public class SitesController extends AbstractController implements SitesApi {
             return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
             log.error("Database error while looking for a player's list of available sites", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("Invalid user context", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
         }
     }
 
@@ -108,10 +107,10 @@ public class SitesController extends AbstractController implements SitesApi {
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Database error while creating a new site", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("User context error for creating a new site", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
         }
     }
 }

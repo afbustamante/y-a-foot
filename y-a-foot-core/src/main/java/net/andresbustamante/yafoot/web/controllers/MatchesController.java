@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -41,7 +42,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author andresbustamante
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(exposedHeaders = {CTX_MESSAGES})
 public class MatchesController extends AbstractController implements MatchesApi {
 
     private MatchSearchService matchSearchService;
@@ -53,8 +54,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
     private MatchMapper matchMapper;
 
     private RegistrationMapper registrationMapper;
-
-    private HttpServletRequest request;
 
     @Value("${match.api.service.path}")
     private String matchApiPath;
@@ -84,7 +83,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
             return (match != null) ? ResponseEntity.ok(matchMapper.map(match)) : ResponseEntity.notFound().build();
         } catch (DatabaseException e) {
             log.error("Database error while looking for a match", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -106,11 +105,11 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.ok(Collections.emptyList());
             }
         } catch (DatabaseException e) {
-            log.error("Database error while looking for a player matches", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            log.error("Database error while looking for a player's matches", e);
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("User context error for loading a player's matches", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
         }
     }
 
@@ -136,10 +135,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Erreur lors de la création d'un match", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("Erreur lors de la récupération des information du contexte", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
         }
     }
 
@@ -167,10 +166,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Database error while trying to register a player to a match", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("Application error when registering a player to a match", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
         }
     }
 
@@ -191,10 +190,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
             }
         } catch (DatabaseException e) {
             log.error("Database error while unregistering a player from a match", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("Application error when unregistering a player from a match", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
         }
     }
 }

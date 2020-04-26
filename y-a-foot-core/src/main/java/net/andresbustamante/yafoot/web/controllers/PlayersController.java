@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.Optional;
 
+import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -32,7 +33,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author andresbustamante
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(exposedHeaders = {CTX_MESSAGES})
 public class PlayersController extends AbstractController implements PlayersApi {
 
     private PlayerManagementService playerManagementService;
@@ -42,8 +43,6 @@ public class PlayersController extends AbstractController implements PlayersApi 
     private PlayerMapper playerMapper;
 
     private ContextMapper contextMapper;
-
-    private HttpServletRequest request;
 
     @Value("${player.api.service.path}")
     private String playerApiPath;
@@ -83,10 +82,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (ApplicationException e) {
             log.error("User not created", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("email.already.registered.error", new String[]{player.getEmail()}), BAD_REQUEST);
         } catch (DatabaseException | LdapException e) {
             log.error("Database/LDAP error when registering a new player", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -99,10 +98,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             return (succes) ? ResponseEntity.accepted().build() : ResponseEntity.status(BAD_REQUEST).build();
         } catch (DatabaseException | LdapException e) {
             log.error("An error occurred while updating a player's information", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("User context error for updating a player's information", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
         }
     }
 
@@ -118,7 +117,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
             }
         } catch (DatabaseException e) {
             log.error("Database error while looking for a player", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -131,10 +130,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             return ResponseEntity.noContent().build();
         } catch (DatabaseException | LdapException e) {
             log.error("Database/LDAP error while deactivating a player", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<>(buildMessageHeader("database.basic.error", null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("User context error for deactivating a player", e);
-            return ResponseEntity.status(BAD_REQUEST).build();
+            return new ResponseEntity<>(buildMessageHeader("invalid.user.error", null), BAD_REQUEST);
         }
     }
 }
