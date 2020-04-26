@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import net.andresbustamante.yafoot.model.Inscription;
+import net.andresbustamante.yafoot.model.Registration;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Site;
@@ -64,7 +64,7 @@ class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void chercherMatchsAvecInscriptions() throws Exception {
+    void loadMatchWithRegistrations() throws Exception {
         // Given
         String code = "QWERTY-1234";
 
@@ -74,17 +74,16 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(match);
         assertNotNull(match.getRegistrations());
-        assertEquals(2, match.getRegistrations().size());
+        assertEquals(2, match.getNumRegisteredPlayers().intValue());
 
-        for (Inscription ins : match.getRegistrations()) {
-            assertNull(ins.getMatch());
+        for (Registration ins : match.getRegistrations()) {
             assertNotNull(ins.getPlayer());
             assertNotNull(ins.getId());
         }
     }
 
     @Test
-    void chercherMatchsSansInscriptions() throws Exception {
+    void loadMatchWithoutRegistrations() throws Exception {
         // Given
         Integer matchId = 3;
 
@@ -94,7 +93,7 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(match);
         assertNotNull(match.getRegistrations());
-        assertTrue(match.getRegistrations().isEmpty());
+        assertEquals(0, match.getNumRegisteredPlayers().intValue());
     }
 
     @Test
@@ -152,7 +151,7 @@ class MatchDAOTest extends AbstractDAOTest {
         assertEquals("AZERTY-1234", match.getCode());
         assertNotNull(match.getSite());
         assertNotNull(match.getNumPlayersMin());
-        assertNotNull(match.getNumRegisteredPlayers());
+        assertNotNull(match.getRegistrations());
         assertEquals(1, match.getSite().getId().intValue());
     }
 
@@ -241,18 +240,4 @@ class MatchDAOTest extends AbstractDAOTest {
         assertTrue(matchesByPlayer.isEmpty());
     }
 
-    @Test
-    void notifyPlayerRegistry() throws Exception {
-        // Given
-        Match match = matchDAO.findMatchById(1);
-        assertEquals(1, match.getNumRegisteredPlayers().intValue());
-
-        // When
-        int numMatches = matchDAO.notifyPlayerRegistry(match);
-        match = matchDAO.findMatchById(1);
-
-        // Then
-        assertEquals(1, numMatches);
-        assertEquals(2, match.getNumRegisteredPlayers().intValue());
-    }
 }

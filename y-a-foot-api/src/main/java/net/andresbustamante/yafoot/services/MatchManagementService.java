@@ -34,7 +34,7 @@ public interface MatchManagementService {
      * @throws DatabaseException
      * @throws ApplicationException Invalid arguments
      */
-    void joinMatch(Player player, Match match, Car car, UserContext userContext) throws ApplicationException, DatabaseException;
+    void registerPlayer(Player player, Match match, Car car, UserContext userContext) throws ApplicationException, DatabaseException;
 
     /**
      * Unregister a player from a match
@@ -46,7 +46,7 @@ public interface MatchManagementService {
      * @throws DatabaseException
      * @throws ApplicationException Invalid arguments
      */
-    void quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException, ApplicationException;
+    void unregisterPlayer(Player player, Match match, UserContext userContext) throws DatabaseException, ApplicationException;
 
     /**
      * Unregister a player from all matches
@@ -55,5 +55,5 @@ public interface MatchManagementService {
      * @param userContext User context
      * @throws DatabaseException
      */
-    void quitAllMatches(Player player, UserContext userContext) throws DatabaseException;
+    void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException;
 }

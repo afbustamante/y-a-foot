@@ -8,23 +8,23 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Service de recherche des matchs
+ * Matches search service. Only used for reading data
  *
  * @author andresbustamante
  */
 public interface MatchSearchService {
 
     /**
-     * Chercher un match par son code unique
+     * Find a match by its identifying code
      *
-     * @param codeMatch Code du match à chercher
-     * @return
+     * @param code Code to search
+     * @return Match found for this code
      * @throws DatabaseException
      */
-    Match findMatchByCode(String codeMatch) throws DatabaseException;
+    Match findMatchByCode(String code) throws DatabaseException;
 
     /**
-     * Chercher les matchs à venir pour un joueur dont l'identifiant est passé en paramètre
+     * Find the matches where a player is attending in an interval of time
      *
      * @param player Player to use for the research
      * @param startDate Start date for the research

@@ -22,4 +22,10 @@ public class PlayerSearchServiceImpl implements PlayerSearchService {
     public Player findPlayerByEmail(String email) throws DatabaseException {
         return playerDAO.findPlayerByEmail(email);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Player findPlayerById(Integer id) throws DatabaseException {
+        return playerDAO.findPlayerById(id);
+    }
 }

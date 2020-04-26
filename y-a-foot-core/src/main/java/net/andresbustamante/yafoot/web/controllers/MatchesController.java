@@ -148,24 +148,28 @@ public class MatchesController extends AbstractController implements MatchesApi 
     public ResponseEntity<Void> registerPlayerToMatch(Registration registration, String matchCode) {
         try {
             UserContext userContext = getUserContext(request);
-            net.andresbustamante.yafoot.model.Inscription ins = registrationMapper.map(registration);
+            net.andresbustamante.yafoot.model.Registration reg = registrationMapper.map(registration);
 
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+            Player player = playerSearchService.findPlayerByEmail(reg.getPlayer().getEmail());
 
             if (match == null) {
                 return ResponseEntity.notFound().build();
+            } else if (player == null) {
+                log.warn("Invalid player used while trying to register a player to a match");
+                return ResponseEntity.status(BAD_REQUEST).build();
             }
 
-            matchManagementService.joinMatch(ins.getPlayer(), match, ins.getCar(), userContext);
+            matchManagementService.registerPlayer(reg.getPlayer(), match, reg.getCar(), userContext);
 
             log.info("Player registered to match");
-            String location = MessageFormat.format(matchPlayerApiPath, match.getCode(), ins.getPlayer().getId());
+            String location = MessageFormat.format(matchPlayerApiPath, match.getCode(), reg.getPlayer().getId());
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Database error while trying to register a player to a match", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
-            log.error("User context error for registering a player to a match", e);
+            log.error("Application error when registering a player to a match", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         }
     }
@@ -176,20 +180,20 @@ public class MatchesController extends AbstractController implements MatchesApi 
             UserContext userContext = getUserContext(request);
 
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+            Player player = playerSearchService.findPlayerById(playerId);
 
-            if (match != null) {
-                Player player = new Player(playerId);
-                matchManagementService.quitMatch(player, match, userContext);
+            if (match != null && player != null) {
+                matchManagementService.unregisterPlayer(player, match, userContext);
                 return ResponseEntity.noContent().build();
             } else {
-                log.warn("Invalid match code detected for unregistering player");
-                return ResponseEntity.status(BAD_REQUEST).build();
+                log.warn("Invalid match code or player detected for unregistering player");
+                return ResponseEntity.notFound().build();
             }
         } catch (DatabaseException e) {
             log.error("Database error while unregistering a player from a match", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         } catch (ApplicationException e) {
-            log.error("User context error for unregistering a player from a match", e);
+            log.error("Application error when unregistering a player from a match", e);
             return ResponseEntity.status(BAD_REQUEST).build();
         }
     }

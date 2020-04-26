@@ -95,22 +95,4 @@ public interface MatchDAO {
      * @param player Player to unregister
      */
     int unregisterPlayerFromAllMatches(@Param(PLAYER) Player player);
-
-    /**
-     * Mettre à jour les informations du match passé en paramètre par rapport au nombre de joueurs
-     * inscrits pour le match avec une nouvelle inscription
-     *
-     * @param match
-     * @return
-     */
-    int notifyPlayerRegistry(@Param(MATCH) Match match);
-
-    /**
-     * Mettre à jour les informations du match passé en paramètre par rapport au nombre de joueurs
-     * inscrits pour le match avec une inscription de moins
-     *
-     * @param match
-     * @return
-     */
-    int notifyPlayerLeft(@Param(MATCH) Match match);
 }

@@ -96,7 +96,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
         if (player != null) {
             // Delete all data from player
-            matchManagementService.quitAllMatches(player, userContext);
+            matchManagementService.unregisterPlayerFromAllMatches(player, userContext);
             carManagementService.deleteCarsByPlayer(player, userContext);
 
             int numPlayers = playerDAO.deactivatePlayer(player);

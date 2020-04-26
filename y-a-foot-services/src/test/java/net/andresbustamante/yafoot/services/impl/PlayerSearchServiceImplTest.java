@@ -2,7 +2,6 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.UserContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +14,7 @@ import static org.mockito.Mockito.*;
 class PlayerSearchServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private PlayerSearchServiceImpl rechercheJoueursService;
+    private PlayerSearchServiceImpl playerSearchService;
 
     @Mock
     private PlayerDAO playerDAO;
@@ -26,14 +25,13 @@ class PlayerSearchServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void findInvalidPlayer() throws Exception {
+    void findInvalidPlayerByEmail() throws Exception {
         // Given
         String email = "test@email.com";
-        UserContext ctx = new UserContext();
 
         // Then
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
-        Player player = rechercheJoueursService.findPlayerByEmail(email);
+        Player player = playerSearchService.findPlayerByEmail(email);
 
         // When
         assertNull(player);
@@ -41,19 +39,47 @@ class PlayerSearchServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void findValidPlayer() throws Exception {
+    void findValidPlayerByEmail() throws Exception {
         // Given
         String email = "test@email.com";
         Player player = new Player(1);
-        UserContext ctx = new UserContext();
 
         // Then
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
-        Player existingPlayer = rechercheJoueursService.findPlayerByEmail(email);
+        Player existingPlayer = playerSearchService.findPlayerByEmail(email);
 
         // When
         assertNotNull(existingPlayer);
         assertEquals(player, existingPlayer);
         verify(playerDAO, times(1)).findPlayerByEmail(anyString());
+    }
+
+    @Test
+    void findInvalidPlayerById() throws Exception {
+        // Given
+        Integer id = 999;
+
+        // When
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(null);
+
+        Player player = playerSearchService.findPlayerById(id);
+
+        assertNull(player);
+        verify(playerDAO).findPlayerById(anyInt());
+    }
+
+    @Test
+    void findValidPlayerById() throws Exception {
+        // Given
+        Integer id = 1;
+        Player player1 = new Player(1);
+
+        // When
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(player1);
+
+        Player player = playerSearchService.findPlayerById(id);
+
+        assertNotNull(player);
+        verify(playerDAO).findPlayerById(anyInt());
     }
 }

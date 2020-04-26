@@ -26,9 +26,9 @@ public class MatchSearchServiceImpl implements MatchSearchService {
 
     @Transactional(readOnly = true)
     @Override
-    public Match findMatchByCode(String codeMatch) throws DatabaseException {
-        if (codeMatch != null) {
-            return matchDAO.findMatchByCode(codeMatch);
+    public Match findMatchByCode(String code) throws DatabaseException {
+        if (code != null) {
+            return matchDAO.findMatchByCode(code);
         } else {
             return null;
         }

@@ -4,6 +4,7 @@ import net.andresbustamante.yafoot.model.api.Identifiable;
 import net.andresbustamante.yafoot.model.api.Locatable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -75,27 +76,21 @@ public class Site implements Locatable, Identifiable, Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Site that = (Site) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Site)) {
-            return false;
-        }
-        Site other = (Site) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "net.andresbustamante.yafoot.model.Site[ sitId=" + id + " ]";
+        return "Site[ id=" + id + " ]";
     }
     
 }

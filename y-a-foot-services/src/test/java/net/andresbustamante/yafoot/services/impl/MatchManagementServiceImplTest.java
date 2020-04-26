@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.SiteManagementService;
@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.ZonedDateTime;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -60,15 +61,13 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.isCodeAlreadyRegistered(anyString())).thenReturn(false);
-        when(matchDAO.findMatchById(anyInt())).thenReturn(match);
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
         when(siteDAO.findSiteById(anyInt())).thenReturn(site);
         matchManagementService.saveMatch(match, ctx);
 
         // Then
-        verify(matchDAO, times(1)).isCodeAlreadyRegistered(anyString());
-        verify(siteDAO, times(1)).findSiteById(any());
+        verify(matchDAO).isCodeAlreadyRegistered(anyString());
+        verify(siteDAO).findSiteById(any());
         verify(siteDAO, never()).saveSite(any(Site.class), any(Player.class));
 
         assertNotNull(match.getCode());
@@ -89,14 +88,12 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.isCodeAlreadyRegistered(anyString())).thenReturn(false);
-        when(matchDAO.findMatchById(anyInt())).thenReturn(match);
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
         matchManagementService.saveMatch(match, ctx);
 
         // Then
-        verify(matchDAO, times(1)).isCodeAlreadyRegistered(anyString());
-        verify(siteDAO, times(0)).findSiteById(any());
+        verify(matchDAO).isCodeAlreadyRegistered(anyString());
+        verify(siteDAO, never()).findSiteById(any());
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreator());
@@ -108,19 +105,17 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setRegistrations(Collections.emptyList());
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
-        when(matchDAO.findMatchById(anyInt())).thenReturn(match);
-        when(matchDAO.isPlayerRegistered(any(), any())).thenReturn(false);
-        matchManagementService.joinMatch(player, match, null, ctx);
+        matchManagementService.registerPlayer(player, match, null, ctx);
 
         // Then
-        verify(carDAO, times(0)).findCarById(anyInt());
-        verify(carDAO, times(0)).saveCar(any(Car.class), any(Player.class));
-        verify(matchDAO, times(1)).registerPlayer(player, match, null);
+        verify(carDAO, never()).findCarById(anyInt());
+        verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
+        verify(matchDAO).registerPlayer(player, match, null);
     }
 
     @Test
@@ -128,21 +123,19 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setRegistrations(Collections.emptyList());
         Car car = new Car(1);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
         when(carDAO.findCarById(anyInt())).thenReturn(car);
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
-        when(matchDAO.findMatchById(anyInt())).thenReturn(match);
-        when(matchDAO.isPlayerRegistered(any(), any())).thenReturn(false);
-        matchManagementService.joinMatch(player, match, car, ctx);
+        matchManagementService.registerPlayer(player, match, car, ctx);
 
         // Then
-        verify(carDAO, times(1)).findCarById(anyInt());
-        verify(carDAO, times(0)).saveCar(any(Car.class), any(Player.class));
-        verify(matchDAO, times(1)).registerPlayer(player, match, car);
+        verify(carDAO).findCarById(anyInt());
+        verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
+        verify(matchDAO).registerPlayer(player, match, car);
     }
 
     @Test
@@ -150,61 +143,63 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setRegistrations(Collections.emptyList());
         Car car = new Car();
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
-        when(matchDAO.findMatchById(anyInt())).thenReturn(match);
-        when(matchDAO.isPlayerRegistered(any(), any())).thenReturn(false);
-        matchManagementService.joinMatch(player, match, car, ctx);
+        matchManagementService.registerPlayer(player, match, car, ctx);
 
         // Then
-        verify(carDAO, times(0)).findCarById(anyInt());
-        verify(matchDAO, times(1)).registerPlayer(player, match, car);
+        verify(carDAO, never()).findCarById(anyInt());
+        verify(carManagementService).saveCar(any(Car.class), any(UserContext.class));
+        verify(matchDAO).registerPlayer(player, match, car);
     }
 
     @Test
     void unregisterPlayer() throws Exception {
         // Given
         Player player = new Player(1);
+        player.setEmail("test@email.com");
         Match match = new Match(1);
+        Registration registration = new Registration(new RegistrationId(1, 1));
+        registration.setPlayer(player);
+        match.setRegistrations(Collections.singletonList(registration));
         match.setCode("code");
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // Then
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
-        when(matchDAO.findMatchByCode(anyString())).thenReturn(match);
-        when(matchDAO.isPlayerRegistered(player, match)).thenReturn(true);
-        matchManagementService.quitMatch(player, match, ctx);
+        matchManagementService.unregisterPlayer(player, match, ctx);
 
         // When
-        verify(matchDAO, times(1)).findMatchByCode(anyString());
-        verify(matchDAO, times(1)).isPlayerRegistered(any(), any());
-        verify(matchDAO, times(1)).unregisterPlayer(any(), any());
+        verify(matchDAO).unregisterPlayer(any(), any());
     }
 
     @Test
-    void unregisterPlayerFromAllMatchesWithNoRegistry() throws Exception {
+    void unregisterPlayerWithNoRegistration() {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setRegistrations(Collections.emptyList());
         match.setCode("code");
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // Then
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(player);
-        when(matchDAO.findMatchByCode(anyString())).thenReturn(match);
-        when(matchDAO.isPlayerRegistered(player, match)).thenReturn(false);
+        assertThrows(ApplicationException.class, () -> matchManagementService.unregisterPlayer(player, match, ctx));
+    }
 
-        try {
-            matchManagementService.quitMatch(player, match, ctx);
-            fail();
-        } catch (DatabaseException e) {
-            assertEquals("Impossible d'inscrire le player : objet inexistant", e.getMessage());
-        }
+    @Test
+    void unregisterPlayerFromAllMatches() throws Exception {
+        // Given
+        Player player = new Player(1);
+
+        // When
+        matchManagementService.unregisterPlayerFromAllMatches(player, new UserContext());
+
+        // Then
+        verify(matchDAO).unregisterPlayerFromAllMatches(any(Player.class));
     }
 }

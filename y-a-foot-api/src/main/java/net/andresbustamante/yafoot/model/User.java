@@ -78,13 +78,16 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(email, user.email) &&
-                Objects.equals(surname, user.surname) &&
-                Objects.equals(firstName, user.firstName);
+        return Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, surname, firstName);
+        return Objects.hash(email);
+    }
+
+    @Override
+    public String toString() {
+        return "User [ email='" + email + " ]";
     }
 }

@@ -16,7 +16,6 @@
           mat.mat_description            AS description,
           mat.mat_num_players_min        AS numPlayersMin,
           mat.mat_num_players_max        AS numPlayersMax,
-          mat.mat_num_registered_players AS numRegisteredPlayers,
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
           mat.mat_code_sharing_enabled   AS codeSharingEnabled,
           sit.sit_id                     AS siteId,
@@ -29,7 +28,8 @@
           cre.ply_surname                AS creatorSurname,
           cre.ply_first_name             AS creatorFirstName,
           cre.ply_email                  AS creatorEmail,
-          ply.ply_id                     AS playerId,
+          pma.pma_match_id               AS matchId,
+          pma.pma_player_id              AS playerId,
           ply.ply_first_name             AS playerFirstName,
           ply.ply_email                  AS playerEmail,
           car.car_id                     AS carId,
@@ -48,11 +48,10 @@
                mat.mat_code                 AS code,
                mat.mat_date                 AS date,
                mat.mat_description          AS description,
-               mat.mat_num_players_min        AS numPlayersMin,
-               mat.mat_num_players_max        AS numPlayersMax,
-               mat.mat_num_registered_players AS numRegisteredPlayers,
-               mat.mat_carpooling_enabled     AS carpoolingEnabled,
-               mat.mat_code_sharing_enabled   AS codeSharingEnabled,
+               mat.mat_num_players_min      AS numPlayersMin,
+               mat.mat_num_players_max      AS numPlayersMax,
+               mat.mat_carpooling_enabled   AS carpoolingEnabled,
+               mat.mat_code_sharing_enabled AS codeSharingEnabled,
                sit.sit_id                   AS siteId,
                sit.sit_name                 AS siteName,
                sit.sit_address              AS siteAddress,
@@ -63,7 +62,8 @@
                cre.ply_surname              AS creatorSurname,
                cre.ply_first_name           AS creatorFirstName,
                cre.ply_email                AS creatorEmail,
-               ply.ply_id                   AS playerId,
+               pma.pma_match_id             AS matchId,
+               pma.pma_player_id            AS playerId,
                ply.ply_first_name           AS playerFirstName,
                ply.ply_email                AS playerEmail,
                car.car_id                   AS carId,
@@ -99,7 +99,6 @@
           mat.mat_description            AS description,
           mat.mat_num_players_min        AS numPlayersMin,
           mat.mat_num_players_max        AS numPlayersMax,
-          mat.mat_num_registered_players AS numRegisteredPlayers,
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
           mat.mat_code_sharing_enabled   AS codeSharingEnabled,
           cre.ply_id                     AS creatorId,
@@ -177,18 +176,6 @@
         DELETE FROM t_player_match WHERE pma_player_id = #{player.id}
     </delete>
 
-    <update id="notifyPlayerRegistry">
-        UPDATE t_match
-        SET mat_num_registered_players = mat_num_registered_players + 1
-        WHERE mat_id = #{match.id}
-    </update>
-
-    <update id="notifyPlayerLeft">
-        UPDATE t_match
-        SET mat_num_registered_players = mat_num_registered_players - 1
-        WHERE mat_id = #{match.id}
-    </update>
-
     <resultMap id="matchComplet" type="net.andresbustamante.yafoot.model.Match">
         <id property="id" column="id"/>
         <result property="code" column="code"/>
@@ -196,7 +183,6 @@
         <result property="description" column="description"/>
         <result property="numPlayersMin" column="numPlayersMin"/>
         <result property="numPlayersMax" column="numPlayersMax"/>
-        <result property="numRegisteredPlayers" column="numRegisteredPlayers"/>
         <result property="carpoolingEnabled" column="carpoolingEnabled"/>
         <result property="codeSharingEnabled" column="codeSharingEnabled"/>
         <association property="site" javaType="net.andresbustamante.yafoot.model.Site">
@@ -215,8 +201,9 @@
             <result column="creatorFirstName" property="firstName"/>
             <result column="creatorEmail" property="email"/>
         </association>
-        <collection property="registrations" ofType="net.andresbustamante.yafoot.model.Inscription">
-            <id column="playerId" property="id.playerId" />
+        <collection property="registrations" ofType="net.andresbustamante.yafoot.model.Registration">
+            <result column="matchId" property="id.matchId" />
+            <result column="playerId" property="id.playerId" />
             <association property="player" javaType="net.andresbustamante.yafoot.model.Player">
                 <id column="playerId" property="id" />
                 <result column="playerFirstName" property="firstName" />

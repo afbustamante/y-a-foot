@@ -4,6 +4,7 @@ import net.andresbustamante.yafoot.model.api.Identifiable;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author andresbustamante
@@ -66,27 +67,21 @@ public class Car implements Serializable, Identifiable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car that = (Car) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Car)) {
-            return false;
-        }
-        Car other = (Car) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "net.andresbustamante.yafoot.model.Car[ carId=" + id + " ]";
+        return "Car[ id=" + id + " ]";
     }
 
 }

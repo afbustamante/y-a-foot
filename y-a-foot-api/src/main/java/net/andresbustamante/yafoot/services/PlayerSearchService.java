@@ -4,18 +4,27 @@ import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
 
 /**
- * Service de recherche de joueurs
+ * Player research service. Only used for reading needs
  *
  * @author andresbustamante
  */
 public interface PlayerSearchService {
 
     /**
-     * Chercher un joueur par son address mail unique
+     * Look for a player by using its email address (unique)
      *
-     * @param email Adresse mail à chercher
-     * @return
+     * @param email Email address to search
+     * @return Player details for this email
      * @throws DatabaseException
      */
     Player findPlayerByEmail(String email) throws DatabaseException;
+
+    /**
+     * Look for a player by using its technical identifier
+     *
+     * @param id Player's ID
+     * @return Player details for this ID
+     * @throws DatabaseException
+     */
+    Player findPlayerById(Integer id) throws DatabaseException;
 }

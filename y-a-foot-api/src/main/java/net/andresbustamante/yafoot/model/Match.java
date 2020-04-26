@@ -1,10 +1,12 @@
 package net.andresbustamante.yafoot.model;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author andresbustamante
@@ -18,8 +20,7 @@ public class Match implements Serializable, Identifiable {
     private String description;
     private Integer numPlayersMin;
     private Integer numPlayersMax;
-    private Integer numRegisteredPlayers;
-    private List<Inscription> registrations;
+    private List<Registration> registrations;
     private Site site;
     private Player creator;
     private boolean carpoolingEnabled;
@@ -35,6 +36,18 @@ public class Match implements Serializable, Identifiable {
     public Match(Integer id, ZonedDateTime date) {
         this.id = id;
         this.date = date;
+    }
+
+    public boolean isPlayerRegistered(Player player) throws ApplicationException {
+        if (registrations != null) {
+            for (Registration registration : registrations) {
+                if (registration.getPlayer().equals(player)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        throw new ApplicationException("No registrations information");
     }
 
     @Override
@@ -87,19 +100,18 @@ public class Match implements Serializable, Identifiable {
     }
 
     public Integer getNumRegisteredPlayers() {
-        return numRegisteredPlayers;
+        if (registrations != null) {
+            return registrations.size();
+        }
+        return 0;
     }
 
-    public void setNumRegisteredPlayers(Integer numRegisteredPlayers) {
-        this.numRegisteredPlayers = numRegisteredPlayers;
-    }
-
-    public List<Inscription> getRegistrations() {
+    public List<Registration> getRegistrations() {
         return registrations;
     }
 
-    public void setRegistrations(List<Inscription> inscription) {
-        this.registrations = inscription;
+    public void setRegistrations(List<Registration> registration) {
+        this.registrations = registration;
     }
 
     public Site getSite() {
@@ -135,22 +147,16 @@ public class Match implements Serializable, Identifiable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Match that = (Match) o;
+        return Objects.equals(id, that.id) && Objects.equals(code, that.code);
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Match)) {
-            return false;
-        }
-        Match other = (Match) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(id, code);
     }
 
     @Override

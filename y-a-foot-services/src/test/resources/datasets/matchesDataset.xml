@@ -12,13 +12,13 @@
     <t_site sit_id="2" sit_name="Foot-à-5 de l'autre ville" sit_address="5 Rue des fous" sit_phone_number="1434567890"/>
 
     <t_match mat_id="1" mat_date="2018-10-02 18:30:00" mat_code="AZERTY-1234" mat_description="Mon match dans le passé"
-             mat_num_players_min="9" mat_num_registered_players="1" mat_site_id="1" mat_creator_id="1" mat_created_at="2019-01-02"
+             mat_num_players_min="9" mat_site_id="1" mat_creator_id="1" mat_created_at="2019-01-02"
              mat_carpooling_enabled="true" mat_code_sharing_enabled="true"/>
     <t_match mat_id="2" mat_date="2019-10-02 19:10:00" mat_code="QWERTY-1234" mat_description="Mon match dans le futur"
-             mat_num_players_min="8" mat_num_players_max="12" mat_num_registered_players="2" mat_site_id="2" mat_creator_id="2"
+             mat_num_players_min="8" mat_num_players_max="12" mat_site_id="2" mat_creator_id="2"
              mat_created_at="2019-01-02" mat_carpooling_enabled="false" mat_code_sharing_enabled="true"/>
     <t_match mat_id="3" mat_date="2019-10-02 20:50:00" mat_code="QWERTZ-1234" mat_description="Mon match sans inscriptions"
-             mat_num_players_min="8" mat_num_players_max="12" mat_num_registered_players="0" mat_site_id="2" mat_creator_id="2"
+             mat_num_players_min="8" mat_num_players_max="12" mat_site_id="2" mat_creator_id="2"
              mat_created_at="2019-01-02" mat_carpooling_enabled="false" mat_code_sharing_enabled="true"/>
 
     <t_player_match pma_match_id="1" pma_player_id="1"/>

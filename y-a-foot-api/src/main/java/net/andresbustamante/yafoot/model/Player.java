@@ -5,6 +5,7 @@ import net.andresbustamante.yafoot.model.api.Identifiable;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author andresbustamante
@@ -83,27 +84,22 @@ public class Player extends User implements Serializable, Identifiable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Player that = (Player) o;
+        return Objects.equals(id, that.id) && Objects.equals(email, that.email);
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Player)) {
-            return false;
-        }
-        Player other = (Player) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, email);
     }
 
     @Override
     public String toString() {
-        return "net.andresbustamante.yafoot.model.Player[ jouId=" + id + " ]";
+        return "Player[ id=" + id + " ]";
     }
 
 }

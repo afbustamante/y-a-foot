@@ -179,7 +179,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Match'
-  /matches/{matchCode}/players:
+  /matches/{matchCode}/registrations:
     parameters:
     - in: path
       name: matchCode
@@ -193,7 +193,7 @@ paths:
       tags:
       - matches
       requestBody:
-        description: Player registration including informations about the car proposed to assist to the match
+        description: Player registration including informations about the car proposed/chosen to assist to the match
         required: true
         content:
           application/json:
@@ -202,7 +202,9 @@ paths:
       responses:
         201: # Created
           description: Registration saved
-  /matches/{matchCode}/players/{playerId}:
+        404: # Not found
+          description: Match not found
+  /matches/{matchCode}/registrations/{playerId}:
     parameters:
     - in: path
       name: matchCode
@@ -223,6 +225,12 @@ paths:
       responses:
         204: # No content
           description: Player unregistered from match
+        400: # Bad request
+          description: Player not registered in this match
+        404: # Not found
+          description: Match not found
+        500: # Internal server error
+          description: Database problem while loading data or unregistering the player from match
   /sites:
     get:
       operationId: loadSites
@@ -351,12 +359,7 @@ components:
       type: object
       required:
         - player
-        - car
       properties:
-        matchId:
-          type: integer
-        playerId:
-          type: integer
         player:
           $ref: '#/components/schemas/Player'
         car:

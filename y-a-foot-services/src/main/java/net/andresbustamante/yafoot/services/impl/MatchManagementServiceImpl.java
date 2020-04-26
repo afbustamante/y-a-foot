@@ -17,16 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 /**
  * @author andresbustamante
  */
 @Service
 public class MatchManagementServiceImpl implements MatchManagementService {
 
-    private static final Integer NOUVEL_ID = -1;
-    private static final Integer LONGUEUR_CODE = 10;
+    private static final Integer CODE_LENGTH = 10;
 
-    private final RandomStringGenerator generateurCodes = new RandomStringGenerator.Builder().withinRange('A', 'Z').build();
+    private final RandomStringGenerator codeGenerator = new RandomStringGenerator.Builder().withinRange('A', 'Z').build();
 
     private final Logger log = LoggerFactory.getLogger(MatchManagementServiceImpl.class);
 
@@ -54,21 +55,22 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         String codeMatch;
         boolean codeDejaUtilise;
         do {
-            codeMatch = genererCodeMatch();
+            codeMatch = generateMatchCode();
             codeDejaUtilise = matchDAO.isCodeAlreadyRegistered(codeMatch);
         } while (codeDejaUtilise);
 
         match.setCode(codeMatch);
+        match.setRegistrations(new ArrayList<>());
 
         Player createur = playerDAO.findPlayerByEmail(userContext.getUsername());
 
         if (createur != null) {
             match.setCreator(createur);
         } else {
-            throw new DatabaseException("Identifiant d'utilisateur non trouvé en BDD : " + userContext.getUsername());
+            throw new DatabaseException("User not found in DB: " + userContext.getUsername());
         }
 
-        if (match.getSite().getId() != null && !match.getSite().getId().equals(NOUVEL_ID)) {
+        if (match.getSite().getId() != null) {
             Site siteExistant = siteDAO.findSiteById(match.getSite().getId());
 
             if (siteExistant != null) {
@@ -84,74 +86,82 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         matchDAO.saveMatch(match);
         log.info("Nouveau match enregistré avec l'ID {}", match.getId());
 
-        joinMatch(createur, match, null, userContext);
+        registerPlayer(createur, match, null, userContext);
     }
 
     @Transactional
     @Override
-    public void joinMatch(Player player, Match match, Car car, UserContext userContext)
+    public void registerPlayer(Player player, Match match, Car car, UserContext userContext)
             throws ApplicationException, DatabaseException {
         if (player == null || player.getId() == null || match == null || match.getId() == null) {
             throw new ApplicationException("Invalid arguments to join a match");
         }
 
-        Car existingCar = null;
-
-        if (car != null) {
-            if (car.getId() != null) {
-                existingCar = carDAO.findCarById(car.getId());
-            }
-
-            if (existingCar == null) {
-                // Enregistrer la voiture en base
-                carManagementService.saveCar(car, userContext);
-            }
+        if (match.getNumPlayersMax() != null && match.getNumPlayersMax() > match.getNumRegisteredPlayers()) {
+            throw new ApplicationException("Player already registered in match");
         }
 
-        boolean isJoueurExistant = (playerDAO.findPlayerById(player.getId()) != null);
-        boolean isMatchExistant = (matchDAO.findMatchById(match.getId()) != null);
+        if (car != null) {
+            processCarToJoinMatch(car, userContext);
+        }
 
-        if (isJoueurExistant && isMatchExistant && (!matchDAO.isPlayerRegistered(player, match))) {
+        if (!match.isPlayerRegistered(player)) {
             matchDAO.registerPlayer(player, match, car);
-            matchDAO.notifyPlayerRegistry(match);
-            log.info("Player inscrit au match");
+            log.info("Player registered to match");
         } else {
-            throw new DatabaseException("Impossible d'inscrire le player : objet inexistant");
+            throw new ApplicationException("Player already registered in match");
         }
     }
 
     @Transactional
     @Override
-    public void quitMatch(Player player, Match match, UserContext userContext) throws DatabaseException, ApplicationException {
+    public void unregisterPlayer(Player player, Match match, UserContext userContext) throws DatabaseException, ApplicationException {
         if (player == null || player.getId() == null || match == null || match.getCode() == null) {
             throw new ApplicationException("Invalid arguments to quit a match");
         }
 
-        boolean isJoueurExistant = (playerDAO.findPlayerById(player.getId()) != null);
-        boolean isMatchExistant = (matchDAO.findMatchByCode(match.getCode()) != null);
-
-        if (isJoueurExistant && isMatchExistant && matchDAO.isPlayerRegistered(player, match)) {
+        if (match.isPlayerRegistered(player)) {
             matchDAO.unregisterPlayer(player, match);
-            matchDAO.notifyPlayerLeft(match);
-            log.info("Player désinscrit du match");
+            log.info("Player unregistered from match");
         } else {
-            throw new DatabaseException("Impossible d'inscrire le player : objet inexistant");
+            throw new ApplicationException("Player not registered in this match");
         }
     }
 
     @Transactional
     @Override
-    public void quitAllMatches(Player player, UserContext userContext) throws DatabaseException {
+    public void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException {
         int numMatches = matchDAO.unregisterPlayerFromAllMatches(player);
         log.info("Player unregistered from {} matches", numMatches);
+    }
+
+    /**
+     * Loads or saves the car used to join a match. If a car ID is detected but not found, a new car registration is
+     * made by using the car passed in parameters
+     *
+     * @param car The car used by the registration
+     * @param userContext
+     * @throws DatabaseException
+     */
+    private void processCarToJoinMatch(Car car, UserContext userContext) throws DatabaseException {
+        Car existingCar = null;
+
+        if (car.getId() != null) {
+            existingCar = carDAO.findCarById(car.getId());
+        }
+
+        if (existingCar == null) {
+            // Save the new car
+            carManagementService.saveCar(car, userContext);
+        }
     }
 
     /**
      *
      * @return
      */
-    private String genererCodeMatch() {
-        log.info("Génération d'un nouveau code de match");
-        return generateurCodes.generate(LONGUEUR_CODE);
+    private String generateMatchCode() {
+        log.info("Generating new match code");
+        return codeGenerator.generate(CODE_LENGTH);
     }
 }

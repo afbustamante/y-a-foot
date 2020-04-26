@@ -35,7 +35,6 @@ public class MatchsJoiningUIService extends AbstractUIService {
      */
     public void registerPlayer(Match match, Car car) throws ApplicationException {
         Registration registration = new Registration();
-        registration.setMatchId(match.getId());
         registration.setPlayer(getUserContext().getPlayer());
 
         if (car != null) {
