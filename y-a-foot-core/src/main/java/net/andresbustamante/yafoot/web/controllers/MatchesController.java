@@ -156,12 +156,12 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.notFound().build();
             } else if (player == null) {
                 log.warn("Invalid player used while trying to register a player to a match");
-                return ResponseEntity.status(BAD_REQUEST).build();
+                return new ResponseEntity<>(buildMessageHeader("unknown.player.error",
+                        new String[]{reg.getPlayer().getEmail()}), BAD_REQUEST);
             }
 
-            matchManagementService.registerPlayer(reg.getPlayer(), match, reg.getCar(), userContext);
+            matchManagementService.registerPlayer(player, match, reg.getCar(), userContext);
 
-            log.info("Player registered to match");
             String location = MessageFormat.format(matchPlayerApiPath, match.getCode(), reg.getPlayer().getId());
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {

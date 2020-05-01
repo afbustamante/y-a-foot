@@ -5,6 +5,7 @@ import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.SiteManagementService;
@@ -15,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,7 +70,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(matchDAO).isCodeAlreadyRegistered(anyString());
         verify(siteDAO).findSiteById(any());
-        verify(siteDAO, never()).saveSite(any(Site.class), any(Player.class));
+        verify(siteManagementService, never()).saveSite(any(Site.class), any(UserContext.class));
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreator());
@@ -94,10 +96,35 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(matchDAO).isCodeAlreadyRegistered(anyString());
         verify(siteDAO, never()).findSiteById(any());
+        verify(siteManagementService).saveSite(any(Site.class), any(UserContext.class));
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreator());
         assertEquals(player, match.getCreator());
+    }
+
+    @Test
+    void saveMatchUsingUnknownSite() throws Exception {
+        // Given
+        Player player = new Player(1);
+        Site site = new Site(100);
+        Match match = new Match(1);
+        match.setDate(ZonedDateTime.now().plusDays(1));
+        match.setSite(site);
+        UserContext ctx = new UserContext();
+        ctx.setUsername("test@email.com");
+
+        // When
+        when(matchDAO.isCodeAlreadyRegistered(anyString())).thenReturn(false);
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
+        when(siteDAO.findSiteById(anyInt())).thenReturn(null);
+        assertThrows(DatabaseException.class, () -> matchManagementService.saveMatch(match, ctx));
+
+        // Then
+        verify(matchDAO).isCodeAlreadyRegistered(anyString());
+        verify(siteDAO).findSiteById(any());
+        verify(matchDAO, never()).saveMatch(any());
+        verify(siteManagementService, never()).saveSite(any(Site.class), any(UserContext.class));
     }
 
     @Test
@@ -139,6 +166,26 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
+    void registerPlayerWithUnknownCar() throws Exception {
+        // Given
+        Player player = new Player(1);
+        Match match = new Match(1);
+        match.setRegistrations(Collections.emptyList());
+        Car car = new Car(100);
+        UserContext ctx = new UserContext();
+        ctx.setUsername("test@email.com");
+
+        // When
+        when(carDAO.findCarById(anyInt())).thenReturn(null);
+        assertThrows(DatabaseException.class, () -> matchManagementService.registerPlayer(player, match, car, ctx));
+
+        // Then
+        verify(carDAO).findCarById(anyInt());
+        verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
+        verify(matchDAO, never()).registerPlayer(player, match, car);
+    }
+
+    @Test
     void registerPlayerWithNewCar() throws Exception {
         // Given
         Player player = new Player(1);
@@ -155,6 +202,44 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         verify(carDAO, never()).findCarById(anyInt());
         verify(carManagementService).saveCar(any(Car.class), any(UserContext.class));
         verify(matchDAO).registerPlayer(player, match, car);
+    }
+
+    @Test
+    void registerPlayerWhenAlreadyRegistered() {
+        // Given
+        Player player1 = new Player(1);
+        player1.setEmail("player@email.com");
+        Match match = new Match(1);
+        Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
+        registration1.setPlayer(player1);
+        match.setRegistrations(Collections.singletonList(registration1));
+        UserContext ctx = new UserContext();
+        ctx.setUsername("test@email.com");
+
+        // When
+        assertThrows(ApplicationException.class, () -> matchManagementService.registerPlayer(player1, match, null, ctx));
+
+        // Then
+        verify(matchDAO, never()).registerPlayer(any(), any(), any());
+    }
+
+    @Test
+    void registerPlayerWhenFullMatch() {
+        // Given
+        Player player = new Player(1);
+        Match match = new Match(1);
+        match.setNumPlayersMax(2);
+        Registration registration1 = new Registration();
+        Registration registration2 = new Registration();
+        match.setRegistrations(Arrays.asList(registration1, registration2));
+        UserContext ctx = new UserContext();
+        ctx.setUsername("test@email.com");
+
+        // When
+        assertThrows(ApplicationException.class, () -> matchManagementService.registerPlayer(player, match, null, ctx));
+
+        // Then
+        verify(matchDAO, never()).registerPlayer(any(), any(), any());
     }
 
     @Test
@@ -178,7 +263,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void unregisterPlayerWithNoRegistration() {
+    void unregisterPlayerWhenNotRegistered() {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
@@ -187,8 +272,11 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
-        // Then
+        // When
         assertThrows(ApplicationException.class, () -> matchManagementService.unregisterPlayer(player, match, ctx));
+
+        // Then
+        verify(matchDAO, never()).unregisterPlayer(any(), any());
     }
 
     @Test
