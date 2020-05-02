@@ -187,6 +187,22 @@ paths:
       schema:
         type: string
       description: Unique match code
+    get:
+      operationId: loadMatchRegistrations
+      summary: Loads the registrations list for a match identified by its unique code
+      tags:
+      - matches
+      responses:
+        200: # OK
+          description: Match registrations list and details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Registration'
+        404: # Not found
+          description: Match not found
     post:
       operationId: registerPlayerToMatch
       summary: Registers an existing player to a match

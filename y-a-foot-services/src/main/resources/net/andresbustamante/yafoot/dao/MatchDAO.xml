@@ -33,6 +33,7 @@
           ply.ply_first_name             AS playerFirstName,
           ply.ply_email                  AS playerEmail,
           car.car_id                     AS carId,
+          car.car_name                   AS carName,
           car.car_num_seats              AS carNumSeats
         FROM t_match mat
           JOIN t_site sit ON mat.mat_site_id = sit.sit_id
@@ -67,14 +68,15 @@
                ply.ply_first_name           AS playerFirstName,
                ply.ply_email                AS playerEmail,
                car.car_id                   AS carId,
+               car.car_name                 AS carName,
                car.car_num_seats            AS carNumSeats
         FROM t_match mat
             JOIN t_site sit ON mat.mat_site_id = sit.sit_id
             JOIN t_player cre ON mat.mat_creator_id = cre.ply_id
             JOIN t_player_match pma ON mat.mat_id = pma.pma_match_id
-            LEFT JOIN t_player ply ON pma.pma_player_id = ply.ply_id
+            JOIN t_player ply ON pma.pma_player_id = ply.ply_id
             LEFT JOIN t_car car ON pma.pma_car_id = car.car_id
-        WHERE pma.pma_player_id = #{player.id}
+        WHERE mat.mat_id IN (SELECT DISTINCT pma_match_id FROM t_player_match WHERE pma_player_id = #{player.id})
       <if test="startDate != null">
         AND mat.mat_date &gt;= #{startDate}
       </if>
@@ -211,6 +213,7 @@
             </association>
             <association property="car" javaType="net.andresbustamante.yafoot.model.Car">
                 <id column="carId" property="id" />
+                <result column="carName" property="name" />
                 <result column="carNumSeats" property="numSeats" />
             </association>
         </collection>

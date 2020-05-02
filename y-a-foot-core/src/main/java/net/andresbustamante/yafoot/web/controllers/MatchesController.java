@@ -35,6 +35,7 @@ import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * Web Service REST pour la recherche et consultation des matches
@@ -44,6 +45,11 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RestController
 @CrossOrigin(exposedHeaders = {CTX_MESSAGES})
 public class MatchesController extends AbstractController implements MatchesApi {
+
+    /* Message codes */
+    private static final String UNKNOWN_MATCH_ERROR = "unknown.match.error";
+    private static final String UNKNOWN_PLAYER_REGISTRATION_ERROR = "unknown.player.registration.error";
+    private static final String UNKNOWN_PLAYER_ERROR = "unknown.player.error";
 
     private MatchSearchService matchSearchService;
 
@@ -80,7 +86,21 @@ public class MatchesController extends AbstractController implements MatchesApi 
         try {
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
-            return (match != null) ? ResponseEntity.ok(matchMapper.map(match)) : ResponseEntity.notFound().build();
+            return (match != null) ? ResponseEntity.ok(matchMapper.map(match)) :
+                    new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
+        } catch (DatabaseException e) {
+            log.error("Database error while looking for a match", e);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<Registration>> loadMatchRegistrations(String matchCode) {
+        try {
+            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+
+            return (match != null) ? ResponseEntity.ok(registrationMapper.map(match.getRegistrations())) :
+                    new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
         } catch (DatabaseException e) {
             log.error("Database error while looking for a match", e);
             return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
@@ -153,10 +173,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
             Player player = playerSearchService.findPlayerByEmail(reg.getPlayer().getEmail());
 
             if (match == null) {
-                return ResponseEntity.notFound().build();
+                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
             } else if (player == null) {
                 log.warn("Invalid player used while trying to register a player to a match");
-                return new ResponseEntity<>(buildMessageHeader("unknown.player.error",
+                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_PLAYER_ERROR,
                         new String[]{reg.getPlayer().getEmail()}), BAD_REQUEST);
             }
 
@@ -184,9 +204,12 @@ public class MatchesController extends AbstractController implements MatchesApi 
             if (match != null && player != null) {
                 matchManagementService.unregisterPlayer(player, match, userContext);
                 return ResponseEntity.noContent().build();
+            } else if (match == null) {
+                log.warn("Invalid match code detected for unregistering player");
+                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
             } else {
-                log.warn("Invalid match code or player detected for unregistering player");
-                return ResponseEntity.notFound().build();
+                log.warn("Invalid player ID detected for unregistering player");
+                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_PLAYER_REGISTRATION_ERROR, null), NOT_FOUND);
             }
         } catch (DatabaseException e) {
             log.error("Database error while unregistering a player from a match", e);
