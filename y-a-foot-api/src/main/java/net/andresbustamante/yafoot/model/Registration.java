@@ -12,6 +12,7 @@ public class Registration implements Serializable {
     private RegistrationId id;
     private Car car;
     private Player player;
+    private boolean carConfirmed;
 
     public Registration() {}
 
@@ -45,6 +46,14 @@ public class Registration implements Serializable {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public boolean isCarConfirmed() {
+        return carConfirmed;
+    }
+
+    public void setCarConfirmed(boolean carConfirmed) {
+        this.carConfirmed = carConfirmed;
     }
 
     @Override

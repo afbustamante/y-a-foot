@@ -84,12 +84,23 @@ public class MatchManagementServiceImpl implements MatchManagementService {
             throw new ApplicationException("max.players.match.error", "This match is not accepting more registrations");
         }
 
+        boolean isCarConfirmed = false;
+
         if (car != null) {
             processCarToJoinMatch(car, userContext);
+
+            if (car.getDriver() != null && car.getDriver().equals(player)) {
+                // No confirmation mail needed for the driver of a car
+                isCarConfirmed = true;
+            } else {
+                // A confirmation is needed from the driver of the car selected for this operation
+                isCarConfirmed = false;
+                processCarSeatRequest(match, player, car, userContext);
+            }
         }
 
         if (!match.isPlayerRegistered(player)) {
-            matchDAO.registerPlayer(player, match, car);
+            matchDAO.registerPlayer(player, match, car, isCarConfirmed);
             log.info("Player {} successfully registered to the match {}", player.getId(), match.getId());
         } else {
             throw new ApplicationException("player.already.registered.error", "Player already registered in match");
@@ -157,6 +168,10 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
             if (storedCar == null) {
                 throw new DatabaseException("Car not found in DB: " + car.getId());
+            } else {
+                car.setName(storedCar.getName());
+                car.setNumSeats(storedCar.getNumSeats());
+                car.setDriver(storedCar.getDriver());
             }
         } else {
             // Save the new car
@@ -172,5 +187,18 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     private String generateMatchCode() {
         log.info("Generating new match code");
         return codeGenerator.generate(CODE_LENGTH);
+    }
+
+    /**
+     * If the carpooling feature is enabled for the match passed in parameters, it sends an email message requesting to
+     * the driver of the car passed in parameters for a place in his/her car for this match
+     *
+     * @param match The match selected by the player
+     * @param player Player asking for a seat
+     * @param car Car selected by the player
+     * @param userContext
+     */
+    private void processCarSeatRequest(Match match, Player player, Car car, UserContext userContext) {
+        // TODO Implement this method
     }
 }

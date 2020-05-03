@@ -29,7 +29,8 @@ public interface MatchManagementService {
      *
      * @param player Player to register
      * @param match Match to search
-     * @param car Car used by the player to assist to the match
+     * @param car Car used by the player to assist to the match. If the player is registering himself but is not the
+     *            owner of the car, the player is registered but the car seat is not confirmed until the owner confirms it
      * @param userContext
      * @throws DatabaseException
      * @throws ApplicationException Invalid arguments

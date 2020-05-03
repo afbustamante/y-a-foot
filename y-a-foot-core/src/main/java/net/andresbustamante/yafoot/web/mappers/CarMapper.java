@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.web.mappers;
 import net.andresbustamante.yafoot.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.model.Car;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

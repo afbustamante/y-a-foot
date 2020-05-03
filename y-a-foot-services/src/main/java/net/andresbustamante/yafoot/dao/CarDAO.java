@@ -9,27 +9,26 @@ import java.util.List;
 import static net.andresbustamante.yafoot.util.DaoConstants.*;
 
 /**
- * Interface de gestion et récupération des informations des voitures en base des données
+ * Interface for loading and saving car data in database
  *
  * @author andresbustamante
  */
 public interface CarDAO {
 
     /**
-     * Récupérer les informations d'une voiture à partir de son identifiant
+     * Loads a car details from database
      *
-     * @param id Identifiant de la voiture à chercher
+     * @param id Car's unique identifier
      * @return
      */
     Car findCarById(@Param(ID) Integer id);
 
     /**
-     * Créer une nouvelle voiture en base de données
+     * Creates the car used in parameter into the database
      *
-     * @param car Voiture à enregistrer
-     * @param player Player registering the car
+     * @param car Car to save
      */
-    int saveCar(@Param(CAR) Car car, @Param(PLAYER) Player player);
+    int saveCar(@Param(CAR) Car car);
 
     /**
      * Deletes all the cars registered by a player

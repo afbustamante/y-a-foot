@@ -8,7 +8,7 @@
         WHERE mat.mat_code = #{code}
     </select>
 
-    <select id="findMatchByCode" resultMap="matchComplet">
+    <select id="findMatchByCode" resultMap="matchDetails">
         SELECT
           mat.mat_id                     AS id,
           mat.mat_code                   AS code,
@@ -44,7 +44,7 @@
         WHERE mat.mat_code = #{code}
     </select>
 
-    <select id="findMatchesByPlayer" resultMap="matchComplet">
+    <select id="findMatchesByPlayer" resultMap="matchDetails">
         SELECT mat.mat_id                   AS id,
                mat.mat_code                 AS code,
                mat.mat_date                 AS date,
@@ -93,7 +93,7 @@
       </choose>
     </select>
 
-    <select id="findMatchById" resultMap="matchComplet">
+    <select id="findMatchById" resultMap="matchDetails">
         SELECT
           mat.mat_id                     AS id,
           mat.mat_code                   AS code,
@@ -158,8 +158,8 @@
                 VALUES (#{match.id}, #{player.id})
             </when>
             <otherwise>
-                INSERT INTO t_player_match (pma_match_id, pma_player_id, pma_car_id)
-                VALUES (#{match.id}, #{player.id}, #{car.id})
+                INSERT INTO t_player_match (pma_match_id, pma_player_id, pma_car_id, pma_car_confirmation)
+                VALUES (#{match.id}, #{player.id}, #{car.id}, #{carConfirmation})
             </otherwise>
         </choose>
     </insert>
@@ -178,7 +178,7 @@
         DELETE FROM t_player_match WHERE pma_player_id = #{player.id}
     </delete>
 
-    <resultMap id="matchComplet" type="net.andresbustamante.yafoot.model.Match">
+    <resultMap id="matchDetails" type="net.andresbustamante.yafoot.model.Match">
         <id property="id" column="id"/>
         <result property="code" column="code"/>
         <result property="date" column="date"/>

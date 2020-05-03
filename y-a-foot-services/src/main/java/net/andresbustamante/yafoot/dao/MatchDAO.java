@@ -60,15 +60,16 @@ public interface MatchDAO {
     void saveMatch(@Param(MATCH) Match match);
 
     /**
-     * Inscrire un joueur à un match existant
+     * Registers a player to an existing match
      *
      * @param player Player to register
-     * @param match Match auxquel le player doit s'inscrire
-     * @param car Voiture du player pour assister au match (optionnelle)
+     * @param match Match to update
+     * @param car Car used to go to the match (optional)
+     * @param isCarConfirmed Indicates if there's a confirmation for assisting to a match with the selected car
      */
-    void registerPlayer(@Param(PLAYER) Player player,
-                             @Param(MATCH) Match match,
-                             @Param(CAR) Car car);
+    int registerPlayer(@Param(PLAYER) Player player,
+                        @Param(MATCH) Match match,
+                        @Param(CAR) Car car, @Param("carConfirmation") boolean isCarConfirmed);
 
     /**
      * Vérifier si un joueur est déjà inscrit à un match passé en paramètre

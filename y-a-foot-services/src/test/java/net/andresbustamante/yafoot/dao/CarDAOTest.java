@@ -25,6 +25,7 @@ class CarDAOTest extends AbstractDAOTest {
     @BeforeEach
     void setUp() {
         player = new Player(1);
+        player.setEmail("john.doe@email.com");
     }
 
     @Test
@@ -37,6 +38,11 @@ class CarDAOTest extends AbstractDAOTest {
         assertEquals("Peugeot 207", car1.getName());
         assertNotNull(car1.getNumSeats());
         assertEquals(4, car1.getNumSeats().intValue());
+        assertNotNull(car1.getDriver());
+        assertNotNull(car1.getDriver().getId());
+        assertNotNull(car1.getDriver().getEmail());
+        assertEquals(player.getId(), car1.getDriver().getId());
+        assertEquals(player.getEmail(), car1.getDriver().getEmail());
     }
 
     @Test
@@ -45,9 +51,10 @@ class CarDAOTest extends AbstractDAOTest {
         Car newCar = new Car();
         newCar.setName("Citroën DS3");
         newCar.setNumSeats(3);
+        newCar.setDriver(player);
 
         // When
-        int nbLignesInserees = carDAO.saveCar(newCar, player);
+        int nbLignesInserees = carDAO.saveCar(newCar);
 
         // Then
         assertEquals(1, nbLignesInserees);

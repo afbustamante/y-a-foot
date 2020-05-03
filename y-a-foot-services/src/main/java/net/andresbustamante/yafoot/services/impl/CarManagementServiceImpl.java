@@ -28,7 +28,8 @@ public class CarManagementServiceImpl implements CarManagementService {
     @Override
     public int saveCar(Car car, UserContext ctx) throws DatabaseException {
         Player player = playerDAO.findPlayerByEmail(ctx.getUsername());
-        carDAO.saveCar(car, player);
+        car.setDriver(player);
+        carDAO.saveCar(car);
         return car.getId();
     }
 

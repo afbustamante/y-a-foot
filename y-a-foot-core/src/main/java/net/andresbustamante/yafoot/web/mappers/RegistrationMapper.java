@@ -11,6 +11,7 @@ import java.util.List;
 public interface RegistrationMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "carConfirmed", ignore = true)
     Registration map(net.andresbustamante.yafoot.web.dto.Registration registration);
 
     net.andresbustamante.yafoot.web.dto.Registration map(Registration registration);

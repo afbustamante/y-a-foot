@@ -2,10 +2,7 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import net.andresbustamante.yafoot.model.Registration;
-import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Site;
+import net.andresbustamante.yafoot.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,15 +25,18 @@ class MatchDAOTest extends AbstractDAOTest {
     @Autowired
     private SiteDAO siteDAO;
 
+    @Autowired
+    private CarDAO carDAO;
+
     @Test
     void isCodeAlreadyRegistered() throws Exception {
         // Given
-        String codeExistant = "QWERTY-1234";
-        String codeInexistant = "QWERTY-1230";
+        String registeredCode = "QWERTY-1234";
+        String unregisteredCode = "QWERTY-1230";
 
         // When
-        boolean test1 = matchDAO.isCodeAlreadyRegistered(codeExistant);
-        boolean test2 = matchDAO.isCodeAlreadyRegistered(codeInexistant);
+        boolean test1 = matchDAO.isCodeAlreadyRegistered(registeredCode);
+        boolean test2 = matchDAO.isCodeAlreadyRegistered(unregisteredCode);
 
         // Then
         assertTrue(test1);
@@ -47,7 +47,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void findMatchByCode() throws Exception {
         // Given
         String code = "QWERTY-1234";
-        LocalDateTime dateMatch = LocalDateTime.of(2019, 10, 2, 19, 10); // 2019-10-02 19:10
+        LocalDateTime date = LocalDateTime.of(2019, 10, 2, 19, 10); // 2019-10-02 19:10
 
         // When
         Match match = matchDAO.findMatchByCode(code);
@@ -55,7 +55,7 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(match);
         assertEquals(2, match.getId().intValue());
-        assertEquals(ZonedDateTime.of(dateMatch, ZoneId.systemDefault()), match.getDate());
+        assertEquals(ZonedDateTime.of(date, ZoneId.systemDefault()), match.getDate());
         assertEquals(8, match.getNumPlayersMin().intValue());
         assertEquals(12, match.getNumPlayersMax().intValue());
         assertNotNull(match.getCreator());
@@ -144,7 +144,7 @@ class MatchDAOTest extends AbstractDAOTest {
         Integer matchId = 1;
 
         // When
-        Match match = matchDAO.findMatchById(1);
+        Match match = matchDAO.findMatchById(matchId);
 
         //Then
         assertNotNull(match);
@@ -158,13 +158,13 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void saveMatch() throws Exception {
         // Given
-        ZonedDateTime maintenant = ZonedDateTime.now();
+        ZonedDateTime now = ZonedDateTime.now();
         Player player = playerDAO.findPlayerById(1);
         Site site = siteDAO.findSiteById(1);
 
         Match match = new Match();
         match.setCode("C-" + (Instant.now().toEpochMilli() / 1000));
-        match.setDate(maintenant);
+        match.setDate(now);
         match.setNumPlayersMin(10);
         match.setNumPlayersMax(12);
         match.setCarpoolingEnabled(true);
@@ -182,13 +182,28 @@ class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
+    void registerPlayerWithCar() throws Exception {
+        // Given
+        Player player = playerDAO.findPlayerById(1);
+        Match match = matchDAO.findMatchById(2);
+        Car car = carDAO.findCarById(1);
+
+        // When
+        int numLines = matchDAO.registerPlayer(player, match, car, true);
+
+        // Then
+        assertEquals(1, numLines);
+        assertTrue(matchDAO.isPlayerRegistered(player, match));
+    }
+
+    @Test
     void registerPlayerWithNoCar() throws Exception {
         // Given
         Player player = playerDAO.findPlayerById(1);
         Match match = matchDAO.findMatchById(2);
 
         // When
-        matchDAO.registerPlayer(player, match, null);
+        matchDAO.registerPlayer(player, match, null, false);
 
         // Then
         assertTrue(matchDAO.isPlayerRegistered(player, match));

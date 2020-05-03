@@ -51,7 +51,7 @@ class CarManagementServiceImplTest extends AbstractServiceTest {
         int carId = carManagementService.saveCar(car, userContext);
 
         assertEquals(8, carId);
-        verify(carDAO).saveCar(any(Car.class), any(Player.class));
+        verify(carDAO).saveCar(any(Car.class));
     }
 
     @Test

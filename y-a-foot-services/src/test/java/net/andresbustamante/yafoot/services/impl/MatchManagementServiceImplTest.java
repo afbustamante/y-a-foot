@@ -142,7 +142,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(carDAO, never()).findCarById(anyInt());
         verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
-        verify(matchDAO).registerPlayer(player, match, null);
+        verify(matchDAO).registerPlayer(player, match, null, false);
     }
 
     @Test
@@ -162,7 +162,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(carDAO).findCarById(anyInt());
         verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
-        verify(matchDAO).registerPlayer(player, match, car);
+        verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
     }
 
     @Test
@@ -182,7 +182,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(carDAO).findCarById(anyInt());
         verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
-        verify(matchDAO, never()).registerPlayer(player, match, car);
+        verify(matchDAO, never()).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
     }
 
     @Test
@@ -201,7 +201,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(carDAO, never()).findCarById(anyInt());
         verify(carManagementService).saveCar(any(Car.class), any(UserContext.class));
-        verify(matchDAO).registerPlayer(player, match, car);
+        verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
     }
 
     @Test
@@ -220,7 +220,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         assertThrows(ApplicationException.class, () -> matchManagementService.registerPlayer(player1, match, null, ctx));
 
         // Then
-        verify(matchDAO, never()).registerPlayer(any(), any(), any());
+        verify(matchDAO, never()).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
     }
 
     @Test
@@ -239,7 +239,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         assertThrows(ApplicationException.class, () -> matchManagementService.registerPlayer(player, match, null, ctx));
 
         // Then
-        verify(matchDAO, never()).registerPlayer(any(), any(), any());
+        verify(matchDAO, never()).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
     }
 
     @Test

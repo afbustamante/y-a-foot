@@ -3,13 +3,17 @@
 
 <mapper namespace="net.andresbustamante.yafoot.dao.CarDAO">
 
-  <select id="findCarById" resultType="net.andresbustamante.yafoot.model.Car">
+  <select id="findCarById" resultMap="carDetails">
     SELECT
-      car_id        AS id,
-      car_name      AS name,
-      car_num_seats AS numSeats
-    FROM t_car
-    WHERE car_id = #{id}
+      car.car_id        AS id,
+      car.car_name      AS name,
+      car.car_num_seats AS numSeats,
+      p.ply_id          AS driverId,
+      p.ply_first_name  AS driverFirstName,
+      p.ply_email       AS driverEmail
+    FROM t_car car
+      JOIN t_player p on car.car_driver_id = p.ply_id
+    WHERE car.car_id = #{id}
   </select>
 
   <insert id="saveCar" useGeneratedKeys="true">
@@ -18,7 +22,7 @@
     </selectKey>
 
     INSERT INTO t_car (car_id, car_name, car_num_seats, car_driver_id)
-    VALUES (#{car.id}, #{car.name}, #{car.numSeats}, #{player.id})
+    VALUES (#{car.id}, #{car.name}, #{car.numSeats}, #{car.driver.id})
   </insert>
 
   <delete id="deleteCarsByPlayer">
@@ -34,4 +38,15 @@
     FROM t_car
     WHERE car_driver_id = #{player.id}
   </select>
+
+  <resultMap id="carDetails" type="net.andresbustamante.yafoot.model.Car">
+    <id property="id" column="id" />
+    <result property="name" column="name" />
+    <result property="numSeats" column="numSeats" />
+    <association property="driver" javaType="net.andresbustamante.yafoot.model.Player">
+      <id property="id" column="driverId" />
+      <result property="firstName" column="driverFirstName" />
+      <result property="email" column="driverEmail" />
+    </association>
+  </resultMap>
 </mapper>
