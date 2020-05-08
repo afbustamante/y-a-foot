@@ -5,10 +5,8 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.web.dto.Player;
-import net.andresbustamante.yafoot.web.dto.UserContext;
 import net.andresbustamante.yafoot.services.PlayerManagementService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
-import net.andresbustamante.yafoot.web.mappers.ContextMapper;
 import net.andresbustamante.yafoot.web.mappers.PlayerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +41,6 @@ public class PlayersController extends AbstractController implements PlayersApi 
 
     private PlayerMapper playerMapper;
 
-    private ContextMapper contextMapper;
-
     @Value("${player.api.service.path}")
     private String playerApiPath;
 
@@ -52,13 +48,12 @@ public class PlayersController extends AbstractController implements PlayersApi 
 
     @Autowired
     public PlayersController(PlayerManagementService playerManagementService, PlayerSearchService playerSearchService,
-                             PlayerMapper playerMapper, ContextMapper contextMapper, HttpServletRequest request,
+                             PlayerMapper playerMapper, HttpServletRequest request,
                              ApplicationContext applicationContext) {
         super(request, applicationContext);
         this.playerManagementService = playerManagementService;
         this.playerSearchService = playerSearchService;
         this.playerMapper = playerMapper;
-        this.contextMapper = contextMapper;
         this.request = request;
     }
 
@@ -78,8 +73,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
         try {
             log.info("New player registration for email address {}", player.getEmail());
             net.andresbustamante.yafoot.model.Player newPlayer = playerMapper.map(player);
-            int id = playerManagementService.savePlayer(newPlayer,
-                    contextMapper.map(new UserContext()));
+            int id = playerManagementService.savePlayer(newPlayer, new net.andresbustamante.yafoot.model.UserContext());
 
             String location = MessageFormat.format(playerApiPath, id);
             return ResponseEntity.created(getLocationURI(location)).build();

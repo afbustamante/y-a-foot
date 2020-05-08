@@ -5,7 +5,7 @@ import net.andresbustamante.yafoot.model.Player;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = SpringMapperConfig.class, uses = {StringMapper.class, DateMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {StringMapper.class})
 public interface PlayerMapper {
 
     @Mapping(target = "active", ignore = true)
