@@ -29,14 +29,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${players.api.service.path}")
     private String playersApiPath;
 
-    @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
 
-    @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    public WebSecurityConfig(JwtUserDetailsService jwtUserDetailsService,
+                             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                             JwtRequestFilter jwtRequestFilter) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

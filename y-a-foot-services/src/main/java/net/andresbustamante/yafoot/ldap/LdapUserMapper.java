@@ -2,6 +2,7 @@ package net.andresbustamante.yafoot.ldap;
 
 import net.andresbustamante.yafoot.model.User;
 import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -13,6 +14,7 @@ import static net.andresbustamante.yafoot.util.LdapConstants.*;
 /**
  * LDAP attributes mapper for {@link User}
  */
+@Component
 public class LdapUserMapper implements AttributesMapper<User> {
 
     @Override

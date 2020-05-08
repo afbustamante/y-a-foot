@@ -18,8 +18,12 @@ import java.util.List;
 @Service
 public class SiteSearchServiceImpl implements SiteSearchService {
 
-    @Autowired
     private SiteDAO siteDAO;
+
+    @Autowired
+    public SiteSearchServiceImpl(SiteDAO siteDAO) {
+        this.siteDAO = siteDAO;
+    }
 
     @Override
     @Transactional(readOnly = true)

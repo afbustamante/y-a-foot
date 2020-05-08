@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,7 +52,9 @@ public class PlayersController extends AbstractController implements PlayersApi 
 
     @Autowired
     public PlayersController(PlayerManagementService playerManagementService, PlayerSearchService playerSearchService,
-                             PlayerMapper playerMapper, ContextMapper contextMapper, HttpServletRequest request) {
+                             PlayerMapper playerMapper, ContextMapper contextMapper, HttpServletRequest request,
+                             ApplicationContext applicationContext) {
+        super(request, applicationContext);
         this.playerManagementService = playerManagementService;
         this.playerSearchService = playerSearchService;
         this.playerMapper = playerMapper;

@@ -20,10 +20,14 @@ import java.util.List;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
-    @Autowired
     private UserAuthenticationService userAuthenticationService;
 
     private final Logger log = LoggerFactory.getLogger(JwtUserDetailsService.class);
+
+    @Autowired
+    public JwtUserDetailsService(UserAuthenticationService userAuthenticationService) {
+        this.userAuthenticationService = userAuthenticationService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

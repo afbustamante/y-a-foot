@@ -24,19 +24,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerManagementServiceImpl implements PlayerManagementService {
 
-    @Autowired
     private PlayerDAO playerDAO;
 
-    @Autowired
     private UserDAO userDAO;
 
-    @Autowired
     private MatchManagementService matchManagementService;
 
-    @Autowired
     private CarManagementService carManagementService;
 
     private final Logger log = LoggerFactory.getLogger(PlayerManagementServiceImpl.class);
+
+    @Autowired
+    public PlayerManagementServiceImpl(PlayerDAO playerDAO, UserDAO userDAO,
+                                       MatchManagementService matchManagementService,
+                                       CarManagementService carManagementService) {
+        this.playerDAO = playerDAO;
+        this.userDAO = userDAO;
+        this.matchManagementService = matchManagementService;
+        this.carManagementService = carManagementService;
+    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override

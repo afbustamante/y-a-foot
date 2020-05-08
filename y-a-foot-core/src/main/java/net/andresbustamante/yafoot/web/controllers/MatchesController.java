@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,9 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Autowired
     public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
                              MatchManagementService matchManagementService,
-                             MatchMapper matchMapper, RegistrationMapper registrationMapper, HttpServletRequest request) {
+                             MatchMapper matchMapper, RegistrationMapper registrationMapper, HttpServletRequest request,
+                             ApplicationContext applicationContext) {
+        super(request, applicationContext);
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
         this.playerSearchService = playerSearchService;

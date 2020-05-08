@@ -18,11 +18,15 @@ public class CarManagementServiceImpl implements CarManagementService {
 
     private final Logger log = LoggerFactory.getLogger(CarManagementServiceImpl.class);
 
-    @Autowired
     private CarDAO carDAO;
 
-    @Autowired
     private PlayerDAO playerDAO;
+
+    @Autowired
+    public CarManagementServiceImpl(CarDAO carDAO, PlayerDAO playerDAO) {
+        this.carDAO = carDAO;
+        this.playerDAO = playerDAO;
+    }
 
     @Transactional
     @Override

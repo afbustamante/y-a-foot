@@ -17,11 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SiteManagementServiceImpl implements SiteManagementService {
 
-    @Autowired
     private SiteDAO siteDAO;
 
-    @Autowired
     private PlayerSearchService playerSearchService;
+
+    @Autowired
+    public SiteManagementServiceImpl(SiteDAO siteDAO, PlayerSearchService playerSearchService) {
+        this.siteDAO = siteDAO;
+        this.playerSearchService = playerSearchService;
+    }
 
     @Transactional
     @Override

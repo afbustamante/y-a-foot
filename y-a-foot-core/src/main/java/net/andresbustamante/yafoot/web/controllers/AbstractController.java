@@ -5,7 +5,6 @@ import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.util.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -20,7 +19,6 @@ import java.net.URISyntaxException;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * Abstract controller for common RESTful controllers operations
@@ -41,12 +39,17 @@ public abstract class AbstractController {
      */
     protected HttpServletRequest request;
 
-    @Autowired
-    private ApplicationContext applicationContext;
+    /**
+     * Injected application context (constructors only)
+     */
+    protected ApplicationContext applicationContext;
+
+    public AbstractController(HttpServletRequest request, ApplicationContext applicationContext) {
+        this.request = request;
+        this.applicationContext = applicationContext;
+    }
 
     private final Logger log = LoggerFactory.getLogger(AbstractController.class);
-
-    abstract Optional<HttpServletRequest> getRequest();
 
     protected URI getLocationURI(String location) {
         try {
@@ -85,27 +88,25 @@ public abstract class AbstractController {
     }
 
     private Locale getUserLocale() {
-        if (request != null) {
-            String acceptedLanguages = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
+        String acceptedLanguages = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
 
-            if (acceptedLanguages != null) {
-                // Example: es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3
-                String[] headerParts = acceptedLanguages.split("(,|;)");
+        if (acceptedLanguages != null) {
+            // Example: es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3
+            String[] headerParts = acceptedLanguages.split("(,|;)");
 
-                for (String part : headerParts) {
-                    // Return the first supported locale found in the list
-                    if (part.matches("[a-z]{2}-[a-zA-Z]{2}")) {
-                        Locale locale = Locale.forLanguageTag(part);
+            for (String part : headerParts) {
+                // Return the first supported locale found in the list
+                if (part.matches("[a-z]{2}-[a-zA-Z]{2}")) {
+                    Locale locale = Locale.forLanguageTag(part);
 
-                        if (LocaleUtils.isSupportedLocale(locale)) {
-                            return locale;
-                        }
-                    } else if (part.matches("[a-z]{2}")) {
-                        Locale locale = new Locale(part);
+                    if (LocaleUtils.isSupportedLocale(locale)) {
+                        return locale;
+                    }
+                } else if (part.matches("[a-z]{2}")) {
+                    Locale locale = new Locale(part);
 
-                        if (LocaleUtils.isSupportedLocale(locale)) {
-                            return locale;
-                        }
+                    if (LocaleUtils.isSupportedLocale(locale)) {
+                        return locale;
                     }
                 }
             }

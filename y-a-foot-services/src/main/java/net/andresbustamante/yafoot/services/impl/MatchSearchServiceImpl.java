@@ -21,8 +21,12 @@ import java.util.List;
 @Service
 public class MatchSearchServiceImpl implements MatchSearchService {
 
-    @Autowired
     private MatchDAO matchDAO;
+
+    @Autowired
+    public MatchSearchServiceImpl(MatchDAO matchDAO) {
+        this.matchDAO = matchDAO;
+    }
 
     @Transactional(readOnly = true)
     @Override

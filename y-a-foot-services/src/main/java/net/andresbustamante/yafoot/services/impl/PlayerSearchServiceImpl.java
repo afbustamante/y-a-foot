@@ -14,8 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerSearchServiceImpl implements PlayerSearchService {
 
-    @Autowired
     private PlayerDAO playerDAO;
+
+    @Autowired
+    public PlayerSearchServiceImpl(PlayerDAO playerDAO) {
+        this.playerDAO = playerDAO;
+    }
 
     @Override
     @Transactional(readOnly = true)

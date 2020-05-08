@@ -26,11 +26,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
 
-    @Autowired
     private JwtTokenUtils jwtTokenUtils;
 
-    @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
+
+    @Autowired
+    public JwtRequestFilter(JwtTokenUtils jwtTokenUtils, JwtUserDetailsService jwtUserDetailsService) {
+        this.jwtTokenUtils = jwtTokenUtils;
+        this.jwtUserDetailsService = jwtUserDetailsService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

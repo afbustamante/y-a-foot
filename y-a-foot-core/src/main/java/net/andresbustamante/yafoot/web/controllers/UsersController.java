@@ -6,6 +6,7 @@ import net.andresbustamante.yafoot.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.web.dto.User;
 import net.andresbustamante.yafoot.web.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +27,9 @@ public class UsersController extends AbstractController implements UsersApi {
     private UserMapper userMapper;
 
     @Autowired
-    public UsersController(UserAuthenticationService userAuthenticationService, UserMapper userMapper, HttpServletRequest request) {
+    public UsersController(UserAuthenticationService userAuthenticationService, UserMapper userMapper,
+                           HttpServletRequest request, ApplicationContext applicationContext) {
+        super(request, applicationContext);
         this.userAuthenticationService = userAuthenticationService;
         this.userMapper = userMapper;
         this.request = request;

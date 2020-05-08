@@ -31,23 +31,28 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     private final Logger log = LoggerFactory.getLogger(MatchManagementServiceImpl.class);
 
-    @Autowired
     private MatchDAO matchDAO;
 
-    @Autowired
     private SiteDAO siteDAO;
 
-    @Autowired
     private SiteManagementService siteManagementService;
 
-    @Autowired
     private CarDAO carDAO;
 
-    @Autowired
     private CarManagementService carManagementService;
 
-    @Autowired
     private PlayerDAO playerDAO;
+
+    @Autowired
+    public MatchManagementServiceImpl(MatchDAO matchDAO, SiteDAO siteDAO, CarDAO carDAO, PlayerDAO playerDAO,
+                                      SiteManagementService siteManagementService, CarManagementService carManagementService) {
+        this.matchDAO = matchDAO;
+        this.siteDAO = siteDAO;
+        this.siteManagementService = siteManagementService;
+        this.carDAO = carDAO;
+        this.carManagementService = carManagementService;
+        this.playerDAO = playerDAO;
+    }
 
     @Transactional
     @Override

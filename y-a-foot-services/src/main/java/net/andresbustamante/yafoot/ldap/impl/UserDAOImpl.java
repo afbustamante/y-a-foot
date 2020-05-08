@@ -24,7 +24,6 @@ import static net.andresbustamante.yafoot.util.LdapConstants.*;
 @Repository
 public class UserDAOImpl implements UserDAO {
 
-    @Autowired
     private LdapTemplate ldapTemplate;
 
     @Value("${ldap.config.users.dn}")
@@ -37,9 +36,11 @@ public class UserDAOImpl implements UserDAO {
 
     private LdapAuthUserMapper ldapAuthUserMapper;
 
-    public UserDAOImpl() {
-        ldapUserMapper = new LdapUserMapper();
-        ldapAuthUserMapper = new LdapAuthUserMapper();
+    @Autowired
+    public UserDAOImpl(LdapTemplate ldapTemplate, LdapUserMapper ldapUserMapper, LdapAuthUserMapper ldapAuthUserMapper) {
+        this.ldapTemplate = ldapTemplate;
+        this.ldapUserMapper = ldapUserMapper;
+        this.ldapAuthUserMapper = ldapAuthUserMapper;
     }
 
     @Override
