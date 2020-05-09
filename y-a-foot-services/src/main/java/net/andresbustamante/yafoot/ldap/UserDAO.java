@@ -24,11 +24,18 @@ public interface UserDAO {
     void updateUser(User usr);
 
     /**
-     * Supprimer un utilisateur de l'annuaire LDAP
-     *  @param usr User à supprimer
-     * @param roles Rôles de l'utilisateur à supprimer
+     * Update a user's password
+     *
+     * @param usr User to update
      */
-    void deleteUser(User usr, RolesEnum[] roles);
+    void updatePassword(User usr);
+
+    /**
+     * Supprimer un utilisateur de l'annuaire LDAP
+     *
+     * @param usr User à supprimer
+     */
+    void deleteUser(User usr);
 
     /**
      * Chercher un utilisateur dans l'annuaire à partir de son identifiant

@@ -1,9 +1,6 @@
 package net.andresbustamante.yafoot.ldap.impl;
 
-import net.andresbustamante.yafoot.ldap.LdapAuthUserMapper;
-import net.andresbustamante.yafoot.ldap.ModifyPasswordRequest;
-import net.andresbustamante.yafoot.ldap.LdapUserMapper;
-import net.andresbustamante.yafoot.ldap.UserDAO;
+import net.andresbustamante.yafoot.ldap.*;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,8 @@ import javax.naming.Name;
 import javax.naming.directory.*;
 import javax.naming.ldap.ExtendedRequest;
 import javax.naming.ldap.LdapContext;
+import java.util.Collections;
+import java.util.List;
 
 import static net.andresbustamante.yafoot.util.LdapConstants.*;
 
@@ -36,11 +35,15 @@ public class UserDAOImpl implements UserDAO {
 
     private LdapAuthUserMapper ldapAuthUserMapper;
 
+    private LdapUserUpdateMapper ldapUserUpdateMapper;
+
     @Autowired
-    public UserDAOImpl(LdapTemplate ldapTemplate, LdapUserMapper ldapUserMapper, LdapAuthUserMapper ldapAuthUserMapper) {
+    public UserDAOImpl(LdapTemplate ldapTemplate, LdapUserMapper ldapUserMapper, LdapAuthUserMapper ldapAuthUserMapper,
+                       LdapUserUpdateMapper ldapUserUpdateMapper) {
         this.ldapTemplate = ldapTemplate;
         this.ldapUserMapper = ldapUserMapper;
         this.ldapAuthUserMapper = ldapAuthUserMapper;
+        this.ldapUserUpdateMapper = ldapUserUpdateMapper;
     }
 
     @Override
@@ -52,16 +55,20 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void updateUser(User usr) {
-        if (usr.getPassword() != null) {
-            modifyPassword(usr);
-        } else {
-            ldapTemplate.rebind(getUid(usr), null, ldapUserMapper.mapToAttributes(usr));
-        }
+        User oldUser = ldapTemplate.lookup(getUid(usr).toString(), ldapUserUpdateMapper);
+        usr.setPassword(oldUser.getPassword());
+        ldapTemplate.rebind(getUid(usr), null, ldapUserUpdateMapper.mapToAttributes(usr));
     }
 
     @Override
-    public void deleteUser(User usr, RolesEnum[] roles) {
-        removeRoleForUser(usr, roles);
+    public void updatePassword(User usr) {
+        modifyPassword(usr);
+    }
+
+    @Override
+    public void deleteUser(User usr) {
+        List<RolesEnum> userRoles = Collections.singletonList(RolesEnum.PLAYER); // TODO Calculate roles for the given user
+        removeRolesForUser(usr, userRoles);
         ldapTemplate.unbind(getUid(usr));
     }
 
@@ -136,7 +143,7 @@ public class UserDAOImpl implements UserDAO {
      *
      * @param usr User à impacter
      */
-    private void removeRoleForUser(User usr, RolesEnum[] roles) {
+    private void removeRolesForUser(User usr, List<RolesEnum> roles) {
         for (RolesEnum role : roles) {
             Attribute attribute = new BasicAttribute(MEMBER);
             attribute.add(getUid(usr).toString());

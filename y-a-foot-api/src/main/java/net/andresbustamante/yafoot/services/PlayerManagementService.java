@@ -32,8 +32,9 @@ public interface PlayerManagementService {
      * @return Succès de l'opération
      * @throws DatabaseException
      * @throws LdapException
+     * @throws ApplicationException
      */
-    boolean updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException;
+    boolean updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
 
     /**
      * Désactiver un joueur tout en supprimant son historique dans l'application et en supprimant

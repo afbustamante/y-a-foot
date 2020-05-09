@@ -1,52 +1,30 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.config.JwtTestConfig;
-import net.andresbustamante.yafoot.config.LdapConfig;
-import net.andresbustamante.yafoot.config.LdapTestConfig;
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.ldap.UserDAO;
 import net.andresbustamante.yafoot.model.User;
-import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {LdapTestConfig.class, LdapConfig.class, JwtTestConfig.class})
-class UserAuthenticationServiceImplTest {
+class UserAuthenticationServiceImplTest extends AbstractServiceTest {
 
     private static final User USR_TEST = new User("test@email.com", "password", "TEST",
             "User");
 
-    private UserAuthenticationService userAuthenticationService;
+    @InjectMocks
+    private UserAuthenticationServiceImpl userAuthenticationService;
 
-    @Autowired
+    @Mock
     private UserDAO userDAO;
 
-    @Autowired
+    @Mock
     private JwtTokenUtils jwtTokenUtils;
-
-    @BeforeEach
-    void setUp() throws Exception {
-        userAuthenticationService = new UserAuthenticationServiceImpl(jwtTokenUtils, userDAO);
-        userDAO.saveUser(USR_TEST, RolesEnum.PLAYER);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        userDAO.deleteUser(USR_TEST, new RolesEnum[]{RolesEnum.PLAYER});
-    }
 
     @Test
     void testAuthenticateInvalidUser() {
@@ -54,27 +32,41 @@ class UserAuthenticationServiceImplTest {
         User invalidUser = new User("invalid.user@email.com");
         invalidUser.setPassword("pass");
 
+        // When
+        when(userDAO.authenticateUser(anyString(), anyString())).thenReturn(null);
+
         // Then
         assertThrows(InvalidCredentialsException.class, () -> userAuthenticationService.authenticate(invalidUser));
+        verify(userDAO).authenticateUser(anyString(), anyString());
+        verify(jwtTokenUtils, never()).generateToken(anyString());
     }
 
     @Test
     void testAuthenticateValidUser() throws InvalidCredentialsException {
         // When
+        when(userDAO.authenticateUser(anyString(), anyString())).thenReturn(USR_TEST);
+        when(jwtTokenUtils.generateToken(anyString())).thenReturn("token");
+
         User authUser = userAuthenticationService.authenticate(USR_TEST);
 
         // Then
         assertNotNull(authUser);
         assertNotNull(authUser.getToken());
+        verify(userDAO).authenticateUser(anyString(), anyString());
+        verify(jwtTokenUtils).generateToken(anyString());
     }
 
     @Test
     void findUserByEmail() throws LdapException {
         // When
+        when(userDAO.findUserAuthDetailsByUid(anyString())).thenReturn(USR_TEST);
+
         User user = userAuthenticationService.findUserByEmail("test@email.com");
 
         // Then
         assertNotNull(user);
         assertEquals(USR_TEST, user);
+
+        verify(userDAO).findUserAuthDetailsByUid(anyString());
     }
 }

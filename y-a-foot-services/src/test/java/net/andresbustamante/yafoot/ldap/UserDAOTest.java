@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.support.LdapNameBuilder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author andresbustamante
  */
+@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {LdapTestConfig.class, LdapConfig.class})
 class UserDAOTest {
@@ -41,7 +43,7 @@ class UserDAOTest {
 
     @AfterEach
     void tearDown() throws Exception {
-        userDAO.deleteUser(USR_TEST, new RolesEnum[]{RolesEnum.PLAYER});
+        userDAO.deleteUser(USR_TEST);
     }
 
     @Test
@@ -57,19 +59,22 @@ class UserDAOTest {
         assertNotNull(user.getEmail());
         assertNull(user.getPassword());
 
-        userDAO.deleteUser(newUser, new RolesEnum[]{RolesEnum.PLAYER});
+        userDAO.deleteUser(newUser);
     }
 
     @Test
     void updateUser() throws Exception {
+        // Given
         User updatedUser = new User();
         updatedUser.setEmail(USR_TEST.getEmail());
         updatedUser.setSurname(USR_TEST.getSurname() + " autre");
         updatedUser.setFirstName(USR_TEST.getFirstName() + " autre");
 
+        // When
         userDAO.updateUser(updatedUser);
 
-        User user = userDAO.findUserByUid(getUid(updatedUser).toString());
+        // Then
+        User user = userDAO.authenticateUser(USR_TEST.getEmail(), "password");
         assertNotNull(user);
         assertEquals(USR_TEST.getEmail(), user.getEmail());
         assertNotNull(user.getSurname());
@@ -94,7 +99,7 @@ class UserDAOTest {
         updatedUser.setPassword("monNouveauMotDePasse");
 
         // When
-        userDAO.updateUser(updatedUser);
+        userDAO.updatePassword(updatedUser);
         User user = userDAO.findUserByUid(getUid(updatedUser).toString());
 
         // Then
@@ -114,7 +119,7 @@ class UserDAOTest {
         User newUser = buildNewUser();
         userDAO.saveUser(newUser, RolesEnum.PLAYER);
 
-        userDAO.deleteUser(newUser, new RolesEnum[]{RolesEnum.PLAYER});
+        userDAO.deleteUser(newUser);
 
         User user = userDAO.findUserByUid(getUid(newUser).toString());
         assertNull(user);

@@ -2,11 +2,13 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.ldap.UserDAO;
 import net.andresbustamante.yafoot.model.Player;
+import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.UserContext;
+import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.MatchManagementService;
+import net.andresbustamante.yafoot.services.UserManagementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,13 +21,13 @@ import static org.mockito.Mockito.*;
 class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
     @InjectMocks
-    private PlayerManagementServiceImpl gestionJoueursService;
+    private PlayerManagementServiceImpl playerManagementService;
 
     @Mock
     private PlayerDAO playerDAO;
 
     @Mock
-    private UserDAO userDAO;
+    private UserManagementService userManagementService;
 
     @Mock
     private MatchManagementService matchManagementService;
@@ -47,11 +49,11 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.isPlayerAlreadySignedUp(anyString())).thenReturn(false);
-        gestionJoueursService.savePlayer(player, ctx);
+        playerManagementService.savePlayer(player, ctx);
 
         // Then
         verify(playerDAO, times(1)).isPlayerAlreadySignedUp(anyString());
-        verify(userDAO, times(1)).saveUser(any(), any());
+        verify(userManagementService).createUser(any(User.class), any(RolesEnum.class), any(UserContext.class));
         verify(playerDAO, times(1)).savePlayer(any());
     }
 
@@ -64,11 +66,11 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.isPlayerAlreadySignedUp(anyString())).thenReturn(true);
-        assertThrows(ApplicationException.class, () -> gestionJoueursService.savePlayer(player, ctx));
+        assertThrows(ApplicationException.class, () -> playerManagementService.savePlayer(player, ctx));
 
         // Then
         verify(playerDAO, times(1)).isPlayerAlreadySignedUp(anyString());
-        verify(userDAO, times(0)).saveUser(any(), any());
+        verify(userManagementService, never()).createUser(any(User.class), any(RolesEnum.class), any(UserContext.class));
         verify(playerDAO, times(0)).savePlayer(any());
     }
 
@@ -90,34 +92,11 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(existingPlayer);
-        boolean succes = gestionJoueursService.updatePlayer(updatedPlayer, ctx);
+        boolean succes = playerManagementService.updatePlayer(updatedPlayer, ctx);
 
         // Then
         verify(playerDAO, times(1)).findPlayerByEmail(any());
-        verify(userDAO, times(1)).updateUser(any());
-        verify(playerDAO, times(1)).updatePlayer(any());
-        assertTrue(succes);
-    }
-
-    @Test
-    void updatePasswordExistingPlayer() throws Exception {
-        // Given
-        Player existingPlayer = new Player(1);
-        existingPlayer.setEmail("test@email.com");
-        existingPlayer.setPassword("QWERTY123");
-
-        Player updatedPlayer = new Player(1);
-        updatedPlayer.setEmail("test@email.com");
-        updatedPlayer.setPassword("AZERTY123");
-        UserContext ctx = new UserContext();
-
-        // When
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(existingPlayer);
-        boolean succes = gestionJoueursService.updatePlayer(updatedPlayer, ctx);
-
-        // Then
-        verify(playerDAO, times(1)).findPlayerByEmail(any());
-        verify(userDAO, times(1)).updateUser(any());
+        verify(userManagementService).updateUser(any(User.class), any(UserContext.class));
         verify(playerDAO, times(1)).updatePlayer(any());
         assertTrue(succes);
     }
@@ -133,11 +112,11 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
-        boolean succes = gestionJoueursService.updatePlayer(updatedPlayer, ctx);
+        boolean succes = playerManagementService.updatePlayer(updatedPlayer, ctx);
 
         // Then
         verify(playerDAO, times(1)).findPlayerByEmail(any());
-        verify(userDAO, times(0)).updateUser(any());
+        verify(userManagementService, never()).updateUser(any(User.class), any(UserContext.class));
         verify(playerDAO, times(0)).updatePlayer(any());
         assertFalse(succes);
     }
@@ -152,7 +131,7 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         when(playerDAO.findPlayerById(anyInt())).thenReturn(player1);
         when(playerDAO.deactivatePlayer(any())).thenReturn(1);
 
-        gestionJoueursService.deactivatePlayer(1, ctx);
+        playerManagementService.deactivatePlayer(1, ctx);
 
         // Then
         verify(playerDAO, times(1)).findPlayerById(anyInt());
@@ -167,7 +146,7 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         // When
         when(playerDAO.findPlayerById(anyInt())).thenReturn(null);
 
-        gestionJoueursService.deactivatePlayer(-1, ctx);
+        playerManagementService.deactivatePlayer(-1, ctx);
 
         // Then
         verify(playerDAO, times(1)).findPlayerById(anyInt());
