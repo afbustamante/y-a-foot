@@ -18,10 +18,38 @@ tags:
   - name: cars
     description: Cars management API. Allows to add new cars from players organising new matches.
 paths:
+  /users/{email}/details:
+    patch:
+      operationId: updateUserCredentials
+      summary: Updates the authentication credentials for a user
+      tags:
+      - users
+      parameters:
+      - in: path
+        name: email
+        required: true
+        schema:
+          type: string
+          format: email
+        description: Email address identifying the user
+      requestBody:
+        description: Credentials to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        202: # Accepted
+          description: User credentials updated
+        400: # Bad request
+          description: Invalid password
+        403: # Forbidden
+          description: User not allowed to perform this operation
   /users/{email}/auth:
     put:
       operationId: authenticateUser
-      summary: Authenticate a user and return a valid token
+      summary: Authenticates a user and returns a valid token
       tags:
       - users
       parameters:
@@ -330,6 +358,23 @@ components:
           type: string
         surname:
           type: string
+    Credentials:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          format: email
+        password:
+          type: string
+          format: byte
+        validationToken:
+          type: string
+        oldPassword:
+          type: string
+          format: byte
     Player:
       allOf:
         - $ref: '#/components/schemas/User'

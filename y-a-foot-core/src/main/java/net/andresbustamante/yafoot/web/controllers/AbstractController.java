@@ -33,6 +33,7 @@ public abstract class AbstractController {
     /* Common error messages */
     protected static final String DATABASE_BASIC_ERROR = "database.basic.error";
     protected static final String INVALID_USER_ERROR = "invalid.user.error";
+    protected static final String UNAUTHORISED_USER_ERROR = "unauthorised.user.error";
 
     /**
      * Injected request (constructors only)
