@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,9 +27,6 @@ public class SiteSearchServiceImpl implements SiteSearchService {
     @Override
     @Transactional(readOnly = true)
     public List<Site> findSitesByPlayer(Player player) throws DatabaseException {
-        if (player == null) {
-            return Collections.emptyList();
-        }
         return siteDAO.findSitesByPlayer(player);
     }
 }
