@@ -5,8 +5,6 @@ import net.andresbustamante.yafoot.model.Match;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.List;
-
 @Mapper(config = SpringMapperConfig.class, uses = {CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
         RegistrationMapper.class, DateMapper.class})
 public interface MatchMapper {
@@ -18,6 +16,4 @@ public interface MatchMapper {
     @Mapping(target = "author", source = "creator")
     @Mapping(target = "sharingEnabled", source = "codeSharingEnabled")
     net.andresbustamante.yafoot.web.dto.Match map(Match match);
-
-    List<net.andresbustamante.yafoot.web.dto.Match> map(List<Match> matches);
 }
