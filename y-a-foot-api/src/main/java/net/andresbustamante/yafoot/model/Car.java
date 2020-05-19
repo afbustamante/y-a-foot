@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.model;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,7 +15,6 @@ public class Car implements Serializable, Identifiable {
     private String name;
     private Integer numSeats;
     private Player driver;
-    private List<Player> passengers;
 
     public Car() {
     }
@@ -56,14 +54,6 @@ public class Car implements Serializable, Identifiable {
 
     public void setDriver(Player driver) {
         this.driver = driver;
-    }
-
-    public List<Player> getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(List<Player> passengers) {
-        this.passengers = passengers;
     }
 
     @Override

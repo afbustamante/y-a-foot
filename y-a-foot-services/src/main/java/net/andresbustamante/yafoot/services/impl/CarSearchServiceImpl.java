@@ -1,9 +1,11 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.CarDAO;
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
+import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.CarSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +27,21 @@ public class CarSearchServiceImpl implements CarSearchService {
     @Override
     public List<Car> findCarsByPlayer(Player player) throws DatabaseException {
         return carDAO.findCarsByPlayer(player);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Car loadCar(Integer id, UserContext ctx) throws DatabaseException, ApplicationException {
+        Car car = carDAO.findCarById(id);
+
+        if (car != null) {
+            if (car.getDriver() != null && car.getDriver().getEmail().equals(ctx.getUsername())) {
+                return car;
+            } else {
+                throw new ApplicationException("unauthorised.user.error", "Actual user is not allowed to load the " +
+                        "details for a car");
+            }
+        }
+        return null;
     }
 }

@@ -8,9 +8,11 @@ import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
+import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.dto.Registration;
 import net.andresbustamante.yafoot.web.mappers.BasicMatchMapper;
+import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -32,6 +34,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
@@ -65,6 +68,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     private RegistrationMapper registrationMapper;
 
+    private CarMapper carMapper;
+
     @Value("${match.api.service.path}")
     private String matchApiPath;
 
@@ -76,8 +81,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Autowired
     public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
                              MatchManagementService matchManagementService, BasicMatchMapper basicMatchMapper,
-                             MatchMapper matchMapper, RegistrationMapper registrationMapper, HttpServletRequest request,
-                             ApplicationContext applicationContext) {
+                             MatchMapper matchMapper, RegistrationMapper registrationMapper, CarMapper carMapper,
+                             HttpServletRequest request, ApplicationContext applicationContext) {
         super(request, applicationContext);
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
@@ -85,6 +90,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
         this.matchMapper = matchMapper;
         this.basicMatchMapper = basicMatchMapper;
         this.registrationMapper = registrationMapper;
+        this.carMapper = carMapper;
         this.request = request;
     }
 
@@ -197,6 +203,42 @@ public class MatchesController extends AbstractController implements MatchesApi 
         } catch (ApplicationException e) {
             log.error("Application error when registering a player to a match", e);
             return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> updateCarForRegistration(String matchCode, Integer playerId, Car car) {
+        try {
+            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+
+            if (match != null) {
+                List<net.andresbustamante.yafoot.model.Registration> playerRegistrations = match.getRegistrations().stream().filter(
+                        reg -> reg.getPlayer().getId().equals(playerId)).collect(Collectors.toList());
+
+                if (CollectionUtils.isNotEmpty(playerRegistrations)) {
+                    UserContext ctx = getUserContext(request);
+                    Player player = playerRegistrations.get(0).getPlayer(); // It must be always the first and the only one
+
+                    if (car != null) {
+                        matchManagementService.updateCarForRegistration(match, player, carMapper.map(car), ctx);
+                    } else {
+                        matchManagementService.unconfirmCarForRegistration(match, player, ctx);
+                    }
+                    return ResponseEntity.accepted().build();
+                } else {
+                    log.warn("Invalid player ID detected for player registration update");
+                    return new ResponseEntity<>(buildMessageHeader(UNKNOWN_PLAYER_REGISTRATION_ERROR, null), NOT_FOUND);
+                }
+            } else {
+                log.warn("Invalid match code detected for player registration update");
+                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
+            }
+        } catch (DatabaseException e) {
+            log.error("Database error when updating a registration", e);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+        } catch (ApplicationException e) {
+            log.error("Application error when updating a registration to a match", e);
+            return new ResponseEntity<>(buildMessageHeader(e.getCode(), null), BAD_REQUEST);
         }
     }
 

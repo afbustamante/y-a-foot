@@ -23,7 +23,7 @@
              mat_num_players_min="8" mat_num_players_max="12" mat_site_id="2" mat_creator_id="2"
              mat_created_at="2019-01-02" mat_carpooling_enabled="false" mat_code_sharing_enabled="true"/>
 
-    <t_player_match pma_match_id="1" pma_player_id="1"/>
+    <t_player_match pma_match_id="1" pma_player_id="1" pma_car_id="1" pma_car_confirmation="true"/>
     <t_player_match pma_match_id="1" pma_player_id="2"/>
     <t_player_match pma_match_id="2" pma_player_id="2"/>
     <t_player_match pma_match_id="2" pma_player_id="3"/>

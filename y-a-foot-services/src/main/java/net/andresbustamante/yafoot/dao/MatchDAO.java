@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.dao;
 import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Match;
+import net.andresbustamante.yafoot.model.Registration;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.ZonedDateTime;
@@ -96,4 +97,24 @@ public interface MatchDAO {
      * @param player Player to unregister
      */
     int unregisterPlayerFromAllMatches(@Param(PLAYER) Player player);
+
+    /**
+     * Updates and confirms a car for a player registered into a match
+     *
+     * @param match Match to search
+     * @param player Player to search
+     * @param car Car to set
+     * @param isCarConfirmed Is the car confirmed or not
+     */
+    int updateCarForRegistration(@Param(MATCH) Match match, @Param(PLAYER) Player player, @Param(CAR) Car car,
+                                  @Param("confirmed") boolean isCarConfirmed);
+
+    /**
+     * Loads registration details for a player in a specific match
+     *
+     * @param match Match to search
+     * @param player Player to search
+     * @return Registration details
+     */
+    Registration loadRegistration(@Param(MATCH) Match match, @Param(PLAYER) Player player);
 }

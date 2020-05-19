@@ -30,6 +30,7 @@
           cre.ply_email                  AS creatorEmail,
           pma.pma_match_id               AS matchId,
           pma.pma_player_id              AS playerId,
+          pma.pma_car_confirmation       AS carConfirmed,
           ply.ply_first_name             AS playerFirstName,
           ply.ply_email                  AS playerEmail,
           car.car_id                     AS carId,
@@ -65,6 +66,7 @@
                cre.ply_email                AS creatorEmail,
                pma.pma_match_id             AS matchId,
                pma.pma_player_id            AS playerId,
+               pma.pma_car_confirmation     AS carConfirmed,
                ply.ply_first_name           AS playerFirstName,
                ply.ply_email                AS playerEmail,
                car.car_id                   AS carId,
@@ -178,6 +180,30 @@
         DELETE FROM t_player_match WHERE pma_player_id = #{player.id}
     </delete>
 
+    <update id="updateCarForRegistration">
+      UPDATE t_player_match
+      SET pma_car_id         = #{car.id},
+        pma_car_confirmation = #{confirmed}
+      WHERE pma_match_id = #{match.id} AND pma_player_id = #{player.id}
+    </update>
+
+    <select id="loadRegistration" resultMap="registrationDetails">
+      SELECT
+        pma.pma_match_id         AS matchId,
+        pma.pma_player_id        AS playerId,
+        pma.pma_car_id           AS carId,
+        pma.pma_car_confirmation AS carConfirmed,
+        car.car_name             AS carName,
+        car.car_driver_id        AS carDriverId,
+        ply.ply_id               AS driverId,
+        ply.ply_first_name       AS driverFirstName,
+        ply.ply_email            AS driverEmail
+      FROM t_player_match pma
+        LEFT JOIN t_car car on pma.pma_car_id = car.car_id
+        LEFT JOIN t_player ply on car.car_driver_id = ply.ply_id
+      WHERE pma.pma_player_id = #{player.id} AND pma.pma_match_id = #{match.id}
+    </select>
+
     <resultMap id="matchDetails" type="net.andresbustamante.yafoot.model.Match">
         <id property="id" column="id"/>
         <result property="code" column="code"/>
@@ -206,6 +232,7 @@
         <collection property="registrations" ofType="net.andresbustamante.yafoot.model.Registration">
             <result column="matchId" property="id.matchId" />
             <result column="playerId" property="id.playerId" />
+            <result column="carConfirmed" property="carConfirmed" />
             <association property="player" javaType="net.andresbustamante.yafoot.model.Player">
                 <id column="playerId" property="id" />
                 <result column="playerFirstName" property="firstName" />
@@ -217,5 +244,23 @@
                 <result column="carNumSeats" property="numSeats" />
             </association>
         </collection>
+    </resultMap>
+
+    <resultMap id="registrationDetails" type="net.andresbustamante.yafoot.model.Registration">
+      <result property="id.matchId" column="matchId"/>
+      <result property="id.playerId" column="playerId"/>
+      <result property="carConfirmed" column="carConfirmed"/>
+      <association property="player" javaType="net.andresbustamante.yafoot.model.Player">
+        <id column="playerId" property="id"/>
+      </association>
+      <association property="car" javaType="net.andresbustamante.yafoot.model.Car">
+        <id column="carId" property="id"/>
+        <result column="carName" property="name"/>
+        <association property="driver" javaType="net.andresbustamante.yafoot.model.Player">
+          <id property="id" column="driverId"/>
+          <result property="firstName" column="driverFirstName"/>
+          <result property="email" column="driverEmail"/>
+        </association>
+      </association>
     </resultMap>
 </mapper>

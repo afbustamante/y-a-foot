@@ -142,7 +142,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(carDAO, never()).findCarById(anyInt());
         verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
-        verify(matchDAO).registerPlayer(player, match, null, false);
+        verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), eq(null), eq(false));
     }
 
     @Test
@@ -162,7 +162,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(carDAO).findCarById(anyInt());
         verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
-        verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
+        verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), any(Car.class), eq(false));
     }
 
     @Test
@@ -240,6 +240,86 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // Then
         verify(matchDAO, never()).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
+    }
+
+    @Test
+    void updateCarForRegistration() throws Exception {
+        // Given
+        Match match = new Match(1);
+        Player player = new Player(1);
+        player.setEmail("test@email.com");
+        Car car = new Car(1);
+        car.setDriver(player);
+        UserContext context = new UserContext("test@email.com");
+
+        // When
+        when(carDAO.findCarById(anyInt())).thenReturn(car);
+        matchManagementService.updateCarForRegistration(match, player, car, context);
+
+        // Then
+        verify(carDAO).findCarById(anyInt());
+        verify(matchDAO).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), eq(true));
+    }
+
+    @Test
+    void updateCarForRegistrationUnauthorisedUser() throws Exception {
+        // Given
+        Match match = new Match(1);
+        Player player = new Player(1);
+        player.setEmail("test@email.com");
+        Car car = new Car(1);
+        car.setDriver(player);
+        UserContext context = new UserContext("anotheruser@email.com");
+
+        // When
+        when(carDAO.findCarById(anyInt())).thenReturn(car);
+        // Then
+        assertThrows(ApplicationException.class,
+                () -> matchManagementService.updateCarForRegistration(match, player, car, context));
+    }
+
+    @Test
+    void unconfirmCarForRegistration() throws Exception {
+        // Given
+        Match match = new Match(1);
+        Player player = new Player(1);
+        player.setEmail("test@email.com");
+        Car car = new Car(1);
+        car.setDriver(player);
+        Registration registration = new Registration();
+        registration.setId(new RegistrationId(1, 1));
+        registration.setPlayer(player);
+        registration.setCar(car);
+        UserContext context = new UserContext("test@email.com");
+
+        // When
+        when(matchDAO.loadRegistration(any(Match.class), any(Player.class))).thenReturn(registration);
+        matchManagementService.unconfirmCarForRegistration(match, player, context);
+
+        // Then
+        verify(matchDAO).loadRegistration(any(Match.class), any(Player.class));
+        verify(matchDAO).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), eq(false));
+    }
+
+    @Test
+    void unconfirmCarForRegistrationUnauthorisedUser() throws Exception {
+        // Given
+        Match match = new Match(1);
+        Player player = new Player(1);
+        player.setEmail("test@email.com");
+        Car car = new Car(1);
+        car.setDriver(player);
+        Registration registration = new Registration();
+        registration.setId(new RegistrationId(1, 1));
+        registration.setPlayer(player);
+        registration.setCar(car);
+        UserContext context = new UserContext("anotheruser@email.com");
+
+        // When
+        when(matchDAO.loadRegistration(any(Match.class), any(Player.class))).thenReturn(registration);
+        // Then
+        assertThrows(ApplicationException.class,
+                () -> matchManagementService.unconfirmCarForRegistration(match, player, context));
     }
 
     @Test

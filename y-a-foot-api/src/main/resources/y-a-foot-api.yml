@@ -262,6 +262,26 @@ paths:
       schema:
         type: integer
       description: Unique player ID
+    patch:
+      operationId: updateCarForRegistration
+      tags:
+      - matches
+      requestBody:
+        description: Car to use for the registration. If no car is used, the confirmation for the car is cancelled
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        202: # Accepted
+          description: Registration succesfully updated
+        403: # Forbidden
+          description: If the user performing the action is not the owner of the car already confirmed in database
+        404: # Not found
+          description: Match or player not found
+        500: # Internal server error
+          description: Database problem while loading data or unregistering the player from match
     delete:
       operationId: unregisterPlayerFromMatch
       tags:
@@ -339,6 +359,32 @@ paths:
       responses:
         201: # Created
           description: Car successfully saved. Car's ID is returned in Location header
+  /cars/{id}:
+    parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+      description: Unique car identifier
+    get:
+      operationId: loadCar
+      summary: Load a car registered by the active player
+      tags:
+      - cars
+      responses:
+        200: # OK
+          description: Details found for car identified by the ID parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        403: # Forbidden
+          description: Current user is not allowed to load the details of a car from another user
+        404: # Not found
+          description: No car found for the given ID
+        500: # Internal server error
+          description: A database error occurred when loading the car
 components:
   schemas:
     User:
@@ -412,10 +458,6 @@ components:
           type: integer
         driver:
           $ref: '#/components/schemas/Player'
-        passengers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Player'
     Registration:
       type: object
       required:
@@ -425,6 +467,8 @@ components:
           $ref: '#/components/schemas/Player'
         car:
           $ref: '#/components/schemas/Car'
+        carConfirmed:
+          type: boolean
     Match:
       type: object
       required:

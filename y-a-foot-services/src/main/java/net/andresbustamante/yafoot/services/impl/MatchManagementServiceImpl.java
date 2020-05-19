@@ -114,6 +114,36 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
+    public void updateCarForRegistration(Match match, Player player, Car car, UserContext ctx)
+            throws DatabaseException, ApplicationException {
+        if (car.getId() != null) {
+            Car storedCar = carDAO.findCarById(car.getId());
+
+            if (storedCar != null && storedCar.getDriver().getEmail().equals(ctx.getUsername())) {
+                // The user is the owner of the car
+                matchDAO.updateCarForRegistration(match, player, car, true);
+            } else {
+                throw new ApplicationException("unauthorised.user.error", "User not allowed to update car details for registration");
+            }
+        }
+    }
+
+    @Transactional
+    @Override
+    public void unconfirmCarForRegistration(Match match, Player player, UserContext ctx)
+            throws DatabaseException, ApplicationException {
+        Registration registration = matchDAO.loadRegistration(match, player);
+
+        if (registration != null && registration.getCar() != null &&
+                registration.getCar().getDriver().getEmail().equals(ctx.getUsername())) {
+            matchDAO.updateCarForRegistration(match, player, registration.getCar(), false);
+        } else {
+            throw new ApplicationException("unauthorised.user.error", "User not allowed to update car details for registration");
+        }
+    }
+
+    @Transactional
+    @Override
     public void unregisterPlayer(Player player, Match match, UserContext userContext) throws DatabaseException, ApplicationException {
         if (player == null || player.getId() == null || match == null || match.getCode() == null) {
             throw new ApplicationException("Invalid arguments to quit a match");

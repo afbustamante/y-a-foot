@@ -30,6 +30,7 @@ import java.util.Optional;
 
 import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestController
@@ -58,7 +59,6 @@ public class CarsController extends AbstractController implements CarsApi {
         this.playerSearchService = playerSearchService;
         this.carManagementService = carManagementService;
         this.carMapper = carMapper;
-        this.request = request;
     }
 
     @Override
@@ -80,6 +80,20 @@ public class CarsController extends AbstractController implements CarsApi {
         } catch (ApplicationException e) {
             log.error("Invalid user context", e);
             return ResponseEntity.status(BAD_REQUEST).build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<Car> loadCar(Integer id) {
+        try {
+            net.andresbustamante.yafoot.model.Car car = carSearchService.loadCar(id, getUserContext(request));
+            return ResponseEntity.ok(carMapper.map(car));
+        } catch (ApplicationException e) {
+            log.error("User not allowed to load a car from another user", e);
+            return new ResponseEntity<>(buildMessageHeader(UNAUTHORISED_USER_ERROR, null), FORBIDDEN);
+        } catch (DatabaseException e) {
+            log.error("Error when looking for cars", e);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         }
     }
 

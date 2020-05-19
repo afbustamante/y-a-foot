@@ -210,6 +210,27 @@ class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
+    void updateCarForRegistration() throws Exception {
+        // Given
+        Player playerWithCar = playerDAO.findPlayerById(1);
+        Player playerWithoutCar = playerDAO.findPlayerById(2);
+        Match match = matchDAO.findMatchById(1);
+
+        // When
+        Car car = matchDAO.loadRegistration(match, playerWithCar).getCar();
+        assertNotNull(car);
+        int numLines = matchDAO.updateCarForRegistration(match, playerWithoutCar, car, true);
+        Registration registration = matchDAO.loadRegistration(match, playerWithoutCar);
+
+        // Then
+        assertEquals(1, numLines);
+        assertNotNull(registration);
+        assertNotNull(registration.getCar());
+        assertEquals(car, registration.getCar());
+        assertTrue(registration.isCarConfirmed());
+    }
+
+    @Test
     void isPlayerRegistered() throws Exception {
         // Given
         Player registeredPlayer = playerDAO.findPlayerById(1);
@@ -223,6 +244,32 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertTrue(test1);
         assertFalse(test2);
+    }
+
+    @Test
+    void loadRegistration() throws Exception {
+        // Given
+        Player playerWithCar = playerDAO.findPlayerById(1);
+        Player playerWithoutCar = playerDAO.findPlayerById(2);
+        Match match = matchDAO.findMatchById(1);
+
+        // When
+        Registration registration1 = matchDAO.loadRegistration(match, playerWithCar);
+        Registration registration2 = matchDAO.loadRegistration(match, playerWithoutCar);
+
+        // Then
+        assertNotNull(registration1);
+        assertNotNull(registration1.getId());
+        assertNotNull(registration1.getCar());
+        assertNotNull(registration1.getCar().getId());
+        assertNotNull(registration1.getCar().getName());
+        assertNotNull(registration1.getCar().getDriver());
+        assertEquals(1, registration1.getCar().getId().intValue());
+        assertEquals(playerWithCar, registration1.getCar().getDriver());
+
+        assertNotNull(registration2);
+        assertNotNull(registration2.getId());
+        assertNull(registration2.getCar());
     }
 
     @Test

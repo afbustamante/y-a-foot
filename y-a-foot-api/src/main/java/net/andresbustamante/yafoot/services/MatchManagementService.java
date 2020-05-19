@@ -57,4 +57,28 @@ public interface MatchManagementService {
      * @throws DatabaseException
      */
     void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException;
+
+    /**
+     * Update the car used for a registration. If the user performing the action is the owner of the car, the car is
+     * confirmed for this match
+     *
+     * @param match Match to update
+     * @param player Player to update
+     * @param car Car to use for the registration
+     * @param ctx Context of the user performing this action
+     * @throws DatabaseException
+     * @throws ApplicationException If the context does not belong to the owner of the car
+     */
+    void updateCarForRegistration(Match match, Player player, Car car, UserContext ctx) throws DatabaseException, ApplicationException;;
+
+    /**
+     * Changes the value of the confirmation for the car selected by a user when registered for a match
+     *
+     * @param match Match to update
+     * @param player Player to update
+     * @param ctx Context of the user performing this action
+     * @throws DatabaseException
+     * @throws ApplicationException If the context does not belong to the owner of the car registered before
+     */
+    void unconfirmCarForRegistration(Match match, Player player, UserContext ctx) throws DatabaseException, ApplicationException;;
 }
