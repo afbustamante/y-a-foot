@@ -114,14 +114,17 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public void updateCarForRegistration(Match match, Player player, Car car, UserContext ctx)
+    public void updateCarForRegistration(Match match, Player player, Car car, boolean isCarConfirmed, UserContext ctx)
             throws DatabaseException, ApplicationException {
         if (car.getId() != null) {
             Car storedCar = carDAO.findCarById(car.getId());
 
             if (storedCar != null && storedCar.getDriver().getEmail().equals(ctx.getUsername())) {
                 // The user is the owner of the car
-                matchDAO.updateCarForRegistration(match, player, car, true);
+                matchDAO.updateCarForRegistration(match, player, car, isCarConfirmed);
+
+                log.info("Carpool update for match #{}: Player #{} confirmation modified for car #{} by the user {}",
+                        match.getId(), player.getId(), car.getId(), ctx.getUsername());
             } else {
                 throw new ApplicationException("unauthorised.user.error", "User not allowed to update car details for registration");
             }
@@ -130,28 +133,16 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public void unconfirmCarForRegistration(Match match, Player player, UserContext ctx)
-            throws DatabaseException, ApplicationException {
-        Registration registration = matchDAO.loadRegistration(match, player);
-
-        if (registration != null && registration.getCar() != null &&
-                registration.getCar().getDriver().getEmail().equals(ctx.getUsername())) {
-            matchDAO.updateCarForRegistration(match, player, registration.getCar(), false);
-        } else {
-            throw new ApplicationException("unauthorised.user.error", "User not allowed to update car details for registration");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void unregisterPlayer(Player player, Match match, UserContext userContext) throws DatabaseException, ApplicationException {
+    public void unregisterPlayer(Player player, Match match, UserContext ctx) throws DatabaseException, ApplicationException {
         if (player == null || player.getId() == null || match == null || match.getCode() == null) {
             throw new ApplicationException("Invalid arguments to quit a match");
         }
 
-        if (match.isPlayerRegistered(player)) {
+        boolean isUserAuthorised = ctx.getUsername().equals(match.getCreator().getEmail()) || ctx.getUsername().equals(player.getEmail());
+
+        if (isUserAuthorised &&  match.isPlayerRegistered(player)) {
             matchDAO.unregisterPlayer(player, match);
-            log.info("Player unregistered from match");
+            log.info("Player #{} was unregistered from match #{}", player.getId(), match.getId());
         } else {
             throw new ApplicationException("Player not registered in this match");
         }
@@ -161,9 +152,8 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     @Override
     public void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException {
         int numMatches = matchDAO.unregisterPlayerFromAllMatches(player);
-        log.info("Player unregistered from {} matches", numMatches);
+        log.info("Player #{} unregistered from {} matches", player.getId(), numMatches);
     }
-
 
     private Player processCreatorToCreateMatch(Match match, UserContext userContext) throws DatabaseException {
         Player creator = playerDAO.findPlayerByEmail(userContext.getUsername());

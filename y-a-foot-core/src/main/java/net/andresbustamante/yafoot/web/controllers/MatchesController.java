@@ -8,7 +8,7 @@ import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
-import net.andresbustamante.yafoot.web.dto.Car;
+import net.andresbustamante.yafoot.web.dto.CarConfirmation;
 import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.dto.Registration;
 import net.andresbustamante.yafoot.web.mappers.BasicMatchMapper;
@@ -207,7 +207,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Void> updateCarForRegistration(String matchCode, Integer playerId, Car car) {
+    public ResponseEntity<Void> updateCarForRegistration(CarConfirmation carConfirmation, String matchCode, Integer playerId) {
         try {
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
@@ -219,11 +219,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
                     UserContext ctx = getUserContext(request);
                     Player player = playerRegistrations.get(0).getPlayer(); // It must be always the first and the only one
 
-                    if (car != null) {
-                        matchManagementService.updateCarForRegistration(match, player, carMapper.map(car), ctx);
-                    } else {
-                        matchManagementService.unconfirmCarForRegistration(match, player, ctx);
-                    }
+                    matchManagementService.updateCarForRegistration(match, player, carMapper.map(carConfirmation.getCar()),
+                                carConfirmation.isConfirmed(), ctx);
                     return ResponseEntity.accepted().build();
                 } else {
                     log.warn("Invalid player ID detected for player registration update");

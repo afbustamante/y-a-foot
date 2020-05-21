@@ -267,12 +267,12 @@ paths:
       tags:
       - matches
       requestBody:
-        description: Car to use for the registration. If no car is used, the confirmation for the car is cancelled
-        required: false
+        description: Car ID to use for the registration and confirmation update (true or false)
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Car'
+              $ref: '#/components/schemas/CarConfirmation'
       responses:
         202: # Accepted
           description: Registration succesfully updated
@@ -458,6 +458,15 @@ components:
           type: integer
         driver:
           $ref: '#/components/schemas/Player'
+    CarConfirmation:
+      type: object
+      required:
+      - car
+      properties:
+        car:
+          $ref: '#/components/schemas/Car'
+        confirmed:
+          type: boolean
     Registration:
       type: object
       required:
