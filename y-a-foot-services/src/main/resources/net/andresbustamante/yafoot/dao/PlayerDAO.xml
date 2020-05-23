@@ -16,7 +16,7 @@
             p.ply_email             AS email,
             p.ply_phone_number      AS phoneNumber,
             p.ply_created_at        AS creationDate,
-            p.ply_last_updated      AS lastUpdateDate,
+            p.ply_last_update       AS lastUpdateDate,
             p.ply_active            AS active
         FROM t_player p
         WHERE p.ply_id = #{id}
@@ -30,7 +30,7 @@
             p.ply_email             AS email,
             p.ply_phone_number      AS phoneNumber,
             p.ply_created_at        AS creationDate,
-            p.ply_last_updated      AS lastUpdateDate,
+            p.ply_last_update       AS lastUpdateDate,
             p.ply_active            AS active
         FROM t_player p
         WHERE p.ply_email = #{email}
@@ -38,7 +38,7 @@
 
     <insert id="savePlayer" useGeneratedKeys="true">
         <selectKey keyProperty="player.id" resultType="int" order="BEFORE">
-            SELECT NEXTVAL('s_joueur') AS id;
+            SELECT NEXTVAL('s_player') AS id;
         </selectKey>
 
         INSERT INTO t_player (ply_id, ply_surname, ply_first_name, ply_phone_number, ply_email, ply_created_at, ply_active)
@@ -58,7 +58,7 @@
         <if test="player.phoneNumber != null">
             ply_phone_number = #{player.phoneNumber},
         </if>
-        ply_last_updated = NOW()
+        ply_last_update = NOW()
         WHERE ply_email = #{player.email}
     </update>
 
@@ -74,7 +74,7 @@
             ply_email      = ply_email || '.' || CURRENT_DATE || '.old',
             ply_phone_number  = null,
             ply_active        = false,
-            ply_last_updated  = NOW()
+            ply_last_update   = NOW()
         WHERE ply_id = #{player.id}
     </update>
 </mapper>

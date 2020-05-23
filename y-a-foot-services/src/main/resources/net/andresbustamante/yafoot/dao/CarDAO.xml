@@ -18,7 +18,7 @@
 
   <insert id="saveCar" useGeneratedKeys="true">
     <selectKey keyProperty="car.id" resultType="int" order="BEFORE">
-      SELECT NEXTVAL('s_voiture') AS id;
+      SELECT NEXTVAL('s_car') AS id;
     </selectKey>
 
     INSERT INTO t_car (car_id, car_name, car_num_seats, car_driver_id)
