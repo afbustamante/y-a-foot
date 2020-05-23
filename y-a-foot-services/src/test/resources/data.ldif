@@ -1,0 +1,24 @@
+dn: ou=yafoot,ou=test,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: yafoot
+
+dn: ou=Users,ou=yafoot,ou=test,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: Users
+
+dn: ou=Roles,ou=yafoot,ou=test,dc=andresbustamante,dc=net
+objectClass: organizationalUnit
+objectClass: top
+ou: Roles
+
+dn: cn=PLAYER,ou=Roles,ou=yafoot,ou=test,dc=andresbustamante,dc=net
+objectClass: groupOfNames
+objectClass: top
+cn: PLAYER
+
+dn: cn=ADMINISTRATOR,ou=Roles,ou=yafoot,ou=test,dc=andresbustamante,dc=net
+objectClass: groupOfNames
+objectClass: top
+cn: ADMINISTRATOR

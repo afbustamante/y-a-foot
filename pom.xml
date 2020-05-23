@@ -53,8 +53,8 @@
     <!-- Spring Framework -->
     <spring.version>5.1.14.RELEASE</spring.version>
     <spring-dao.version>2.0.8</spring-dao.version>
-    <spring-ldap-core.version>2.3.2.RELEASE</spring-ldap-core.version>
-    <spring-data-commons.version>2.1.16.RELEASE</spring-data-commons.version>
+    <spring-ldap.version>2.3.2.RELEASE</spring-ldap.version>
+    <spring-data.version>2.1.16.RELEASE</spring-data.version>
     <spring-security.version>5.1.6.RELEASE</spring-security.version>
     <jackson-databind.version>2.9.10.4</jackson-databind.version>
     <jackson-datatype-jsr310.version>2.10.3</jackson-datatype-jsr310.version>
@@ -95,6 +95,7 @@
     <logback.version>1.2.3</logback.version>
     <swagger-annotations.version>1.6.1</swagger-annotations.version>
     <jjwt.version>0.9.1</jjwt.version>
+    <unboundid-ldapsdk.version>3.1.1</unboundid-ldapsdk.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
@@ -225,12 +226,17 @@
       <dependency>
         <groupId>org.springframework.ldap</groupId>
         <artifactId>spring-ldap-core</artifactId>
-        <version>${spring-ldap-core.version}</version>
+        <version>${spring-ldap.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.ldap</groupId>
+        <artifactId>spring-ldap-test</artifactId>
+        <version>${spring-ldap.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.data</groupId>
         <artifactId>spring-data-commons</artifactId>
-        <version>${spring-data-commons.version}</version>
+        <version>${spring-data.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.security</groupId>
@@ -522,6 +528,11 @@
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt</artifactId>
         <version>${jjwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.unboundid</groupId>
+        <artifactId>unboundid-ldapsdk</artifactId>
+        <version>${unboundid-ldapsdk.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
