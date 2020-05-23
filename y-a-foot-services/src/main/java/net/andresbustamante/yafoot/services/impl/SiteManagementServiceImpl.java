@@ -29,7 +29,7 @@ public class SiteManagementServiceImpl implements SiteManagementService {
 
     @Transactional
     @Override
-    public long saveSite(Site site, UserContext userContext) throws DatabaseException {
+    public Integer saveSite(Site site, UserContext userContext) throws DatabaseException {
         Player creator = playerSearchService.findPlayerByEmail(userContext.getUsername());
 
         siteDAO.saveSite(site, creator);

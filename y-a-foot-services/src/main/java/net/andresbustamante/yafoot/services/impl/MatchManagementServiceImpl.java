@@ -8,6 +8,7 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarManagementService;
+import net.andresbustamante.yafoot.services.CarpoolingService;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.SiteManagementService;
 import org.apache.commons.text.RandomStringGenerator;
@@ -42,22 +43,26 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     private CarManagementService carManagementService;
 
+    private CarpoolingService carpoolingService;
+
     private PlayerDAO playerDAO;
 
     @Autowired
     public MatchManagementServiceImpl(MatchDAO matchDAO, SiteDAO siteDAO, CarDAO carDAO, PlayerDAO playerDAO,
-                                      SiteManagementService siteManagementService, CarManagementService carManagementService) {
+                                      SiteManagementService siteManagementService,
+                                      CarManagementService carManagementService, CarpoolingService carpoolingService) {
         this.matchDAO = matchDAO;
         this.siteDAO = siteDAO;
         this.siteManagementService = siteManagementService;
         this.carDAO = carDAO;
         this.carManagementService = carManagementService;
+        this.carpoolingService = carpoolingService;
         this.playerDAO = playerDAO;
     }
 
     @Transactional
     @Override
-    public void saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
+    public Integer saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
         String matchCode;
         boolean isCodeAlreadyInUse;
         do {
@@ -77,69 +82,39 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         log.info("New match registered with the ID number {}", match.getId());
 
         registerPlayer(creator, match, null, userContext);
+        return match.getId();
     }
 
     @Transactional
     @Override
     public void registerPlayer(Player player, Match match, Car car, UserContext userContext)
             throws ApplicationException, DatabaseException {
-        if (player == null || player.getId() == null || match == null || match.getId() == null) {
-            throw new ApplicationException("invalid.user.error", "Invalid arguments to join a match");
-        }
-
         if (match.getNumPlayersMax() != null && match.getNumRegisteredPlayers() >= match.getNumPlayersMax()) {
             throw new ApplicationException("max.players.match.error", "This match is not accepting more registrations");
         }
 
-        boolean isCarConfirmed = false;
-
-        if (car != null) {
-            processCarToJoinMatch(car, userContext);
-
-            if (car.getDriver() != null && car.getDriver().equals(player)) {
-                // No confirmation mail needed for the driver of a car
-                isCarConfirmed = true;
-            } else {
-                // A confirmation is needed from the driver of the car selected for this operation
-                isCarConfirmed = false;
-                processCarSeatRequest(match, player, car, userContext);
-            }
-        }
-
-        if (!match.isPlayerRegistered(player)) {
-            matchDAO.registerPlayer(player, match, car, isCarConfirmed);
-            log.info("Player {} successfully registered to the match {}", player.getId(), match.getId());
-        } else {
+        if (match.isPlayerRegistered(player)) {
             throw new ApplicationException("player.already.registered.error", "Player already registered in match");
         }
-    }
 
-    @Transactional
-    @Override
-    public void updateCarForRegistration(Match match, Player player, Car car, boolean isCarConfirmed, UserContext ctx)
-            throws DatabaseException, ApplicationException {
-        if (car.getId() != null) {
-            Car storedCar = carDAO.findCarById(car.getId());
+        if (car != null) {
+            boolean isCarConfirmed = processCarToJoinMatch(car, userContext);
+            matchDAO.registerPlayer(player, match, car, isCarConfirmed);
 
-            if (storedCar != null && storedCar.getDriver().getEmail().equals(ctx.getUsername())) {
-                // The user is the owner of the car
-                matchDAO.updateCarForRegistration(match, player, car, isCarConfirmed);
-
-                log.info("Carpool update for match #{}: Player #{} confirmation modified for car #{} by the user {}",
-                        match.getId(), player.getId(), car.getId(), ctx.getUsername());
-            } else {
-                throw new ApplicationException("unauthorised.user.error", "User not allowed to update car details for registration");
+            if (match.isCarpoolingEnabled() && !isCarConfirmed) {
+                // A confirmation is needed from the driver of the car selected for this operation
+                carpoolingService.processCarSeatRequest(match, player, car, userContext);
             }
+        } else {
+            matchDAO.registerPlayer(player, match, null, null);
         }
+
+        log.info("Player {} successfully registered to the match {}", player.getId(), match.getId());
     }
 
     @Transactional
     @Override
     public void unregisterPlayer(Player player, Match match, UserContext ctx) throws DatabaseException, ApplicationException {
-        if (player == null || player.getId() == null || match == null || match.getCode() == null) {
-            throw new ApplicationException("Invalid arguments to quit a match");
-        }
-
         boolean isUserAuthorised = ctx.getUsername().equals(match.getCreator().getEmail()) || ctx.getUsername().equals(player.getEmail());
 
         if (isUserAuthorised &&  match.isPlayerRegistered(player)) {
@@ -187,10 +162,12 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      *
      * @param car The car used by the registration
      * @param userContext
+     * @return Indicates if the car is confirmed for the current player after processing the car
      * @throws DatabaseException
      */
-    private void processCarToJoinMatch(Car car, UserContext userContext) throws DatabaseException {
+    private boolean processCarToJoinMatch(Car car, UserContext userContext) throws DatabaseException {
         if (car.getId() != null) {
+            // Look for the car in DB
             Car storedCar = carDAO.findCarById(car.getId());
 
             if (storedCar == null) {
@@ -204,6 +181,10 @@ public class MatchManagementServiceImpl implements MatchManagementService {
             // Save the new car
             carManagementService.saveCar(car, userContext);
         }
+
+        // Case 1: No confirmation needed for the driver of a car. This car is confirmed
+        // Case 2: This car doesn't belong to the user registering to the match. He/She is not confirmed yet
+        return (car.getDriver() != null) && (car.getDriver().getEmail().equals(userContext.getUsername()));
     }
 
     /**
@@ -214,18 +195,5 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     private String generateMatchCode() {
         log.info("Generating new match code");
         return codeGenerator.generate(CODE_LENGTH);
-    }
-
-    /**
-     * If the carpooling feature is enabled for the match passed in parameters, it sends an email message requesting to
-     * the driver of the car passed in parameters for a place in his/her car for this match
-     *
-     * @param match The match selected by the player
-     * @param player Player asking for a seat
-     * @param car Car selected by the player
-     * @param userContext
-     */
-    private void processCarSeatRequest(Match match, Player player, Car car, UserContext userContext) {
-        // TODO Implement this method
     }
 }

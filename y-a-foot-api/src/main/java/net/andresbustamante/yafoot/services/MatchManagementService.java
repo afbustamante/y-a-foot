@@ -22,7 +22,7 @@ public interface MatchManagementService {
      * @throws DatabaseException
      * @throws ApplicationException Invalid arguments
      */
-    void saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException;
+    Integer saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException;
 
     /**
      * Register a player to an existing match
@@ -57,20 +57,5 @@ public interface MatchManagementService {
      * @throws DatabaseException
      */
     void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException;
-
-    /**
-     * Update the car used for a registration. If the user performing the action is the owner of the car, the car is
-     * confirmed for this match
-     *
-     * @param match Match to update
-     * @param player Player to update
-     * @param car Car to use for the registration
-     * @param isCarConfirmed Indicates if the user wants to confirm the car for carpooling
-     * @param ctx Context of the user performing this action
-     * @throws DatabaseException
-     * @throws ApplicationException If the context does not belong to the owner of the car
-     */
-    void updateCarForRegistration(Match match, Player player, Car car, boolean isCarConfirmed, UserContext ctx)
-            throws DatabaseException, ApplicationException;;
 
 }

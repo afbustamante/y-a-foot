@@ -18,7 +18,7 @@ public interface CarManagementService {
      * @return
      * @throws DatabaseException
      */
-    int saveCar(Car car, UserContext ctx) throws DatabaseException;
+    Integer saveCar(Car car, UserContext ctx) throws DatabaseException;
 
     /**
      * Deletes all cars registered by a player

@@ -29,21 +29,20 @@ public interface PlayerManagementService {
      *
      * @param player Player à mettre à jour
      * @param userContext Contexte de l'utilisateur réalisant l'action
-     * @return Succès de l'opération
      * @throws DatabaseException
      * @throws LdapException
      * @throws ApplicationException
      */
-    boolean updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
+    void updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
 
     /**
      * Désactiver un joueur tout en supprimant son historique dans l'application et en supprimant
      * l'entrée dans l'annuaire LDAP
      *
-     * @param playerId Player's identifier
+     * @param player Player to deactivate
      * @param userContext Contexte de l'utilisateur réalisant l'action
      * @throws DatabaseException
      * @throws LdapException
      */
-    void deactivatePlayer(Integer playerId, UserContext userContext) throws LdapException, DatabaseException;
+    void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
 }

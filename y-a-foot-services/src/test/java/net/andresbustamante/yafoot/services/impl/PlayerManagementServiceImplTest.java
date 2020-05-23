@@ -2,6 +2,7 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.exceptions.PlayerNotFoundException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.UserContext;
@@ -52,9 +53,9 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         playerManagementService.savePlayer(player, ctx);
 
         // Then
-        verify(playerDAO, times(1)).isPlayerAlreadySignedUp(anyString());
+        verify(playerDAO).isPlayerAlreadySignedUp(anyString());
         verify(userManagementService).createUser(any(User.class), any(RolesEnum.class), any(UserContext.class));
-        verify(playerDAO, times(1)).savePlayer(any());
+        verify(playerDAO).savePlayer(any());
     }
 
     @Test
@@ -69,9 +70,9 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         assertThrows(ApplicationException.class, () -> playerManagementService.savePlayer(player, ctx));
 
         // Then
-        verify(playerDAO, times(1)).isPlayerAlreadySignedUp(anyString());
+        verify(playerDAO).isPlayerAlreadySignedUp(anyString());
         verify(userManagementService, never()).createUser(any(User.class), any(RolesEnum.class), any(UserContext.class));
-        verify(playerDAO, times(0)).savePlayer(any());
+        verify(playerDAO, never()).savePlayer(any());
     }
 
     @Test
@@ -92,13 +93,12 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(existingPlayer);
-        boolean succes = playerManagementService.updatePlayer(updatedPlayer, ctx);
+        playerManagementService.updatePlayer(updatedPlayer, ctx);
 
         // Then
-        verify(playerDAO, times(1)).findPlayerByEmail(any());
+        verify(playerDAO).findPlayerByEmail(any());
         verify(userManagementService).updateUser(any(User.class), any(UserContext.class));
-        verify(playerDAO, times(1)).updatePlayer(any());
-        assertTrue(succes);
+        verify(playerDAO).updatePlayer(any());
     }
 
     @Test
@@ -112,13 +112,12 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
 
         // When
         when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
-        boolean succes = playerManagementService.updatePlayer(updatedPlayer, ctx);
+        assertThrows(PlayerNotFoundException.class, () -> playerManagementService.updatePlayer(updatedPlayer, ctx));
 
         // Then
-        verify(playerDAO, times(1)).findPlayerByEmail(any());
+        verify(playerDAO).findPlayerByEmail(any());
         verify(userManagementService, never()).updateUser(any(User.class), any(UserContext.class));
-        verify(playerDAO, times(0)).updatePlayer(any());
-        assertFalse(succes);
+        verify(playerDAO, never()).updatePlayer(any());
     }
 
     @Test
@@ -128,14 +127,12 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         UserContext ctx = new UserContext();
 
         // When
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(player1);
         when(playerDAO.deactivatePlayer(any())).thenReturn(1);
 
-        playerManagementService.deactivatePlayer(1, ctx);
+        playerManagementService.deactivatePlayer(player1, ctx);
 
         // Then
-        verify(playerDAO, times(1)).findPlayerById(anyInt());
-        verify(playerDAO, times(1)).deactivatePlayer(any());
+        verify(playerDAO).deactivatePlayer(any());
     }
 
     @Test
@@ -144,12 +141,9 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         UserContext ctx = new UserContext();
 
         // When
-        when(playerDAO.findPlayerById(anyInt())).thenReturn(null);
-
-        playerManagementService.deactivatePlayer(-1, ctx);
+        assertThrows(PlayerNotFoundException.class, () -> playerManagementService.deactivatePlayer(null, ctx));
 
         // Then
-        verify(playerDAO, times(1)).findPlayerById(anyInt());
-        verify(playerDAO, times(0)).deactivatePlayer(any());
+        verify(playerDAO, never()).deactivatePlayer(any());
     }
 }

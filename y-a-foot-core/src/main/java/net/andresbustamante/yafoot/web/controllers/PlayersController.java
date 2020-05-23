@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
+import net.andresbustamante.yafoot.exceptions.PlayerNotFoundException;
 import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.services.PlayerManagementService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * Service REST de gestion des inscriptions des joueurs dans l'application
@@ -91,11 +93,14 @@ public class PlayersController extends AbstractController implements PlayersApi 
         try {
             log.debug("Player information update requested");
             net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
-            boolean succes = playerManagementService.updatePlayer(playerMapper.map(player), userContext);
-            return (succes) ? ResponseEntity.accepted().build() : ResponseEntity.status(BAD_REQUEST).build();
+            playerManagementService.updatePlayer(playerMapper.map(player), userContext);
+            return ResponseEntity.accepted().build();
         } catch (DatabaseException | LdapException e) {
             log.error("An error occurred while updating a player's information", e);
             return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+        } catch (PlayerNotFoundException e) {
+            log.error("Player not found for performing update", e);
+            return ResponseEntity.notFound().build();
         } catch (ApplicationException e) {
             log.error("User context error for updating a player's information", e);
             return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
@@ -123,8 +128,15 @@ public class PlayersController extends AbstractController implements PlayersApi 
         try {
             log.debug("Player deactivation requested");
             net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
-            playerManagementService.deactivatePlayer(id, userContext);
-            return ResponseEntity.noContent().build();
+
+            net.andresbustamante.yafoot.model.Player player = playerSearchService.findPlayerById(id);
+
+            if (player != null) {
+                playerManagementService.deactivatePlayer(player, userContext);
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } catch (DatabaseException | LdapException e) {
             log.error("Database/LDAP error while deactivating a player", e);
             return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);

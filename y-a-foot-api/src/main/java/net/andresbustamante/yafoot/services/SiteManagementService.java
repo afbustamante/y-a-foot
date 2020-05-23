@@ -17,5 +17,5 @@ public interface SiteManagementService {
      * @return New site's identifier
      * @throws DatabaseException
      */
-    long saveSite(Site site, UserContext userContext) throws DatabaseException;
+    Integer saveSite(Site site, UserContext userContext) throws DatabaseException;
 }

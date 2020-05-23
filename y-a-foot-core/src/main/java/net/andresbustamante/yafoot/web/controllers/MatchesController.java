@@ -3,8 +3,10 @@ package net.andresbustamante.yafoot.web.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.exceptions.AuthorisationException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
+import net.andresbustamante.yafoot.services.CarpoolingService;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
@@ -38,12 +40,10 @@ import java.util.stream.Collectors;
 
 import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 /**
- * Web Service REST pour la recherche et consultation des matches
+ * REST service for managing and searching matches
  *
  * @author andresbustamante
  */
@@ -61,6 +61,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
     private PlayerSearchService playerSearchService;
 
     private MatchManagementService matchManagementService;
+
+    private CarpoolingService carpoolingService;
 
     private MatchMapper matchMapper;
 
@@ -80,6 +82,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     @Autowired
     public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
+                             CarpoolingService carpoolingService,
                              MatchManagementService matchManagementService, BasicMatchMapper basicMatchMapper,
                              MatchMapper matchMapper, RegistrationMapper registrationMapper, CarMapper carMapper,
                              HttpServletRequest request, ApplicationContext applicationContext) {
@@ -87,6 +90,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
         this.playerSearchService = playerSearchService;
+        this.carpoolingService = carpoolingService;
         this.matchMapper = matchMapper;
         this.basicMatchMapper = basicMatchMapper;
         this.registrationMapper = registrationMapper;
@@ -219,7 +223,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
                     UserContext ctx = getUserContext(request);
                     Player player = playerRegistrations.get(0).getPlayer(); // It must be always the first and the only one
 
-                    matchManagementService.updateCarForRegistration(match, player, carMapper.map(carConfirmation.getCar()),
+                    carpoolingService.updateCarpoolingInformation(match, player, carMapper.map(carConfirmation.getCar()),
                                 carConfirmation.isConfirmed(), ctx);
                     return ResponseEntity.accepted().build();
                 } else {
@@ -233,9 +237,12 @@ public class MatchesController extends AbstractController implements MatchesApi 
         } catch (DatabaseException e) {
             log.error("Database error when updating a registration", e);
             return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+        } catch (AuthorisationException e) {
+            log.error("Authorisation problem when updating carpool details for a registration to a match", e);
+            return new ResponseEntity<>(buildMessageHeader(UNAUTHORISED_USER_ERROR, null), FORBIDDEN);
         } catch (ApplicationException e) {
             log.error("Application error when updating a registration to a match", e);
-            return new ResponseEntity<>(buildMessageHeader(e.getCode(), null), BAD_REQUEST);
+            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
         }
     }
 

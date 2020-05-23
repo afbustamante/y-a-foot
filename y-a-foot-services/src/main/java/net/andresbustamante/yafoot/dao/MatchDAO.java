@@ -70,7 +70,7 @@ public interface MatchDAO {
      */
     int registerPlayer(@Param(PLAYER) Player player,
                         @Param(MATCH) Match match,
-                        @Param(CAR) Car car, @Param("carConfirmation") boolean isCarConfirmed);
+                        @Param(CAR) Car car, @Param("carConfirmation") Boolean isCarConfirmed);
 
     /**
      * Vérifier si un joueur est déjà inscrit à un match passé en paramètre

@@ -4,6 +4,7 @@ import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
+import net.andresbustamante.yafoot.exceptions.PlayerNotFoundException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
@@ -65,7 +66,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public boolean updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
+    public void updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
         Player existingPlayer = playerDAO.findPlayerByEmail(player.getEmail());
         boolean needsDirectoryUpdate = false;
 
@@ -89,18 +90,15 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             }
             playerDAO.updatePlayer(existingPlayer);
             log.info("Player {} updated", player.getEmail());
-            return true;
         } else {
             log.info("No user registered with the address {}", player.getEmail());
-            return false;
+            throw new PlayerNotFoundException("No player registered with the address " + player.getEmail());
         }
     }
 
     @Transactional
     @Override
-    public void deactivatePlayer(Integer playerId, UserContext userContext) throws LdapException, DatabaseException {
-        Player player = playerDAO.findPlayerById(playerId);
-
+    public void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
         if (player != null) {
             // Delete all data from player
             matchManagementService.unregisterPlayerFromAllMatches(player, userContext);
@@ -112,6 +110,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             player.setLastUpdateDate(ZonedDateTime.now());
 
             userManagementService.deleteUser(player, userContext);
+        } else {
+            throw new PlayerNotFoundException("No player found for deactivation");
         }
     }
 }
