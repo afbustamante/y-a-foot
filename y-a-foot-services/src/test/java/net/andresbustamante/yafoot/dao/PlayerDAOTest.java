@@ -100,8 +100,6 @@ class PlayerDAOTest extends AbstractDAOTest {
         assertEquals(SURNAME, player1.getSurname());
         assertNotNull(player1.getFirstName());
         assertEquals(FIRST_NAME, player1.getFirstName());
-        assertNotNull(player1.getLastUpdateDate());
-        assertTrue(player.getCreationDate().isBefore(player1.getLastUpdateDate()));
     }
 
     @Test
@@ -130,9 +128,6 @@ class PlayerDAOTest extends AbstractDAOTest {
         assertEquals("Foot", player.getSurname());
         assertFalse(player.isActive());
         assertNull(player.getPhoneNumber());
-        assertTrue(player.getEmail().startsWith(JOHN_DOE.getEmail()));
-        assertNotEquals(JOHN_DOE.getEmail(), player.getEmail());
-        assertTrue(player.getEmail().endsWith(".old"));
     }
 
     /**

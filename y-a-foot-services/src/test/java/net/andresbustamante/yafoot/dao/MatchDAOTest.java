@@ -172,6 +172,7 @@ class MatchDAOTest extends AbstractDAOTest {
         match.setCreator(player);
         match.setDescription("Match de test");
         match.setSite(site);
+        match.setCreationDate(now);
 
         // When
         matchDAO.saveMatch(match);

@@ -43,7 +43,7 @@
 
         INSERT INTO t_player (ply_id, ply_surname, ply_first_name, ply_phone_number, ply_email, ply_created_at, ply_active)
         VALUES
-        (#{player.id}, #{player.surname}, #{player.firstName}, #{player.phoneNumber}, #{player.email}, NOW(), true)
+        (#{player.id}, #{player.surname}, #{player.firstName}, #{player.phoneNumber}, #{player.email}, #{player.creationDate}, true)
     </insert>
 
     <update id="updatePlayer">
@@ -58,7 +58,7 @@
         <if test="player.phoneNumber != null">
             ply_phone_number = #{player.phoneNumber},
         </if>
-        ply_last_update = NOW()
+        ply_last_update = #{player.lastUpdateDate}
         WHERE ply_email = #{player.email}
     </update>
 
@@ -69,12 +69,12 @@
 
     <update id="deactivatePlayer">
         UPDATE t_player
-        SET ply_first_name = 'User' || ply_id,
-            ply_surname    = 'Foot',
-            ply_email      = ply_email || '.' || CURRENT_DATE || '.old',
-            ply_phone_number  = null,
-            ply_active        = false,
-            ply_last_update   = NOW()
+        SET ply_first_name   = 'User' || ply_id,
+            ply_surname      = 'Foot',
+            ply_email        = #{player.email},
+            ply_phone_number = null,
+            ply_active       = false,
+            ply_last_update  = #{player.lastUpdateDate}
         WHERE ply_id = #{player.id}
     </update>
 </mapper>

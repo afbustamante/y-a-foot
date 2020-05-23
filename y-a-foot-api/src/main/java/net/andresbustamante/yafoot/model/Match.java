@@ -25,6 +25,7 @@ public class Match implements Serializable, Identifiable {
     private Player creator;
     private boolean carpoolingEnabled;
     private boolean codeSharingEnabled;
+    private ZonedDateTime creationDate;
 
     public Match() {
     }
@@ -144,6 +145,14 @@ public class Match implements Serializable, Identifiable {
 
     public void setCodeSharingEnabled(boolean codeSharingEnabled) {
         this.codeSharingEnabled = codeSharingEnabled;
+    }
+
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(ZonedDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     @Override

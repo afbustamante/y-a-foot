@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
+
 /**
  * @author andresbustamante
  */
@@ -50,7 +52,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
         if (!playerDAO.isPlayerAlreadySignedUp(player.getEmail())) {
             // Créer l'utilisateur sur l'annuaire LDAP
             userManagementService.createUser(player, RolesEnum.PLAYER, userContext);
-            // Créer le player en base de données
+            // Create the player in database
+            player.setCreationDate(ZonedDateTime.now());
             playerDAO.savePlayer(player);
             log.info("New player registered with the address {}", player.getEmail());
             return player.getId();
@@ -67,6 +70,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
         boolean needsDirectoryUpdate = false;
 
         if (existingPlayer != null) {
+            existingPlayer.setLastUpdateDate(ZonedDateTime.now());
+
             if (player.getFirstName() != null) {
                 existingPlayer.setFirstName(player.getFirstName());
                 needsDirectoryUpdate = true;
@@ -103,6 +108,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
             int numPlayers = playerDAO.deactivatePlayer(player);
             log.info("Players deactivated: {}", numPlayers);
+
+            player.setLastUpdateDate(ZonedDateTime.now());
 
             userManagementService.deleteUser(player, userContext);
         }

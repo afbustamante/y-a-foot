@@ -146,7 +146,7 @@
             #{match.numPlayersMax},
             #{match.site.id},
             #{match.code},
-            NOW(),
+            #{match.creationDate},
             #{match.carpoolingEnabled},
             #{match.codeSharingEnabled},
             #{match.creator.id}
