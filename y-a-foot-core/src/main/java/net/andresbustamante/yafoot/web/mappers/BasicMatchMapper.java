@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(config = SpringMapperConfig.class, uses = {SiteMapper.class, DateMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {SiteMapper.class})
 public interface BasicMatchMapper {
 
     @Mapping(target = "author", ignore = true)

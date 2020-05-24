@@ -6,8 +6,8 @@ import net.andresbustamante.yafoot.model.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,7 +61,8 @@ class PlayerDAOTest extends AbstractDAOTest {
         assertNotNull(player1.getEmail());
         assertEquals(JOHN_DOE.getPhoneNumber(), player1.getPhoneNumber());
         assertNotNull(player1.getCreationDate());
-        assertEquals(ZonedDateTime.of(2019, 1, 2, 12, 34, 56, 0, ZoneId.systemDefault()), player1.getCreationDate());
+        assertEquals(OffsetDateTime.of(2019, 1, 2, 12, 34, 56, 0, ZoneOffset.UTC),
+                player1.getCreationDate());
     }
 
     @Test

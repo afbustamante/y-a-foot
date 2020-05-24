@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(config = SpringMapperConfig.class, uses = {CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
-        RegistrationMapper.class, DateMapper.class})
+        RegistrationMapper.class})
 public interface MatchMapper {
 
     @Mapping(source = "author", target = "creator")

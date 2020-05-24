@@ -47,7 +47,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void findMatchByCode() throws Exception {
         // Given
         String code = "QWERTY-1234";
-        LocalDateTime date = LocalDateTime.of(2019, 10, 2, 19, 10); // 2019-10-02 19:10
+        ZonedDateTime date = ZonedDateTime.of(2019, 10, 2, 19, 10, 0, 0, ZoneId.systemDefault()); // 2019-10-02 19:10
 
         // When
         Match match = matchDAO.findMatchByCode(code);
@@ -55,7 +55,7 @@ class MatchDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(match);
         assertEquals(2, match.getId().intValue());
-        assertEquals(ZonedDateTime.of(date, ZoneId.systemDefault()), match.getDate());
+        assertEquals(date.toOffsetDateTime().atZoneSameInstant(ZoneId.of("UTC")), match.getDate().atZoneSameInstant(ZoneId.of("UTC")));
         assertEquals(8, match.getNumPlayersMin().intValue());
         assertEquals(12, match.getNumPlayersMax().intValue());
         assertNotNull(match.getCreator());
@@ -100,7 +100,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void findMatchesByPlayerAndStartDate() throws Exception {
         // Given
         Player player1 = new Player(1);
-        ZonedDateTime startDate = LocalDate.of(2018, 10, 2).atStartOfDay(ZoneId.systemDefault());
+        OffsetDateTime startDate = LocalDate.of(2018, 10, 2).atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime();
 
         // When
         List<Match> matchs = matchDAO.findMatchesByPlayer(player1, startDate, null);
@@ -121,7 +121,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void findMatchesByPlayerAndEndDate() throws Exception {
         // Given
         Player player2 = new Player(2);
-        ZonedDateTime endDate = LocalDate.of(2018, 10, 3).atStartOfDay(ZoneId.systemDefault());
+        OffsetDateTime endDate = LocalDate.of(2018, 10, 3).atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime();
 
         // When
         List<Match> matchs = matchDAO.findMatchesByPlayer(player2, null, endDate);
@@ -158,7 +158,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void saveMatch() throws Exception {
         // Given
-        ZonedDateTime now = ZonedDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now();
         Player player = playerDAO.findPlayerById(1);
         Site site = siteDAO.findSiteById(1);
 
@@ -291,7 +291,7 @@ class MatchDAOTest extends AbstractDAOTest {
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
         Player player = playerDAO.findPlayerById(1);
-        ZonedDateTime startDate = ZonedDateTime.now().minusYears(5L); // 5 years ago
+        OffsetDateTime startDate = OffsetDateTime.now().minusYears(5L); // 5 years ago
 
         // When
         int numLines = matchDAO.unregisterPlayerFromAllMatches(player);

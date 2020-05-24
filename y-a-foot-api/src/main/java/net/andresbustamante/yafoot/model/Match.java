@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ public class Match implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private ZonedDateTime date;
+    private OffsetDateTime date;
     private String code;
     private String description;
     private Integer numPlayersMin;
@@ -25,18 +25,13 @@ public class Match implements Serializable, Identifiable {
     private Player creator;
     private boolean carpoolingEnabled;
     private boolean codeSharingEnabled;
-    private ZonedDateTime creationDate;
+    private OffsetDateTime creationDate;
 
     public Match() {
     }
 
     public Match(Integer id) {
         this.id = id;
-    }
-
-    public Match(Integer id, ZonedDateTime date) {
-        this.id = id;
-        this.date = date;
     }
 
     public boolean isPlayerRegistered(Player player) throws ApplicationException {
@@ -60,11 +55,11 @@ public class Match implements Serializable, Identifiable {
         this.id = matId;
     }
 
-    public ZonedDateTime getDate() {
+    public OffsetDateTime getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(OffsetDateTime date) {
         this.date = date;
     }
 
@@ -147,11 +142,11 @@ public class Match implements Serializable, Identifiable {
         this.codeSharingEnabled = codeSharingEnabled;
     }
 
-    public ZonedDateTime getCreationDate() {
+    public OffsetDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
+    public void setCreationDate(OffsetDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

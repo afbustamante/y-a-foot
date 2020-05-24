@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.model;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,8 +16,8 @@ public class Player extends User implements Serializable, Identifiable {
     private Integer id;
     private String phoneNumber;
     private boolean active;
-    private ZonedDateTime creationDate;
-    private ZonedDateTime lastUpdateDate;
+    private OffsetDateTime creationDate;
+    private OffsetDateTime lastUpdateDate;
     private List<Car> cars;
 
     public Player() {}
@@ -59,19 +59,19 @@ public class Player extends User implements Serializable, Identifiable {
         this.active = active;
     }
 
-    public ZonedDateTime getCreationDate() {
+    public OffsetDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
+    public void setCreationDate(OffsetDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    public ZonedDateTime getLastUpdateDate() {
+    public OffsetDateTime getLastUpdateDate() {
         return lastUpdateDate;
     }
 
-    public void setLastUpdateDate(ZonedDateTime lastUpdateDate) {
+    public void setLastUpdateDate(OffsetDateTime lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
 

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,8 +42,8 @@ public class MatchSearchServiceImpl implements MatchSearchService {
     @Override
     public List<Match> findMatchesByPlayer(Player player, LocalDate startDate, LocalDate endDate) throws DatabaseException {
         if (player != null && player.getId() > 0) {
-            ZonedDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay(ZoneId.systemDefault()) : null;
-            ZonedDateTime endDateTime = (endDate != null) ? endDate.plusDays(1L).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1L) : null;
+            OffsetDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime() : null;
+            OffsetDateTime endDateTime = (endDate != null) ? endDate.plusDays(1L).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1L).toOffsetDateTime() : null;
             return matchDAO.findMatchesByPlayer(player, startDateTime, endDateTime);
         } else {
             return Collections.emptyList();
