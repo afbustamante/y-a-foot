@@ -1,5 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
+import net.andresbustamante.yafoot.util.LocaleUtils;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,10 +21,14 @@ public class User implements Serializable {
      * Authentication token
      */
     protected String token;
+    protected String preferredLanguage;
 
-    public User() {}
+    public User() {
+        this.preferredLanguage = LocaleUtils.DEFAULT_LOCALE.getLanguage();
+    }
 
     public User(String email) {
+        this.preferredLanguage = LocaleUtils.DEFAULT_LOCALE.getLanguage();
         this.email = email;
     }
 
@@ -31,6 +37,7 @@ public class User implements Serializable {
         this.password = password;
         this.surname = surname;
         this.firstName = firstName;
+        this.preferredLanguage = LocaleUtils.DEFAULT_LOCALE.getLanguage();
     }
 
     public String getEmail() {
@@ -71,6 +78,14 @@ public class User implements Serializable {
 
     public void setFirstName(String jouPrenom) {
         this.firstName = jouPrenom;
+    }
+
+    public String getPreferredLanguage() {
+        return preferredLanguage;
+    }
+
+    public void setPreferredLanguage(String preferredLanguage) {
+        this.preferredLanguage = preferredLanguage;
     }
 
     @Override

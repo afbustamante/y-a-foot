@@ -125,7 +125,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<List<Match>> loadMatches(@DateTimeFormat(iso = DATE) LocalDate startDate,
+    public ResponseEntity<List<Match>> findMatches(@DateTimeFormat(iso = DATE) LocalDate startDate,
                                                    @DateTimeFormat(iso = DATE) LocalDate endDate) {
         try {
             UserContext ctx = getUserContext(request);

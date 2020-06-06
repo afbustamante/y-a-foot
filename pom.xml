@@ -98,6 +98,7 @@
     <swagger-annotations.version>1.6.1</swagger-annotations.version>
     <jjwt.version>0.9.1</jjwt.version>
     <unboundid-ldapsdk.version>3.1.1</unboundid-ldapsdk.version>
+    <freemarker.version>2.3.30</freemarker.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
@@ -161,6 +162,11 @@
       <dependency>
         <groupId>javax.mail</groupId>
         <artifactId>javax.mail-api</artifactId>
+        <version>${javax.mail-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>javax.mail</artifactId>
         <version>${javax.mail-api.version}</version>
       </dependency>
       <dependency>
@@ -545,6 +551,11 @@
         <groupId>com.unboundid</groupId>
         <artifactId>unboundid-ldapsdk</artifactId>
         <version>${unboundid-ldapsdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.freemarker</groupId>
+        <artifactId>freemarker</artifactId>
+        <version>${freemarker.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -6,7 +6,7 @@ import net.andresbustamante.yafoot.model.enums.RolesEnum;
 /**
  * Interface de gestion et récupération des informations des utilisateurs de l'annuaire LDAP
  */
-public interface UserDAO {
+public interface UserRepository {
 
     /**
      * Ajouter une nouvelle entrée dans l'annuaire avec un nouvel utilisateur
@@ -38,20 +38,12 @@ public interface UserDAO {
     void deleteUser(User usr);
 
     /**
-     * Chercher un utilisateur dans l'annuaire à partir de son identifiant
+     * Find a user by using his email address
      *
-     * @param uid Identifiant de l'utilisateur dans l'annuaire
+     * @param email Email address to search
      * @return
      */
-    User findUserByUid(String uid);
-
-    /**
-     * Load user's details for authentication and authorisation
-     *
-     * @param uid User's ID
-     * @return User's details including roles
-     */
-    User findUserAuthDetailsByUid(String uid);
+    User findUserByEmail(String email);
 
     /**
      * Authenticate user by using his email address and his password
@@ -61,4 +53,20 @@ public interface UserDAO {
      * @return Returns user's details only if the authentication information is valid
      */
     User authenticateUser(String uid, String password);
+
+    /**
+     * Find a user by the token generated to reset his password
+     *
+     * @param token Token to search
+     * @return The user found for this token or null if nobody is found
+     */
+    User findUserByToken(String token);
+
+    /**
+     * Sets a token for password change to the user
+     *
+     * @param token Token to set
+     * @param user User to modify
+     */
+    void saveTokenForUser(String token, User user);
 }

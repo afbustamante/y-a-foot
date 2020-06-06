@@ -49,4 +49,13 @@ public interface UserManagementService {
      * @throws LdapException
      */
     void deleteUser(User user, UserContext ctx) throws LdapException;
+
+    /**
+     * Generate a token for a user in order to reset his/her password
+     *
+     * @param user User to search
+     * @return Generated token
+     * @throws LdapException
+     */
+    String createPasswordResetToken(User user) throws LdapException, ApplicationException;
 }

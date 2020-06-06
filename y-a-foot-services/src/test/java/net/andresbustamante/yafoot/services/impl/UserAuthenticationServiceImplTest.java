@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.ldap.UserDAO;
+import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class UserAuthenticationServiceImplTest extends AbstractServiceTest {
     private UserAuthenticationServiceImpl userAuthenticationService;
 
     @Mock
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @Mock
     private JwtTokenUtils jwtTokenUtils;
@@ -33,18 +33,18 @@ class UserAuthenticationServiceImplTest extends AbstractServiceTest {
         invalidUser.setPassword("pass");
 
         // When
-        when(userDAO.authenticateUser(anyString(), anyString())).thenReturn(null);
+        when(userRepository.authenticateUser(anyString(), anyString())).thenReturn(null);
 
         // Then
         assertThrows(InvalidCredentialsException.class, () -> userAuthenticationService.authenticate(invalidUser));
-        verify(userDAO).authenticateUser(anyString(), anyString());
+        verify(userRepository).authenticateUser(anyString(), anyString());
         verify(jwtTokenUtils, never()).generateToken(anyString());
     }
 
     @Test
     void testAuthenticateValidUser() throws InvalidCredentialsException {
         // When
-        when(userDAO.authenticateUser(anyString(), anyString())).thenReturn(USR_TEST);
+        when(userRepository.authenticateUser(anyString(), anyString())).thenReturn(USR_TEST);
         when(jwtTokenUtils.generateToken(anyString())).thenReturn("token");
 
         User authUser = userAuthenticationService.authenticate(USR_TEST);
@@ -52,14 +52,14 @@ class UserAuthenticationServiceImplTest extends AbstractServiceTest {
         // Then
         assertNotNull(authUser);
         assertNotNull(authUser.getToken());
-        verify(userDAO).authenticateUser(anyString(), anyString());
+        verify(userRepository).authenticateUser(anyString(), anyString());
         verify(jwtTokenUtils).generateToken(anyString());
     }
 
     @Test
     void findUserByEmail() throws LdapException {
         // When
-        when(userDAO.findUserAuthDetailsByUid(anyString())).thenReturn(USR_TEST);
+        when(userRepository.findUserByEmail(anyString())).thenReturn(USR_TEST);
 
         User user = userAuthenticationService.findUserByEmail("test@email.com");
 
@@ -67,6 +67,6 @@ class UserAuthenticationServiceImplTest extends AbstractServiceTest {
         assertNotNull(user);
         assertEquals(USR_TEST, user);
 
-        verify(userDAO).findUserAuthDetailsByUid(anyString());
+        verify(userRepository).findUserByEmail(anyString());
     }
 }

@@ -1,8 +1,10 @@
 package net.andresbustamante.yafoot.ldap.impl;
 
+import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.ldap.*;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.NameNotFoundException;
@@ -21,7 +23,7 @@ import java.util.List;
 import static net.andresbustamante.yafoot.util.LdapConstants.*;
 
 @Repository
-public class UserDAOImpl implements UserDAO {
+public class UserRepositoryImpl implements UserRepository {
 
     private LdapTemplate ldapTemplate;
 
@@ -33,17 +35,10 @@ public class UserDAOImpl implements UserDAO {
 
     private LdapUserMapper ldapUserMapper;
 
-    private LdapAuthUserMapper ldapAuthUserMapper;
-
-    private LdapUserUpdateMapper ldapUserUpdateMapper;
-
     @Autowired
-    public UserDAOImpl(LdapTemplate ldapTemplate, LdapUserMapper ldapUserMapper, LdapAuthUserMapper ldapAuthUserMapper,
-                       LdapUserUpdateMapper ldapUserUpdateMapper) {
+    public UserRepositoryImpl(LdapTemplate ldapTemplate, LdapUserMapper ldapUserMapper) {
         this.ldapTemplate = ldapTemplate;
         this.ldapUserMapper = ldapUserMapper;
-        this.ldapAuthUserMapper = ldapAuthUserMapper;
-        this.ldapUserUpdateMapper = ldapUserUpdateMapper;
     }
 
     @Override
@@ -55,9 +50,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void updateUser(User usr) {
-        User oldUser = ldapTemplate.lookup(getUid(usr).toString(), ldapUserUpdateMapper);
+        User oldUser = ldapTemplate.lookup(getUid(usr).toString(), ldapUserMapper);
         usr.setPassword(oldUser.getPassword());
-        ldapTemplate.rebind(getUid(usr), null, ldapUserUpdateMapper.mapToAttributes(usr));
+        ldapTemplate.rebind(getUid(usr), null, ldapUserMapper.mapToAttributes(usr));
     }
 
     @Override
@@ -73,21 +68,9 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User findUserByUid(String uid) {
-        try {
-            return ldapTemplate.lookup(uid, ldapUserMapper);
-        } catch (NameNotFoundException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public User findUserAuthDetailsByUid(String uid) {
-        try {
-            return ldapTemplate.lookup(getUid(new User(uid)), ldapAuthUserMapper);
-        } catch (NameNotFoundException e) {
-            return null;
-        }
+    public User findUserByEmail(String email) {
+        User user = new User(email);
+        return findUserByUid(getUid(user).toString());
     }
 
     @Override
@@ -100,6 +83,28 @@ public class UserDAOImpl implements UserDAO {
                 return findUserByUid(getUid(user).toString());
             }
             return null;
+        } catch (NameNotFoundException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public User findUserByToken(String token) {
+        List<User> userList = ldapTemplate.search(usersDn, "(description=" + token + ")", ldapUserMapper);
+        return (CollectionUtils.isNotEmpty(userList)) ? userList.iterator().next() : null;
+    }
+
+    @Override
+    public void saveTokenForUser(String token, User user) {
+        Attribute attribute = new BasicAttribute(TOKEN);
+        attribute.add(token);
+        ModificationItem item = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attribute);
+        ldapTemplate.modifyAttributes(getUid(user), new ModificationItem[]{item});
+    }
+
+    private User findUserByUid(String uid) {
+        try {
+            return ldapTemplate.lookup(uid, ldapUserMapper);
         } catch (NameNotFoundException e) {
             return null;
         }

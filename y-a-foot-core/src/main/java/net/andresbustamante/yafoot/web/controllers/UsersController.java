@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @CrossOrigin(exposedHeaders = {CTX_MESSAGES})
@@ -60,6 +60,33 @@ public class UsersController extends AbstractController implements UsersApi {
             return ResponseEntity.accepted().body(userMapper.map(authenticatedUser));
         } catch (InvalidCredentialsException e) {
             return new ResponseEntity<>(buildMessageHeader("invalid.credentials.error", null), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    public ResponseEntity<User> findUser(@Pattern(regexp = "^[0-9A-F]{16}$") @Valid String token) {
+        try {
+            net.andresbustamante.yafoot.model.User user = userAuthenticationService.findUserByToken(token);
+
+            return (user != null) ? ResponseEntity.ok(userMapper.map(user)) : ResponseEntity.notFound().build();
+        } catch (LdapException e) {
+            log.error("LDAP error while searching for a user", e);
+            return new ResponseEntity<>(buildMessageHeader(DIRECTORY_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> generatePasswordResetToken(String email) {
+        try {
+            net.andresbustamante.yafoot.model.User user = userAuthenticationService.findUserByEmail(email);
+            userManagementService.createPasswordResetToken(user);
+            return ResponseEntity.status(CREATED).build();
+        } catch (LdapException e) {
+            log.error("LDAP error while searching for a user", e);
+            return new ResponseEntity<>(buildMessageHeader(DIRECTORY_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+        } catch (ApplicationException e) {
+            log.error("Application error while generating a new password-reset token", e);
+            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         }
     }
 

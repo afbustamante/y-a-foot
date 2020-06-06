@@ -18,6 +18,49 @@ tags:
   - name: cars
     description: Cars management API. Allows to add new cars from players organising new matches.
 paths:
+  /users:
+    get:
+      operationId: findUser
+      summary: When a token parameter is used, it finds a user that requested a password reset by the token that he/she received by email.
+      tags:
+      - users
+      parameters:
+      - in: query
+        name: token
+        schema:
+          type: string
+          pattern: ^[0-9A-F]{16}$
+        description: Token to search
+      responses:
+        200: # OK
+          description: User found for the given criteria. First name and surname fields are anonymised for security reasons
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404: # Not found
+          description: No used found for the given criteria
+        500: # Internal Server Error
+          description: A problem occurred while looking for the user by using the given criteria
+  /users/{email}/token:
+    post:
+      operationId: generatePasswordResetToken
+      summary: Generate a new token for resetting users's password
+      tags:
+      - users
+      parameters:
+      - in: path
+        name: email
+        required: true
+        schema:
+          type: string
+          format: email
+        description: Email address identifying the user
+      responses:
+        201: # Created
+          description: Token created for user
+        500: # Internal Server Error
+          description: An error occurred while generating a reset password token
   /users/{email}/details:
     patch:
       operationId: updateUserCredentials
@@ -78,7 +121,7 @@ paths:
           description: Invalid credentials
   /players:
     get:
-      operationId: loadPlayerByEmail
+      operationId: findPlayer
       summary: Loads details for a player
       parameters:
       - in: query
@@ -137,6 +180,7 @@ paths:
           description: Player successfully updated
     delete:
       operationId: deactivatePlayer
+      summary: Deactivates a player in the application. This action can only be requested by the own player
       tags:
       - players
       responses:
@@ -144,7 +188,7 @@ paths:
           description: Player successfully deactivated
   /matches:
     get:
-      operationId: loadMatches
+      operationId: findMatches
       summary: Loads the matches available for the active player
       tags:
       - matches

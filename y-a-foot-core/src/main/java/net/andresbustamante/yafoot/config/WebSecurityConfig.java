@@ -60,6 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
         http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, usersApiPath).permitAll() // Password-reset request by token
+                .antMatchers(HttpMethod.POST, usersApiPath + "/**").permitAll() // Password-reset token generation
                 .antMatchers(HttpMethod.PUT, usersApiPath + "/**").permitAll() // Sign-in
                 .antMatchers(HttpMethod.POST, playersApiPath).permitAll() // Sign-up
                 .anyRequest().authenticated()

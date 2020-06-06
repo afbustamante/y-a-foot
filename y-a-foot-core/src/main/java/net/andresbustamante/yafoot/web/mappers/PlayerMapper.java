@@ -12,6 +12,7 @@ public interface PlayerMapper {
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "lastUpdateDate", ignore = true)
     @Mapping(target = "cars", ignore = true)
+    @Mapping(target = "preferredLanguage", ignore = true)
     Player map(net.andresbustamante.yafoot.web.dto.Player player);
 
     @Mapping(target = "password", ignore = true)

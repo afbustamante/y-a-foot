@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
-import net.andresbustamante.yafoot.ldap.UserDAO;
+import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
@@ -14,18 +14,18 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     private JwtTokenUtils jwtTokenUtils;
 
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserAuthenticationServiceImpl(JwtTokenUtils jwtTokenUtils, UserDAO userDAO) {
+    public UserAuthenticationServiceImpl(JwtTokenUtils jwtTokenUtils, UserRepository userRepository) {
         this.jwtTokenUtils = jwtTokenUtils;
-        this.userDAO = userDAO;
+        this.userRepository = userRepository;
     }
 
     @Transactional
     @Override
     public User authenticate(User user) throws InvalidCredentialsException {
-        User authenticatedUser = userDAO.authenticateUser(user.getEmail(), user.getPassword());
+        User authenticatedUser = userRepository.authenticateUser(user.getEmail(), user.getPassword());
 
         if (authenticatedUser != null) {
             authenticatedUser.setToken(jwtTokenUtils.generateToken(user.getEmail()));
@@ -38,6 +38,12 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     @Transactional(readOnly = true)
     @Override
     public User findUserByEmail(String email) {
-        return userDAO.findUserAuthDetailsByUid(email);
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User findUserByToken(String token) {
+        return userRepository.findUserByToken(token);
     }
 }

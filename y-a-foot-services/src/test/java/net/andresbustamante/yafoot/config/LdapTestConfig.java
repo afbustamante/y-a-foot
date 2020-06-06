@@ -28,7 +28,7 @@ public class LdapTestConfig {
     public EmbeddedLdapServerFactoryBean embeddedLdapServer() {
         EmbeddedLdapServerFactoryBean ldapServerFactoryBean = new EmbeddedLdapServerFactoryBean();
         ldapServerFactoryBean.setPartitionName("test");
-        ldapServerFactoryBean.setPartitionSuffix("ou=test,dc=andresbustamante,dc=net");
+        ldapServerFactoryBean.setPartitionSuffix("ou=yafoot,dc=andresbustamante,dc=net");
         ldapServerFactoryBean.setPort(6389);
         return ldapServerFactoryBean;
     }
@@ -38,9 +38,9 @@ public class LdapTestConfig {
         LdifPopulator ldifPopulator = new LdifPopulator();
         ldifPopulator.setContextSource(contextSource());
         ldifPopulator.setResource(new ClassPathResource("data.ldif"));
-        ldifPopulator.setBase("ou=test,dc=andresbustamante,dc=net");
+        ldifPopulator.setBase("ou=yafoot,dc=andresbustamante,dc=net");
         ldifPopulator.setClean(true);
-        ldifPopulator.setDefaultBase("ou=test,dc=andresbustamante,dc=net");
+        ldifPopulator.setDefaultBase("ou=yafoot,dc=andresbustamante,dc=net");
         return ldifPopulator;
     }
 

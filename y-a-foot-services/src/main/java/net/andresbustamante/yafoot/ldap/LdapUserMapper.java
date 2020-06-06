@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.ldap;
 
 import net.andresbustamante.yafoot.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,10 @@ public class LdapUserMapper implements AttributesMapper<User> {
         user.setSurname((String) attrs.get(SN).get());
         user.setFirstName((String) attrs.get(GIVEN_NAME).get());
         user.setEmail((String) attrs.get(MAIL).get());
+
+        byte[] password = (byte[]) attrs.get(USER_PASSWORD).get();
+        user.setPassword(new String(password));
+
         return user;
     }
 
@@ -34,10 +39,9 @@ public class LdapUserMapper implements AttributesMapper<User> {
      */
     public Attributes mapToAttributes(User usr) {
         BasicAttribute objectClass = new BasicAttribute(OBJECT_CLASS);
-        objectClass.add("top");
-        objectClass.add("person");
-        objectClass.add("organizationalPerson");
-        objectClass.add("inetOrgPerson");
+        for (String class_ : USER_CLASSES) {
+            objectClass.add(class_);
+        }
 
         Attributes attrs = new BasicAttributes();
         attrs.put(objectClass);
@@ -54,7 +58,11 @@ public class LdapUserMapper implements AttributesMapper<User> {
         }
 
         if (usr.getFirstName() != null && usr.getSurname() != null) {
-            attrs.put(DISPLAY_NAME, usr.getFirstName() + " " + usr.getSurname());
+            attrs.put(DISPLAY_NAME, StringUtils.joinWith(" ",usr.getFirstName(), usr.getSurname()));
+        }
+
+        if (usr.getPassword() != null) {
+            attrs.put(USER_PASSWORD, usr.getPassword());
         }
         return attrs;
     }

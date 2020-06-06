@@ -4,19 +4,15 @@ import net.andresbustamante.yafoot.config.LdapConfig;
 import net.andresbustamante.yafoot.config.LdapTestConfig;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.util.LdapConstants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import javax.naming.Name;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {LdapTestConfig.class, LdapConfig.class})
-class UserDAOTest {
+class UserRepositoryTest {
 
     private static final User USR_TEST = new User("test@email.com", "password", "TEST", "User");
 
@@ -34,32 +30,32 @@ class UserDAOTest {
     private String dnUtilisateurs;
 
     @Autowired
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() throws Exception {
-        userDAO.saveUser(USR_TEST, RolesEnum.PLAYER);
+        userRepository.saveUser(USR_TEST, RolesEnum.PLAYER);
     }
 
     @AfterEach
     void tearDown() throws Exception {
-        userDAO.deleteUser(USR_TEST);
+        userRepository.deleteUser(USR_TEST);
     }
 
     @Test
     void saveUser() throws Exception {
         User newUser = buildNewUser();
 
-        userDAO.saveUser(newUser, RolesEnum.PLAYER);
+        userRepository.saveUser(newUser, RolesEnum.PLAYER);
 
-        User user = userDAO.findUserByUid(getUid(newUser).toString());
+        User user = userRepository.findUserByEmail(newUser.getEmail());
         assertNotNull(user);
         assertNotNull(user.getSurname());
         assertNotNull(user.getFirstName());
         assertNotNull(user.getEmail());
-        assertNull(user.getPassword());
+        assertNotNull(user.getPassword());
 
-        userDAO.deleteUser(newUser);
+        userRepository.deleteUser(newUser);
     }
 
     @Test
@@ -71,10 +67,10 @@ class UserDAOTest {
         updatedUser.setFirstName(USR_TEST.getFirstName() + " autre");
 
         // When
-        userDAO.updateUser(updatedUser);
+        userRepository.updateUser(updatedUser);
 
         // Then
-        User user = userDAO.authenticateUser(USR_TEST.getEmail(), "password");
+        User user = userRepository.authenticateUser(USR_TEST.getEmail(), "password");
         assertNotNull(user);
         assertEquals(USR_TEST.getEmail(), user.getEmail());
         assertNotNull(user.getSurname());
@@ -86,7 +82,7 @@ class UserDAOTest {
         // Remettre les informations de l'user
         user.setSurname(USR_TEST.getSurname());
         user.setFirstName(USR_TEST.getFirstName());
-        userDAO.updateUser(user);
+        userRepository.updateUser(user);
     }
 
     @Test
@@ -99,35 +95,35 @@ class UserDAOTest {
         updatedUser.setPassword("monNouveauMotDePasse");
 
         // When
-        userDAO.updatePassword(updatedUser);
-        User user = userDAO.findUserByUid(getUid(updatedUser).toString());
+        userRepository.updatePassword(updatedUser);
+        User user = userRepository.findUserByEmail(updatedUser.getEmail());
 
         // Then
         assertNotNull(user);
         assertEquals(USR_TEST.getSurname(), user.getSurname()); // Non modifié
         assertEquals(USR_TEST.getFirstName(), user.getFirstName()); // Non modifié
-        assertNull(user.getPassword()); // Non chargé pour sécurité
+        assertNotNull(user.getPassword());
 
         // Remettre les informations de l'user
         user.setSurname(USR_TEST.getSurname());
         user.setFirstName(USR_TEST.getFirstName());
-        userDAO.updateUser(user);
+        userRepository.updateUser(user);
     }
 
     @Test
     void deleteUser() throws Exception {
         User newUser = buildNewUser();
-        userDAO.saveUser(newUser, RolesEnum.PLAYER);
+        userRepository.saveUser(newUser, RolesEnum.PLAYER);
 
-        userDAO.deleteUser(newUser);
+        userRepository.deleteUser(newUser);
 
-        User user = userDAO.findUserByUid(getUid(newUser).toString());
+        User user = userRepository.findUserByEmail(newUser.getEmail());
         assertNull(user);
     }
 
     @Test
     void findUser() throws Exception {
-        User user = userDAO.findUserByUid(getUid(USR_TEST).toString());
+        User user = userRepository.findUserByEmail(USR_TEST.getEmail());
         assertNotNull(user);
         assertNotNull(user.getEmail());
         assertEquals(USR_TEST.getEmail(), user.getEmail());
@@ -136,12 +132,12 @@ class UserDAOTest {
         assertNotNull(user.getFirstName());
         assertEquals(USR_TEST.getFirstName(), user.getFirstName());
         assertNotNull(user.getSurname());
-        assertNull(user.getPassword());
+        assertNotNull(user.getPassword());
     }
 
     @Test
     void authenticateValidUser() {
-        User authenticatedUser = userDAO.authenticateUser("test@email.com", "password");
+        User authenticatedUser = userRepository.authenticateUser("test@email.com", "password");
         assertNotNull(authenticatedUser);
         assertNotNull(authenticatedUser.getEmail());
         assertEquals("test@email.com", authenticatedUser.getEmail());
@@ -153,14 +149,28 @@ class UserDAOTest {
 
     @Test
     void authenticateInvalidUsername() {
-        User authenticatedUser = userDAO.authenticateUser("unknown@email.com", "otherPassword");
+        User authenticatedUser = userRepository.authenticateUser("unknown@email.com", "otherPassword");
         assertNull(authenticatedUser);
     }
 
     @Test
     void authenticateInvalidPassword() {
-        User authenticatedUser = userDAO.authenticateUser("test@email.com", "otherPassword");
+        User authenticatedUser = userRepository.authenticateUser("test@email.com", "otherPassword");
         assertNull(authenticatedUser);
+    }
+
+    @Test
+    void saveToken() {
+        // Given
+        String token = "token";
+
+        // When
+        userRepository.saveTokenForUser(token, USR_TEST);
+        User user = userRepository.findUserByToken(token);
+
+        // Then
+        assertNotNull(user);
+        assertEquals(USR_TEST.getEmail(), user.getEmail());
     }
 
     private User buildNewUser() {
@@ -170,9 +180,5 @@ class UserDAOTest {
         user.setFirstName("User");
         user.setSurname("NOUVEL");
         return user;
-    }
-
-    private Name getUid(User usr) {
-        return LdapNameBuilder.newInstance(dnUtilisateurs).add(LdapConstants.UID, usr.getEmail()).build();
     }
 }

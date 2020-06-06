@@ -107,7 +107,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
     }
 
     @Override
-    public ResponseEntity<Player> loadPlayerByEmail(String email) {
+    public ResponseEntity<Player> findPlayer(String email) {
         try {
             net.andresbustamante.yafoot.model.Player player = playerSearchService.findPlayerByEmail(email);
 

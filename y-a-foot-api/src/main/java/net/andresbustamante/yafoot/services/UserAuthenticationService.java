@@ -25,4 +25,12 @@ public interface UserAuthenticationService {
      * @throws LdapException
      */
     User findUserByEmail(String email) throws LdapException;
+
+    /**
+     * Find a user by the token created for reset his authentication password
+     *
+     * @param token Token to search
+     * @return User found for this token
+     */
+    User findUserByToken(String token) throws LdapException;
 }

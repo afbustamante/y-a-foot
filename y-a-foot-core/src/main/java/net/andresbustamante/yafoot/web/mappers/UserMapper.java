@@ -10,6 +10,7 @@ public interface UserMapper {
 
     @Mapping(target = "surname", ignore = true)
     @Mapping(target = "firstName", ignore = true)
+    @Mapping(target = "preferredLanguage", ignore = true)
     User map(net.andresbustamante.yafoot.web.dto.User usr);
 
     @Mapping(target = "password", ignore = true)

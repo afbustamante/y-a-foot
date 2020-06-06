@@ -78,6 +78,11 @@
       <groupId>javax.mail</groupId>
       <artifactId>javax.mail-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <!-- MyBatis -->
     <dependency>
@@ -163,6 +168,10 @@
       <groupId>com.unboundid</groupId>
       <artifactId>unboundid-ldapsdk</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
     </dependency>
   </dependencies>
 
