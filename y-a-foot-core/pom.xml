@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-core</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <dependencies>
     <dependency>
@@ -38,14 +38,19 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>com.sun.mail</groupId>
-      <artifactId>javax.mail</artifactId>
-      <scope>runtime</scope>
+      <groupId>javax.mail</groupId>
+      <artifactId>javax.mail-api</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Spring -->
@@ -138,7 +143,7 @@
   </dependencies>
 
   <build>
-    <finalName>${project.name}</finalName>
+    <finalName>y-a-foot-core</finalName>
 
     <resources>
       <resource>
@@ -163,21 +168,6 @@
               <version>${mapstruct.version}</version>
             </path>
           </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>true</executable>
         </configuration>
       </plugin>
 
@@ -207,6 +197,31 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${maven-war-plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+            </manifest>
+            <manifestFile/>
+            <manifestEntries>
+              <Dependencies>jdk.unsupported</Dependencies>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <configuration>
+          <filename>${project.build.finalName}.war</filename>
+        </configuration>
       </plugin>
     </plugins>
   </build>

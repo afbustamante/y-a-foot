@@ -12,11 +12,6 @@ pipeline {
         disableConcurrentBuilds()
     }
 
-    environment {
-        BACKEND_JAR_FILE = '/opt/apps/y-a-foot/y-a-foot-core.jar'
-        BACKEND_SERVICE_CMD = '/etc/init.d/y-a-foot-core'
-    }
-
     stages {
         stage('Prepare') {
             steps {
@@ -29,8 +24,8 @@ pipeline {
                 // Undeploy the frontend artifact
                 sh "mvn -f ${WORKSPACE}/y-a-foot-web/pom.xml wildfly:undeploy -P devel"
 
-                // Stop the backend process
-                sh "${BACKEND_SERVICE_CMD} stop"
+                // Undeploy the backend artifact
+                sh "mvn -f ${WORKSPACE}/y-a-foot-core/pom.xml wildfly:undeploy -P devel"
             }
         }
         stage('Build') {
@@ -50,15 +45,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Replace the backend JAR
-                sh "cp -f ${WORKSPACE}/y-a-foot-core/target/y-a-foot-core.jar ${BACKEND_JAR_FILE}"
-                sh "chmod +x ${BACKEND_JAR_FILE}"
-
-                // Start the backend process
-                sh 'java -version'
-                withEnv(['BUILD_ID=dontKillMe']) {
-                    sh "${BACKEND_SERVICE_CMD} start"
-                }
+                // Deploy the backend artifact
+                sh "mvn -f ${WORKSPACE}/y-a-foot-core/pom.xml wildfly:deploy -P devel"
 
                 // Deploy the frontend artifact
                 sh "mvn -f ${WORKSPACE}/y-a-foot-web/pom.xml wildfly:deploy -P devel"

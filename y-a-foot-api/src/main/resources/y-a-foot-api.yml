@@ -6,6 +6,8 @@ info:
 servers:
 - url: http://localhost:8080/api
   description: Localhost deployment
+- url: https://yafoot.marca2.net/api
+  description: Development environment
 tags:
   - name: users
     description: Users management API. Allows to register and authenticate users
