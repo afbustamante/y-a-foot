@@ -97,13 +97,18 @@ public class UsersController extends AbstractController implements UsersApi {
                 return new ResponseEntity<>(buildMessageHeader(UNAUTHORISED_USER_ERROR, null), FORBIDDEN);
             }
 
-            net.andresbustamante.yafoot.model.User user = new net.andresbustamante.yafoot.model.User(email);
+            net.andresbustamante.yafoot.model.User user = userAuthenticationService.findUserByEmail(email);
+
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+
             user.setPassword(new String(credentials.getPassword(), StandardCharsets.UTF_8));
 
             if (credentials.getOldPassword() != null) {
                 userManagementService.updateUserPassword(user, getUserContext(request));
             } else if (credentials.getValidationToken() != null) {
-                // TODO Implement forgotten password validations
+                userManagementService.resetUserPassword(user, credentials.getValidationToken());
             }
             return ResponseEntity.accepted().build();
         } catch (ApplicationException e) {

@@ -102,6 +102,13 @@ public class UserRepositoryImpl implements UserRepository {
         ldapTemplate.modifyAttributes(getUid(user), new ModificationItem[]{item});
     }
 
+    @Override
+    public void removeTokenForUser(User user) {
+        Attribute attribute = new BasicAttribute(TOKEN);
+        ModificationItem item = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attribute);
+        ldapTemplate.modifyAttributes(getUid(user), new ModificationItem[]{item});
+    }
+
     private User findUserByUid(String uid) {
         try {
             return ldapTemplate.lookup(uid, ldapUserMapper);

@@ -61,8 +61,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, usersApiPath).permitAll() // Password-reset request by token
+                .antMatchers(HttpMethod.OPTIONS, usersApiPath + "/**").permitAll() // Password-reset token generation
                 .antMatchers(HttpMethod.POST, usersApiPath + "/**").permitAll() // Password-reset token generation
                 .antMatchers(HttpMethod.PUT, usersApiPath + "/**").permitAll() // Sign-in
+                .antMatchers(HttpMethod.PATCH, usersApiPath + "/**").permitAll() // Password update
                 .antMatchers(HttpMethod.POST, playersApiPath).permitAll() // Sign-up
                 .anyRequest().authenticated()
                 .and()

@@ -10,6 +10,8 @@ import net.andresbustamante.yafoot.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.services.MessagingService;
 import net.andresbustamante.yafoot.services.UserManagementService;
 import org.apache.commons.text.RandomStringGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import java.util.Locale;
 public class UserManagementServiceImpl implements UserManagementService {
 
     private static final int TOKEN_SIZE = 16;
+
+    private final Logger log = LoggerFactory.getLogger(UserManagementServiceImpl.class);
 
     @Value("${web.public.password-reset.url}")
     private String passwordResetUrl;
@@ -43,24 +47,32 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Override
     public void createUser(User user, RolesEnum role, UserContext ctx) throws LdapException {
         userRepository.saveUser(user, role);
+        log.info("User {} created", user.getEmail());
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void updateUser(User user, UserContext ctx) throws LdapException {
         userRepository.updateUser(user);
+        log.info("Details updated for user {}", user);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void updateUserPassword(User user, UserContext ctx) throws LdapException {
+    public void updateUserPassword(User user, UserContext ctx) throws LdapException, ApplicationException {
+        if (!user.getEmail().equals(ctx.getUsername())) {
+            throw new ApplicationException("User not allowed to modify password from another user");
+        }
+
         userRepository.updatePassword(user);
+        log.info("Password updated for user {}", user.getEmail());
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteUser(User user, UserContext ctx) throws LdapException {
         userRepository.deleteUser(user);
+        log.info("User {} deleted", user.getEmail());
     }
 
     @Transactional
@@ -76,7 +88,22 @@ public class UserManagementServiceImpl implements UserManagementService {
 
         userRepository.saveTokenForUser(token, user);
         notifyTokenLink(token, user);
+        log.info("New password-reset token created for user {}", user.getEmail());
         return token;
+    }
+
+    @Transactional
+    @Override
+    public void resetUserPassword(User user, String passwordResetToken) throws LdapException, ApplicationException {
+        User tokenUser = userRepository.findUserByToken(passwordResetToken);
+
+        if (tokenUser != null && tokenUser.equals(user)) {
+            updateUserPassword(user, new UserContext(user.getEmail()));
+            userRepository.removeTokenForUser(user);
+            log.info("Password reset for user {}", user.getEmail());
+        } else {
+            throw new ApplicationException("Invalid token used to reset password");
+        }
     }
 
     /**
@@ -92,6 +119,8 @@ public class UserManagementServiceImpl implements UserManagementService {
         String template = "password-reset-email_" + user.getPreferredLanguage() + ".ftl";
         messagingService.sendEmail(user.getEmail(), "password.reset.email.subject", params, template,
                 new PasswordResetDetails(user.getFirstName(), link), new Locale(user.getPreferredLanguage()));
+
+        log.info("Password-reset token notified to the address {}", user.getEmail());
     }
 
     private String generatePasswordResetToken() {

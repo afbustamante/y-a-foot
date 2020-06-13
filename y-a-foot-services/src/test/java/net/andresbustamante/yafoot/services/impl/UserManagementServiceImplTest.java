@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.UserContext;
@@ -14,8 +15,7 @@ import org.mockito.internal.util.reflection.FieldSetter;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class UserManagementServiceImplTest extends AbstractServiceTest {
 
@@ -68,7 +68,7 @@ class UserManagementServiceImplTest extends AbstractServiceTest {
         user.setPassword("password");
 
         // When
-        userManagementService.updateUserPassword(user, new UserContext());
+        userManagementService.updateUserPassword(user, new UserContext("test@email.com"));
 
         // Then
         verify(userRepository).updatePassword(any(User.class));
@@ -99,5 +99,39 @@ class UserManagementServiceImplTest extends AbstractServiceTest {
         assertTrue(token.matches("^[A-F0-9]{16}$"));
         verify(userRepository).saveTokenForUser(anyString(), any(User.class));
         verify(userRepository).findUserByToken(anyString());
+    }
+
+    @Test
+    void resetUserPassword() throws Exception {
+        // Given
+        User user = new User("test@email.com");
+        user.setPassword("password");
+        String token = "token";
+        User tokenUser = new User("test@email.com");
+
+        // When
+        when(userRepository.findUserByToken(anyString())).thenReturn(tokenUser);
+        userManagementService.resetUserPassword(user, token);
+
+        // Then
+        verify(userRepository).updatePassword(any(User.class));
+        verify(userRepository).removeTokenForUser(any(User.class));
+    }
+
+    @Test
+    void resetUserPasswordUnauthorisedUser() throws Exception {
+        // Given
+        User user = new User("anotheruser@email.com");
+        user.setPassword("password");
+        String token = userManagementService.createPasswordResetToken(user);
+        User tokenUser = new User("test@email.com");
+
+        // When
+        when(userRepository.findUserByToken(anyString())).thenReturn(tokenUser);
+        assertThrows(ApplicationException.class, () -> userManagementService.resetUserPassword(user, token));
+
+        // Then
+        verify(userRepository, never()).updatePassword(any(User.class));
+        verify(userRepository, never()).removeTokenForUser(any(User.class));
     }
 }

@@ -69,4 +69,11 @@ public interface UserRepository {
      * @param user User to modify
      */
     void saveTokenForUser(String token, User user);
+
+    /**
+     * Unsets a token for password change to the user
+     *
+     * @param user User to update
+     */
+    void removeTokenForUser(User user);
 }

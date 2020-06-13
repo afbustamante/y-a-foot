@@ -58,4 +58,14 @@ public interface UserManagementService {
      * @throws LdapException
      */
     String createPasswordResetToken(User user) throws LdapException, ApplicationException;
+
+    /**
+     * Updates a user's password in the LDAP directory
+     *
+     * @param user User to update
+     * @param passwordResetToken Token used to validate this update
+     * @throws LdapException
+     * @throws ApplicationException
+     */
+    void resetUserPassword(User user, String passwordResetToken) throws LdapException, ApplicationException;
 }
