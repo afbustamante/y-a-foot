@@ -119,8 +119,6 @@ public class UserManagementServiceImpl implements UserManagementService {
         String template = "password-reset-email_" + user.getPreferredLanguage() + ".ftl";
         messagingService.sendEmail(user.getEmail(), "password.reset.email.subject", params, template,
                 new PasswordResetDetails(user.getFirstName(), link), new Locale(user.getPreferredLanguage()));
-
-        log.info("Password-reset token notified to the address {}", user.getEmail());
     }
 
     private String generatePasswordResetToken() {

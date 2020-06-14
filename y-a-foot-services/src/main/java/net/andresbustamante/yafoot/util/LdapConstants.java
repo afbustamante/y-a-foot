@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.util;
 public class LdapConstants {
 
     public static final String OBJECT_CLASS = "objectclass";
-    public static final String[] USER_CLASSES = {"top", "person", "organizationalPerson", "inetOrgPerson"};
     public static final String UID = "uid";
     public static final String CN = "cn";
     public static final String SN = "sn";

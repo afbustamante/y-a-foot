@@ -2,13 +2,15 @@ package net.andresbustamante.yafoot.exceptions;
 
 public class ApplicationException extends Exception {
 
-    private String code;
+    private final String code;
 
     public ApplicationException() {
+        this.code = null;
     }
 
     public ApplicationException(String message) {
         super(message);
+        this.code = null;
     }
 
     public ApplicationException(String code, String message) {
@@ -18,6 +20,7 @@ public class ApplicationException extends Exception {
 
     public ApplicationException(String message, Throwable cause) {
         super(message, cause);
+        this.code = null;
     }
 
     public String getCode() {

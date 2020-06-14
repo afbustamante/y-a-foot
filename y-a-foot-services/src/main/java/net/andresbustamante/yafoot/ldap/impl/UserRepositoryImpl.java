@@ -8,7 +8,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.NameNotFoundException;
-import org.springframework.ldap.core.ContextExecutor;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Repository;
@@ -172,7 +171,7 @@ public class UserRepositoryImpl implements UserRepository {
     private void modifyPassword(User usr) {
         String dn = getUid(usr).toString();
 
-        ldapTemplate.executeReadWrite((ContextExecutor<Object>) ctx -> {
+        ldapTemplate.executeReadWrite(ctx -> {
             if (!(ctx instanceof LdapContext)) {
                 throw new IllegalArgumentException(
                         "Extended operations require LDAPv3 - "

@@ -79,9 +79,8 @@ public abstract class AbstractUIService {
      * Build headers map for common user requests
      *
      * @return
-     * @throws ApplicationException
      */
-    protected MultiValueMap<String, String> getHeadersMap() throws ApplicationException {
+    protected MultiValueMap<String, String> getHeadersMap() {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
         headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(BASIC_AUTH + getBase64EncodedPassword()));
@@ -93,9 +92,8 @@ public abstract class AbstractUIService {
      * Build headers map for anonymous user requests (e.g. sign in)
      *
      * @return
-     * @throws ApplicationException
      */
-    protected MultiValueMap<String, String> getAnonymousHeadersMap() throws ApplicationException {
+    protected MultiValueMap<String, String> getAnonymousHeadersMap() {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
         headers.put(HttpHeaders.AUTHORIZATION, Collections.singletonList(BASIC_AUTH + getBase64EncodedPassword()));

@@ -18,6 +18,8 @@ import static net.andresbustamante.yafoot.util.LdapConstants.*;
 @Component
 public class LdapUserMapper implements AttributesMapper<User> {
 
+    private static final String[] USER_CLASSES = {"top", "person", "organizationalPerson", "inetOrgPerson"};
+
     @Override
     public User mapFromAttributes(Attributes attrs) throws NamingException {
         User user = new User();
