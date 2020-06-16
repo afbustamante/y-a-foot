@@ -53,13 +53,13 @@
     <javax.mail-api.version>1.6.2</javax.mail-api.version>
 
     <!-- Spring Framework -->
-    <spring.version>5.1.14.RELEASE</spring.version>
-    <spring-ldap.version>2.3.2.RELEASE</spring-ldap.version>
-    <spring-data.version>2.1.16.RELEASE</spring-data.version>
-    <spring-security.version>5.1.6.RELEASE</spring-security.version>
+    <spring.version>5.1.16.RELEASE</spring.version>
+    <spring-ldap.version>2.3.3.RELEASE</spring-ldap.version>
+    <spring-data.version>2.1.18.RELEASE</spring-data.version>
+    <spring-security.version>5.1.11.RELEASE</spring-security.version>
     <jackson-databind.version>2.9.10.4</jackson-databind.version>
-    <jackson-datatype-jsr310.version>2.10.3</jackson-datatype-jsr310.version>
-    <spring-boot.version>2.1.13.RELEASE</spring-boot.version>
+    <jackson-datatype-jsr310.version>2.10.4</jackson-datatype-jsr310.version>
+    <spring-boot.version>2.1.15.RELEASE</spring-boot.version>
 
     <!-- ZK -->
     <zk.version>8.6.0.1</zk.version>
