@@ -57,7 +57,7 @@
     <spring-ldap.version>2.3.3.RELEASE</spring-ldap.version>
     <spring-data.version>2.1.18.RELEASE</spring-data.version>
     <spring-security.version>5.1.11.RELEASE</spring-security.version>
-    <jackson-databind.version>2.9.10.4</jackson-databind.version>
+    <jackson-databind.version>2.10.0.pr1</jackson-databind.version>
     <jackson-datatype-jsr310.version>2.10.4</jackson-datatype-jsr310.version>
     <spring-boot.version>2.1.15.RELEASE</spring-boot.version>
 
