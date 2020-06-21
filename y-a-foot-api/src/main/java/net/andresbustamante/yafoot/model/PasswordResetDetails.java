@@ -1,6 +1,8 @@
 package net.andresbustamante.yafoot.model;
 
-public class PasswordResetDetails {
+import java.io.Serializable;
+
+public class PasswordResetDetails implements Serializable {
 
     private String firstName;
     private String link;
