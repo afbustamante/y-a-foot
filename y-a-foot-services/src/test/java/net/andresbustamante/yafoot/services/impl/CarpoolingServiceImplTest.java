@@ -40,10 +40,12 @@ class CarpoolingServiceImplTest extends AbstractServiceTest {
 
         FieldSetter.setField(carpoolingService, CarpoolingServiceImpl.class.getDeclaredField("carpoolingManagementUrl"),
                 "http://localhost/api/test/{0}");
+        FieldSetter.setField(carpoolingService, CarpoolingServiceImpl.class.getDeclaredField("matchManagementUrl"),
+                "http://localhost/api/test/{0}");
     }
 
     @Test
-    void confirmCarForRegistration() throws Exception {
+    void confirmCarForSelfRegistration() throws Exception {
         // Given
         Match match = new Match(1);
         Player player = new Player(1);
@@ -59,6 +61,35 @@ class CarpoolingServiceImplTest extends AbstractServiceTest {
         // Then
         verify(carDAO).findCarById(anyInt());
         verify(matchDAO).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), eq(true));
+    }
+
+    @Test
+    void confirmCarForAnotherPlayerRegistration() throws Exception {
+        // Given
+        Match match = new Match(1);
+        match.setDate(OffsetDateTime.now());
+        Player player = new Player(1);
+        player.setEmail("test@email.com");
+        Car car = new Car(1);
+        car.setDriver(player);
+        UserContext context = new UserContext("test@email.com");
+        Player anotherPlayer = new Player(2);
+        anotherPlayer.setEmail("anotherplayer@email.com");
+        Registration registration = new Registration();
+        registration.setCar(car);
+        registration.setPlayer(anotherPlayer);
+        registration.setCarConfirmed(false);
+
+        // When
+        when(carDAO.findCarById(anyInt())).thenReturn(car);
+        when(matchDAO.loadRegistration(any(Match.class), any(Player.class))).thenReturn(registration);
+        carpoolingService.updateCarpoolingInformation(match, anotherPlayer, car, true, context);
+
+        // Then
+        verify(carDAO).findCarById(anyInt());
+        verify(matchDAO).loadRegistration(any(Match.class), any(Player.class));
+        verify(matchDAO).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), eq(true));
+        verify(messagingService).sendEmail(anyString(), anyString(), eq(null), anyString(), any(CarpoolingRequest.class), any(Locale.class));
     }
 
     @Test

@@ -8,7 +8,6 @@ import net.andresbustamante.yafoot.exceptions.AuthorisationException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarpoolingService;
 import net.andresbustamante.yafoot.services.MessagingService;
-import net.andresbustamante.yafoot.util.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,9 @@ public class CarpoolingServiceImpl implements CarpoolingService {
     @Value("${web.public.carpooling-management.url}")
     private String carpoolingManagementUrl;
 
+    @Value("${web.public.match-management.url}")
+    private String matchManagementUrl;
+
     private final Logger log = LoggerFactory.getLogger(CarpoolingServiceImpl.class);
 
     @Autowired
@@ -51,7 +53,18 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
             if (storedCar != null && storedCar.getDriver().getEmail().equals(ctx.getUsername())) {
                 // The user is the owner of the car
+                Registration actualPlayerRegistration = null;
+
+                if (!player.equals(car.getDriver())) {
+                    actualPlayerRegistration = matchDAO.loadRegistration(match, player);
+                }
+
                 matchDAO.updateCarForRegistration(match, player, car, isCarConfirmed);
+
+                if (actualPlayerRegistration != null && actualPlayerRegistration.isCarConfirmed() != isCarConfirmed) {
+                    // Send notification for this update
+                    processCarSeatUpdate(match, player, car, isCarConfirmed);
+                }
 
                 log.info("Carpool update for match #{}: Player #{} confirmation modified for car #{}", match.getId(),
                         player.getId(), car.getId());
@@ -65,9 +78,10 @@ public class CarpoolingServiceImpl implements CarpoolingService {
     @Override
     public void processCarSeatRequest(Match match, Player player, Car car, UserContext ctx)
             throws DatabaseException, ApplicationException {
-        String template = "carpooling-request-email_" + player.getPreferredLanguage() + ".ftl";
+        String template = "carpooling-request-email_" + car.getDriver().getPreferredLanguage() + ".ftl";
         String link = MessageFormat.format(carpoolingManagementUrl, match.getCode());
-        String matchDate = match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale(car.getDriver().getPreferredLanguage())));
+        Locale locale = new Locale(car.getDriver().getPreferredLanguage());
+        String matchDate = match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", locale));
 
         CarpoolingRequest request = new CarpoolingRequest();
         request.setRequesterFirstName(player.getFirstName());
@@ -76,6 +90,26 @@ public class CarpoolingServiceImpl implements CarpoolingService {
         request.setMatchDate(matchDate);
 
         messagingService.sendEmail(car.getDriver().getEmail(), "carpool.request.email.subject", new String[]{player.getFirstName()},
-                template, request, LocaleUtils.DEFAULT_LOCALE);
+                template, request, locale);
+    }
+
+    private void processCarSeatUpdate(Match match, Player player, Car car, boolean isCarSeatConfirmed)
+            throws ApplicationException {
+        String confirmationTemplate = "carpooling-confirmation-email_" + player.getPreferredLanguage() + ".ftl";
+        String rejectionTemplate = "carpooling-rejection-email_" + player.getPreferredLanguage() + ".ftl";
+        String template = (isCarSeatConfirmed) ? confirmationTemplate : rejectionTemplate;
+        String subject = (isCarSeatConfirmed) ? "carpool.confirmation.subject" : "carpool.rejection.email.subject";
+
+        String link = MessageFormat.format(matchManagementUrl, match.getCode());
+        Locale locale = new Locale(player.getPreferredLanguage());
+        String matchDate = match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", locale));
+
+        CarpoolingRequest request = new CarpoolingRequest();
+        request.setRequesterFirstName(player.getFirstName());
+        request.setDriverFirstName(car.getDriver().getFirstName());
+        request.setLink(link);
+        request.setMatchDate(matchDate);
+
+        messagingService.sendEmail(car.getDriver().getEmail(), subject, null, template, request, locale);
     }
 }
