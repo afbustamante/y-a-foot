@@ -89,12 +89,11 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     @Override
     public void registerPlayer(Player player, Match match, Car car, UserContext userContext)
             throws ApplicationException, DatabaseException {
-        if (match.getNumPlayersMax() != null && match.getNumRegisteredPlayers() >= match.getNumPlayersMax()) {
+        if (!match.isAcceptingRegistrations()) {
             throw new ApplicationException("max.players.match.error", "This match is not accepting more registrations");
-        }
-
-        if (match.isPlayerRegistered(player)) {
-            throw new ApplicationException("player.already.registered.error", "Player already registered in match");
+        } else if (match.isAcceptingRegistrations() && match.isPlayerRegistered(player)) {
+            // Remove the existing registry to insert a new one with fresh information
+            matchDAO.unregisterPlayer(player, match);
         }
 
         if (car != null) {

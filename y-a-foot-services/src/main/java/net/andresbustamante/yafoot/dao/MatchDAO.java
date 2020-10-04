@@ -83,10 +83,10 @@ public interface MatchDAO {
                                  @Param(MATCH) Match match);
 
     /**
-     * Désinscrire un player d'un match
+     * Unregisters a player from a match
      *
      * @param player Player to unregister
-     * @param match Match concerné
+     * @param match Match to update
      */
     void unregisterPlayer(@Param(PLAYER) Player player,
                                 @Param(MATCH) Match match);

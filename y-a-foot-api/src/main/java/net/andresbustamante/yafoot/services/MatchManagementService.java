@@ -25,10 +25,11 @@ public interface MatchManagementService {
     Integer saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException;
 
     /**
-     * Register a player to an existing match
+     * Register a player to an existing match. If the player is already registered, the existing registration is
+     * updated by the new one
      *
      * @param player Player to register
-     * @param match Match to search
+     * @param match Match to update
      * @param car Car used by the player to assist to the match. If the player is registering himself but is not the
      *            owner of the car, the player is registered but the car seat is not confirmed until the owner confirms it
      * @param userContext

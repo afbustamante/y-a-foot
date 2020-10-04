@@ -60,7 +60,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Player player = new Player(1);
         Site site = new Site(1);
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1));
+        match.setDate(OffsetDateTime.now().plusDays(1L));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -138,6 +138,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -156,6 +157,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
         Car car = new Car(1);
         UserContext ctx = new UserContext();
@@ -176,6 +178,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
         Car car = new Car(100);
         UserContext ctx = new UserContext();
@@ -199,6 +202,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Player player2 = new Player(2);
         player2.setEmail("another@email.com");
         Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1L));
         match.setCarpoolingEnabled(true);
         match.setRegistrations(Collections.emptyList());
         Car car = new Car(100);
@@ -222,6 +226,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
         Car car = new Car();
         UserContext ctx = new UserContext();
@@ -242,6 +247,7 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         Player player1 = new Player(1);
         player1.setEmail("player@email.com");
         Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1L));
         Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
         registration1.setPlayer(player1);
         match.setRegistrations(Collections.singletonList(registration1));
@@ -249,10 +255,11 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         ctx.setUsername("test@email.com");
 
         // When
-        assertThrows(ApplicationException.class, () -> matchManagementService.registerPlayer(player1, match, null, ctx));
+        assertDoesNotThrow(() -> matchManagementService.registerPlayer(player1, match, null, ctx));
 
         // Then
-        verify(matchDAO, never()).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
+        verify(matchDAO).unregisterPlayer(any(Player.class), any(Match.class));
+        verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), eq(null), eq(null));
     }
 
     @Test
@@ -260,9 +267,12 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1L));
         match.setNumPlayersMax(2);
         Registration registration1 = new Registration();
+        registration1.setPlayer(new Player(2, "Two", "Player", "player.two@email.com", ""));
         Registration registration2 = new Registration();
+        registration2.setPlayer(new Player(3, "Three", "Player", "player.three@email.com", ""));
         match.setRegistrations(Arrays.asList(registration1, registration2));
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");

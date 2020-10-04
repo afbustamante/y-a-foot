@@ -46,6 +46,20 @@ public class Match implements Serializable, Identifiable {
         throw new ApplicationException("No registrations information");
     }
 
+    /**
+     * A match is accepting registrations if the date of the match is in the future and the number of players expected
+     * is still higher than the number of players registered for the match
+     *
+     * @return
+     */
+    public boolean isAcceptingRegistrations() {
+        if (OffsetDateTime.now().isBefore(date)) {
+            return (numPlayersMax == null) || numPlayersMax > getNumRegisteredPlayers();
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public Integer getId() {
         return id;
