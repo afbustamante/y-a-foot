@@ -1,5 +1,8 @@
 package net.andresbustamante.yafoot.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.andresbustamante.yafoot.model.api.Auditable;
 
 import java.io.Serializable;
@@ -11,6 +14,7 @@ import java.util.Objects;
  *
  * @author andresbustamante
  */
+@Getter @Setter @NoArgsConstructor
 public class Registration implements Serializable, Auditable {
 
     private static final long serialVersionUID = 1L;
@@ -45,56 +49,12 @@ public class Registration implements Serializable, Auditable {
      */
     private OffsetDateTime lastUpdateDate;
 
-    public Registration() {}
-
     public Registration(RegistrationId id) {
         this.id = id;
     }
 
     public Registration(int matchId, int playerId) {
         this.id = new RegistrationId(matchId, playerId);
-    }
-
-    public RegistrationId getId() {
-        return id;
-    }
-
-    public void setId(RegistrationId id) {
-        this.id = id;
-    }
-
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public boolean isCarConfirmed() {
-        return carConfirmed;
-    }
-
-    public void setCarConfirmed(boolean carConfirmed) {
-        this.carConfirmed = carConfirmed;
-    }
-
-    @Override
-    public OffsetDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    @Override
-    public OffsetDateTime getLastUpdateDate() {
-        return lastUpdateDate;
     }
 
     @Override

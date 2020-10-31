@@ -1,5 +1,9 @@
 package net.andresbustamante.yafoot.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,6 +12,7 @@ import java.util.Objects;
  *
  * @author andresbustamante
  */
+@Getter @Setter @NoArgsConstructor
 public class RegistrationId implements Serializable {
 
     /**
@@ -20,26 +25,8 @@ public class RegistrationId implements Serializable {
      */
     private Integer playerId;
 
-    public RegistrationId() {}
-
     public RegistrationId(Integer matchId, Integer playerId) {
         this.matchId = matchId;
-        this.playerId = playerId;
-    }
-
-    public Integer getMatchId() {
-        return matchId;
-    }
-
-    public void setMatchId(Integer matchId) {
-        this.matchId = matchId;
-    }
-
-    public Integer getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(Integer playerId) {
         this.playerId = playerId;
     }
 

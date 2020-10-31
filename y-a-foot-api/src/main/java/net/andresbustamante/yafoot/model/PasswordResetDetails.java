@@ -1,7 +1,11 @@
 package net.andresbustamante.yafoot.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@Getter @Setter
 public class PasswordResetDetails implements Serializable {
 
     private String firstName;
@@ -9,22 +13,6 @@ public class PasswordResetDetails implements Serializable {
 
     public PasswordResetDetails(String firstName, String link) {
         this.firstName = firstName;
-        this.link = link;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
         this.link = link;
     }
 }

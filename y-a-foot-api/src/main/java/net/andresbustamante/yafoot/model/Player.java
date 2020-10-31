@@ -1,5 +1,8 @@
 package net.andresbustamante.yafoot.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.andresbustamante.yafoot.model.api.Auditable;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
@@ -11,6 +14,7 @@ import java.util.Objects;
 /**
  * @author andresbustamante
  */
+@Getter @Setter @NoArgsConstructor
 public class Player extends User implements Serializable, Identifiable, Auditable {
 
     private static final long serialVersionUID = 1L;
@@ -20,8 +24,6 @@ public class Player extends User implements Serializable, Identifiable, Auditabl
     private OffsetDateTime creationDate;
     private OffsetDateTime lastUpdateDate;
     private List<Car> cars;
-
-    public Player() {}
 
     public Player(Integer id) {
         this.id = id;
@@ -33,47 +35,6 @@ public class Player extends User implements Serializable, Identifiable, Auditabl
         this.firstName = firstName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public OffsetDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public OffsetDateTime getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public List<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(List<Car> carList) {
-        this.cars = carList;
     }
 
     @Override

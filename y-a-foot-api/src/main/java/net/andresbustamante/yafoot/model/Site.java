@@ -1,5 +1,8 @@
 package net.andresbustamante.yafoot.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 import net.andresbustamante.yafoot.model.api.Locatable;
 
@@ -10,6 +13,7 @@ import java.util.Objects;
  *
  * @author andresbustamante
  */
+@Getter @Setter @NoArgsConstructor
 public class Site implements Locatable, Identifiable, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -19,9 +23,6 @@ public class Site implements Locatable, Identifiable, Serializable {
     private String phoneNumber;
     private GpsCoordinates location;
 
-    public Site() {
-    }
-
     public Site(Integer id) {
         this.id = id;
     }
@@ -30,48 +31,6 @@ public class Site implements Locatable, Identifiable, Serializable {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.location = location;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    @Override
-    public GpsCoordinates getLocation() {
-        return location;
-    }
-
-    public void setLocation(GpsCoordinates location) {
         this.location = location;
     }
 

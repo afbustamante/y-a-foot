@@ -12,6 +12,7 @@ public interface MatchMapper {
     @Mapping(source = "author", target = "creator")
     @Mapping(source = "sharingEnabled", target = "codeSharingEnabled")
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "lastUpdateDate", ignore = true)
     Match map(net.andresbustamante.yafoot.web.dto.Match match);
 
     @Mapping(target = "author", source = "creator")

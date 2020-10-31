@@ -1,5 +1,8 @@
 package net.andresbustamante.yafoot.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.api.Auditable;
 import net.andresbustamante.yafoot.model.api.Identifiable;
@@ -12,6 +15,7 @@ import java.util.Objects;
 /**
  * @author andresbustamante
  */
+@Getter @Setter @NoArgsConstructor
 public class Match implements Serializable, Identifiable, Auditable {
 
     private static final long serialVersionUID = 1L;
@@ -28,9 +32,6 @@ public class Match implements Serializable, Identifiable, Auditable {
     private boolean codeSharingEnabled;
     private OffsetDateTime creationDate;
     private OffsetDateTime lastUpdateDate;
-
-    public Match() {
-    }
 
     public Match(Integer id) {
         this.id = id;
@@ -52,7 +53,7 @@ public class Match implements Serializable, Identifiable, Auditable {
      * A match is accepting registrations if the date of the match is in the future and the number of players expected
      * is still higher than the number of players registered for the match
      *
-     * @return
+     * @return True if the match is still accepting registrations
      */
     public boolean isAcceptingRegistrations() {
         if (OffsetDateTime.now().isBefore(date)) {
@@ -62,109 +63,11 @@ public class Match implements Serializable, Identifiable, Auditable {
         }
     }
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer matId) {
-        this.id = matId;
-    }
-
-    public OffsetDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(OffsetDateTime date) {
-        this.date = date;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getNumPlayersMin() {
-        return numPlayersMin;
-    }
-
-    public void setNumPlayersMin(Integer numPlayersMin) {
-        this.numPlayersMin = numPlayersMin;
-    }
-
-    public Integer getNumPlayersMax() {
-        return numPlayersMax;
-    }
-
-    public void setNumPlayersMax(Integer numPlayersMax) {
-        this.numPlayersMax = numPlayersMax;
-    }
-
     public Integer getNumRegisteredPlayers() {
         if (registrations != null) {
             return registrations.size();
         }
         return 0;
-    }
-
-    public List<Registration> getRegistrations() {
-        return registrations;
-    }
-
-    public void setRegistrations(List<Registration> registration) {
-        this.registrations = registration;
-    }
-
-    public Site getSite() {
-        return site;
-    }
-
-    public void setSite(Site site) {
-        this.site = site;
-    }
-
-    public Player getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Player creator) {
-        this.creator = creator;
-    }
-
-    public boolean isCarpoolingEnabled() {
-        return carpoolingEnabled;
-    }
-
-    public void setCarpoolingEnabled(boolean carpoolingEnabled) {
-        this.carpoolingEnabled = carpoolingEnabled;
-    }
-
-    public boolean isCodeSharingEnabled() {
-        return codeSharingEnabled;
-    }
-
-    public void setCodeSharingEnabled(boolean codeSharingEnabled) {
-        this.codeSharingEnabled = codeSharingEnabled;
-    }
-
-    public OffsetDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    @Override
-    public OffsetDateTime getLastUpdateDate() {
-        return lastUpdateDate;
     }
 
     @Override

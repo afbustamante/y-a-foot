@@ -1,10 +1,15 @@
 package net.andresbustamante.yafoot.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.ZoneId;
 
 /**
  * @author andresbustamante
  */
+@Getter @Setter @NoArgsConstructor
 public class UserContext {
 
     public static final String TZ = "tz";
@@ -12,25 +17,7 @@ public class UserContext {
     private String username;
     private ZoneId timezone;
 
-    public UserContext() {}
-
     public UserContext(String username) {
         this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public ZoneId getTimezone() {
-        return timezone;
-    }
-
-    public void setTimezone(ZoneId timezone) {
-        this.timezone = timezone;
     }
 }

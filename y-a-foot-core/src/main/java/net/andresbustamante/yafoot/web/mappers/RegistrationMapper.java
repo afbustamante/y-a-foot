@@ -12,6 +12,8 @@ public interface RegistrationMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "carConfirmed", ignore = true)
+    @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "lastUpdateDate", ignore = true)
     Registration map(net.andresbustamante.yafoot.web.dto.Registration registration);
 
     net.andresbustamante.yafoot.web.dto.Registration map(Registration registration);
