@@ -9,7 +9,9 @@ public class CarpoolingRequest implements Serializable {
     private String link;
     private String matchDate;
 
-    public CarpoolingRequest() {}
+    public CarpoolingRequest() {
+        // no-op
+    }
 
     public String getRequesterFirstName() {
         return requesterFirstName;

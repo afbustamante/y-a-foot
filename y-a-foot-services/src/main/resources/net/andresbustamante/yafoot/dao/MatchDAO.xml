@@ -87,7 +87,7 @@
       </if>
       <choose>
         <when test="startDate != null">
-          ORDER BY mat.mat_date ASC
+          ORDER BY mat.mat_date
         </when>
         <otherwise>
           ORDER BY mat.mat_date DESC

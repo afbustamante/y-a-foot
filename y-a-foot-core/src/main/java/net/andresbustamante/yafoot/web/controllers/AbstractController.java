@@ -45,7 +45,7 @@ public abstract class AbstractController {
      */
     protected ApplicationContext applicationContext;
 
-    public AbstractController(HttpServletRequest request, ApplicationContext applicationContext) {
+    protected AbstractController(HttpServletRequest request, ApplicationContext applicationContext) {
         this.request = request;
         this.applicationContext = applicationContext;
     }

@@ -1,6 +1,5 @@
 package net.andresbustamante.yafoot.ldap.impl;
 
-import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.ldap.*;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;

@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -73,8 +74,10 @@ public class MatchsRegistryUIService extends AbstractUIService {
             ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, params,
                     String.class);
 
-            if (response.getStatusCode().is2xxSuccessful() && response.getHeaders().getLocation() != null) {
-                String[] location = response.getHeaders().getLocation().getPath().split("/");
+            URI locationURI = response.getHeaders().getLocation();
+
+            if (response.getStatusCode().is2xxSuccessful() && locationURI != null) {
+                String[] location = locationURI.getPath().split("/");
                 return location[location.length - 1];
             }
             return null;

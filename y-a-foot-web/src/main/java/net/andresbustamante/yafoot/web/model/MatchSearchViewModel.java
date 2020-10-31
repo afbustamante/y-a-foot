@@ -59,16 +59,15 @@ public class MatchSearchViewModel extends AbstractViewModel {
 
             if (match != null) {
                 matchFound = true;
-                boolean dejaInscrit = false;
 
                 List<Registration> registrations = (match.getRegistrations() != null) ?
                         match.getRegistrations() : Collections.emptyList();
 
                 String nomUtilisateur = getActiveUsername();
 
-                dejaInscrit = isPlayerAlredyRegistered(nomUtilisateur, registrations);
+                boolean isAlreadyRegistered = isPlayerAlredyRegistered(nomUtilisateur, registrations);
 
-                registrationPossible = matchFound && !dejaInscrit;
+                registrationPossible = matchFound && !isAlreadyRegistered;
 
                 registrationsListModel = new ListModelArray<>(registrations);
             } else {

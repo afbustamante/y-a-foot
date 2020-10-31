@@ -54,9 +54,10 @@ class SiteDAOTest extends AbstractDAOTest {
         Player player1 = new Player(1);
 
         // When
-        siteDAO.saveSite(newSite, player1);
+        int numLines = siteDAO.saveSite(newSite, player1);
 
         // Then
+        assertEquals(1, numLines);
         assertNotNull(newSite.getId());
         assertTrue(newSite.getId() > 0);
     }
