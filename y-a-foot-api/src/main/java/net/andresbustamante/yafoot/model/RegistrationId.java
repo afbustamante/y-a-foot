@@ -4,11 +4,20 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
+ * Registration ID
+ *
  * @author andresbustamante
  */
 public class RegistrationId implements Serializable {
 
+    /**
+     * Match ID for this registration
+     */
     private Integer matchId;
+
+    /**
+     * Player ID for this registration
+     */
     private Integer playerId;
 
     public RegistrationId() {}

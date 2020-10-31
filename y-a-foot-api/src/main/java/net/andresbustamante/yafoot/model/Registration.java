@@ -1,18 +1,49 @@
 package net.andresbustamante.yafoot.model;
 
+import net.andresbustamante.yafoot.model.api.Auditable;
+
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
+ * Registration from a player to a match
+ *
  * @author andresbustamante
  */
-public class Registration implements Serializable {
+public class Registration implements Serializable, Auditable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Registration ID between the match and the player
+     */
     private RegistrationId id;
+
+    /**
+     * The car chosen for the registration
+     */
     private Car car;
+
+    /**
+     * The player registered to the match
+     */
     private Player player;
+
+    /**
+     * Indicates if the car chosen for the match has been confirmed by its owner
+     */
     private boolean carConfirmed;
+
+    /**
+     * First date and time of the registration
+     */
+    private OffsetDateTime creationDate;
+
+    /**
+     * Date and time of the last update for the registration
+     */
+    private OffsetDateTime lastUpdateDate;
 
     public Registration() {}
 
@@ -54,6 +85,16 @@ public class Registration implements Serializable {
 
     public void setCarConfirmed(boolean carConfirmed) {
         this.carConfirmed = carConfirmed;
+    }
+
+    @Override
+    public OffsetDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public OffsetDateTime getLastUpdateDate() {
+        return lastUpdateDate;
     }
 
     @Override

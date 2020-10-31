@@ -146,7 +146,7 @@
             #{match.numPlayersMax},
             #{match.site.id},
             #{match.code},
-            #{match.creationDate},
+            CURRENT_TIMESTAMP,
             #{match.carpoolingEnabled},
             #{match.codeSharingEnabled},
             #{match.creator.id}
@@ -156,12 +156,12 @@
     <insert id="registerPlayer">
         <choose>
             <when test="car == null">
-                INSERT INTO t_player_match (pma_match_id, pma_player_id)
-                VALUES (#{match.id}, #{player.id})
+                INSERT INTO t_player_match (pma_match_id, pma_player_id, pma_created_at)
+                VALUES (#{match.id}, #{player.id}, CURRENT_TIMESTAMP)
             </when>
             <otherwise>
-                INSERT INTO t_player_match (pma_match_id, pma_player_id, pma_car_id, pma_car_confirmation)
-                VALUES (#{match.id}, #{player.id}, #{car.id}, #{carConfirmation})
+                INSERT INTO t_player_match (pma_match_id, pma_player_id, pma_car_id, pma_car_confirmation, pma_created_at)
+                VALUES (#{match.id}, #{player.id}, #{car.id}, #{carConfirmation}, CURRENT_TIMESTAMP)
             </otherwise>
         </choose>
     </insert>
@@ -183,7 +183,8 @@
     <update id="updateCarForRegistration">
       UPDATE t_player_match
       SET pma_car_id         = #{car.id},
-        pma_car_confirmation = #{confirmed}
+        pma_car_confirmation = #{confirmed},
+        pma_last_update      = CURRENT_TIMESTAMP
       WHERE pma_match_id = #{match.id} AND pma_player_id = #{player.id}
     </update>
 

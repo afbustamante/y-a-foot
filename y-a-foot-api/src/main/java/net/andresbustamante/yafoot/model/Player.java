@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.model;
 
+import net.andresbustamante.yafoot.model.api.Auditable;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.util.Objects;
 /**
  * @author andresbustamante
  */
-public class Player extends User implements Serializable, Identifiable {
+public class Player extends User implements Serializable, Identifiable, Auditable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -63,16 +64,8 @@ public class Player extends User implements Serializable, Identifiable {
         return creationDate;
     }
 
-    public void setCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public OffsetDateTime getLastUpdateDate() {
         return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(OffsetDateTime lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
     }
 
     public List<Car> getCars() {

@@ -12,27 +12,27 @@ import java.util.List;
 import static net.andresbustamante.yafoot.util.DaoConstants.*;
 
 /**
- * Interface de récupération et modification des informations des matchs en base des données
+ * Interface describing the operations allowed with matches on database
  *
  * @author andresbustamante
  */
 public interface MatchDAO {
 
     /**
-     * Vérifier si le code passé en paramètre a déjà été utilisé pour identifier un match
+     * Verifies if the code passed as parameter has already been used for another match
      *
-     * @param codeMatch Code à vérifier
-     * @return
+     * @param code Code to check
+     * @return True or false if the code is already in use or not
      */
-    boolean isCodeAlreadyRegistered(@Param(CODE) String codeMatch);
+    boolean isCodeAlreadyRegistered(@Param(CODE) String code);
 
     /**
-     * Récupérer les informations d'un match à partir de son code unique
+     * Loads a match and its details by using its unique code
      *
-     * @param codeMatch Code du match à récupérer
-     * @return
+     * @param code Code to look for
+     * @return The match using the code and its details
      */
-    Match findMatchByCode(@Param(CODE) String codeMatch);
+    Match findMatchByCode(@Param(CODE) String code);
 
     /**
      * Find the list of matches associated to a player by optionally using a date interval
@@ -46,17 +46,17 @@ public interface MatchDAO {
                                     @Param(END_DATE) OffsetDateTime endDate);
 
     /**
-     * Récupérer les informations d'un match à partir de son identifiant unique
+     * Loads a match and its details by using its unique numeric identifier
      *
-     * @param id Identifiant du match
-     * @return
+     * @param id Match technical ID
+     * @return The match identified by this number and its details
      */
     Match findMatchById(@Param(ID) Integer id);
 
     /**
-     * Créer un match en base des données
+     * Creates a match on database
      *
-     * @param match Match à créer
+     * @param match Match to create
      */
     void saveMatch(@Param(MATCH) Match match);
 
@@ -73,10 +73,10 @@ public interface MatchDAO {
                         @Param(CAR) Car car, @Param("carConfirmation") Boolean isCarConfirmed);
 
     /**
-     * Vérifier si un joueur est déjà inscrit à un match passé en paramètre
+     * Checks if a player is already registered to a match
      *
      * @param player Player to search
-     * @param match Match à chercher
+     * @param match Match to search
      * @return
      */
     boolean isPlayerRegistered(@Param(PLAYER) Player player,
@@ -92,7 +92,7 @@ public interface MatchDAO {
                                 @Param(MATCH) Match match);
 
     /**
-     * Désinscrire un joueur de tous les matchs auxquels il était inscrit même dans le passé
+     * Unregisters a player from all the matches where he/her was registered even past matches
      *
      * @param player Player to unregister
      */

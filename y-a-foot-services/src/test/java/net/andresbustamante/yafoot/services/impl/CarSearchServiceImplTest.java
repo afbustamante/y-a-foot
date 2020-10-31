@@ -34,11 +34,11 @@ class CarSearchServiceImplTest extends AbstractServiceTest {
         when(carDAO.findCarsByPlayer(any(Player.class))).thenReturn(cars);
 
         // When
-        List<Car> voituresCharges = carSearchService.findCarsByPlayer(player);
+        List<Car> carsFound = carSearchService.findCarsByPlayer(player);
 
         // Then
-        assertNotNull(voituresCharges);
-        assertEquals(cars, voituresCharges);
+        assertNotNull(carsFound);
+        assertEquals(cars, carsFound);
 
         verify(carDAO).findCarsByPlayer(any(Player.class));
     }

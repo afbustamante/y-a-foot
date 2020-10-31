@@ -54,10 +54,10 @@ class CarDAOTest extends AbstractDAOTest {
         newCar.setDriver(player);
 
         // When
-        int nbLignesInserees = carDAO.saveCar(newCar);
+        int numLines = carDAO.saveCar(newCar);
 
         // Then
-        assertEquals(1, nbLignesInserees);
+        assertEquals(1, numLines);
         assertNotNull(newCar.getId());
         assertTrue(newCar.getId() > 0);
     }
@@ -65,10 +65,10 @@ class CarDAOTest extends AbstractDAOTest {
     @Test
     void deleteCarsForPlayer() throws Exception {
         // When
-        int nbVoituresSupprimees = carDAO.deleteCarsByPlayer(player);
+        int numLines = carDAO.deleteCarsByPlayer(player);
 
         // Then
-        assertEquals(2, nbVoituresSupprimees);
+        assertEquals(2, numLines);
     }
 
     @Test

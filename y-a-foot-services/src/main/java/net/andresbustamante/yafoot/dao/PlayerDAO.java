@@ -6,52 +6,52 @@ import org.apache.ibatis.annotations.Param;
 import static net.andresbustamante.yafoot.util.DaoConstants.*;
 
 /**
- * Interface de récupération et modification des informations des joueurs en base des données
+ * Interface describing the operations allowed on players in the database
  *
  * @author andresbustamante
  */
 public interface PlayerDAO {
 
     /**
-     * Chercher un joueur par son identifiant dans le système
+     * Looks for a player in the database using a technical identifier
      *
-     * @param playerId Identifiant du joueur
-     * @return Le joueur correspondant à l'identifiant passé en paramètre. Null si l'identifiant n'est pas utilisé
+     * @param playerId Identifier to search
+     * @return Player identified by this ID. Null if no player is found.
      */
     Player findPlayerById(@Param(ID) Integer playerId);
 
     /**
-     * Vérifier si une address mail est déjà utilisée par un joueur inscrit
+     * Checks if an email address is already registered for any player
      *
-     * @param email Adresse mail à chercher
-     * @return True si un joueur existe avec l'address mail passée en paramètre
+     * @param email Email address to search
+     * @return True if the address is already registered
      */
     boolean isPlayerAlreadySignedUp(@Param(EMAIL) String email);
 
     /**
-     * Créer un player en base des données
+     * Creates a player in the database
      *
-     * @param player Player à créer
+     * @param player Player to create
      */
     int savePlayer(@Param(PLAYER) Player player);
 
     /**
-     * Mettre à jour les informations personnelles d'un player passé en paramètre
+     * Updates player's details in database
      *
-     * @param player Player à mettre à jour
+     * @param player Player to update
      */
     int updatePlayer(@Param(PLAYER) Player player);
 
     /**
-     * Chercher un joueur en base des données à partir de son address mail
+     * Loads a player by using his/her email address
      *
-     * @param email Adresse mail à chercher
-     * @return Player associé à l'address mail passée en paramètre
+     * @param email Email address to search
+     * @return Player using the email address used as parameter. Null if no player is found for that address
      */
     Player findPlayerByEmail(@Param(EMAIL) String email);
 
     /**
-     * Supprimer définitivement un player de la base des données
+     * Physically deletes a player from the database
      *
      * @param player Player à supprimer
      */
@@ -59,9 +59,9 @@ public interface PlayerDAO {
 
 
     /**
-     * Anonymiser les données d'un player et désactiver de mannière logique
+     * Logical deactivation for a player in database. This method will anonymize user's personal information when called
      *
-     * @param player Player à désactiver
+     * @param player Player to deactivate
      */
     int deactivatePlayer(@Param(PLAYER) Player player);
 }

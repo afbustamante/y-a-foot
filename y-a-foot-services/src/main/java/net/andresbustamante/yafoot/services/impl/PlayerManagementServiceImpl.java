@@ -54,7 +54,6 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             // Créer l'utilisateur sur l'annuaire LDAP
             userManagementService.createUser(player, RolesEnum.PLAYER, userContext);
             // Create the player in database
-            player.setCreationDate(OffsetDateTime.now());
             playerDAO.savePlayer(player);
             log.info("New player registered with the address {}", player.getEmail());
             return player.getId();
@@ -71,8 +70,6 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
         boolean needsDirectoryUpdate = false;
 
         if (existingPlayer != null) {
-            existingPlayer.setLastUpdateDate(OffsetDateTime.now());
-
             if (player.getFirstName() != null) {
                 existingPlayer.setFirstName(player.getFirstName());
                 needsDirectoryUpdate = true;
@@ -106,8 +103,6 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
             int numPlayers = playerDAO.deactivatePlayer(player);
             log.info("Players deactivated: {}", numPlayers);
-
-            player.setLastUpdateDate(OffsetDateTime.now());
 
             userManagementService.deleteUser(player, userContext);
         } else {

@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.model;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.model.api.Auditable;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.Objects;
 /**
  * @author andresbustamante
  */
-public class Match implements Serializable, Identifiable {
+public class Match implements Serializable, Identifiable, Auditable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -26,6 +27,7 @@ public class Match implements Serializable, Identifiable {
     private boolean carpoolingEnabled;
     private boolean codeSharingEnabled;
     private OffsetDateTime creationDate;
+    private OffsetDateTime lastUpdateDate;
 
     public Match() {
     }
@@ -160,8 +162,9 @@ public class Match implements Serializable, Identifiable {
         return creationDate;
     }
 
-    public void setCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
+    @Override
+    public OffsetDateTime getLastUpdateDate() {
+        return lastUpdateDate;
     }
 
     @Override

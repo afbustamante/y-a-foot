@@ -78,7 +78,6 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreator());
-        assertNotNull(match.getCreationDate());
         assertEquals(player, match.getCreator());
     }
 
@@ -105,7 +104,6 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         assertNotNull(match.getCode());
         assertNotNull(match.getCreator());
-        assertNotNull(match.getCreationDate());
         assertEquals(player, match.getCreator());
     }
 
