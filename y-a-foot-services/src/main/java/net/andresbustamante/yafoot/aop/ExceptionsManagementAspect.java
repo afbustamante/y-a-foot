@@ -25,21 +25,21 @@ public class ExceptionsManagementAspect {
 
     @Around("filterServicesMethods()")
     public Object transformException(ProceedingJoinPoint pjp) throws Throwable {
-        Object retour;
+        Object returnedObject;
 
         try {
-            retour = pjp.proceed();
+            returnedObject = pjp.proceed();
         } catch (DataAccessException | ConnectException | SQLException e) {
-            // Exceptions de base de données
+            // Database exceptions
             String message = MessageFormat.format("Database error when processing the request for {0}",
                     pjp.getSignature().toShortString());
             throw new DatabaseException(message + System.lineSeparator() + e.getMessage());
         } catch (NamingException e) {
-            // Exceptions de l'annuaire LDAP
+            // LDAP directory exceptions
             String message = MessageFormat.format("LDAP directory error when processing the request for {0}",
                     pjp.getSignature().toShortString());
             throw new LdapException(message + System.lineSeparator() + e.getMessage());
         }
-        return retour;
+        return returnedObject;
     }
 }

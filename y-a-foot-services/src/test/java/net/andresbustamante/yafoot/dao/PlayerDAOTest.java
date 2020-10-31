@@ -32,7 +32,6 @@ class PlayerDAOTest extends AbstractDAOTest {
         Player player = buildNewPlayer();
         int numPlayers = playerDAO.savePlayer(player);
 
-        // Vérifier que le player à un identifiant de base de données attribué
         assertEquals(1, numPlayers);
         assertNotNull(player.getId());
         assertTrue(player.getId() > 0);
@@ -52,7 +51,6 @@ class PlayerDAOTest extends AbstractDAOTest {
         Player player1 = playerDAO.findPlayerById(JOHN_DOE.getId());
         assertNotNull(player1);
 
-        // Vérifier que les informations sont complètes
         assertNotNull(player1.getSurname());
         assertEquals(JOHN_DOE.getSurname(), player1.getSurname());
         assertNotNull(player1.getFirstName());
@@ -82,7 +80,6 @@ class PlayerDAOTest extends AbstractDAOTest {
 
     @Test
     void updatePlayer() throws Exception {
-        // Modifier les informations pour le player avec l'ID de John Doe
         Player player = playerDAO.findPlayerByEmail(EMAIL);
         player.setPhoneNumber(PHONE_NUMBER);
         player.setSurname(SURNAME);
@@ -93,7 +90,6 @@ class PlayerDAOTest extends AbstractDAOTest {
 
         Player player1 = playerDAO.findPlayerByEmail(EMAIL);
 
-        // Les informations du player 1 doivent être modifiées
         assertEquals(1, numPlayers);
         assertNotNull(player1.getPhoneNumber());
         assertEquals(PHONE_NUMBER, player1.getPhoneNumber());
@@ -111,7 +107,6 @@ class PlayerDAOTest extends AbstractDAOTest {
 
         // Then
         assertEquals(1, numPlayers);
-        // Le player n'existe plus
         assertNull(player);
     }
 
@@ -132,9 +127,9 @@ class PlayerDAOTest extends AbstractDAOTest {
     }
 
     /**
-     * Créer un nouveau joueur temporaire
+     * Initialises a new temporary player
      *
-     * @return Nouveau joueur avec les informations de base
+     * @return Temporary test player
      */
     private Player buildNewPlayer() {
         Player player = new Player();

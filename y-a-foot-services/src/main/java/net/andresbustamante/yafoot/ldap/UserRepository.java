@@ -4,20 +4,20 @@ import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
 
 /**
- * Interface de gestion et récupération des informations des utilisateurs de l'annuaire LDAP
+ * Interface describing the operations allowed on user in the LDAP directory
  */
 public interface UserRepository {
 
     /**
-     * Ajouter une nouvelle entrée dans l'annuaire avec un nouvel utilisateur
+     * Creates a user in LDAP directory
      *
-     * @param usr User à créer
-     * @param role Rôle de l'utilisateur à déclarer dans l'annuaire
+     * @param usr User to create
+     * @param role Role to give to the user when created
      */
     void saveUser(User usr, RolesEnum role);
 
     /**
-     * Mettre à jour les informations basiques d'un utilisateur passé en paramètre dans l'annuaire LDAP
+     * Update user's personal details in LDAP directory
      *
      * @param usr
      */
@@ -31,9 +31,9 @@ public interface UserRepository {
     void updatePassword(User usr);
 
     /**
-     * Supprimer un utilisateur de l'annuaire LDAP
+     * Deletes a user from LDAP directory
      *
-     * @param usr User à supprimer
+     * @param usr User to delete
      */
     void deleteUser(User usr);
 
@@ -71,7 +71,7 @@ public interface UserRepository {
     void saveTokenForUser(String token, User user);
 
     /**
-     * Unsets a token for password change to the user
+     * Removes the token for password change given to a user
      *
      * @param user User to update
      */

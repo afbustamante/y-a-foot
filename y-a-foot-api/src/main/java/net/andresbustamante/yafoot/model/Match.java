@@ -91,24 +91,24 @@ public class Match implements Serializable, Identifiable, Auditable {
         return description;
     }
 
-    public void setDescription(String matDescription) {
-        this.description = matDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getNumPlayersMin() {
         return numPlayersMin;
     }
 
-    public void setNumPlayersMin(Integer matNumJoueursMin) {
-        this.numPlayersMin = matNumJoueursMin;
+    public void setNumPlayersMin(Integer numPlayersMin) {
+        this.numPlayersMin = numPlayersMin;
     }
 
     public Integer getNumPlayersMax() {
         return numPlayersMax;
     }
 
-    public void setNumPlayersMax(Integer matNumJoueursMax) {
-        this.numPlayersMax = matNumJoueursMax;
+    public void setNumPlayersMax(Integer numPlayersMax) {
+        this.numPlayersMax = numPlayersMax;
     }
 
     public Integer getNumRegisteredPlayers() {

@@ -7,15 +7,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class ConfigPropertiesTest {
 
     @Test
-    void getValueCleExistante() {
-        String valeur = ConfigProperties.getValue("test.property");
-        assertNotNull(valeur);
-        assertEquals("Test value", valeur);
+    void getValueExistingKey() {
+        String value = ConfigProperties.getValue("test.property");
+        assertNotNull(value);
+        assertEquals("Test value", value);
     }
 
     @Test
-    void getValueCleInexistante() {
-        String valeur = ConfigProperties.getValue("another.property");
-        assertNull(valeur);
+    void getValueUnknownKey() {
+        String value = ConfigProperties.getValue("another.property");
+        assertNull(value);
     }
 }

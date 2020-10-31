@@ -110,7 +110,7 @@ class CarpoolingServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void unconfirmCarForRegistration() throws Exception {
+    void disproveCarForRegistration() throws Exception {
         // Given
         Match match = new Match(1);
         Player player = new Player(1);
@@ -132,7 +132,7 @@ class CarpoolingServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void unconfirmCarForRegistrationUnauthorisedUser() {
+    void disproveCarForRegistrationUnauthorisedUser() {
         // Given
         Match match = new Match(1);
         Player player = new Player(1);

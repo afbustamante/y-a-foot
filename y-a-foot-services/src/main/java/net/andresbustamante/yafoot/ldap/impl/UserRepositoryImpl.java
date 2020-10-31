@@ -117,9 +117,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Obtenir l'identifiant LDAP pour un utilisateur passé en paramètre
+     * Gets the LDAP identifier for a given user
      *
-     * @param usr User à processer
+     * @param usr User to check
      * @return
      */
     private Name getUid(User usr) {
@@ -127,9 +127,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Obtenir l'identifiant LDAP pour un rôle passé en paramètre
+     * Gets the LDAP identifier for a given role
      *
-     * @param role Rôle à processer
+     * @param role Role to check
      * @return
      */
     private Name getCn(RolesEnum role) {
@@ -137,10 +137,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Affecter un rôle pour un utilisateur passé en paramètre
+     * Adds a role for a given user
      *
-     * @param usr  User à impacter
-     * @param role Rôle à affecter
+     * @param usr  User to update
+     * @param role Role to give to the user
      */
     private void addRoleForUser(User usr, RolesEnum role) {
         Attribute attribute = new BasicAttribute(MEMBER);
@@ -150,9 +150,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Désaffecter les rôles existants pour un utilisateur
+     * Remove a list of roles for a given user
      *
-     * @param usr User à impacter
+     * @param usr User to check
      */
     private void removeRolesForUser(User usr, List<RolesEnum> roles) {
         for (RolesEnum role : roles) {
@@ -164,9 +164,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Modifier le mot de passe d'un utilisateur présent dans l'annuaire LDAP
+     * Update a user's password in LDAP directory
      *
-     * @param usr User avec le nouveau mot de passe
+     * @param usr User containing his/her new password
      */
     private void modifyPassword(User usr) {
         String dn = getUid(usr).toString();

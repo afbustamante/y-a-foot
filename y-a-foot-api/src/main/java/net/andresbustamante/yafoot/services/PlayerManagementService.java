@@ -7,17 +7,17 @@ import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 
 /**
- * Service de gestion des joueurs
+ * Players management service
  *
  * @author andresbustamante
  */
 public interface PlayerManagementService {
 
     /**
-     * Inscrire un player dans le système
+     * Creates a new player in the application
      *
-     * @param player Player à créer
-     * @param userContext Contexte de l'utilisateur réalisant l'action
+     * @param player Player to create
+     * @param userContext Request context
      * @return New player's identifier
      * @throws DatabaseException
      * @throws LdapException
@@ -25,10 +25,10 @@ public interface PlayerManagementService {
     Integer savePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
 
     /**
-     * Mettre à jour les informations de base d'un joeur
+     * Updates basic details for a player
      *
-     * @param player Player à mettre à jour
-     * @param userContext Contexte de l'utilisateur réalisant l'action
+     * @param player Player to update
+     * @param userContext Request context
      * @throws DatabaseException
      * @throws LdapException
      * @throws ApplicationException
@@ -36,11 +36,10 @@ public interface PlayerManagementService {
     void updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
 
     /**
-     * Désactiver un joueur tout en supprimant son historique dans l'application et en supprimant
-     * l'entrée dans l'annuaire LDAP
+     * Deactivates a player and deletes his/her history in the application
      *
      * @param player Player to deactivate
-     * @param userContext Contexte de l'utilisateur réalisant l'action
+     * @param userContext Request context
      * @throws DatabaseException
      * @throws LdapException
      */

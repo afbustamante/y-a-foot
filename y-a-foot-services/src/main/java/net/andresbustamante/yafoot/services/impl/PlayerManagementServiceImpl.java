@@ -51,7 +51,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     @Override
     public Integer savePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
         if (!playerDAO.isPlayerAlreadySignedUp(player.getEmail())) {
-            // Créer l'utilisateur sur l'annuaire LDAP
+            // Create the player in LDAP directory
             userManagementService.createUser(player, RolesEnum.PLAYER, userContext);
             // Create the player in database
             playerDAO.savePlayer(player);

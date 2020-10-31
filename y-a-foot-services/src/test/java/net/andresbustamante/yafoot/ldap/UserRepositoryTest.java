@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -17,6 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * Tests for {@link UserRepository}
+ *
  * @author andresbustamante
  */
 @ActiveProfiles("test")
@@ -25,9 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
     private static final User USR_TEST = new User("test@email.com", "password", "TEST", "User");
-
-    @Value("${ldap.config.users.dn}")
-    private String dnUtilisateurs;
 
     @Autowired
     private UserRepository userRepository;
@@ -79,7 +77,6 @@ class UserRepositoryTest {
         assertEquals(USR_TEST.getFirstName() + " autre", user.getFirstName());
         assertNotNull(user.getSurname());
 
-        // Remettre les informations de l'user
         user.setSurname(USR_TEST.getSurname());
         user.setFirstName(USR_TEST.getFirstName());
         userRepository.updateUser(user);
@@ -100,11 +97,10 @@ class UserRepositoryTest {
 
         // Then
         assertNotNull(user);
-        assertEquals(USR_TEST.getSurname(), user.getSurname()); // Non modifié
-        assertEquals(USR_TEST.getFirstName(), user.getFirstName()); // Non modifié
+        assertEquals(USR_TEST.getSurname(), user.getSurname()); // Unmodified
+        assertEquals(USR_TEST.getFirstName(), user.getFirstName()); // Unmodified
         assertNotNull(user.getPassword());
 
-        // Remettre les informations de l'user
         user.setSurname(USR_TEST.getSurname());
         user.setFirstName(USR_TEST.getFirstName());
         userRepository.updateUser(user);
@@ -178,7 +174,7 @@ class UserRepositoryTest {
         user.setEmail("nouvel.user@email.com");
         user.setPassword("password");
         user.setFirstName("User");
-        user.setSurname("NOUVEL");
+        user.setSurname("NEW");
         return user;
     }
 }

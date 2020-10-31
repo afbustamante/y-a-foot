@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.exceptions;
 
 /**
- * Exception dédié aux opérations d'accès aux données de l'application
+ * Database exception when executing database operations
  *
  * @author andresbustamante
  */

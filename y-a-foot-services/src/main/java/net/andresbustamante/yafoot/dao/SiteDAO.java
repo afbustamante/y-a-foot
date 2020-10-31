@@ -9,30 +9,33 @@ import java.util.List;
 import static net.andresbustamante.yafoot.util.DaoConstants.*;
 
 /**
+ * Interface describing the operations allowed on sites in database
+ *
  * @author andresbustamante
  */
 public interface SiteDAO {
 
     /**
-     * Chercher des sites d'intérêt pour un joueur.
+     * Looks for the sites related to a player. It will look in player's history to get the sites where the player has
+     * played or is planning to go to.
      *
      * @param player Player to use for the research
-     * @return Liste de sites ayant un lien avec le joueur passé en paramètre
+     * @return List of sites found for the player
      */
     List<Site> findSitesByPlayer(@Param(PLAYER) Player player);
 
     /**
-     * Chercher un site par ID
+     * Loads a site by its technical ID
      *
-     * @param id Identifiant du site
-     * @return Site associé à l'identifiant passé en paramètre
+     * @param id Identifier to search
+     * @return Site identified by the number used as parameter for this method
      */
     Site findSiteById(@Param(ID) Integer id);
 
     /**
-     * Créer le site passé en paramètre
+     * Creates a site in database
      *
-     * @param site Site à créer
+     * @param site Site to create
      * @param author Player creating the site
      */
     int saveSite(@Param(SITE) Site site, @Param(PLAYER) Player author);

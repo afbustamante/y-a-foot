@@ -28,7 +28,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
- * Service REST de gestion des inscriptions des joueurs dans l'application
+ * REST Controller to manage operations on players
  *
  * @author andresbustamante
  */

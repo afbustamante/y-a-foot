@@ -8,7 +8,7 @@ import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Car;
 
 /**
- * Service de gestion des matchs
+ * Matches management service
  *
  * @author andresbustamante
  */

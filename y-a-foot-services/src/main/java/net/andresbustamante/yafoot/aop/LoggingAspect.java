@@ -15,12 +15,12 @@ public class LoggingAspect {
     private final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Pointcut("execution(* net.andresbustamante.yafoot.services.impl.*ServiceImpl.*(..))")
-    public void filtrerServicesMetier() {
+    public void filterServicesMethods() {
         // no-op
     }
 
-    @Before("filtrerServicesMetier()")
-    public void loggingMethodesMetier(JoinPoint joinPoint) {
+    @Before("filterServicesMethods()")
+    public void logServicesMethods(JoinPoint joinPoint) {
         if (joinPoint != null && joinPoint.getSignature() != null && log.isInfoEnabled()) {
             log.info("Active backend service : {}", joinPoint.getSignature().toShortString());
         }

@@ -41,11 +41,11 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.findMatchByCode(anyString())).thenReturn(match);
-        Match matchExistant = matchSearchService.findMatchByCode(code);
+        Match existingMatch = matchSearchService.findMatchByCode(code);
 
         // Then
-        assertNotNull(matchExistant);
-        assertEquals(code, matchExistant.getCode());
+        assertNotNull(existingMatch);
+        assertEquals(code, existingMatch.getCode());
         verify(matchDAO, times(1)).findMatchByCode(anyString());
     }
 
@@ -70,10 +70,10 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.findMatchByCode(anyString())).thenReturn(null);
-        Match matchExistant = matchSearchService.findMatchByCode(code);
+        Match existingMatch = matchSearchService.findMatchByCode(code);
 
         // Then
-        assertNull(matchExistant);
+        assertNull(existingMatch);
         verify(matchDAO, times(1)).findMatchByCode(anyString());
     }
 
@@ -88,11 +88,11 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
 
         // When
         when(matchDAO.findMatchesByPlayer(any(Player.class), any(), any())).thenReturn(Arrays.asList(match1, match2));
-        List<Match> matchs = matchSearchService.findMatchesByPlayer(player1, null, LocalDate.now());
+        List<Match> matches = matchSearchService.findMatchesByPlayer(player1, null, LocalDate.now());
 
         // Then
-        assertNotNull(matchs);
-        assertEquals(2, matchs.size());
+        assertNotNull(matches);
+        assertEquals(2, matches.size());
         verify(matchDAO).findMatchesByPlayer(any(Player.class), any(), any());
     }
 
@@ -103,11 +103,11 @@ class MatchSearchServiceImplTest extends AbstractServiceTest {
         ctx.setTimezone(ZoneId.systemDefault());
 
         // When
-        List<Match> matchs = matchSearchService.findMatchesByPlayer(null, null, null);
+        List<Match> matches = matchSearchService.findMatchesByPlayer(null, null, null);
 
         // Then
-        assertNotNull(matchs);
-        assertTrue(matchs.isEmpty());
+        assertNotNull(matches);
+        assertTrue(matches.isEmpty());
         verify(matchDAO, never()).findMatchesByPlayer(any(Player.class), any(), any());
     }
 }

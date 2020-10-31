@@ -171,10 +171,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
             String location = MessageFormat.format(matchApiPath, m.getCode());
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
-            log.error("Erreur lors de la création d'un match", e);
+            log.error("An error occurred when creating a match", e);
             return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
-            log.error("Erreur lors de la récupération des information du contexte", e);
+            log.error("An error occurred when recovering context information", e);
             return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
         }
     }

@@ -130,7 +130,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Autres -->
+    <!-- Other libraries -->
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>

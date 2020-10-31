@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Mapper utile pour le mapping des éléments encodés en base64
+ * Mapper used to transform values between plain strings and base64 encoded strings
  */
 @Mapper(componentModel = "spring")
 public interface StringMapper {

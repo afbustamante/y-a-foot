@@ -68,16 +68,16 @@ public class User implements Serializable {
         return surname;
     }
 
-    public void setSurname(String jouNom) {
-        this.surname = jouNom;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String jouPrenom) {
-        this.firstName = jouPrenom;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getPreferredLanguage() {

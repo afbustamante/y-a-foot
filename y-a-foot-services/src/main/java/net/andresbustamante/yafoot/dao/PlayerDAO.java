@@ -53,7 +53,7 @@ public interface PlayerDAO {
     /**
      * Physically deletes a player from the database
      *
-     * @param player Player à supprimer
+     * @param player Player to delete
      */
     int deletePlayer(@Param(PLAYER) Player player);
 
