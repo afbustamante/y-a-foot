@@ -25,6 +25,7 @@
     <compiler.source>10</compiler.source>
     <compiler.target>10</compiler.target>
 
+    <!-- Plugins -->
     <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
     <maven-plugin-plugin.version>3.5.2</maven-plugin-plugin.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
@@ -42,6 +43,7 @@
     <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
     <swagger-codegen-maven-plugin.version>3.0.19</swagger-codegen-maven-plugin.version>
     <wildfly-maven-plugin.version>2.1.0.Beta1</wildfly-maven-plugin.version>
+    <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
 
     <!-- Java EE / javax -->
     <javaee-web-api.version>7.0</javaee-web-api.version>
@@ -86,9 +88,9 @@
     <spring-test-dbunit.version>1.3.0</spring-test-dbunit.version>
     <mockito-core.version>3.0.0</mockito-core.version>
     <byte-buddy.version>1.9.10</byte-buddy.version>
-
-    <!-- Autres -->
     <dbunit.version>2.7.0</dbunit.version>
+
+    <!-- Other libraries -->
     <postgresql.version>42.2.12</postgresql.version>
     <mapstruct.version>1.3.0.Final</mapstruct.version>
     <flyway-core.version>5.2.4</flyway-core.version>
@@ -730,6 +732,12 @@
           <groupId>org.wildfly.plugins</groupId>
           <artifactId>wildfly-maven-plugin</artifactId>
           <version>${wildfly-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>${sonar-maven-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
