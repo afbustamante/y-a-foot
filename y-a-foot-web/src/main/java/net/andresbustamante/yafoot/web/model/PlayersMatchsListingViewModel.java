@@ -143,6 +143,6 @@ public class PlayersMatchsListingViewModel extends AbstractViewModel {
     }
 
     private boolean isCancellingPossible(Match match) {
-        return getActiveUsername().equals(match.getAuthor().getEmail());
+        return getActiveUsername().equals(match.getCreator().getEmail());
     }
 }

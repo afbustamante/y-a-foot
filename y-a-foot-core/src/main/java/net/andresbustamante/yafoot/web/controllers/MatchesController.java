@@ -13,7 +13,6 @@ import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.CarConfirmation;
 import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.dto.Registration;
-import net.andresbustamante.yafoot.web.mappers.BasicMatchMapper;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
@@ -66,8 +65,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     private MatchMapper matchMapper;
 
-    private BasicMatchMapper basicMatchMapper;
-
     private RegistrationMapper registrationMapper;
 
     private CarMapper carMapper;
@@ -83,7 +80,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Autowired
     public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
                              CarpoolingService carpoolingService,
-                             MatchManagementService matchManagementService, BasicMatchMapper basicMatchMapper,
+                             MatchManagementService matchManagementService,
                              MatchMapper matchMapper, RegistrationMapper registrationMapper, CarMapper carMapper,
                              HttpServletRequest request, ApplicationContext applicationContext) {
         super(request, applicationContext);
@@ -92,7 +89,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
         this.playerSearchService = playerSearchService;
         this.carpoolingService = carpoolingService;
         this.matchMapper = matchMapper;
-        this.basicMatchMapper = basicMatchMapper;
         this.registrationMapper = registrationMapper;
         this.carMapper = carMapper;
         this.request = request;
@@ -136,7 +132,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
                     startDate, endDate);
 
             if (CollectionUtils.isNotEmpty(matches)) {
-                List<Match> result = basicMatchMapper.map(matches);
+                List<Match> result = matchMapper.map(matches);
                 return ResponseEntity.ok(result);
             } else {
                 return ResponseEntity.ok(Collections.emptyList());

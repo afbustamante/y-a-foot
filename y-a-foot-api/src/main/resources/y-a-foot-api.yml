@@ -547,15 +547,11 @@ components:
           type: integer
         site:
           $ref: '#/components/schemas/Site'
-        author:
+        creator:
           $ref: '#/components/schemas/Player'
-        registrations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Registration'
         carpoolingEnabled:
           type: boolean
-        sharingEnabled:
+        codeSharingEnabled:
           type: boolean
     GpsCoordinates:
       type: object

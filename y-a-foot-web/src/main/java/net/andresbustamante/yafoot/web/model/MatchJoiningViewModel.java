@@ -68,8 +68,7 @@ public class MatchJoiningViewModel extends AbstractViewModel {
 
             processJoinMode(Executions.getCurrent().getParameter("mode"));
 
-            List<Registration> registrations = (match.getRegistrations() != null) ?
-                    match.getRegistrations() : Collections.emptyList();
+            List<Registration> registrations = matchsSearchUIService.findMatchRegistrations(match);
 
             String nomUtilisateur = getActiveUsername();
             playerAlreadyListed = false;

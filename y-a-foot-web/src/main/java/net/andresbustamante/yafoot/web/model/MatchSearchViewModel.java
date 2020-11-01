@@ -60,8 +60,7 @@ public class MatchSearchViewModel extends AbstractViewModel {
             if (match != null) {
                 matchFound = true;
 
-                List<Registration> registrations = (match.getRegistrations() != null) ?
-                        match.getRegistrations() : Collections.emptyList();
+                List<Registration> registrations = matchsSearchUIService.findMatchRegistrations(match);
 
                 String nomUtilisateur = getActiveUsername();
 
@@ -122,8 +121,8 @@ public class MatchSearchViewModel extends AbstractViewModel {
     }
 
     public int getNumPlayersLeft() {
-        if ((numPlayersLeft == 0) && (match != null) && (match.getRegistrations() != null)) {
-            numPlayersLeft = Math.max(0, match.getNumPlayersMax() - match.getRegistrations().size());
+        if ((numPlayersLeft == 0) && (match != null) && (match.getNumRegisteredPlayers() != null)) {
+            numPlayersLeft = Math.max(0, match.getNumPlayersMax() - match.getNumRegisteredPlayers());
         }
         return numPlayersLeft;
     }
