@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.model.api;
 import java.time.OffsetDateTime;
 
 /**
- * To use for any object needing to be audited
+ * Interface to be implemented by any object needing to be audited
  */
 public interface Auditable {
 
