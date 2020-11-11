@@ -20,7 +20,6 @@ import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import java.util.Collections;
 import java.util.List;
 
 import static net.andresbustamante.yafoot.web.util.WebConstants.VOITURES;
