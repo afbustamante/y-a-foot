@@ -188,6 +188,14 @@
       WHERE pma_match_id = #{match.id} AND pma_player_id = #{player.id}
     </update>
 
+    <update id="resetCarDetails">
+      UPDATE t_player_match
+      SET pma_car_id           = null,
+          pma_car_confirmation = false,
+          pma_last_update      = CURRENT_TIMESTAMP
+      WHERE pma_match_id = #{match.id} AND pma_player_id = #{player.id}
+    </update>
+
     <select id="loadRegistration" resultMap="registrationDetails">
       SELECT
         pma.pma_match_id         AS matchId,
@@ -203,6 +211,24 @@
         LEFT JOIN t_car car on pma.pma_car_id = car.car_id
         LEFT JOIN t_player ply on car.car_driver_id = ply.ply_id
       WHERE pma.pma_player_id = #{player.id} AND pma.pma_match_id = #{match.id}
+    </select>
+
+    <select id="findPassengerRegistrationsByCar" resultMap="registrationDetails">
+      SELECT
+        pma.pma_match_id         AS matchId,
+        pma.pma_player_id        AS playerId,
+        pma.pma_car_id           AS carId,
+        pma.pma_car_confirmation AS carConfirmed,
+        car.car_name             AS carName,
+        car.car_driver_id        AS carDriverId,
+        ply.ply_id               AS driverId,
+        ply.ply_first_name       AS driverFirstName,
+        ply.ply_email            AS driverEmail
+      FROM t_player_match pma
+        JOIN t_car car on pma.pma_car_id = car.car_id
+        LEFT JOIN t_player ply on car.car_driver_id = ply.ply_id
+      WHERE pma.pma_car_id = #{car.id} AND pma.pma_match_id = #{match.id}
+        AND ply.ply_id != pma.pma_player_id
     </select>
 
     <resultMap id="matchDetails" type="net.andresbustamante.yafoot.model.Match">

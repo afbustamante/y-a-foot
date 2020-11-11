@@ -202,7 +202,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
             return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
         } catch (ApplicationException e) {
             log.error("Application error when registering a player to a match", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            return (e.getCode() != null) ? new ResponseEntity<>(buildMessageHeader(e.getCode(), null), BAD_REQUEST) :
+                    new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
         }
     }
 

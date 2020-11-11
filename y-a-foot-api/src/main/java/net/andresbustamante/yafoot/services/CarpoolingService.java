@@ -40,4 +40,22 @@ public interface CarpoolingService {
      */
     void processCarSeatRequest(Match match, Player player, Car car, UserContext ctx) throws DatabaseException,
             ApplicationException;
+
+    /**
+     * If a player changes of transportation it updates the carpooling options for passengers previously confirmed.
+     *
+     * If a new car is chosen to assist to a match and it belongs to the same owner, it transfers the passengers
+     * already confirmed for the old car to the new one. If there is not enough seats, an exception is thrown to prevent
+     * the user from this problem.
+     *
+     * If a new car is chosen but it belongs to another player or no new car is chosen, it resets the existing
+     * confirmations and removes the car for passengers' registrations.
+     *
+     * @param match The match to process
+     * @param oldCar Car used for the existing registration
+     * @param newCar Car used for the transportation update. It can belong to another player.
+     * @param ctx Context of the user performing this action
+     * @throws ApplicationException If a transfer of passengers is not possible from the old car to the new one
+     */
+    void processTransportationChange(Match match, Car oldCar, Car newCar, UserContext ctx) throws ApplicationException;
 }

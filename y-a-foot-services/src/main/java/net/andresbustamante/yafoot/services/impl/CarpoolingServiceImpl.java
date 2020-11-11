@@ -8,6 +8,7 @@ import net.andresbustamante.yafoot.exceptions.AuthorisationException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarpoolingService;
 import net.andresbustamante.yafoot.services.MessagingService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -93,12 +95,38 @@ public class CarpoolingServiceImpl implements CarpoolingService {
                 template, request, locale);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void processTransportationChange(Match match, Car oldCar, Car newCar, UserContext ctx) throws ApplicationException {
+        List<Registration> registrations = matchDAO.findPassengerRegistrationsByCar(match, oldCar);
+        Car storedNewCar = (newCar != null && newCar.getId() != null) ? carDAO.findCarById(newCar.getId()) : null;
+
+        if (CollectionUtils.isNotEmpty(registrations)) {
+            if (storedNewCar != null && storedNewCar.getDriver().getEmail().equals(ctx.getUsername())) {
+                // Changing between two owned cars
+                if (storedNewCar.getNumSeats() >= registrations.size()) {
+                    // Transfer the passengers to the new car
+                    registrations.forEach(registration -> matchDAO.updateCarForRegistration(match, registration.getPlayer(),
+                            storedNewCar, registration.isCarConfirmed()));
+                } else {
+                    throw new ApplicationException("carpooling.passengers.transfer.failed", "There are not enough seats for all your passengers");
+                }
+            } else if (storedNewCar == null && newCar != null) {
+                // Changing to an unregistered car
+                throw new ApplicationException("carpooling.passengers.transfer.failed", "The new car must have been registered before this operation");
+            } else {
+                // Changing to a car belonging to somebody else or not using a car at all
+                registrations.forEach(registration -> matchDAO.resetCarDetails(match, registration.getPlayer()));
+            }
+        }
+    }
+
     private void processCarSeatUpdate(Match match, Player player, Car car, boolean isCarSeatConfirmed)
             throws ApplicationException {
         String confirmationTemplate = "carpooling-confirmation-email_" + player.getPreferredLanguage() + ".ftl";
         String rejectionTemplate = "carpooling-rejection-email_" + player.getPreferredLanguage() + ".ftl";
         String template = (isCarSeatConfirmed) ? confirmationTemplate : rejectionTemplate;
-        String subject = (isCarSeatConfirmed) ? "carpool.confirmation.subject" : "carpool.rejection.email.subject";
+        String subject = (isCarSeatConfirmed) ? "carpool.confirmation.email.subject" : "carpool.rejection.email.subject";
 
         String link = MessageFormat.format(matchManagementUrl, match.getCode());
         Locale locale = new Locale(player.getPreferredLanguage());

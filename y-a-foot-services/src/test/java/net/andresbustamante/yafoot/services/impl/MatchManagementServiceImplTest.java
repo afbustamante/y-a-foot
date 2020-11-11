@@ -19,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -258,6 +259,41 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(matchDAO).unregisterPlayer(any(Player.class), any(Match.class));
         verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), eq(null), eq(null));
+    }
+
+    @Test
+    void registerPlayerWhenAlreadyRegisteredWithPassengers() throws Exception {
+        // Given
+        Player player1 = new Player(1);
+        player1.setEmail("player@email.com");
+        Player player2 = new Player(2);
+        player2.setEmail("player2@email.com");
+        Car car1 = new Car(1);
+        car1.setDriver(player1);
+        Match match = new Match(1);
+        match.setCarpoolingEnabled(true);
+        match.setDate(OffsetDateTime.now().plusDays(1L));
+        Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
+        registration1.setPlayer(player1);
+        registration1.setCar(car1);
+        registration1.setCarConfirmed(true);
+        Registration registration2 = new Registration(new RegistrationId(match.getId(), player2.getId()));
+        registration2.setPlayer(player2);
+        registration2.setCar(car1);
+        registration2.setCarConfirmed(true);
+        match.setRegistrations(List.of(registration1, registration2));
+        UserContext ctx = new UserContext();
+        ctx.setUsername("player@email.com");
+
+        // When
+        when(matchDAO.loadRegistration(any(Match.class), any(Player.class))).thenReturn(registration1);
+        when(carDAO.findCarById(anyInt())).thenReturn(car1);
+        assertDoesNotThrow(() -> matchManagementService.registerPlayer(player1, match, car1, ctx));
+
+        // Then
+        verify(carpoolingService).processTransportationChange(any(Match.class), any(Car.class), any(Car.class), any(UserContext.class));
+        verify(matchDAO).unregisterPlayer(any(Player.class), any(Match.class));
+        verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
     }
 
     @Test

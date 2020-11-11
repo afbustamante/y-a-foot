@@ -117,4 +117,22 @@ public interface MatchDAO {
      * @return Registration details
      */
     Registration loadRegistration(@Param(MATCH) Match match, @Param(PLAYER) Player player);
+
+    /**
+     * Finds the list of passenger registrations for a given car
+     *
+     * @param match Match to search
+     * @param car Car to search
+     * @return List of registrations made with the given car for a match
+     */
+    List<Registration> findPassengerRegistrationsByCar(@Param(MATCH) Match match, @Param(CAR) Car car);
+
+    /**
+     * Resets car details for a player registration in a given match
+     *
+     * @param match Match to search
+     * @param player Player to search
+     * @return Number of lines touched by this operation
+     */
+    int resetCarDetails(@Param(MATCH) Match match, @Param(PLAYER) Player player);
 }

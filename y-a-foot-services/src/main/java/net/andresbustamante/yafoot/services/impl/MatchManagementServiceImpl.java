@@ -83,13 +83,15 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         return match.getId();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {ApplicationException.class, DatabaseException.class})
     @Override
     public void registerPlayer(Player player, Match match, Car car, UserContext userContext)
             throws ApplicationException, DatabaseException {
         if (!match.isAcceptingRegistrations()) {
             throw new ApplicationException("max.players.match.error", "This match is not accepting more registrations");
         } else if (match.isAcceptingRegistrations() && match.isPlayerRegistered(player)) {
+            processCarpoolingImpacts(player, match, car, userContext);
+
             // Remove the existing registry to insert a new one with fresh information
             matchDAO.unregisterPlayer(player, match);
         }
@@ -107,6 +109,28 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         }
 
         log.info("Player {} successfully registered to the match {}", player.getId(), match.getId());
+    }
+
+    /**
+     * If carpooling is enabled for a match, it checks if carpooling is impacted by the new registration request
+     * meaning that an existing player is changing his/her transportation options
+     *
+     * @param player Player to check
+     * @param match Match to check
+     * @param car Car to process
+     * @param userContext Context of the user making the registration
+     * @throws ApplicationException
+     */
+    private void processCarpoolingImpacts(Player player, Match match, Car car, UserContext userContext) throws ApplicationException {
+        if (match.isCarpoolingEnabled()) {
+            // Check if an update of carpooling must be made when a driver changes of transportation option
+            Registration oldRegistration = matchDAO.loadRegistration(match, player);
+
+            if (oldRegistration != null && oldRegistration.getCar() != null && player.equals(oldRegistration.getCar().getDriver())) {
+                // The driver already registered is changing of mind
+                carpoolingService.processTransportationChange(match, oldRegistration.getCar(), car, userContext);
+            }
+        }
     }
 
     @Transactional
