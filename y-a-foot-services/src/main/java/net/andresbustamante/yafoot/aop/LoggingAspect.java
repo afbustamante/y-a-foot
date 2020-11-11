@@ -21,8 +21,8 @@ public class LoggingAspect {
 
     @Before("filterServicesMethods()")
     public void logServicesMethods(JoinPoint joinPoint) {
-        if (joinPoint != null && joinPoint.getSignature() != null && log.isInfoEnabled()) {
-            log.info("Active backend service : {}", joinPoint.getSignature().toShortString());
+        if (joinPoint != null && joinPoint.getSignature() != null && log.isDebugEnabled()) {
+            log.debug("Active backend service : {}", joinPoint.getSignature().toShortString());
         }
     }
 }
