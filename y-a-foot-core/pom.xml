@@ -136,7 +136,7 @@
       <artifactId>mapstruct</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.swagger</groupId>
+      <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
       <scope>compile</scope>
     </dependency>
@@ -185,9 +185,11 @@
               <modelPackage>net.andresbustamante.yafoot.web.dto</modelPackage>
               <apiPackage>net.andresbustamante.yafoot.web.controllers</apiPackage>
               <generateModels>true</generateModels>
+              <generateModelDocumentation>true</generateModelDocumentation>
               <generateModelTests>false</generateModelTests>
               <generateSupportingFiles>false</generateSupportingFiles>
-              <generateApiDocumentation>false</generateApiDocumentation>
+              <generateApis>true</generateApis>
+              <generateApiDocumentation>true</generateApiDocumentation>
               <generateApiTests>false</generateApiTests>
               <configOptions>
                 <java8>true</java8>

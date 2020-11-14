@@ -41,7 +41,7 @@
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
-    <swagger-codegen-maven-plugin.version>3.0.19</swagger-codegen-maven-plugin.version>
+    <swagger-codegen-maven-plugin.version>3.0.23</swagger-codegen-maven-plugin.version>
     <wildfly-maven-plugin.version>2.1.0.Beta1</wildfly-maven-plugin.version>
     <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
 
@@ -97,7 +97,7 @@
     <slf4j-api.version>1.7.25</slf4j-api.version>
     <javassist.version>3.21.0-GA</javassist.version>
     <logback.version>1.2.3</logback.version>
-    <swagger-annotations.version>1.6.1</swagger-annotations.version>
+    <swagger-annotations.version>2.1.5</swagger-annotations.version>
     <jjwt.version>0.9.1</jjwt.version>
     <unboundid-ldapsdk.version>3.1.1</unboundid-ldapsdk.version>
     <freemarker.version>2.3.30</freemarker.version>
@@ -561,7 +561,7 @@
         <version>${mapstruct.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.swagger</groupId>
+        <groupId>io.swagger.core.v3</groupId>
         <artifactId>swagger-annotations</artifactId>
         <version>${swagger-annotations.version}</version>
       </dependency>

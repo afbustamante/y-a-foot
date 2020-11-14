@@ -88,7 +88,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
     }
 
     @Override
-    public ResponseEntity<Void> updatePlayer(Player player, Integer id) {
+    public ResponseEntity<Void> updatePlayer(Integer id, Player player) {
         try {
             log.debug("Player information update requested");
             net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);

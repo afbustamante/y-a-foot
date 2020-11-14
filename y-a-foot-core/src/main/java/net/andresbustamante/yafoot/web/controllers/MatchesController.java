@@ -177,7 +177,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> registerPlayerToMatch(Registration registration, String matchCode) {
+    public ResponseEntity<Void> registerPlayerToMatch(String matchCode, Registration registration) {
         try {
             UserContext userContext = getUserContext(request);
             net.andresbustamante.yafoot.model.Registration reg = registrationMapper.map(registration);
@@ -208,7 +208,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Void> updateCarForRegistration(CarConfirmation carConfirmation, String matchCode, Integer playerId) {
+    public ResponseEntity<Void> updateCarForRegistration(String matchCode, Integer playerId, CarConfirmation carConfirmation) {
         try {
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
 

@@ -49,7 +49,7 @@ public class UsersController extends AbstractController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<User> authenticateUser(@Valid User user, String email) {
+    public ResponseEntity<User> authenticateUser(String email, @Valid User user) {
         try {
             net.andresbustamante.yafoot.model.User authenticatedUser = userAuthenticationService.authenticate(userMapper.map(user));
 
@@ -91,7 +91,7 @@ public class UsersController extends AbstractController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateUserCredentials(@Valid Credentials credentials, String email) {
+    public ResponseEntity<Void> updateUserCredentials(String email, @Valid Credentials credentials) {
         try {
             if (!email.equals(credentials.getUsername())) {
                 return new ResponseEntity<>(buildMessageHeader(UNAUTHORISED_USER_ERROR, null), FORBIDDEN);
