@@ -40,10 +40,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         404: # Not found
           description: No used found for the given criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         500: # Internal Server Error
           description: A problem occurred while looking for the user by using the given criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /users/{email}/token:
     post:
       operationId: generatePasswordResetToken
@@ -61,8 +75,18 @@ paths:
       responses:
         201: # Created
           description: Token created for user
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         500: # Internal Server Error
           description: An error occurred while generating a reset password token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /users/{email}/details:
     patch:
       operationId: updateUserCredentials
@@ -89,8 +113,22 @@ paths:
           description: User credentials updated
         400: # Bad request
           description: Invalid password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         403: # Forbidden
           description: User not allowed to perform this operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while looking for user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /users/{email}/auth:
     put:
       operationId: authenticateUser
@@ -119,8 +157,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         401: # Unauthorized
           description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while authenticating user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /players:
     get:
       operationId: findPlayer
@@ -141,8 +195,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Player'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         404: # Not found
           description: No player found for the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while loading player details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: createPlayer
       summary: Create a new player
@@ -158,6 +228,18 @@ paths:
       responses:
         201: # Created
           description: Player successfully created. Player's ID is returned in Location header
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while creating a player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /players/{playerId}:
     parameters:
     - in: path
@@ -180,14 +262,38 @@ paths:
       responses:
         202: # Accepted
           description: Player successfully updated
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while updating player details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deactivatePlayer
       summary: Deactivates a player in the application. This action can only be requested by the own player
       tags:
       - players
       responses:
-        '204': # No content
+        204: # No content
           description: Player successfully deactivated
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while deactivating a player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /matches:
     get:
       operationId: findMatches
@@ -218,6 +324,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Match'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while looking for matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: createMatch
       summary: Creates a match
@@ -233,6 +351,18 @@ paths:
       responses:
         201: # Created
           description: Match successfully created. Match code returned in Location header
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while creating a new match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /matches/{matchCode}:
     parameters:
     - in: path
@@ -253,6 +383,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Match'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while loading a match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /matches/{matchCode}/registrations:
     parameters:
     - in: path
@@ -275,8 +417,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Registration'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         404: # Not found
           description: Match not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while loading the list of registrations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: registerPlayerToMatch
       summary: Registers an existing player to a match
@@ -292,8 +450,24 @@ paths:
       responses:
         201: # Created
           description: Registration saved
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         404: # Not found
           description: Match not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while registering the player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /matches/{matchCode}/registrations/{playerId}:
     parameters:
     - in: path
@@ -322,12 +496,30 @@ paths:
       responses:
         202: # Accepted
           description: Registration succesfully updated
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         403: # Forbidden
           description: If the user performing the action is not the owner of the car already confirmed in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         404: # Not found
           description: Match or player not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         500: # Internal server error
           description: Database problem while loading data or unregistering the player from match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: unregisterPlayerFromMatch
       tags:
@@ -336,11 +528,23 @@ paths:
         204: # No content
           description: Player unregistered from match
         400: # Bad request
-          description: Player not registered in this match
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         404: # Not found
-          description: Match not found
+          description: Match not found or player not registered in this match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         500: # Internal server error
           description: Database problem while loading data or unregistering the player from match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /sites:
     get:
       operationId: loadSites
@@ -356,6 +560,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Site'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while looking for sites
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: addNewSite
       summary: Registers a new site for a player
@@ -372,9 +588,17 @@ paths:
         201: # Created
           description: Site successfully saved. Site's ID is returned in Location header
         400: # Bad request
-          description: Missing user information
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         500: # Internal server error
           description: A database error occurred while saving site's information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /cars:
     get:
       operationId: loadCars
@@ -390,6 +614,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Car'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while looking for cars
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: addNewCar
       summary: Registers a new car for a player
@@ -405,6 +641,18 @@ paths:
       responses:
         201: # Created
           description: Car successfully saved. Car's ID is returned in Location header
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: A database error occurred when saving the car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /cars/{id}:
     parameters:
     - in: path
@@ -425,12 +673,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Car'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         403: # Forbidden
           description: Current user is not allowed to load the details of a car from another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         404: # Not found
           description: No car found for the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         500: # Internal server error
           description: A database error occurred when loading the car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     User:
@@ -574,3 +840,18 @@ components:
           type: string
         language:
           type: string
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+          format: uri
