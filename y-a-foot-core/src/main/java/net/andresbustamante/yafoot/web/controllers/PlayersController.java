@@ -1,13 +1,12 @@
 package net.andresbustamante.yafoot.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.exceptions.PlayerNotFoundException;
-import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.services.PlayerManagementService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
+import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.web.mappers.PlayerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +17,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.util.Optional;
 
-import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * REST Controller to manage operations on players
@@ -33,7 +30,6 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author andresbustamante
  */
 @RestController
-@CrossOrigin(exposedHeaders = {CTX_MESSAGES})
 public class PlayersController extends AbstractController implements PlayersApi {
 
     private PlayerManagementService playerManagementService;
@@ -58,16 +54,6 @@ public class PlayersController extends AbstractController implements PlayersApi 
         this.request = request;
     }
 
-    @Override
-    public Optional<ObjectMapper> getObjectMapper() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<HttpServletRequest> getRequest() {
-        return Optional.of(request);
-    }
-
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
     public ResponseEntity<Void> createPlayer(Player player) {
@@ -80,10 +66,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (ApplicationException e) {
             log.error("User not created", e);
-            return new ResponseEntity<>(buildMessageHeader("email.already.registered.error", new String[]{player.getEmail()}), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), new String[]{player.getEmail()}));
         } catch (DatabaseException | LdapException e) {
             log.error("Database/LDAP error when registering a new player", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
     }
 
@@ -92,17 +78,28 @@ public class PlayersController extends AbstractController implements PlayersApi 
         try {
             log.debug("Player information update requested");
             net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
-            playerManagementService.updatePlayer(playerMapper.map(player), userContext);
-            return ResponseEntity.accepted().build();
+
+            net.andresbustamante.yafoot.model.Player p = playerSearchService.findPlayerById(id);
+
+            log.info("Player searched");
+
+            if (p != null) {
+                playerManagementService.updatePlayer(playerMapper.map(player), userContext);
+                log.info("Player updated");
+                return ResponseEntity.accepted().build();
+            } else {
+                log.info("Player not found");
+                return ResponseEntity.notFound().build();
+            }
         } catch (DatabaseException | LdapException e) {
             log.error("An error occurred while updating a player's information", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (PlayerNotFoundException e) {
             log.error("Player not found for performing update", e);
             return ResponseEntity.notFound().build();
         } catch (ApplicationException e) {
             log.error("User context error for updating a player's information", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(INVALID_USER_ERROR, null));
         }
     }
 
@@ -118,7 +115,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
             }
         } catch (DatabaseException e) {
             log.error("Database error while looking for a player", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
     }
 
@@ -138,10 +135,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             }
         } catch (DatabaseException | LdapException e) {
             log.error("Database/LDAP error while deactivating a player", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
-            log.error("User context error for deactivating a player", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            log.error("Application error when deactivating a player", e);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 }

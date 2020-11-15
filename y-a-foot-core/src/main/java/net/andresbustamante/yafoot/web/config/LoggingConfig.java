@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.config;
+package net.andresbustamante.yafoot.web.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

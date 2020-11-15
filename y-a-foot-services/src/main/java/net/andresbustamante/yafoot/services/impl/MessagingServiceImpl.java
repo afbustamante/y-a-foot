@@ -5,6 +5,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.exceptions.InvalidTemplateException;
 import net.andresbustamante.yafoot.services.MessagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,11 +82,11 @@ public class MessagingServiceImpl implements MessagingService {
 
             sendEmail(destinationEmail, subject, messageContent);
         } catch (TemplateException e) {
-            throw new ApplicationException("Invalid template", e);
+            throw new InvalidTemplateException("Invalid template", e);
         } catch (TemplateNotFoundException e) {
-            throw new ApplicationException("Unknown template", e);
+            throw new InvalidTemplateException("Unknown template", e);
         } catch (IOException e) {
-            throw new ApplicationException("Unable to load template", e);
+            throw new InvalidTemplateException("Unable to load template", e);
         }
     }
 }

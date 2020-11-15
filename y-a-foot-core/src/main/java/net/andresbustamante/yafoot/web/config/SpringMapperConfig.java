@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.config;
+package net.andresbustamante.yafoot.web.config;
 
 import org.mapstruct.MapperConfig;
 import org.mapstruct.ReportingPolicy;

@@ -1,14 +1,13 @@
 package net.andresbustamante.yafoot.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.services.SiteManagementService;
-import net.andresbustamante.yafoot.web.dto.Site;
 import net.andresbustamante.yafoot.services.SiteSearchService;
+import net.andresbustamante.yafoot.web.dto.Site;
 import net.andresbustamante.yafoot.web.mappers.SiteMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -20,14 +19,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -37,7 +35,6 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author andresbustamante
  */
 @RestController
-@CrossOrigin(exposedHeaders = {CTX_MESSAGES})
 public class SitesController extends AbstractController implements SitesApi {
 
     private SiteSearchService siteSearchService;
@@ -66,16 +63,6 @@ public class SitesController extends AbstractController implements SitesApi {
     }
 
     @Override
-    public Optional<ObjectMapper> getObjectMapper() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<HttpServletRequest> getRequest() {
-        return Optional.of(request);
-    }
-
-    @Override
     public ResponseEntity<List<Site>> loadSites() {
         try {
             UserContext ctx = getUserContext(request);
@@ -92,10 +79,10 @@ public class SitesController extends AbstractController implements SitesApi {
             return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
             log.error("Database error while looking for a player's list of available sites", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             log.error("Invalid user context", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 
@@ -110,10 +97,10 @@ public class SitesController extends AbstractController implements SitesApi {
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Database error while creating a new site", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             log.error("User context error for creating a new site", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 }

@@ -1,8 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.services.UserManagementService;
@@ -11,22 +9,18 @@ import net.andresbustamante.yafoot.web.dto.User;
 import net.andresbustamante.yafoot.web.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
-import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@CrossOrigin(exposedHeaders = {CTX_MESSAGES})
 public class UsersController extends AbstractController implements UsersApi {
 
     private static final String DIRECTORY_BASIC_ERROR = "directory.basic.error";
@@ -58,8 +52,8 @@ public class UsersController extends AbstractController implements UsersApi {
             }
 
             return ResponseEntity.accepted().body(userMapper.map(authenticatedUser));
-        } catch (InvalidCredentialsException e) {
-            return new ResponseEntity<>(buildMessageHeader("invalid.credentials.error", null), HttpStatus.UNAUTHORIZED);
+        } catch (ApplicationException e) {
+            throw new ResponseStatusException(UNAUTHORIZED, translate(e.getCode(), null));
         }
     }
 
@@ -71,7 +65,7 @@ public class UsersController extends AbstractController implements UsersApi {
             return (user != null) ? ResponseEntity.ok(userMapper.map(user)) : ResponseEntity.notFound().build();
         } catch (LdapException e) {
             log.error("LDAP error while searching for a user", e);
-            return new ResponseEntity<>(buildMessageHeader(DIRECTORY_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         }
     }
 
@@ -83,10 +77,10 @@ public class UsersController extends AbstractController implements UsersApi {
             return ResponseEntity.status(CREATED).build();
         } catch (LdapException e) {
             log.error("LDAP error while searching for a user", e);
-            return new ResponseEntity<>(buildMessageHeader(DIRECTORY_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             log.error("Application error while generating a new password-reset token", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage(), null);
         }
     }
 
@@ -94,7 +88,7 @@ public class UsersController extends AbstractController implements UsersApi {
     public ResponseEntity<Void> updateUserCredentials(String email, @Valid Credentials credentials) {
         try {
             if (!email.equals(credentials.getUsername())) {
-                return new ResponseEntity<>(buildMessageHeader(UNAUTHORISED_USER_ERROR, null), FORBIDDEN);
+                throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
             }
 
             net.andresbustamante.yafoot.model.User user = userAuthenticationService.findUserByEmail(email);
@@ -113,20 +107,10 @@ public class UsersController extends AbstractController implements UsersApi {
             return ResponseEntity.accepted().build();
         } catch (ApplicationException e) {
             log.error("User not allowed to perform this operation", e);
-            return new ResponseEntity<>(buildMessageHeader(UNAUTHORISED_USER_ERROR, null), FORBIDDEN);
+            throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
         } catch (LdapException e) {
             log.error("LDAP error while updating a user's credentials", e);
-            return new ResponseEntity<>(buildMessageHeader(DIRECTORY_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         }
-    }
-
-    @Override
-    public Optional<ObjectMapper> getObjectMapper() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<HttpServletRequest> getRequest() {
-        return Optional.of(request);
     }
 }

@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.ldap.UserRepository;
@@ -42,7 +43,7 @@ class UserAuthenticationServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
-    void testAuthenticateValidUser() throws InvalidCredentialsException {
+    void testAuthenticateValidUser() throws ApplicationException {
         // When
         when(userRepository.authenticateUser(anyString(), anyString())).thenReturn(USR_TEST);
         when(jwtTokenUtils.generateToken(anyString())).thenReturn("token");

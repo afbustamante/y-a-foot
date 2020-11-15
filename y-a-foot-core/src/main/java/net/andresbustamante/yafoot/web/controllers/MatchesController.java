@@ -1,9 +1,8 @@
 package net.andresbustamante.yafoot.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.exceptions.AuthorisationException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.CarpoolingService;
@@ -27,6 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -34,10 +34,8 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static net.andresbustamante.yafoot.web.controllers.AbstractController.CTX_MESSAGES;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import static org.springframework.http.HttpStatus.*;
 
@@ -47,7 +45,6 @@ import static org.springframework.http.HttpStatus.*;
  * @author andresbustamante
  */
 @RestController
-@CrossOrigin(exposedHeaders = {CTX_MESSAGES})
 public class MatchesController extends AbstractController implements MatchesApi {
 
     /* Message codes */
@@ -99,11 +96,14 @@ public class MatchesController extends AbstractController implements MatchesApi 
         try {
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
-            return (match != null) ? ResponseEntity.ok(matchMapper.map(match)) :
-                    new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
+            if (match != null) {
+                return ResponseEntity.ok(matchMapper.map(match));
+            } else {
+                throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
+            }
         } catch (DatabaseException e) {
             log.error("Database error while looking for a match", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
     }
 
@@ -112,11 +112,14 @@ public class MatchesController extends AbstractController implements MatchesApi 
         try {
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
-            return (match != null) ? ResponseEntity.ok(registrationMapper.map(match.getRegistrations())) :
-                    new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
+            if (match != null) {
+                return ResponseEntity.ok(registrationMapper.map(match.getRegistrations()));
+            } else {
+                throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
+            }
         } catch (DatabaseException e) {
             log.error("Database error while looking for a match", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
     }
 
@@ -139,21 +142,11 @@ public class MatchesController extends AbstractController implements MatchesApi 
             }
         } catch (DatabaseException e) {
             log.error("Database error while looking for a player's matches", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             log.error("User context error for loading a player's matches", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
-    }
-
-    @Override
-    public Optional<ObjectMapper> getObjectMapper() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<HttpServletRequest> getRequest() {
-        return Optional.of(request);
     }
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
@@ -168,10 +161,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("An error occurred when creating a match", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             log.error("An error occurred when recovering context information", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 
@@ -186,11 +179,11 @@ public class MatchesController extends AbstractController implements MatchesApi 
             Player player = playerSearchService.findPlayerByEmail(reg.getPlayer().getEmail());
 
             if (match == null) {
-                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
+                throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             } else if (player == null) {
                 log.warn("Invalid player used while trying to register a player to a match");
-                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_PLAYER_ERROR,
-                        new String[]{reg.getPlayer().getEmail()}), BAD_REQUEST);
+                throw new ResponseStatusException(BAD_REQUEST, translate(UNKNOWN_PLAYER_ERROR,
+                        new String[]{reg.getPlayer().getEmail()}));
             }
 
             matchManagementService.registerPlayer(player, match, reg.getCar(), userContext);
@@ -199,11 +192,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             log.error("Database error while trying to register a player to a match", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             log.error("Application error when registering a player to a match", e);
-            return (e.getCode() != null) ? new ResponseEntity<>(buildMessageHeader(e.getCode(), null), BAD_REQUEST) :
-                    new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 
@@ -225,21 +217,21 @@ public class MatchesController extends AbstractController implements MatchesApi 
                     return ResponseEntity.accepted().build();
                 } else {
                     log.warn("Invalid player ID detected for player registration update");
-                    return new ResponseEntity<>(buildMessageHeader(UNKNOWN_PLAYER_REGISTRATION_ERROR, null), NOT_FOUND);
+                    throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_PLAYER_REGISTRATION_ERROR, null));
                 }
             } else {
                 log.warn("Invalid match code detected for player registration update");
-                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
+                throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             }
         } catch (DatabaseException e) {
             log.error("Database error when updating a registration", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
-        } catch (AuthorisationException e) {
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
+        } catch (UserNotAuthorisedException e) {
             log.error("Authorisation problem when updating carpool details for a registration to a match", e);
-            return new ResponseEntity<>(buildMessageHeader(UNAUTHORISED_USER_ERROR, null), FORBIDDEN);
+            throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
         } catch (ApplicationException e) {
             log.error("Application error when updating a registration to a match", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 
@@ -256,17 +248,17 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.noContent().build();
             } else if (match == null) {
                 log.warn("Invalid match code detected for unregistering player");
-                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_MATCH_ERROR, null), NOT_FOUND);
+                throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             } else {
                 log.warn("Invalid player ID detected for unregistering player");
-                return new ResponseEntity<>(buildMessageHeader(UNKNOWN_PLAYER_REGISTRATION_ERROR, null), NOT_FOUND);
+                throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_PLAYER_REGISTRATION_ERROR, null));
             }
         } catch (DatabaseException e) {
             log.error("Database error while unregistering a player from a match", e);
-            return new ResponseEntity<>(buildMessageHeader(DATABASE_BASIC_ERROR, null), INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             log.error("Application error when unregistering a player from a match", e);
-            return new ResponseEntity<>(buildMessageHeader(INVALID_USER_ERROR, null), BAD_REQUEST);
+            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 }

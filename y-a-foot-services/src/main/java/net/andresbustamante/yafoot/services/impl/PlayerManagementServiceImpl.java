@@ -57,7 +57,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             return player.getId();
         } else {
             log.info("Existing player with the address {}", player.getEmail());
-            throw new ApplicationException("A player already exists for this email address");
+            throw new ApplicationException("email.already.registered.error", "A player already exists for this email address");
         }
     }
 
@@ -94,17 +94,13 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     @Transactional
     @Override
     public void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
-        if (player != null) {
-            // Delete all data from player
-            matchManagementService.unregisterPlayerFromAllMatches(player, userContext);
-            carManagementService.deleteCarsByPlayer(player, userContext);
+        // Delete all data from player
+        matchManagementService.unregisterPlayerFromAllMatches(player, userContext);
+        carManagementService.deleteCarsByPlayer(player, userContext);
 
-            int numPlayers = playerDAO.deactivatePlayer(player);
-            log.info("Players deactivated: {}", numPlayers);
+        int numPlayers = playerDAO.deactivatePlayer(player);
+        log.info("Players deactivated: {}", numPlayers);
 
-            userManagementService.deleteUser(player, userContext);
-        } else {
-            throw new PlayerNotFoundException("No player found for deactivation");
-        }
+        userManagementService.deleteUser(player, userContext);
     }
 }

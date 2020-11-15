@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.api.Auditable;
 import net.andresbustamante.yafoot.model.api.Identifiable;
 
@@ -37,16 +36,15 @@ public class Match implements Serializable, Identifiable, Auditable {
         this.id = id;
     }
 
-    public boolean isPlayerRegistered(Player player) throws ApplicationException {
+    public boolean isPlayerRegistered(Player player) {
         if (registrations != null) {
             for (Registration registration : registrations) {
                 if (registration.getPlayer().equals(player)) {
                     return true;
                 }
             }
-            return false;
         }
-        throw new ApplicationException("No registrations information");
+        return false;
     }
 
     /**

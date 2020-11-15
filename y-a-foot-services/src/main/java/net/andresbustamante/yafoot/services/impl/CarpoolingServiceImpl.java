@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.exceptions.AuthorisationException;
+import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarpoolingService;
 import net.andresbustamante.yafoot.services.MessagingService;
@@ -71,7 +71,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
                 log.info("Carpool update for match #{}: Player #{} confirmation modified for car #{}", match.getId(),
                         player.getId(), car.getId());
             } else {
-                throw new AuthorisationException("User not allowed to update carpooling details for registration");
+                throw new UserNotAuthorisedException("User not allowed to update carpooling details for registration");
             }
         }
     }

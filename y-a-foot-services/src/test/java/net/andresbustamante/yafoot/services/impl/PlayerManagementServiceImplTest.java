@@ -134,16 +134,4 @@ class PlayerManagementServiceImplTest extends AbstractServiceTest {
         // Then
         verify(playerDAO).deactivatePlayer(any());
     }
-
-    @Test
-    void deactivateInvalidPlayer() throws Exception {
-        // Given
-        UserContext ctx = new UserContext();
-
-        // When
-        assertThrows(PlayerNotFoundException.class, () -> playerManagementService.deactivatePlayer(null, ctx));
-
-        // Then
-        verify(playerDAO, never()).deactivatePlayer(any());
-    }
 }

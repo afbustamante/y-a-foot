@@ -56,6 +56,7 @@ public interface UserManagementService {
      * @param user User to search
      * @return Generated token
      * @throws LdapException
+     * @throws ApplicationException If an invalid template is found when sending the notification by email
      */
     String createPasswordResetToken(User user) throws LdapException, ApplicationException;
 

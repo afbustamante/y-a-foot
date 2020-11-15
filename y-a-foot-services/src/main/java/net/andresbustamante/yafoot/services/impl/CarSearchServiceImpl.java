@@ -2,6 +2,7 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Car;
 import net.andresbustamante.yafoot.model.Player;
@@ -38,7 +39,7 @@ public class CarSearchServiceImpl implements CarSearchService {
             if (car.getDriver() != null && car.getDriver().getEmail().equals(ctx.getUsername())) {
                 return car;
             } else {
-                throw new ApplicationException("unauthorised.user.error", "Actual user is not allowed to load the " +
+                throw new UserNotAuthorisedException("Actual user is not allowed to load the " +
                         "details for a car");
             }
         }

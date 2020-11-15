@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.config;
+package net.andresbustamante.yafoot.web.config;
 
 import net.andresbustamante.yafoot.web.filters.JwtRequestFilter;
 import net.andresbustamante.yafoot.web.services.JwtUserDetailsService;

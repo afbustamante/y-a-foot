@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.services.impl;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.AuthorisationException;
+import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,7 +105,7 @@ class CarpoolingServiceImplTest extends AbstractServiceTest {
         // When
         when(carDAO.findCarById(anyInt())).thenReturn(car);
         // Then
-        assertThrows(AuthorisationException.class,
+        assertThrows(UserNotAuthorisedException.class,
                 () -> carpoolingService.updateCarpoolingInformation(match, player, car, true, context));
     }
 
@@ -149,7 +149,7 @@ class CarpoolingServiceImplTest extends AbstractServiceTest {
         when(carDAO.findCarById(anyInt())).thenReturn(car);
 
         // Then
-        assertThrows(AuthorisationException.class,
+        assertThrows(UserNotAuthorisedException.class,
                 () -> carpoolingService.updateCarpoolingInformation(match, player,  car,false, context));
     }
 

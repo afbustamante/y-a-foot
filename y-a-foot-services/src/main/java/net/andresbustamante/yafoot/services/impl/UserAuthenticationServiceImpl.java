@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
 import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.model.User;
@@ -24,14 +25,14 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     @Transactional
     @Override
-    public User authenticate(User user) throws InvalidCredentialsException {
+    public User authenticate(User user) throws ApplicationException {
         User authenticatedUser = userRepository.authenticateUser(user.getEmail(), user.getPassword());
 
         if (authenticatedUser != null) {
             authenticatedUser.setToken(jwtTokenUtils.generateToken(user.getEmail()));
             return authenticatedUser;
         } else {
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException("Invalid username or password");
         }
     }
 

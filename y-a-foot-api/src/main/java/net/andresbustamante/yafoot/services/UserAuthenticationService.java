@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.services;
 
-import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
+import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.model.User;
 
@@ -15,7 +15,7 @@ public interface UserAuthenticationService {
      * @param user User to authenticate
      * @return Authenticated user including a JWT token
      */
-    User authenticate(User user) throws InvalidCredentialsException;
+    User authenticate(User user) throws ApplicationException;
 
     /**
      * Load a user for authentication by using his email address

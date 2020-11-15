@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.model.PasswordResetDetails;
@@ -61,7 +62,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Override
     public void updateUserPassword(User user, UserContext ctx) throws LdapException, ApplicationException {
         if (!user.getEmail().equals(ctx.getUsername())) {
-            throw new ApplicationException("User not allowed to modify password from another user");
+            throw new UserNotAuthorisedException("User not allowed to modify password from another user");
         }
 
         userRepository.updatePassword(user);
@@ -102,7 +103,7 @@ public class UserManagementServiceImpl implements UserManagementService {
             userRepository.removeTokenForUser(user);
             log.info("Password reset for user {}", user.getEmail());
         } else {
-            throw new ApplicationException("Invalid token used to reset password");
+            throw new UserNotAuthorisedException("Invalid token used to reset password");
         }
     }
 
@@ -111,7 +112,7 @@ public class UserManagementServiceImpl implements UserManagementService {
      *
      * @param token Token to use in the message
      * @param user User to notify
-     * @throws ApplicationException
+     * @throws ApplicationException If an invalid template is used to send the notification
      */
     private void notifyTokenLink(String token, User user) throws ApplicationException {
         String[] params = {};

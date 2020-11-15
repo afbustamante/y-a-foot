@@ -142,7 +142,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
             matchDAO.unregisterPlayer(player, match);
             log.info("Player #{} was unregistered from match #{}", player.getId(), match.getId());
         } else {
-            throw new ApplicationException("Player not registered in this match");
+            throw new ApplicationException("unknown.player.registration.error", "Player not registered in this match");
         }
     }
 

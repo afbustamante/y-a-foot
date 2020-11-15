@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.util.LocaleUtils;
@@ -10,15 +11,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Abstract controller for common RESTful controllers operations
@@ -26,9 +25,6 @@ import java.util.Locale;
  * @author andresbustamante
  */
 public abstract class AbstractController {
-
-    /* Common context headers */
-    protected static final String CTX_MESSAGES = "ctx-messages";
 
     /* Common error messages */
     protected static final String DATABASE_BASIC_ERROR = "database.basic.error";
@@ -45,12 +41,26 @@ public abstract class AbstractController {
      */
     protected ApplicationContext applicationContext;
 
+    private final Logger log = LoggerFactory.getLogger(AbstractController.class);
+
     protected AbstractController(HttpServletRequest request, ApplicationContext applicationContext) {
         this.request = request;
         this.applicationContext = applicationContext;
     }
 
-    private final Logger log = LoggerFactory.getLogger(AbstractController.class);
+    /**
+     * OpenAPI auto-generated method
+     */
+    public Optional<ObjectMapper> getObjectMapper() {
+        return Optional.empty();
+    }
+
+    /**
+     * OpenAPI auto-generated method
+     */
+    public Optional<HttpServletRequest> getRequest() {
+        return Optional.of(request);
+    }
 
     protected URI getLocationURI(String location) {
         try {
@@ -74,17 +84,11 @@ public abstract class AbstractController {
             return userContext;
         } else {
             // Anonymous user
-            throw new ApplicationException("Unable to find a username");
+            throw new ApplicationException(INVALID_USER_ERROR, translate(INVALID_USER_ERROR, null));
         }
     }
 
-    protected MultiValueMap<String, String> buildMessageHeader(String messageCode, String[] messageParameters) {
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.put(CTX_MESSAGES, Collections.singletonList(translate(messageCode, messageParameters)));
-        return headers;
-    }
-
-    private String translate(String messageCode, String[] parameters) {
+    protected String translate(String messageCode, String[] parameters) {
         return applicationContext.getMessage(messageCode, parameters, getUserLocale());
     }
 
