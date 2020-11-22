@@ -10,8 +10,6 @@ import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -45,8 +43,6 @@ public class CarsController extends AbstractController implements CarsApi {
 
     private CarMapper carMapper;
 
-    private final Logger log = LoggerFactory.getLogger(CarsController.class);
-
     @Autowired
     public CarsController(CarSearchService carSearchService, PlayerSearchService playerSearchService,
                           CarManagementService carManagementService,
@@ -72,10 +68,8 @@ public class CarsController extends AbstractController implements CarsApi {
             }
             return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
-            log.error("Error when looking for cars", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
         } catch (ApplicationException e) {
-            log.error("Invalid user context", e);
             throw new ResponseStatusException(BAD_REQUEST, e.getMessage());
         }
     }
@@ -92,14 +86,11 @@ public class CarsController extends AbstractController implements CarsApi {
             }
         } catch (ApplicationException e) {
             if (e.getCode() != null && e.getCode().equals(UNAUTHORISED_USER_ERROR)) {
-                log.error("User not allowed to load a car from another user", e);
                 throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
             } else {
-                log.error("Invalid user", e);
                 throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
             }
         } catch (DatabaseException e) {
-            log.error("Error when looking for cars", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
     }
@@ -112,12 +103,8 @@ public class CarsController extends AbstractController implements CarsApi {
 
             return ResponseEntity.created(URI.create(apiPublicUrl + "/cars/" + carId)).build();
         } catch (DatabaseException e) {
-            String message = "Database exception when registering a new car";
-            log.error(message, e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
-            String message = "Invalid context for player registering a new car";
-            log.error(message, e);
             throw new ResponseStatusException(BAD_REQUEST, e.getMessage());
         }
     }

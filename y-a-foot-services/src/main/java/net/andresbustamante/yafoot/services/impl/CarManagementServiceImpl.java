@@ -34,6 +34,7 @@ public class CarManagementServiceImpl implements CarManagementService {
         Player player = playerDAO.findPlayerByEmail(ctx.getUsername());
         car.setDriver(player);
         carDAO.saveCar(car);
+        log.info("Car successfully added with the ID {}", car.getId());
         return car.getId();
     }
 

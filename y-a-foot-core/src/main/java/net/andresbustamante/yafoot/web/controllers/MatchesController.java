@@ -16,8 +16,6 @@ import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -72,8 +70,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Value("${match.player.api.service.path}")
     private String matchPlayerApiPath;
 
-    private final Logger log = LoggerFactory.getLogger(MatchesController.class);
-
     @Autowired
     public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
                              CarpoolingService carpoolingService,
@@ -102,7 +98,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             }
         } catch (DatabaseException e) {
-            log.error("Database error while looking for a match", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
     }
@@ -118,7 +113,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             }
         } catch (DatabaseException e) {
-            log.error("Database error while looking for a match", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
     }
@@ -141,10 +135,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 return ResponseEntity.ok(Collections.emptyList());
             }
         } catch (DatabaseException e) {
-            log.error("Database error while looking for a player's matches", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
-            log.error("User context error for loading a player's matches", e);
             throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
@@ -160,10 +152,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
             String location = MessageFormat.format(matchApiPath, m.getCode());
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
-            log.error("An error occurred when creating a match", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
-            log.error("An error occurred when recovering context information", e);
             throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
@@ -181,7 +171,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
             if (match == null) {
                 throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             } else if (player == null) {
-                log.warn("Invalid player used while trying to register a player to a match");
                 throw new ResponseStatusException(BAD_REQUEST, translate(UNKNOWN_PLAYER_ERROR,
                         new String[]{reg.getPlayer().getEmail()}));
             }
@@ -191,10 +180,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
             String location = MessageFormat.format(matchPlayerApiPath, match.getCode(), reg.getPlayer().getId());
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
-            log.error("Database error while trying to register a player to a match", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
-            log.error("Application error when registering a player to a match", e);
             throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
@@ -216,21 +203,16 @@ public class MatchesController extends AbstractController implements MatchesApi 
                                 carConfirmation.isConfirmed(), ctx);
                     return ResponseEntity.accepted().build();
                 } else {
-                    log.warn("Invalid player ID detected for player registration update");
                     throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_PLAYER_REGISTRATION_ERROR, null));
                 }
             } else {
-                log.warn("Invalid match code detected for player registration update");
                 throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             }
         } catch (DatabaseException e) {
-            log.error("Database error when updating a registration", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (UserNotAuthorisedException e) {
-            log.error("Authorisation problem when updating carpool details for a registration to a match", e);
             throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
         } catch (ApplicationException e) {
-            log.error("Application error when updating a registration to a match", e);
             throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
@@ -247,17 +229,13 @@ public class MatchesController extends AbstractController implements MatchesApi 
                 matchManagementService.unregisterPlayer(player, match, userContext);
                 return ResponseEntity.noContent().build();
             } else if (match == null) {
-                log.warn("Invalid match code detected for unregistering player");
                 throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             } else {
-                log.warn("Invalid player ID detected for unregistering player");
                 throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_PLAYER_REGISTRATION_ERROR, null));
             }
         } catch (DatabaseException e) {
-            log.error("Database error while unregistering a player from a match", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
-            log.error("Application error when unregistering a player from a match", e);
             throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }

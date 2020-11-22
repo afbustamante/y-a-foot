@@ -64,7 +64,6 @@ public class UsersController extends AbstractController implements UsersApi {
 
             return (user != null) ? ResponseEntity.ok(userMapper.map(user)) : ResponseEntity.notFound().build();
         } catch (LdapException e) {
-            log.error("LDAP error while searching for a user", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         }
     }
@@ -76,10 +75,8 @@ public class UsersController extends AbstractController implements UsersApi {
             userManagementService.createPasswordResetToken(user);
             return ResponseEntity.status(CREATED).build();
         } catch (LdapException e) {
-            log.error("LDAP error while searching for a user", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         } catch (ApplicationException e) {
-            log.error("Application error while generating a new password-reset token", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage(), null);
         }
     }
@@ -106,10 +103,8 @@ public class UsersController extends AbstractController implements UsersApi {
             }
             return ResponseEntity.accepted().build();
         } catch (ApplicationException e) {
-            log.error("User not allowed to perform this operation", e);
             throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
         } catch (LdapException e) {
-            log.error("LDAP error while updating a user's credentials", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         }
     }
