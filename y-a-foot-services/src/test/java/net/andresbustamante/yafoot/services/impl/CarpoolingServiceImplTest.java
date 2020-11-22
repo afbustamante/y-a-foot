@@ -356,4 +356,38 @@ class CarpoolingServiceImplTest extends AbstractServiceTest {
         verify(matchDAO, never()).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), anyBoolean());
         verify(matchDAO, times(2)).resetCarDetails(any(Match.class), any(Player.class));
     }
+
+    @Test
+    void findAvailableCarsByMatchWithCarpoolingEnabled() throws Exception {
+        // Given
+        Match match = new Match(1);
+        match.setCarpoolingEnabled(true);
+
+        Car car1 = new Car(1);
+        Car car2 = new Car(2);
+
+        // When
+        when(carDAO.findCarsByMatch(any(Match.class))).thenReturn(List.of(car1, car2));
+        List<Car> cars = carpoolingService.findAvailableCarsByMatch(match);
+
+        // Then
+        assertNotNull(cars);
+        assertEquals(2, cars.size());
+        verify(carDAO).findCarsByMatch(any(Match.class));
+    }
+
+    @Test
+    void findAvailableCarsByMatchWithCarpoolingDisabled() throws Exception {
+        // Given
+        Match match = new Match(1);
+        match.setCarpoolingEnabled(false);
+
+        // When
+        List<Car> cars = carpoolingService.findAvailableCarsByMatch(match);
+
+        // Then
+        assertNotNull(cars);
+        assertEquals(0, cars.size());
+        verify(carDAO, never()).findCarsByMatch(any(Match.class));
+    }
 }

@@ -39,10 +39,26 @@
     WHERE car_driver_id = #{player.id}
   </select>
 
+  <select id="findCarsByMatch" resultMap="carDetails">
+    SELECT c.car_id                    AS id,
+           c.car_name                  AS name,
+           c.car_num_seats             AS numSeats,
+           COUNT(pm.pma_player_id) - 1 AS numPassengers, -- The driver is excluded from the passenger count
+           d.ply_id                    AS driverId,
+           d.ply_email                 AS driverEmail,
+           d.ply_first_name            AS driverFirstName
+    FROM t_car c
+           JOIN t_player_match pm on c.car_id = pm.pma_car_id
+           JOIN t_player d on c.car_driver_id = d.ply_id
+    WHERE pm.pma_match_id = #{match.id}
+    GROUP BY c.car_id, d.ply_id
+  </select>
+
   <resultMap id="carDetails" type="net.andresbustamante.yafoot.model.Car">
     <id property="id" column="id" />
     <result property="name" column="name" />
     <result property="numSeats" column="numSeats" />
+    <result property="numPassengers" column="numPassengers" />
     <association property="driver" javaType="net.andresbustamante.yafoot.model.Player">
       <id property="id" column="driverId" />
       <result property="firstName" column="driverFirstName" />

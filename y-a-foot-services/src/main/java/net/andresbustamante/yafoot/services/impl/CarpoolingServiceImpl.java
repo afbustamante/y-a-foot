@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +45,16 @@ public class CarpoolingServiceImpl implements CarpoolingService {
         this.carDAO = carDAO;
         this.matchDAO = matchDAO;
         this.messagingService = messagingService;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Car> findAvailableCarsByMatch(Match match) throws DatabaseException {
+        if (match.isCarpoolingEnabled()) {
+            return carDAO.findCarsByMatch(match);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     @Transactional

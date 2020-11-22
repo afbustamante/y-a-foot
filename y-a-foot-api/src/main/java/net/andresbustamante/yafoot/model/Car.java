@@ -18,6 +18,7 @@ public class Car implements Serializable, Identifiable {
     private Integer id;
     private String name;
     private Integer numSeats;
+    private Integer numPassengers;
     private Player driver;
 
     public Car(Integer id) {

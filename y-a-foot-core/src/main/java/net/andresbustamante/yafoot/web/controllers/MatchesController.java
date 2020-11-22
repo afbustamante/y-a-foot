@@ -9,6 +9,7 @@ import net.andresbustamante.yafoot.services.CarpoolingService;
 import net.andresbustamante.yafoot.services.MatchManagementService;
 import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
+import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.web.dto.CarConfirmation;
 import net.andresbustamante.yafoot.web.dto.Match;
 import net.andresbustamante.yafoot.web.dto.Registration;
@@ -155,6 +156,22 @@ public class MatchesController extends AbstractController implements MatchesApi 
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<Car>> findCarsForMatch(String matchCode) {
+        try {
+            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+
+            if (match != null) {
+                List<net.andresbustamante.yafoot.model.Car> cars = carpoolingService.findAvailableCarsByMatch(match);
+                return ResponseEntity.ok(carMapper.map(cars));
+            } else {
+                throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
+            }
+        } catch (DatabaseException e) {
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
     }
 

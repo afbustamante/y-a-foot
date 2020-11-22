@@ -545,6 +545,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /matches/{matchCode}/cars:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+      description: Unique match code
+    get:
+      operationId: findCarsForMatch
+      tags:
+      - matches
+      responses:
+        200: # OK
+          description: List of cars registered for a match
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: Match not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: Database problem while loading data from match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /sites:
     get:
       operationId: loadSites
@@ -764,10 +803,15 @@ components:
       properties:
         id:
           type: integer
+          minimum: 1
         name:
           type: string
         numSeats:
           type: integer
+          minimum: 0
+        numPassengers:
+          type: integer
+          minimum: 0
         driver:
           $ref: '#/components/schemas/Player'
     CarConfirmation:

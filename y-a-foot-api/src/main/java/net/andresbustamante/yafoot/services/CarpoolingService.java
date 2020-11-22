@@ -7,10 +7,21 @@ import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 
+import java.util.List;
+
 /**
  * Carpooling services
  */
 public interface CarpoolingService {
+
+    /**
+     * Finds the list of cars available to carpool for a given match
+     *
+     * @param match Match to search
+     * @return The list of cars registered for the match
+     * @throws DatabaseException
+     */
+    List<Car> findAvailableCarsByMatch(Match match) throws DatabaseException;
 
     /**
      * Update the car used for a registration. If the user performing the action is the owner of the car, the car is

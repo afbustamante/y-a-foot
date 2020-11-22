@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.dao;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.model.Car;
+import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,15 +64,6 @@ class CarDAOTest extends AbstractDAOTest {
     }
 
     @Test
-    void deleteCarsForPlayer() throws Exception {
-        // When
-        int numLines = carDAO.deleteCarsByPlayer(player);
-
-        // Then
-        assertEquals(2, numLines);
-    }
-
-    @Test
     void findCarsByPlayer() throws Exception {
         // Given
         Player player = new Player(1);
@@ -87,5 +79,27 @@ class CarDAOTest extends AbstractDAOTest {
             assertNotNull(car.getName());
             assertNotNull(car.getNumSeats());
         }
+    }
+
+    @Test
+    void findCarsByMatch() throws Exception {
+        // Given
+        Match match = new Match(1);
+        Car car1 = new Car(1001);
+        Car car3 = new Car(1003);
+
+        // When
+        List<Car> cars = carDAO.findCarsByMatch(match);
+
+        // Then
+        assertNotNull(cars);
+        assertEquals(2, cars.size());
+        assertTrue(cars.contains(car1));
+        assertTrue(cars.contains(car3));
+
+        cars.forEach(car -> {
+            assertNotNull(car.getDriver());
+            assertNotNull(car.getDriver().getFirstName());
+        });
     }
 }

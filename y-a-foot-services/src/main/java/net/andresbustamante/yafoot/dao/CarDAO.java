@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.dao;
 
 import net.andresbustamante.yafoot.model.Car;
+import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Player;
 import org.apache.ibatis.annotations.Param;
 
@@ -44,4 +45,12 @@ public interface CarDAO {
      * @return
      */
     List<Car> findCarsByPlayer(@Param(PLAYER) Player player);
+
+    /**
+     * Returs the list of cars registered by players for a given match
+     *
+     * @param match Match to search
+     * @return List of cars found for the match
+     */
+    List<Car> findCarsByMatch(@Param(MATCH) Match match);
 }
