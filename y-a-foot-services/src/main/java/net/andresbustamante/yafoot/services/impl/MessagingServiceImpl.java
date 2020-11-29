@@ -66,7 +66,7 @@ public class MessagingServiceImpl implements MessagingService {
             message.setContent(content, "text/plain; charset=UTF-8");
 
             Transport.send(message);
-            log.info("Message sent");
+            log.info("Message sent to '{}' with the subject '{}'", destinationEmail, subject);
         } catch (UnsupportedEncodingException | MessagingException e) {
             throw new ApplicationException("An error occurred while sending an email", e);
         }

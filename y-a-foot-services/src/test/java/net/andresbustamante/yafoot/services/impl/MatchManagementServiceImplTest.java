@@ -9,6 +9,7 @@ import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.CarpoolingService;
+import net.andresbustamante.yafoot.services.MessagingService;
 import net.andresbustamante.yafoot.services.SiteManagementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -49,6 +51,9 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
     @Mock
     private CarpoolingService carpoolingService;
+
+    @Mock
+    private MessagingService messagingService;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -355,6 +360,33 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // Then
         verify(matchDAO, never()).unregisterPlayer(any(), any());
+    }
+
+    @Test
+    void unregisterPlayerWithAlert() throws Exception {
+        // Given
+        Player player = new Player(1);
+        player.setEmail("test@email.com");
+        player.setPreferredLanguage(Locale.CHINESE.getLanguage());
+
+        Match match = new Match(1);
+        match.setCreator(player);
+        match.setNumPlayersMin(1);
+        match.setDate(OffsetDateTime.now().plusDays(7));
+
+        Registration registration = new Registration(new RegistrationId(1, 1));
+        registration.setPlayer(player);
+        match.setRegistrations(Collections.singletonList(registration));
+        match.setCode("code");
+        UserContext ctx = new UserContext();
+        ctx.setUsername("test@email.com");
+
+        // Then
+        matchManagementService.unregisterPlayer(player, match, ctx);
+
+        // When
+        verify(matchDAO).unregisterPlayer(any(), any());
+        verify(messagingService).sendEmail(anyString(), anyString(), any(String[].class), anyString(), any(MatchAlert.class), any(Locale.class));
     }
 
     @Test

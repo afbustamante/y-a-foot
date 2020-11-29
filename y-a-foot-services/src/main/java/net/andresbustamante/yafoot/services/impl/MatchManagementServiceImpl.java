@@ -7,10 +7,8 @@ import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
-import net.andresbustamante.yafoot.services.CarManagementService;
-import net.andresbustamante.yafoot.services.CarpoolingService;
-import net.andresbustamante.yafoot.services.MatchManagementService;
-import net.andresbustamante.yafoot.services.SiteManagementService;
+import net.andresbustamante.yafoot.services.*;
+import net.andresbustamante.yafoot.util.DateUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * @author andresbustamante
@@ -46,13 +46,16 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     private PlayerDAO playerDAO;
 
+    private MessagingService messagingService;
+
     @Autowired
     public MatchManagementServiceImpl(MatchDAO matchDAO, SiteDAO siteDAO, CarDAO carDAO, PlayerDAO playerDAO,
-                                      SiteManagementService siteManagementService,
+                                      SiteManagementService siteManagementService, MessagingService messagingService,
                                       CarManagementService carManagementService, CarpoolingService carpoolingService) {
         this.matchDAO = matchDAO;
         this.siteDAO = siteDAO;
         this.siteManagementService = siteManagementService;
+        this.messagingService = messagingService;
         this.carDAO = carDAO;
         this.carManagementService = carManagementService;
         this.carpoolingService = carpoolingService;
@@ -136,11 +139,19 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     @Transactional
     @Override
     public void unregisterPlayer(Player player, Match match, UserContext ctx) throws DatabaseException, ApplicationException {
+        // Two players are authorised to unregister a player: himself/herself or the player who created the match
         boolean isUserAuthorised = ctx.getUsername().equals(match.getCreator().getEmail()) || ctx.getUsername().equals(player.getEmail());
+        // A match is impacted when the last player before arriving to the lowest number of players expected quits
+        boolean isMatchImpacted = match.getNumRegisteredPlayers().equals(match.getNumPlayersMin());
 
         if (isUserAuthorised &&  match.isPlayerRegistered(player)) {
             matchDAO.unregisterPlayer(player, match);
             log.info("Player #{} was unregistered from match #{}", player.getId(), match.getId());
+
+            if (isMatchImpacted) {
+                // Send an alert as the match has a number of players below the minimum expected now
+                sendAlertMessage(match);
+            }
         } else {
             throw new ApplicationException("unknown.player.registration.error", "Player not registered in this match");
         }
@@ -216,5 +227,27 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     private String generateMatchCode() {
         log.info("Generating new match code");
         return codeGenerator.generate(CODE_LENGTH);
+    }
+
+    /**
+     * Sends an alert message to the player who created the match to prevent him from an action leading a match to an
+     * imminent danger of being cancelled
+     *
+     * @param match The match concerned by the alert
+     * @throws ApplicationException If a problem comes when sending the alert
+     */
+    private void sendAlertMessage(Match match) throws ApplicationException {
+        String[] parameters = {match.getCode()};
+        String language = match.getCreator().getPreferredLanguage();
+        Locale locale = new Locale(language);
+        String template = "match-cancel-risk-alert-email_" + language + ".ftl";
+
+        MatchAlert alert = new MatchAlert();
+        alert.setCreatorFirstName(match.getCreator().getFirstName());
+        alert.setMatchDate(match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", locale)));
+        alert.setNumMinPlayers(match.getNumPlayersMin());
+
+        messagingService.sendEmail(match.getCreator().getEmail(), "match.cancel.risk.alert.subject", parameters,
+                template, alert, locale);
     }
 }
