@@ -1,0 +1,11 @@
+# Spring config
+spring:
+  profiles:
+    active: "test"
+
+# Security config
+jwt:
+  token:
+    secret: "test"
+    active:
+      minutes: 5
