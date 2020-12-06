@@ -47,20 +47,21 @@
 
     <!-- Java EE / javax -->
     <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-    <jaxb-api.version>2.3.1</jaxb-api.version>
-    <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
-    <javax.activation-api.version>1.2.0</javax.activation-api.version>
-    <javax.validation-api.version>2.0.1.Final</javax.validation-api.version>
+    <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
+    <jaxb-runtime.version>2.3.1</jaxb-runtime.version>
+    <jakarta.annotation-api.version>1.3.5</jakarta.annotation-api.version>
+    <jakarta.activation-api.version>1.2.2</jakarta.activation-api.version>
+    <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
     <javax.mail-api.version>1.6.2</javax.mail-api.version>
 
     <!-- Spring Framework -->
-    <spring.version>5.1.16.RELEASE</spring.version>
+    <spring.version>5.2.11.RELEASE</spring.version>
     <spring-ldap.version>2.3.3.RELEASE</spring-ldap.version>
-    <spring-data.version>2.1.18.RELEASE</spring-data.version>
-    <spring-security.version>5.1.11.RELEASE</spring-security.version>
-    <jackson-databind.version>2.10.4</jackson-databind.version>
-    <jackson-datatype-jsr310.version>2.10.4</jackson-datatype-jsr310.version>
-    <spring-boot.version>2.1.15.RELEASE</spring-boot.version>
+    <spring-data.version>2.2.11.RELEASE</spring-data.version>
+    <spring-security.version>5.2.8.RELEASE</spring-security.version>
+    <jackson-databind.version>2.11.3</jackson-databind.version>
+    <jackson-datatype-jsr310.version>2.11.3</jackson-datatype-jsr310.version>
+    <spring-boot.version>2.2.11.RELEASE</spring-boot.version>
 
     <!-- ZK -->
     <zk.version>8.6.0.1</zk.version>
@@ -81,11 +82,11 @@
     <commons-dbcp2.version>2.2.0</commons-dbcp2.version>
 
     <!-- Tests -->
-    <junit.jupiter.version>5.3.2</junit.jupiter.version>
-    <junit-platform.version>1.3.2</junit-platform.version>
+    <junit.jupiter.version>5.5.2</junit.jupiter.version>
+    <junit-platform.version>1.5.2</junit-platform.version>
     <spring-test-junit5.version>1.5.0</spring-test-junit5.version>
     <spring-test-dbunit.version>1.3.0</spring-test-dbunit.version>
-    <mockito-core.version>3.0.0</mockito-core.version>
+    <mockito-core.version>3.1.0</mockito-core.version>
     <byte-buddy.version>1.9.10</byte-buddy.version>
     <dbunit.version>2.7.0</dbunit.version>
 
@@ -137,24 +138,24 @@
         <version>${javax.servlet-api.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.xml.bind</groupId>
-        <artifactId>jaxb-api</artifactId>
-        <version>${jaxb-api.version}</version>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>${jakarta.xml.bind-api.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.annotation</groupId>
-        <artifactId>javax.annotation-api</artifactId>
-        <version>${javax.annotation-api.version}</version>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+        <version>${jakarta.annotation-api.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.activation</groupId>
-        <artifactId>javax.activation-api</artifactId>
-        <version>${javax.activation-api.version}</version>
+        <groupId>jakarta.activation</groupId>
+        <artifactId>jakarta.activation-api</artifactId>
+        <version>${jakarta.activation-api.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.validation</groupId>
-        <artifactId>validation-api</artifactId>
-        <version>${javax.validation-api.version}</version>
+        <groupId>jakarta.validation</groupId>
+        <artifactId>jakarta.validation-api</artifactId>
+        <version>${jakarta.validation-api.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.mail</groupId>
@@ -169,7 +170,7 @@
       <dependency>
         <groupId>org.glassfish.jaxb</groupId>
         <artifactId>jaxb-runtime</artifactId>
-        <version>${jaxb-api.version}</version>
+        <version>${jaxb-runtime.version}</version>
       </dependency>
 
       <!-- Spring Framework -->
@@ -485,16 +486,6 @@
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
         <version>${junit.jupiter.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.vintage</groupId>
-        <artifactId>junit-vintage-engine</artifactId>
-        <version>${junit.jupiter.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.sbrannen</groupId>
-        <artifactId>spring-test-junit5</artifactId>
-        <version>${spring-test-junit5.version}</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>

@@ -10,12 +10,14 @@ friends, classmates and so on.
 ### Minimum requirements for building
 
 * JDK 11
-* Maven 3.5
+* Maven 3.6
+* PostgreSQL 9.6+
 
 ### Minimum requirements for deploying
 
-* Apache Tomcat 9.0 (for frontend deployment)
-* Wildfly 16 or JBoss EAP 7.2 (for backend deployment)
+* Wildfly 16 or JBoss EAP 7.2
+* PostgreSQL 9.6+
+* OpenLDAP 3
 
 ### LDAP directory structure
 
@@ -74,8 +76,4 @@ For this example, you also should have an outbound socket binding named `mail-sm
 
 ## Application deployment
 
-In order to deploy `y-a-foot`, you must deploy the following artifacts:
-
- * `y-a-foot-core` (backend) as a Spring Boot WAR application on Wildfly or JBoss
- * `y-a-foot-web` (frontend, optional) as a Web application (WAR) on Tomcat, Wildfly or JBoss
- 
+In order to deploy `y-a-foot`, you must deploy `y-a-foot-core` (backend) as a Spring Boot WAR application on Wildfly or JBoss.
