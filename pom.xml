@@ -844,6 +844,7 @@
             <exclude>**/*ViewModel.*</exclude>
             <exclude>**/*UIService.*</exclude>
             <exclude>**/yafoot/model/**</exclude>
+            <exclude>**/yafoot/web/dto/**</exclude>
             <exclude>org/w3/**</exclude>
           </excludes>
         </configuration>
@@ -876,6 +877,8 @@
                 <rule>
                   <element>CLASS</element>
                   <excludes>
+                    <exclude>*Application</exclude>
+                    <exclude>*Filter</exclude>
                     <exclude>*Aspect</exclude>
                     <exclude>*Config</exclude>
                     <exclude>*Constants</exclude>
@@ -884,6 +887,9 @@
                     <exclude>*ViewModel</exclude>
                     <exclude>*UIService</exclude>
                     <exclude>*Mapper</exclude>
+                    <exclude>*MapperImpl</exclude>
+                    <exclude>*Api</exclude>
+                    <exclude>*AuthenticationEntryPoint</exclude>
                   </excludes>
                   <limits>
                     <limit>
