@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
@@ -76,8 +77,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
                              CarpoolingService carpoolingService,
                              MatchManagementService matchManagementService,
                              MatchMapper matchMapper, RegistrationMapper registrationMapper, CarMapper carMapper,
-                             HttpServletRequest request, ApplicationContext applicationContext) {
-        super(request, applicationContext);
+                             HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {
+        super(request, objectMapper, applicationContext);
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
         this.playerSearchService = playerSearchService;

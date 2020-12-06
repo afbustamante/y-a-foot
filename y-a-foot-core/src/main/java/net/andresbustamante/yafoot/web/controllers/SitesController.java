@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
@@ -49,8 +50,8 @@ public class SitesController extends AbstractController implements SitesApi {
     @Autowired
     public SitesController(SiteSearchService siteSearchService, SiteManagementService siteManagementService,
                            PlayerSearchService playerSearchService, SiteMapper siteMapper, HttpServletRequest request,
-                           ApplicationContext applicationContext) {
-        super(request, applicationContext);
+                           ObjectMapper objectMapper, ApplicationContext applicationContext) {
+        super(request, objectMapper, applicationContext);
         this.siteSearchService = siteSearchService;
         this.siteManagementService = siteManagementService;
         this.playerSearchService = playerSearchService;

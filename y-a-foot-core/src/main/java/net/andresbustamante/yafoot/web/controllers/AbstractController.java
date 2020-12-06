@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.UserContext;
@@ -43,18 +44,22 @@ public abstract class AbstractController {
      */
     protected ApplicationContext applicationContext;
 
+    protected ObjectMapper objectMapper;
+
     private final Logger log = LoggerFactory.getLogger(AbstractController.class);
 
-    protected AbstractController(HttpServletRequest request, ApplicationContext applicationContext) {
+    protected AbstractController(HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {
         this.request = request;
         this.applicationContext = applicationContext;
+        this.objectMapper = objectMapper;
+        this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     /**
      * OpenAPI auto-generated method
      */
     public Optional<ObjectMapper> getObjectMapper() {
-        return Optional.empty();
+        return Optional.of(objectMapper);
     }
 
     /**

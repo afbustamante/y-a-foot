@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
 import net.andresbustamante.yafoot.services.UserAuthenticationService;
@@ -34,8 +35,8 @@ public class UsersController extends AbstractController implements UsersApi {
     @Autowired
     public UsersController(UserAuthenticationService userAuthenticationService, UserMapper userMapper,
                            UserManagementService userManagementService,
-                           HttpServletRequest request, ApplicationContext applicationContext) {
-        super(request, applicationContext);
+                           HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {
+        super(request, objectMapper, applicationContext);
         this.userAuthenticationService = userAuthenticationService;
         this.userManagementService = userManagementService;
         this.userMapper = userMapper;

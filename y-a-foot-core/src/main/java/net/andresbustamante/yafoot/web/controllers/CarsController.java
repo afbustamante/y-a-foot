@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.Player;
@@ -46,8 +47,9 @@ public class CarsController extends AbstractController implements CarsApi {
     @Autowired
     public CarsController(CarSearchService carSearchService, PlayerSearchService playerSearchService,
                           CarManagementService carManagementService,
-                          CarMapper carMapper, HttpServletRequest request, ApplicationContext applicationContext) {
-        super(request, applicationContext);
+                          CarMapper carMapper, HttpServletRequest request, ObjectMapper objectMapper,
+                          ApplicationContext applicationContext) {
+        super(request, objectMapper, applicationContext);
         this.carSearchService = carSearchService;
         this.playerSearchService = playerSearchService;
         this.carManagementService = carManagementService;

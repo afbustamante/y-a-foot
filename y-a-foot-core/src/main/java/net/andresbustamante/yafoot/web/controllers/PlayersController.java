@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.web.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
@@ -41,9 +42,9 @@ public class PlayersController extends AbstractController implements PlayersApi 
 
     @Autowired
     public PlayersController(PlayerManagementService playerManagementService, PlayerSearchService playerSearchService,
-                             PlayerMapper playerMapper, HttpServletRequest request,
+                             PlayerMapper playerMapper, HttpServletRequest request, ObjectMapper objectMapper,
                              ApplicationContext applicationContext) {
-        super(request, applicationContext);
+        super(request, objectMapper, applicationContext);
         this.playerManagementService = playerManagementService;
         this.playerSearchService = playerSearchService;
         this.playerMapper = playerMapper;
