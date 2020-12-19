@@ -43,5 +43,5 @@ public interface PlayerManagementService {
      * @throws DatabaseException
      * @throws LdapException
      */
-    void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
+    void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException;
 }

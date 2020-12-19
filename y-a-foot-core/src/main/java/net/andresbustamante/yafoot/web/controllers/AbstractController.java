@@ -2,11 +2,9 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.util.LocaleUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Optional;
@@ -46,7 +43,8 @@ public abstract class AbstractController {
 
     protected ObjectMapper objectMapper;
 
-    private final Logger log = LoggerFactory.getLogger(AbstractController.class);
+    @Value("${api.public.url}")
+    protected String apiPublicUrl;
 
     protected AbstractController(HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {
         this.request = request;
@@ -70,29 +68,18 @@ public abstract class AbstractController {
     }
 
     protected URI getLocationURI(String location) {
-        try {
-            return new URI(location);
-        } catch (URISyntaxException e) {
-            log.error("An error occurred while building a location URI for a new resource", e);
-            return null;
-        }
+        return URI.create(apiPublicUrl + location);
     }
 
-    protected UserContext getUserContext(HttpServletRequest request) throws ApplicationException {
+    protected UserContext getUserContext(HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            // User successfully authenticated
-            String username = authentication.getName();
-            String timeZone = request.getHeader(UserContext.TZ);
+        String username = (authentication instanceof AnonymousAuthenticationToken) ? "anonymous" : authentication.getName();
+        String timeZone = request.getHeader(UserContext.TZ);
 
-            UserContext userContext = new UserContext(username);
-            userContext.setTimezone(timeZone != null ? ZoneId.of(timeZone) : ZoneId.systemDefault());
-            return userContext;
-        } else {
-            // Anonymous user
-            throw new ApplicationException(INVALID_USER_ERROR, translate(INVALID_USER_ERROR, null));
-        }
+        UserContext userContext = new UserContext(username);
+        userContext.setTimezone(timeZone != null ? ZoneId.of(timeZone) : ZoneId.systemDefault());
+        return userContext;
     }
 
     protected String translate(String messageCode, String[] parameters) {

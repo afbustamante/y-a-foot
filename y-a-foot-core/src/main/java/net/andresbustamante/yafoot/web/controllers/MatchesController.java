@@ -34,6 +34,7 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
@@ -69,8 +70,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Value("${match.api.service.path}")
     private String matchApiPath;
 
-    @Value("${match.player.api.service.path}")
-    private String matchPlayerApiPath;
+    @Value("${match.registration.api.service.path}")
+    private String matchRegistrationApiPath;
 
     @Autowired
     public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
@@ -122,6 +123,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Override
     public ResponseEntity<List<Match>> findMatches(@DateTimeFormat(iso = DATE) LocalDate startDate,
                                                    @DateTimeFormat(iso = DATE) LocalDate endDate) {
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            return ResponseEntity.badRequest().build();
+        }
+
         try {
             UserContext ctx = getUserContext(request);
 
@@ -138,8 +143,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
             }
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 
@@ -195,7 +198,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
             matchManagementService.registerPlayer(player, match, reg.getCar(), userContext);
 
-            String location = MessageFormat.format(matchPlayerApiPath, match.getCode(), reg.getPlayer().getId());
+            String location = MessageFormat.format(matchRegistrationApiPath, match.getCode(), reg.getPlayer().getId());
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
@@ -209,13 +212,18 @@ public class MatchesController extends AbstractController implements MatchesApi 
         try {
             net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
-            if (match != null) {
-                List<net.andresbustamante.yafoot.model.Registration> playerRegistrations = match.getRegistrations().stream().filter(
-                        reg -> reg.getPlayer().getId().equals(playerId)).collect(Collectors.toList());
+            if (match != null && match.getRegistrations() != null) {
+                Player player = playerSearchService.findPlayerById(playerId);
 
-                if (CollectionUtils.isNotEmpty(playerRegistrations)) {
+                if (player == null) {
+                    throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_PLAYER_REGISTRATION_ERROR, null));
+                }
+
+                Optional<net.andresbustamante.yafoot.model.Registration> registration = match.getRegistrations().stream().filter(
+                        reg -> reg.getPlayer().equals(player)).findFirst();
+
+                if (registration.isPresent()) {
                     UserContext ctx = getUserContext(request);
-                    Player player = playerRegistrations.get(0).getPlayer(); // It must be always the first and the only one
 
                     carpoolingService.updateCarpoolingInformation(match, player, carMapper.map(carConfirmation.getCar()),
                                 carConfirmation.isConfirmed(), ctx);

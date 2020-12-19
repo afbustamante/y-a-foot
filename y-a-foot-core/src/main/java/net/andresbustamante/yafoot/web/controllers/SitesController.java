@@ -69,15 +69,11 @@ public class SitesController extends AbstractController implements SitesApi {
             List<Site> result = new ArrayList<>();
 
             if (CollectionUtils.isNotEmpty(sites)) {
-                for (net.andresbustamante.yafoot.model.Site site : sites) {
-                    result.add(siteMapper.map(site));
-                }
+                result.addAll(siteMapper.map(sites));
             }
             return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 
@@ -92,8 +88,6 @@ public class SitesController extends AbstractController implements SitesApi {
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
         }
     }
 }

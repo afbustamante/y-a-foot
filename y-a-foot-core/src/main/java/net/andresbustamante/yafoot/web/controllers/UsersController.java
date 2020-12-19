@@ -55,6 +55,8 @@ public class UsersController extends AbstractController implements UsersApi {
             return ResponseEntity.accepted().body(userMapper.map(authenticatedUser));
         } catch (ApplicationException e) {
             throw new ResponseStatusException(UNAUTHORIZED, translate(e.getCode(), null));
+        } catch (LdapException e) {
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         }
     }
 
@@ -73,11 +75,17 @@ public class UsersController extends AbstractController implements UsersApi {
     public ResponseEntity<Void> generatePasswordResetToken(String email) {
         try {
             net.andresbustamante.yafoot.model.User user = userAuthenticationService.findUserByEmail(email);
-            userManagementService.createPasswordResetToken(user);
-            return ResponseEntity.status(CREATED).build();
+
+            if (user != null) {
+                userManagementService.createPasswordResetToken(user);
+                return ResponseEntity.status(CREATED).build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } catch (LdapException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         } catch (ApplicationException e) {
+            // Error while sending email message
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage(), null);
         }
     }

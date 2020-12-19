@@ -344,6 +344,10 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
           </exclusion>
+          <exclusion>
+            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.junit.vintage</groupId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -861,7 +865,7 @@
                     <limit>
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.70</minimum>
+                      <minimum>0.66</minimum>
                     </limit>
                   </limits>
                 </rule>

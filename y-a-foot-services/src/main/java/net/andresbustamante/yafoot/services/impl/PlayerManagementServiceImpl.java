@@ -63,7 +63,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public void updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
+    public void updatePlayer(Player player, UserContext userContext) throws LdapException, ApplicationException {
         Player existingPlayer = playerDAO.findPlayerByEmail(player.getEmail());
         boolean needsDirectoryUpdate = false;
 
@@ -93,7 +93,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
+    public void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException {
         // Delete all data from player
         matchManagementService.unregisterPlayerFromAllMatches(player, userContext);
         carManagementService.deleteCarsByPlayer(player, userContext);

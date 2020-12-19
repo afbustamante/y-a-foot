@@ -12,7 +12,6 @@ import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +30,6 @@ import static org.springframework.http.HttpStatus.*;
 public class CarsController extends AbstractController implements CarsApi {
 
     private static final String CAR_NOT_FOUND_ERROR = "car.not.found.error";
-
-    @Value("api.public.url")
-    private String apiPublicUrl;
 
     private CarSearchService carSearchService;
 
@@ -71,8 +66,6 @@ public class CarsController extends AbstractController implements CarsApi {
             return ResponseEntity.ok(result);
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(BAD_REQUEST, e.getMessage());
         }
     }
 
@@ -103,11 +96,9 @@ public class CarsController extends AbstractController implements CarsApi {
         try {
             int carId = carManagementService.saveCar(carMapper.map(car), getUserContext(request));
 
-            return ResponseEntity.created(URI.create(apiPublicUrl + "/cars/" + carId)).build();
+            return ResponseEntity.created(getLocationURI("/cars/" + carId)).build();
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(BAD_REQUEST, e.getMessage());
         }
     }
 }

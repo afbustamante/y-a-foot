@@ -81,9 +81,13 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
                 log.info("Carpool update for match #{}: Player #{} confirmation modified for car #{}", match.getId(),
                         player.getId(), car.getId());
+            } else if (storedCar == null) {
+                throw new ApplicationException("car.not.found.error", "No car found for the given ID");
             } else {
                 throw new UserNotAuthorisedException("User not allowed to update carpooling details for registration");
             }
+        } else {
+            throw new ApplicationException("car.not.found.error", "No car found as no valid ID was used");
         }
     }
 

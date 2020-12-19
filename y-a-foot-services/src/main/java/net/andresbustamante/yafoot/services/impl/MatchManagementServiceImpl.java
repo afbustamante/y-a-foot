@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -66,6 +67,11 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     @Override
     public Integer saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
         String matchCode;
+
+        if (match.getDate().isBefore(OffsetDateTime.now())) {
+            throw new ApplicationException("match.past.date.error", "A match cannot be planned in the past");
+        }
+
         boolean isCodeAlreadyInUse;
         do {
             matchCode = generateMatchCode();

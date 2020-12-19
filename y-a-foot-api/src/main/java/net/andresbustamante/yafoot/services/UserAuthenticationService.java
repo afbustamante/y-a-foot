@@ -15,7 +15,7 @@ public interface UserAuthenticationService {
      * @param user User to authenticate
      * @return Authenticated user including a JWT token
      */
-    User authenticate(User user) throws ApplicationException;
+    User authenticate(User user) throws LdapException, ApplicationException;
 
     /**
      * Load a user for authentication by using his email address
