@@ -8,7 +8,6 @@ import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.*;
-import net.andresbustamante.yafoot.util.DateUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

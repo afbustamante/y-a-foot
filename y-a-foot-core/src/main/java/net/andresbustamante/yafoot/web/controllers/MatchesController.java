@@ -2,8 +2,8 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.services.CarpoolingService;
@@ -35,7 +35,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import static org.springframework.http.HttpStatus.*;

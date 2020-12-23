@@ -83,10 +83,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
         } catch (DatabaseException | LdapException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
-            if (e instanceof PlayerNotFoundException) {
-                return ResponseEntity.notFound().build();
-            }
-            throw new ResponseStatusException(BAD_REQUEST, translate(INVALID_USER_ERROR, null));
+            return ResponseEntity.notFound().build();
         }
     }
 

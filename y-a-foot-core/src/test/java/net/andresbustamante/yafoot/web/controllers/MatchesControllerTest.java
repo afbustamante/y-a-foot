@@ -10,6 +10,8 @@ import net.andresbustamante.yafoot.services.MatchSearchService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.CarConfirmation;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -76,15 +78,16 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    @Test
-    void loadMatchByUnknownCode() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {"/matches/{0}", "/matches/{0}/registrations", "/matches/{0}/cars"})
+    void loadMatchByUnknownCode(String path) throws Exception {
         // Given
         String matchCode = "code";
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
 
         // When
-        mvc.perform(get("/matches/{0}", matchCode)
+        mvc.perform(get(path, matchCode)
                 .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -130,22 +133,6 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    void loadUnknownMatchRegistrations() throws Exception {
-        // Given
-        String matchCode = "code";
-
-        given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
-
-        // When
-        mvc.perform(get("/matches/{0}/registrations", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                // Then
-                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -357,22 +344,6 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    void findCarsForUnknownMatch() throws Exception {
-        // Given
-        String matchCode = "code";
-
-        given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
-
-        // When
-        mvc.perform(get("/matches/{0}/cars", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                // Then
-                .andExpect(status().isNotFound());
     }
 
     @Test

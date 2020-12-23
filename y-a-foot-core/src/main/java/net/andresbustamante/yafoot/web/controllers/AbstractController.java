@@ -28,7 +28,6 @@ public abstract class AbstractController {
 
     /* Common error messages */
     protected static final String DATABASE_BASIC_ERROR = "database.basic.error";
-    protected static final String INVALID_USER_ERROR = "invalid.user.error";
     protected static final String UNAUTHORISED_USER_ERROR = "unauthorised.user.error";
 
     /**
@@ -91,7 +90,7 @@ public abstract class AbstractController {
 
         if (acceptedLanguages != null) {
             // Example: es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3
-            String[] headerParts = acceptedLanguages.split("(,|;)");
+            String[] headerParts = acceptedLanguages.split("([,;])");
 
             for (String part : headerParts) {
                 // Return the first supported locale found in the list
