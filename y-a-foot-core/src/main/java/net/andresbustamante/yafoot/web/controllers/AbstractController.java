@@ -4,15 +4,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.util.LocaleUtils;
+import net.andresbustamante.yafoot.web.dto.ErrorResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 import java.net.URI;
 import java.time.ZoneId;
 import java.util.Locale;
@@ -24,6 +32,7 @@ import java.util.Optional;
  * @author andresbustamante
  */
 @CrossOrigin
+@Validated
 public abstract class AbstractController {
 
     /* Common error messages */
@@ -52,18 +61,10 @@ public abstract class AbstractController {
         this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
-    /**
-     * OpenAPI auto-generated method
-     */
-    public Optional<ObjectMapper> getObjectMapper() {
-        return Optional.of(objectMapper);
-    }
-
-    /**
-     * OpenAPI auto-generated method
-     */
-    public Optional<HttpServletRequest> getRequest() {
-        return Optional.of(request);
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     protected URI getLocationURI(String location) {
@@ -110,5 +111,19 @@ public abstract class AbstractController {
             }
         }
         return LocaleUtils.DEFAULT_LOCALE;
+    }
+
+    /**
+     * OpenAPI auto-generated method
+     */
+    public Optional<ObjectMapper> getObjectMapper() {
+        return Optional.of(objectMapper);
+    }
+
+    /**
+     * OpenAPI auto-generated method
+     */
+    public Optional<HttpServletRequest> getRequest() {
+        return Optional.of(request);
     }
 }

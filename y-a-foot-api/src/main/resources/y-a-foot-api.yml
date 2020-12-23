@@ -185,6 +185,7 @@ paths:
         required: true
         schema:
           type: string
+          format: email
         description: Email address to identify a player
       tags:
       - players
@@ -247,6 +248,7 @@ paths:
       required: true
       schema:
         type: integer
+        minimum: 1
       description: Player's numeric identifier
     put:
       operationId: updatePlayer
@@ -370,6 +372,7 @@ paths:
       required: true
       schema:
         type: string
+        pattern: ^[A-Z]{10}$
       description: Unique match code
     get:
       operationId: loadMatchByCode
@@ -402,6 +405,7 @@ paths:
       required: true
       schema:
         type: string
+        pattern: ^[A-Z]{10}$
       description: Unique match code
     get:
       operationId: loadMatchRegistrations
@@ -475,12 +479,14 @@ paths:
       required: true
       schema:
         type: string
+        pattern: ^[A-Z]{10}$
       description: Unique match code
     - in: path
       name: playerId
       required: true
       schema:
         type: integer
+        minimum: 1
       description: Unique player ID
     patch:
       operationId: updateCarForRegistration
@@ -552,6 +558,7 @@ paths:
       required: true
       schema:
         type: string
+        pattern: ^[A-Z]{10}$
       description: Unique match code
     get:
       operationId: findCarsForMatch
@@ -699,6 +706,7 @@ paths:
       required: true
       schema:
         type: integer
+        minimum: 1
       description: Unique car identifier
     get:
       operationId: loadCar
@@ -751,10 +759,13 @@ components:
           format: byte
         token:
           type: string
+          pattern: ^[A-Z0-9]{8,16}$
         firstName:
           type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
         surname:
           type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
     Credentials:
       type: object
       required:
@@ -769,6 +780,7 @@ components:
           format: byte
         validationToken:
           type: string
+          pattern: ^[0-9A-F]{10,16}$
         oldPassword:
           type: string
           format: byte
@@ -781,6 +793,7 @@ components:
               type: integer
             phoneNumber:
               type: string
+              pattern: ^[+]?[0-9\-\(\) ]{6,15}$
     Site:
       type: object
       required:
@@ -790,10 +803,13 @@ components:
           type: integer
         name:
           type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\& ]{1,255}$
         address:
           type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\, ]{1,255}$
         phoneNumber:
           type: string
+          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
         location:
           $ref: '#/components/schemas/GpsCoordinates'
     Car:
@@ -806,6 +822,7 @@ components:
           minimum: 1
         name:
           type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\& ]{1,255}$
         numSeats:
           type: integer
           minimum: 0
@@ -849,12 +866,16 @@ components:
           format: date-time
         description:
           type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\, ]{1,1024}$
         numPlayersMin:
           type: integer
+          minimum: 0
         numPlayersMax:
           type: integer
+          minimum: 2
         numRegisteredPlayers:
           type: integer
+          minimum: 0
         site:
           $ref: '#/components/schemas/Site'
         creator:
@@ -886,6 +907,10 @@ components:
           type: string
     ErrorResponse:
       type: object
+      required:
+      - timestamp
+      - error
+      - message
       properties:
         timestamp:
           type: string

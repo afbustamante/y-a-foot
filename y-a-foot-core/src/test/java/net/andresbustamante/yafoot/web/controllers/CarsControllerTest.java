@@ -173,7 +173,7 @@ class CarsControllerTest extends AbstractControllerTest {
     @Test
     void addNewCar() throws Exception {
         // Given
-        Car car = new Car();
+        net.andresbustamante.yafoot.web.dto.Car car = new net.andresbustamante.yafoot.web.dto.Car();
         car.setName("Car 1");
         car.setNumSeats(4);
 
@@ -196,7 +196,7 @@ class CarsControllerTest extends AbstractControllerTest {
     @Test
     void addNewCarWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        Car car = new Car();
+        net.andresbustamante.yafoot.web.dto.Car car = new net.andresbustamante.yafoot.web.dto.Car();
         car.setName("Car 1");
         car.setNumSeats(4);
 

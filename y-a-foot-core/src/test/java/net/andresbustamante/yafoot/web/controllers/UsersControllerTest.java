@@ -42,14 +42,16 @@ class UsersControllerTest extends AbstractControllerTest {
     void authenticateValidUser() throws Exception {
         // Given
         String email = VALID_EMAIL;
-        Credentials credentials = new Credentials().username(email).password("passwd".getBytes());
+        net.andresbustamante.yafoot.web.dto.User user = new net.andresbustamante.yafoot.web.dto.User();
+        user.setEmail(email);
+        user.setPassword("passwd".getBytes());
         User testUser = new User(email, "passwd", "DOE", "Joe");
 
         given(userAuthenticationService.authenticate(any(User.class))).willReturn(testUser);
 
         // When
         mvc.perform(put("/users/{0}/auth", email)
-                .content(objectMapper.writeValueAsString(credentials))
+                .content(objectMapper.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -61,7 +63,9 @@ class UsersControllerTest extends AbstractControllerTest {
     void authenticateInvalidPassword() throws Exception {
         // Given
         String email = VALID_EMAIL;
-        Credentials credentials = new Credentials().username(email).password("wrong".getBytes());
+        net.andresbustamante.yafoot.web.dto.User user = new net.andresbustamante.yafoot.web.dto.User();
+        user.setEmail(email);
+        user.setPassword("wrong".getBytes());
 
         InvalidCredentialsException exception = new InvalidCredentialsException("Error");
 
@@ -69,7 +73,7 @@ class UsersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(put("/users/{0}/auth", email)
-                .content(objectMapper.writeValueAsString(credentials))
+                .content(objectMapper.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -80,13 +84,15 @@ class UsersControllerTest extends AbstractControllerTest {
     void authenticateUserWhileLdapDirectoryIsUnavailable() throws Exception {
         // Given
         String email = VALID_EMAIL;
-        Credentials credentials = new Credentials().username(email).password("wrong".getBytes());
+        net.andresbustamante.yafoot.web.dto.User user = new net.andresbustamante.yafoot.web.dto.User();
+        user.setEmail(email);
+        user.setPassword("wrong".getBytes());
 
         given(userAuthenticationService.authenticate(any(User.class))).willThrow(LdapException.class);
 
         // When
         mvc.perform(put("/users/{0}/auth", email)
-                .content(objectMapper.writeValueAsString(credentials))
+                .content(objectMapper.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -97,7 +103,9 @@ class UsersControllerTest extends AbstractControllerTest {
     void authenticateInvalidUsername() throws Exception {
         // Given
         String email = "doe.john@email.com";
-        Credentials credentials = new Credentials().username(email).password("passwd".getBytes());
+        net.andresbustamante.yafoot.web.dto.User user = new net.andresbustamante.yafoot.web.dto.User();
+        user.setEmail(email);
+        user.setPassword("passwd".getBytes());
 
         InvalidCredentialsException exception = new InvalidCredentialsException("Error");
 
@@ -105,7 +113,7 @@ class UsersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(put("/users/{0}/auth", email)
-                .content(objectMapper.writeValueAsString(credentials))
+                .content(objectMapper.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -116,13 +124,15 @@ class UsersControllerTest extends AbstractControllerTest {
     void authenticateUnknownUser() throws Exception {
         // Given
         String email = "doe.john@email.com";
-        Credentials credentials = new Credentials().username(email).password("passwd".getBytes());
+        net.andresbustamante.yafoot.web.dto.User user = new net.andresbustamante.yafoot.web.dto.User();
+        user.setEmail(email);
+        user.setPassword("passwd".getBytes());
 
         given(userAuthenticationService.authenticate(any(User.class))).willReturn(null);
 
         // When
         mvc.perform(put("/users/{0}/auth", email)
-                .content(objectMapper.writeValueAsString(credentials))
+                .content(objectMapper.writeValueAsString(user))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -138,7 +148,7 @@ class UsersControllerTest extends AbstractControllerTest {
         given(userAuthenticationService.findUserByToken(anyString())).willReturn(testUser);
 
         // When
-        mvc.perform(get("/users?token={0}", "token")
+        mvc.perform(get("/users?token={0}", "ABCDEF0123456789")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -152,7 +162,7 @@ class UsersControllerTest extends AbstractControllerTest {
         given(userAuthenticationService.findUserByToken(anyString())).willReturn(null);
 
         // When
-        mvc.perform(get("/users?token={0}", "token")
+        mvc.perform(get("/users?token={0}", "ABCDEF0123456789")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -165,7 +175,7 @@ class UsersControllerTest extends AbstractControllerTest {
         given(userAuthenticationService.findUserByToken(anyString())).willThrow(LdapException.class);
 
         // When
-        mvc.perform(get("/users?token={0}", "token")
+        mvc.perform(get("/users?token={0}", "ABCDEF0123456789")
                 .header(ACCEPT_LANGUAGE, "es-ES,es;q=0.8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -179,7 +189,7 @@ class UsersControllerTest extends AbstractControllerTest {
         given(userAuthenticationService.findUserByToken(anyString())).willThrow(LdapException.class);
 
         // When
-        mvc.perform(get("/users?token={0}", "token")
+        mvc.perform(get("/users?token={0}", "ABCDEF0123456789")
                 .header(ACCEPT_LANGUAGE, "zh-CN,zh;q=0.8")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -193,7 +203,7 @@ class UsersControllerTest extends AbstractControllerTest {
         given(userAuthenticationService.findUserByToken(anyString())).willThrow(LdapException.class);
 
         // When
-        mvc.perform(get("/users?token={0}", "token")
+        mvc.perform(get("/users?token={0}", "ABCDEF0123456789")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -273,12 +283,12 @@ class UsersControllerTest extends AbstractControllerTest {
     @Test
     void updateUserCredentialsWithValidationToken() throws Exception {
         // Given
-        String email = "john.doen@email.com";
+        String email = VALID_EMAIL;
         User user = new User(email, "passwd", "DOE", "Joe");
         Credentials credentials = new Credentials()
                 .username(email)
                 .password("newPasswd".getBytes())
-                .validationToken("token");
+                .validationToken("ABCDEF12345678");
 
         given(userAuthenticationService.findUserByEmail(anyString())).willReturn(user);
 

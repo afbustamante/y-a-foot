@@ -103,7 +103,10 @@ class SitesControllerTest extends AbstractControllerTest {
     @Test
     void addNewSite() throws Exception {
         // Given
-        Site site = new Site("Site name", "Fake Address", "01234567890", null);
+        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
+        site.setName("Site name");
+        site.setAddress("123 Fake Address");
+        site.setPhoneNumber("01234567890");
         Integer id = 1;
 
         given(siteManagementService.saveSite(any(Site.class), any(UserContext.class))).willReturn(id);
@@ -123,7 +126,10 @@ class SitesControllerTest extends AbstractControllerTest {
     @Test
     void addNewSiteWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        Site site = new Site("Site name", "Fake Address", "01234567890", null);
+        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
+        site.setName("Site name");
+        site.setAddress("123 Fake Address");
+        site.setPhoneNumber("01234567890");
 
         given(siteManagementService.saveSite(any(Site.class), any(UserContext.class))).willThrow(DatabaseException.class);
 
@@ -135,5 +141,21 @@ class SitesControllerTest extends AbstractControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void addNewInvalidSite() throws Exception {
+        // Given
+        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
+        site.setId(1);
+
+        // When
+        mvc.perform(post("/sites")
+                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
+                .content(objectMapper.writeValueAsString(site))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isBadRequest());
     }
 }
