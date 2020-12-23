@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.exceptions.PlayerNotFoundException;
 import net.andresbustamante.yafoot.services.PlayerManagementService;
 import net.andresbustamante.yafoot.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Player;
