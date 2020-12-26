@@ -12,7 +12,7 @@ public class LdapConstants {
     public static final String TOKEN = "description";
     public static final String MEMBER = "member";
     public static final String USER_PASSWORD = "userPassword";
-    public static final String PASSWORD_PREFIX = "{BCRYPT}";
+    public static final String PWD_PREFIX = "{BCRYPT}";
 
     private LdapConstants() {}
 }
