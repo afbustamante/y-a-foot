@@ -11,7 +11,7 @@ import org.springframework.ldap.test.unboundid.EmbeddedLdapServerFactoryBean;
 import org.springframework.ldap.test.unboundid.LdifPopulator;
 
 @Configuration
-@ComponentScan(basePackages = {"net.andresbustamante.yafoot.ldap"})
+@ComponentScan(basePackages = {"net.andresbustamante.yafoot.ldap", "net.andresbustamante.yafoot.util"})
 @PropertySource("classpath:application.properties")
 public class LdapTestConfig {
 

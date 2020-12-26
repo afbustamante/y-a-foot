@@ -6,6 +6,8 @@ import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,8 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     private JwtTokenUtils jwtTokenUtils;
 
     private UserRepository userRepository;
+
+    private final Logger log = LoggerFactory.getLogger(UserAuthenticationServiceImpl.class);
 
     @Autowired
     public UserAuthenticationServiceImpl(JwtTokenUtils jwtTokenUtils, UserRepository userRepository) {
@@ -30,6 +34,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
         if (authenticatedUser != null) {
             authenticatedUser.setToken(jwtTokenUtils.generateToken(user.getEmail()));
+            log.info("User {} successfully authenticated", user.getEmail());
             return authenticatedUser;
         } else {
             throw new InvalidCredentialsException("Invalid username or password");

@@ -1,11 +1,11 @@
 package net.andresbustamante.yafoot.web.config;
 
+import net.andresbustamante.yafoot.util.LdapPasswordEncoder;
 import net.andresbustamante.yafoot.web.filters.JwtRequestFilter;
 import net.andresbustamante.yafoot.web.services.JwtUserDetailsService;
 import net.andresbustamante.yafoot.web.util.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
@@ -15,8 +15,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -37,23 +35,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtRequestFilter jwtRequestFilter;
 
+    private LdapPasswordEncoder ldapPasswordEncoder;
+
     @Autowired
     public WebSecurityConfig(JwtUserDetailsService jwtUserDetailsService,
                              JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                             JwtRequestFilter jwtRequestFilter) {
+                             JwtRequestFilter jwtRequestFilter, LdapPasswordEncoder ldapPasswordEncoder) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtRequestFilter = jwtRequestFilter;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new LdapShaPasswordEncoder();
+        this.ldapPasswordEncoder = ldapPasswordEncoder;
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(ldapPasswordEncoder);
     }
 
     @Override

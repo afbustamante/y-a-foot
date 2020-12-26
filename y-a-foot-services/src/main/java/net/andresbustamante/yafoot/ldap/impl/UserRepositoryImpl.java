@@ -1,8 +1,10 @@
 package net.andresbustamante.yafoot.ldap.impl;
 
-import net.andresbustamante.yafoot.ldap.*;
+import net.andresbustamante.yafoot.ldap.LdapUserMapper;
+import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.util.LdapPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,9 +14,10 @@ import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.Name;
-import javax.naming.directory.*;
-import javax.naming.ldap.ExtendedRequest;
-import javax.naming.ldap.LdapContext;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,10 +36,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     private LdapUserMapper ldapUserMapper;
 
+    private LdapPasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserRepositoryImpl(LdapTemplate ldapTemplate, LdapUserMapper ldapUserMapper) {
+    public UserRepositoryImpl(LdapTemplate ldapTemplate, LdapUserMapper ldapUserMapper, LdapPasswordEncoder passwordEncoder) {
         this.ldapTemplate = ldapTemplate;
         this.ldapUserMapper = ldapUserMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -73,17 +79,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User authenticateUser(String uid, String password) {
-        try {
-            boolean authenticated = ldapTemplate.authenticate(usersDn, "(uid=" + uid + ")", password);
+        User user = new User(uid);
+        user = findUserByUid(getUid(user).toString());
 
-            if (authenticated) {
-                User user = new User(uid);
-                return findUserByUid(getUid(user).toString());
-            }
-            return null;
-        } catch (NameNotFoundException e) {
-            return null;
-        }
+        return (user != null && user.getPassword() != null && passwordEncoder.matches(password, user.getPassword())) ? user : null;
     }
 
     @Override
@@ -119,7 +118,7 @@ public class UserRepositoryImpl implements UserRepository {
      * Gets the LDAP identifier for a given user
      *
      * @param usr User to check
-     * @return
+     * @return LDAP name for the given user
      */
     private Name getUid(User usr) {
         return LdapNameBuilder.newInstance(usersDn).add(UID, usr.getEmail()).build();
@@ -129,7 +128,7 @@ public class UserRepositoryImpl implements UserRepository {
      * Gets the LDAP identifier for a given role
      *
      * @param role Role to check
-     * @return
+     * @return LDAP name for the given role
      */
     private Name getCn(RolesEnum role) {
         return LdapNameBuilder.newInstance(rolesDn).add(CN, role.name()).build();
@@ -169,16 +168,11 @@ public class UserRepositoryImpl implements UserRepository {
      */
     private void modifyPassword(User usr) {
         String dn = getUid(usr).toString();
+        String passwd = passwordEncoder.encode(usr.getPassword());
 
-        ldapTemplate.executeReadWrite(ctx -> {
-            if (!(ctx instanceof LdapContext)) {
-                throw new IllegalArgumentException(
-                        "Extended operations require LDAPv3 - "
-                                + "Context must be of type LdapContext");
-            }
-            LdapContext ldapContext = (LdapContext) ctx;
-            ExtendedRequest er = new ModifyPasswordRequest(dn, usr.getPassword());
-            return ldapContext.extendedOperation(er);
-        });
+        Attribute attribute = new BasicAttribute(USER_PASSWORD);
+        attribute.add(passwd);
+        ModificationItem item = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attribute);
+        ldapTemplate.modifyAttributes(dn, new ModificationItem[]{item});
     }
 }
