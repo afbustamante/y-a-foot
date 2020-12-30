@@ -806,7 +806,7 @@ components:
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\& ]{1,255}$
         address:
           type: string
-          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\, ]{1,255}$
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\r\n\t\#\- ]{1,255}$
         phoneNumber:
           type: string
           pattern: ^[+]?[0-9\-\(\) ]{6,15}$
@@ -896,15 +896,6 @@ components:
         longitude:
           type: number
           format: double
-    UserContext:
-      type: object
-      properties:
-        player:
-          $ref: '#/components/schemas/Player'
-        timezone:
-          type: string
-        language:
-          type: string
     ErrorResponse:
       type: object
       required:
