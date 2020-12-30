@@ -8,8 +8,10 @@ pipeline {
 
     options {
         timeout(time: 1, unit: 'HOURS')
+        timestamps()
         retry(2)
         disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
     stages {
@@ -21,10 +23,6 @@ pipeline {
         }
         stage('Undeploy') {
             steps {
-                // Undeploy the frontend artifact
-                sh "mvn -f ${WORKSPACE}/y-a-foot-web/pom.xml wildfly:undeploy -P devel"
-
-                // Undeploy the backend artifact
                 sh "mvn -f ${WORKSPACE}/y-a-foot-core/pom.xml wildfly:undeploy -P devel"
             }
         }
@@ -38,18 +36,13 @@ pipeline {
             steps {
                 // Copy filters files for this environment
                 sh "cp -f ${FILTER_DIRECTORY_BASE}/y-a-foot/y-a-foot-core/${FILTER_FILE} y-a-foot-core/${FILTER_DIRECTORY_DEST}"
-                sh "cp -f ${FILTER_DIRECTORY_BASE}/y-a-foot/y-a-foot-web/${FILTER_FILE} y-a-foot-web/${FILTER_DIRECTORY_DEST}"
                 // Run the maven build
                 sh 'mvn -DskipTests=true clean install -P devel --batch-mode'
             }
         }
         stage('Deploy') {
             steps {
-                // Deploy the backend artifact
                 sh "mvn -f ${WORKSPACE}/y-a-foot-core/pom.xml wildfly:deploy -P devel"
-
-                // Deploy the frontend artifact
-                sh "mvn -f ${WORKSPACE}/y-a-foot-web/pom.xml wildfly:deploy -P devel"
             }
         }
     }
