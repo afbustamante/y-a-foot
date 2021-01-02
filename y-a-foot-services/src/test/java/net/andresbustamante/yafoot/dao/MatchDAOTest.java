@@ -10,6 +10,8 @@ import java.time.*;
 import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
+import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CREATED;
+import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.PLAYED;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DatabaseSetup(value = "classpath:datasets/matchesDataset.xml")
@@ -61,6 +63,9 @@ class MatchDAOTest extends AbstractDAOTest {
         assertNotNull(match.getCreator());
         assertEquals("Lionel", match.getCreator().getFirstName());
         assertEquals("Messi", match.getCreator().getSurname());
+        assertEquals(CREATED, match.getStatus());
+        assertNotNull(match.getCreationDate());
+        assertEquals(LocalDate.of(2019, 1, 2), match.getCreationDate().toLocalDate());
     }
 
     @Test
@@ -172,6 +177,7 @@ class MatchDAOTest extends AbstractDAOTest {
         match.setCreator(player);
         match.setDescription("Match de test");
         match.setSite(site);
+        match.setStatus(CREATED);
 
         // When
         matchDAO.saveMatch(match);
@@ -300,6 +306,25 @@ class MatchDAOTest extends AbstractDAOTest {
         assertEquals(1, numLines);
         assertNotNull(matchesByPlayer);
         assertTrue(matchesByPlayer.isEmpty());
+    }
+
+    @Test
+    void updateStatus() {
+        // Given
+        Match match = matchDAO.findMatchById(1);
+        assertEquals(CREATED, match.getStatus());
+
+        match.setStatus(PLAYED);
+
+        // When
+        matchDAO.updateMatchStatus(match);
+        Match updatedMatch = matchDAO.findMatchById(1);
+
+        // Then
+        assertNotNull(updatedMatch);
+        assertNotNull(updatedMatch.getStatus());
+        assertEquals(match.getStatus(), updatedMatch.getStatus());
+        assertTrue(updatedMatch.getLastUpdateDate().isAfter(match.getLastUpdateDate()));
     }
 
 }

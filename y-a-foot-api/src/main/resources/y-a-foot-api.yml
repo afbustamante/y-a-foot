@@ -398,6 +398,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      operationId: cancelMatch
+      summary: Operation to cancel a match. It can only be executed by the creator of the match.
+      tags:
+      - matches
+      responses:
+        204: # No content
+          description: Match successfully cancelled
+        403: # Forbidden
+          description: The user is not allowed to cancel the match or the match is not able anymore to be cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No match found for the given code
+        500: # Internal server error
+          description: Unexpected server error while trying to cancel the match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /matches/{matchCode}/registrations:
     parameters:
     - in: path
@@ -867,6 +889,8 @@ components:
         description:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\, ]{1,1024}$
+        status:
+          $ref: '#/components/schemas/MatchStatus'
         numPlayersMin:
           type: integer
           minimum: 0
@@ -884,6 +908,13 @@ components:
           type: boolean
         codeSharingEnabled:
           type: boolean
+    MatchStatus:
+      type: string
+      enum:
+        - DRAFT
+        - CREATED
+        - PLAYED
+        - CANCELLED
     GpsCoordinates:
       type: object
       required:

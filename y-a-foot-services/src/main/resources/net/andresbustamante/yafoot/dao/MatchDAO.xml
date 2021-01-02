@@ -14,10 +14,13 @@
           mat.mat_code                   AS code,
           mat.mat_date                   AS date,
           mat.mat_description            AS description,
+          mat.mat_status                 AS status,
           mat.mat_num_players_min        AS numPlayersMin,
           mat.mat_num_players_max        AS numPlayersMax,
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
           mat.mat_code_sharing_enabled   AS codeSharingEnabled,
+          mat.mat_created_at             AS creationDate,
+          mat.mat_last_update            AS lastUpdateDate,
           sit.sit_id                     AS siteId,
           sit.sit_name                   AS siteName,
           sit.sit_address                AS siteAddress,
@@ -50,10 +53,13 @@
                mat.mat_code                 AS code,
                mat.mat_date                 AS date,
                mat.mat_description          AS description,
+               mat.mat_status               AS status,
                mat.mat_num_players_min      AS numPlayersMin,
                mat.mat_num_players_max      AS numPlayersMax,
                mat.mat_carpooling_enabled   AS carpoolingEnabled,
                mat.mat_code_sharing_enabled AS codeSharingEnabled,
+               mat.mat_created_at           AS creationDate,
+               mat.mat_last_update          AS lastUpdateDate,
                sit.sit_id                   AS siteId,
                sit.sit_name                 AS siteName,
                sit.sit_address              AS siteAddress,
@@ -101,10 +107,13 @@
           mat.mat_code                   AS code,
           mat.mat_date                   AS date,
           mat.mat_description            AS description,
+          mat.mat_status                 AS status,
           mat.mat_num_players_min        AS numPlayersMin,
           mat.mat_num_players_max        AS numPlayersMax,
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
           mat.mat_code_sharing_enabled   AS codeSharingEnabled,
+          mat.mat_created_at             AS creationDate,
+          mat.mat_last_update            AS lastUpdateDate,
           cre.ply_id                     AS creatorId,
           cre.ply_surname                AS creatorSurname,
           cre.ply_first_name             AS creatorFirstName,
@@ -130,6 +139,7 @@
             mat_id,
             mat_date,
             mat_description,
+            mat_status,
             mat_num_players_min,
             mat_num_players_max,
             mat_site_id,
@@ -142,6 +152,7 @@
             #{match.id},
             #{match.date},
             #{match.description},
+            #{match.status},
             #{match.numPlayersMin},
             #{match.numPlayersMax},
             #{match.site.id},
@@ -196,7 +207,13 @@
       WHERE pma_match_id = #{match.id} AND pma_player_id = #{player.id}
     </update>
 
-    <select id="loadRegistration" resultMap="registrationDetails">
+  <update id="updateMatchStatus">
+    UPDATE t_match
+    SET mat_status = #{match.status}, mat_last_update = CURRENT_TIMESTAMP
+    WHERE mat_id = #{match.id}
+  </update>
+
+  <select id="loadRegistration" resultMap="registrationDetails">
       SELECT
         pma.pma_match_id         AS matchId,
         pma.pma_player_id        AS playerId,
@@ -236,10 +253,13 @@
         <result property="code" column="code"/>
         <result property="date" column="date"/>
         <result property="description" column="description"/>
+        <result property="status" column="status"/>
         <result property="numPlayersMin" column="numPlayersMin"/>
         <result property="numPlayersMax" column="numPlayersMax"/>
         <result property="carpoolingEnabled" column="carpoolingEnabled"/>
         <result property="codeSharingEnabled" column="codeSharingEnabled"/>
+        <result property="creationDate" column="creationDate"/>
+        <result property="lastUpdateDate" column="lastUpdateDate"/>
         <association property="site" javaType="net.andresbustamante.yafoot.model.Site">
             <id column="siteId" property="id"/>
             <result column="siteName" property="name"/>

@@ -1,20 +1,22 @@
 package net.andresbustamante.yafoot.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.andresbustamante.yafoot.model.api.Auditable;
 import net.andresbustamante.yafoot.model.api.Identifiable;
+import net.andresbustamante.yafoot.model.enums.MatchStatusEnum;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.*;
+
 /**
  * @author andresbustamante
  */
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class Match implements Serializable, Identifiable, Auditable {
 
     private static final long serialVersionUID = 1L;
@@ -22,6 +24,7 @@ public class Match implements Serializable, Identifiable, Auditable {
     private OffsetDateTime date;
     private String code;
     private String description;
+    private MatchStatusEnum status;
     private Integer numPlayersMin;
     private Integer numPlayersMax;
     private List<Registration> registrations;
@@ -32,8 +35,21 @@ public class Match implements Serializable, Identifiable, Auditable {
     private OffsetDateTime creationDate;
     private OffsetDateTime lastUpdateDate;
 
+    /**
+     * Main constructor
+     */
+    public Match() {
+        this.status = DRAFT;
+    }
+
+    /**
+     * Constructor for testing purposes
+     *
+     * @param id Identifier to give to the match
+     */
     public Match(Integer id) {
         this.id = id;
+        this.status = CREATED;
     }
 
     public boolean isPlayerRegistered(Player player) {
@@ -54,7 +70,7 @@ public class Match implements Serializable, Identifiable, Auditable {
      * @return True if the match is still accepting registrations
      */
     public boolean isAcceptingRegistrations() {
-        if (OffsetDateTime.now().isBefore(date)) {
+        if (status.isActiveStatus() && OffsetDateTime.now().isBefore(date)) {
             return (numPlayersMax == null) || numPlayersMax > getNumRegisteredPlayers();
         } else {
             return false;

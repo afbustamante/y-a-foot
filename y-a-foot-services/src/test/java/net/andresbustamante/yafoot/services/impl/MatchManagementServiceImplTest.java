@@ -6,6 +6,8 @@ import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.exceptions.PastMatchException;
+import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.CarManagementService;
 import net.andresbustamante.yafoot.services.CarpoolingService;
@@ -23,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -399,5 +402,68 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
 
         // Then
         verify(matchDAO).unregisterPlayerFromAllMatches(any(Player.class));
+    }
+
+    @Test
+    void cancelValidMatch() throws Exception {
+        // Given
+        Player player = new Player(1);
+        player.setEmail("user@email.com");
+
+        Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1));
+        match.setStatus(CREATED);
+        match.setCreator(player);
+
+        UserContext userContext = new UserContext("user@email.com");
+
+        // When
+        matchManagementService.cancelMatch(match, userContext);
+
+        // Then
+        assertEquals(CANCELLED, match.getStatus());
+        verify(matchDAO).updateMatchStatus(any(Match.class));
+    }
+
+    @Test
+    void cancelPastMatch() throws Exception {
+        // Given
+        Player player = new Player(1);
+        player.setEmail("user@email.com");
+
+        Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().minusDays(1));
+        match.setStatus(PLAYED);
+        match.setCreator(player);
+
+        UserContext userContext = new UserContext("user@email.com");
+
+        // When
+        assertThrows(PastMatchException.class, () ->
+                matchManagementService.cancelMatch(match, userContext));
+
+        // Then
+        verify(matchDAO, never()).updateMatchStatus(any(Match.class));
+    }
+
+    @Test
+    void cancelMatchInvalidPlayer() throws Exception {
+        // Given
+        Player player = new Player(1);
+        player.setEmail("user@email.com");
+
+        Match match = new Match(1);
+        match.setDate(OffsetDateTime.now().plusDays(1));
+        match.setStatus(CREATED);
+        match.setCreator(player);
+
+        UserContext userContext = new UserContext("another.user@email.com");
+
+        // When
+        assertThrows(UserNotAuthorisedException.class, () ->
+                matchManagementService.cancelMatch(match, userContext));
+
+        // Then
+        verify(matchDAO, never()).updateMatchStatus(any(Match.class));
     }
 }

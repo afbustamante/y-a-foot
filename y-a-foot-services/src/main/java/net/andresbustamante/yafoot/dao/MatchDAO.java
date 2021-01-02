@@ -135,4 +135,11 @@ public interface MatchDAO {
      * @return Number of lines touched by this operation
      */
     int resetCarDetails(@Param(MATCH) Match match, @Param(PLAYER) Player player);
+
+    /**
+     * Update a match with new status details
+     *
+     * @param match Match to update
+     */
+    void updateMatchStatus(@Param(MATCH) Match match);
 }

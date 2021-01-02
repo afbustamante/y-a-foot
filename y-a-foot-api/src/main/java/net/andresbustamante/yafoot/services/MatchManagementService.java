@@ -59,4 +59,13 @@ public interface MatchManagementService {
      */
     void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException;
 
+    /**
+     * Cancels a match by a logical suppression in database. All registrations are kept for consultation
+     *
+     * @param match Match to cancel
+     * @param userContext Context of the user asking for this action
+     * @throws DatabaseException Unexpected exception when updating the match in database
+     * @throws ApplicationException When the match is already in the past or the user is not allowed to cancel the match
+     */
+    void cancelMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException;
 }

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CREATED;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -296,7 +297,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         site.setAddress("123 Fake Address");
         match.setSite(site);
 
-        ApplicationException exception = new ApplicationException("match.past.date.error", "message");
+        ApplicationException exception = new ApplicationException("match.past.new.date.error", "message");
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class))).willThrow(exception);
 
         // When
@@ -719,6 +720,59 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/matches/{0}/registrations/{1}", matchCode, 2)
+                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void cancelValidMatch() throws Exception {
+        // Given
+        String matchCode = "ABCDEFGHIJ";
+        Match match = new Match(1);
+        match.setCode(matchCode);
+        match.setStatus(CREATED);
+        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setNumPlayersMin(8);
+
+        given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
+
+        // When
+        mvc.perform(delete("/matches/{0}", matchCode)
+                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void cancelUnknownMatch() throws Exception {
+        // Given
+        String matchCode = "ABCDEFGHIJ";
+
+        given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
+
+        // When
+        mvc.perform(delete("/matches/{0}", matchCode)
+                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void cancelMatchWhenDatabaseIsUnavailable() throws Exception {
+        // Given
+        String matchCode = "ABCDEFGHIJ";
+
+        given(matchSearchService.findMatchByCode(anyString())).willThrow(DatabaseException.class);
+
+        // When
+        mvc.perform(delete("/matches/{0}", matchCode)
                 .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

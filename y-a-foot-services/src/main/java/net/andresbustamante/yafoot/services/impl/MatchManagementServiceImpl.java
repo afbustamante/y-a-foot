@@ -6,6 +6,8 @@ import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.exceptions.PastMatchException;
+import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.*;
 import org.apache.commons.text.RandomStringGenerator;
@@ -19,6 +21,9 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CANCELLED;
+import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CREATED;
 
 /**
  * @author andresbustamante
@@ -68,7 +73,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         String matchCode;
 
         if (match.getDate().isBefore(OffsetDateTime.now())) {
-            throw new ApplicationException("match.past.date.error", "A match cannot be planned in the past");
+            throw new ApplicationException("match.past.new.date.error", "A match cannot be planned in the past");
         }
 
         boolean isCodeAlreadyInUse;
@@ -78,6 +83,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         } while (isCodeAlreadyInUse);
 
         match.setCode(matchCode);
+        match.setStatus(CREATED);
         match.setRegistrations(new ArrayList<>());
 
         Player creator = processCreatorToCreateMatch(match, userContext);
@@ -167,6 +173,20 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     public void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException {
         int numMatches = matchDAO.unregisterPlayerFromAllMatches(player);
         log.info("Player #{} unregistered from {} matches", player.getId(), numMatches);
+    }
+
+    @Transactional
+    @Override
+    public void cancelMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
+        if (match.getDate().isBefore(OffsetDateTime.now())) {
+            throw new PastMatchException("It is not possible to cancel a match in the past");
+        } else if (match.getCreator() == null || !match.getCreator().getEmail().equals(userContext.getUsername())) {
+            throw new UserNotAuthorisedException("This match can only be cancelled by its creator");
+        }
+
+        match.setStatus(CANCELLED);
+        matchDAO.updateMatchStatus(match);
+        log.info("Match {} with code {} successfully cancelled", match.getId(), match.getCode());
     }
 
     private Player processCreatorToCreateMatch(Match match, UserContext userContext) throws DatabaseException {

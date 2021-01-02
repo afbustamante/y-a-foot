@@ -145,6 +145,26 @@ public class MatchesController extends AbstractController implements MatchesApi 
         }
     }
 
+    @Override
+    public ResponseEntity<Void> cancelMatch(String matchCode) {
+        try {
+            UserContext userContext = getUserContext(request);
+
+            net.andresbustamante.yafoot.model.Match match = matchSearchService.findMatchByCode(matchCode);
+
+            if (match != null) {
+                matchManagementService.cancelMatch(match, userContext);
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (DatabaseException e) {
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
+        } catch (ApplicationException e) {
+            throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
+        }
+    }
+
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
     public ResponseEntity<Void> createMatch(@Valid Match match) {
