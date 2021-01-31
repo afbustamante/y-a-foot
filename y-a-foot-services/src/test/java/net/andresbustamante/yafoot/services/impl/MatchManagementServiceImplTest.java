@@ -393,6 +393,47 @@ class MatchManagementServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
+    void unregisterPlayerWithCarpoolRequests() throws Exception {
+        // Given
+        Player player = new Player(1);
+        player.setEmail("test@email.com");
+        Match match = new Match(1);
+        match.setCode("code");
+        match.setCreator(player);
+        match.setCarpoolingEnabled(true);
+        Car car = new Car(1);
+        car.setDriver(player);
+        Registration registration1 = new Registration(new RegistrationId(match.getId(), player.getId()));
+        registration1.setPlayer(player);
+        registration1.setCar(car);
+        registration1.setCarConfirmed(true);
+
+        Player anotherPlayer = new Player(2);
+        anotherPlayer.setEmail("another.player@email.com");
+        Registration registration2 = new Registration(new RegistrationId(match.getId(), anotherPlayer.getId()));
+        registration2.setPlayer(anotherPlayer);
+        registration2.setCar(car);
+        registration2.setCarConfirmed(true);
+
+        match.setRegistrations(List.of(registration1, registration2));
+
+        UserContext ctx = new UserContext();
+        ctx.setUsername("test@email.com");
+
+        // Then
+        when(carpoolingService.findAvailableCarsByMatch(any(Match.class))).thenReturn(List.of(car));
+        when(matchDAO.findPassengerRegistrationsByCar(any(Match.class), any(Car.class))).thenReturn(List.of(registration2));
+
+        matchManagementService.unregisterPlayer(player, match, ctx);
+
+        // When
+        verify(matchDAO).unregisterPlayer(any(Player.class), any(Match.class));
+        verify(carpoolingService).findAvailableCarsByMatch(any(Match.class));
+        verify(carpoolingService).updateCarpoolingInformation(any(Match.class), any(Player.class), any(Car.class),
+                eq(false), any(UserContext.class));
+    }
+
+    @Test
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
         Player player = new Player(1);

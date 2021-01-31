@@ -10,6 +10,7 @@ import net.andresbustamante.yafoot.exceptions.PastMatchException;
 import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.model.*;
 import net.andresbustamante.yafoot.services.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CANCELLED;
 import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CREATED;
@@ -156,6 +159,9 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         boolean isMatchImpacted = match.getNumRegisteredPlayers().equals(match.getNumPlayersMin());
 
         if (isUserAuthorised &&  match.isPlayerRegistered(player)) {
+            if (match.isCarpoolingEnabled()) {
+                processCarpoolingImpactsAfterAbandon(player, match, ctx);
+            }
             matchDAO.unregisterPlayer(player, match);
             log.info("Player #{} was unregistered from match #{}", player.getId(), match.getId());
 
@@ -165,6 +171,37 @@ public class MatchManagementServiceImpl implements MatchManagementService {
             }
         } else {
             throw new ApplicationException("unknown.player.registration.error", "Player not registered in this match");
+        }
+    }
+
+    /**
+     * Update carpooling information on registration impacted by the abandon of a given player from a given match.
+     * If the player is a driver from a car being confirmed for other players, the system updates their registrations
+     * according to this abandon.
+     *
+     * @param player Player quitting the match
+     * @param match Match being abandoned by the player
+     */
+    private void processCarpoolingImpactsAfterAbandon(Player player, Match match, UserContext ctx) throws DatabaseException, ApplicationException {
+        List<Car> registeredCars = carpoolingService.findAvailableCarsByMatch(match);
+
+        if (CollectionUtils.isNotEmpty(registeredCars)) {
+            Optional<Car> ownedCar = registeredCars.stream().filter(
+                    car -> car.getDriver().equals(player)
+            ).findFirst();
+
+            if (ownedCar.isPresent()) {
+                // The system found a car driven by the player
+                List<Registration> impactedRegistrations = matchDAO.findPassengerRegistrationsByCar(match, ownedCar.get());
+
+                if (CollectionUtils.isNotEmpty(impactedRegistrations)) {
+                    // At least one player asked or was confirmed for a seat in this car
+                    // Update carpooling information to remove confirmations on this car
+                    for (Registration registration : impactedRegistrations) {
+                        carpoolingService.updateCarpoolingInformation(match, registration.getPlayer(), ownedCar.get(), false, ctx);
+                    }
+                }
+            }
         }
     }
 
