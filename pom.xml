@@ -62,13 +62,13 @@
     <javax.mail-api.version>1.6.2</javax.mail-api.version>
 
     <!-- Spring Framework -->
-    <spring.version>5.2.11.RELEASE</spring.version>
+    <spring.version>5.2.12.RELEASE</spring.version>
     <spring-ldap.version>2.3.3.RELEASE</spring-ldap.version>
-    <spring-data.version>2.2.11.RELEASE</spring-data.version>
+    <spring-data.version>2.2.13.RELEASE</spring-data.version>
     <spring-security.version>5.2.10.RELEASE</spring-security.version>
-    <jackson-databind.version>2.11.3</jackson-databind.version>
-    <jackson-datatype-jsr310.version>2.11.3</jackson-datatype-jsr310.version>
-    <spring-boot.version>2.2.11.RELEASE</spring-boot.version>
+    <jackson-databind.version>2.11.4</jackson-databind.version>
+    <jackson-datatype-jsr310.version>2.11.4</jackson-datatype-jsr310.version>
+    <spring-boot.version>2.2.13.RELEASE</spring-boot.version>
 
     <!-- MyBatis -->
     <mybatis.version>3.5.6</mybatis.version>
@@ -76,11 +76,11 @@
     <mybatis-spring-boot.version>2.1.3</mybatis-spring-boot.version>
 
     <!-- Apache Commons -->
-    <commons-text.version>1.6</commons-text.version>
-    <commons-lang3.version>3.8</commons-lang3.version>
-    <commons-collections4.version>4.1</commons-collections4.version>
+    <commons-text.version>1.9</commons-text.version>
+    <commons-lang3.version>3.12.0</commons-lang3.version>
+    <commons-collections4.version>4.4</commons-collections4.version>
     <commons-logging.version>1.2</commons-logging.version>
-    <commons-dbcp2.version>2.2.0</commons-dbcp2.version>
+    <commons-dbcp2.version>2.7.0</commons-dbcp2.version>
 
     <!-- Tests -->
     <junit.jupiter.version>5.5.2</junit.jupiter.version>
