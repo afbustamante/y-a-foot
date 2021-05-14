@@ -1,15 +1,16 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.model.*;
+import net.andresbustamante.yafoot.core.services.*;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.exceptions.PastMatchException;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
 import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
-import net.andresbustamante.yafoot.model.*;
-import net.andresbustamante.yafoot.services.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
@@ -25,8 +26,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CANCELLED;
-import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CREATED;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CANCELLED;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
 
 /**
  * @author andresbustamante

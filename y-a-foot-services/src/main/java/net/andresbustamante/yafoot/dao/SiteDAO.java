@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.dao;
 
-import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.Site;
+import net.andresbustamante.yafoot.core.model.Player;
+import net.andresbustamante.yafoot.core.model.Site;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

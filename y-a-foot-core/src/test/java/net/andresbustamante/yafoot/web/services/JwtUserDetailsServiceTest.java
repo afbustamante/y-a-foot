@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.web.services;
 
-import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.model.User;
-import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.services.UserAuthenticationService;
+import net.andresbustamante.yafoot.commons.exceptions.LdapException;
+import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.auth.services.UserAuthenticationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

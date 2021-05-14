@@ -1,11 +1,12 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.services.PlayerManagementService;
-import net.andresbustamante.yafoot.services.PlayerSearchService;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.exceptions.LdapException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.services.PlayerManagementService;
+import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.web.mappers.PlayerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,8 @@ public class PlayersController extends AbstractController implements PlayersApi 
     @Override
     public ResponseEntity<Void> createPlayer(Player player) {
         try {
-            net.andresbustamante.yafoot.model.Player newPlayer = playerMapper.map(player);
-            int id = playerManagementService.savePlayer(newPlayer, new net.andresbustamante.yafoot.model.UserContext());
+            net.andresbustamante.yafoot.core.model.Player newPlayer = playerMapper.map(player);
+            int id = playerManagementService.savePlayer(newPlayer, new UserContext());
 
             String location = MessageFormat.format(playerApiPath, id);
             return ResponseEntity.created(getLocationURI(location)).build();
@@ -69,9 +70,9 @@ public class PlayersController extends AbstractController implements PlayersApi 
     @Override
     public ResponseEntity<Void> updatePlayer(Integer id, Player player) {
         try {
-            net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext(request);
 
-            net.andresbustamante.yafoot.model.Player p = playerSearchService.findPlayerById(id);
+            net.andresbustamante.yafoot.core.model.Player p = playerSearchService.findPlayerById(id);
 
             if (p != null) {
                 playerManagementService.updatePlayer(playerMapper.map(player), userContext);
@@ -89,7 +90,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
     @Override
     public ResponseEntity<Player> findPlayer(String email) {
         try {
-            net.andresbustamante.yafoot.model.Player player = playerSearchService.findPlayerByEmail(email);
+            net.andresbustamante.yafoot.core.model.Player player = playerSearchService.findPlayerByEmail(email);
 
             if (player != null) {
                 return ResponseEntity.ok(playerMapper.map(player));
@@ -104,9 +105,9 @@ public class PlayersController extends AbstractController implements PlayersApi 
     @Override
     public ResponseEntity<Void> deactivatePlayer(Integer id) {
         try {
-            net.andresbustamante.yafoot.model.UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext(request);
 
-            net.andresbustamante.yafoot.model.Player player = playerSearchService.findPlayerById(id);
+            net.andresbustamante.yafoot.core.model.Player player = playerSearchService.findPlayerById(id);
 
             if (player != null) {
                 playerManagementService.deactivatePlayer(player, userContext);

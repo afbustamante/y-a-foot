@@ -1,14 +1,14 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
-import net.andresbustamante.yafoot.model.Car;
-import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.services.CarManagementService;
-import net.andresbustamante.yafoot.services.CarSearchService;
-import net.andresbustamante.yafoot.services.PlayerSearchService;
+import net.andresbustamante.yafoot.core.model.Car;
+import net.andresbustamante.yafoot.core.model.Player;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.services.CarManagementService;
+import net.andresbustamante.yafoot.core.services.CarSearchService;
+import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

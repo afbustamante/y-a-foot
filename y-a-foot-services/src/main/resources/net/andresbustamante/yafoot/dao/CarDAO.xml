@@ -30,7 +30,7 @@
     WHERE car_driver_id = #{player.id}
   </delete>
 
-  <select id="findCarsByPlayer" resultType="net.andresbustamante.yafoot.model.Car">
+  <select id="findCarsByPlayer" resultType="net.andresbustamante.yafoot.core.model.Car">
     SELECT
       car_id        AS id,
       car_name      AS name,
@@ -54,12 +54,12 @@
     GROUP BY c.car_id, d.ply_id
   </select>
 
-  <resultMap id="carDetails" type="net.andresbustamante.yafoot.model.Car">
+  <resultMap id="carDetails" type="net.andresbustamante.yafoot.core.model.Car">
     <id property="id" column="id" />
     <result property="name" column="name" />
     <result property="numSeats" column="numSeats" />
     <result property="numPassengers" column="numPassengers" />
-    <association property="driver" javaType="net.andresbustamante.yafoot.model.Player">
+    <association property="driver" javaType="net.andresbustamante.yafoot.core.model.Player">
       <id property="id" column="driverId" />
       <result property="firstName" column="driverFirstName" />
       <result property="email" column="driverEmail" />

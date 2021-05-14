@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.ldap;
 
-import net.andresbustamante.yafoot.model.User;
+import net.andresbustamante.yafoot.commons.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.stereotype.Component;

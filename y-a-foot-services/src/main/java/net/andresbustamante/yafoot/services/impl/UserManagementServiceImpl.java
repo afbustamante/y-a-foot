@@ -1,15 +1,15 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
-import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.ldap.UserRepository;
-import net.andresbustamante.yafoot.model.PasswordResetDetails;
-import net.andresbustamante.yafoot.model.User;
-import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.services.MessagingService;
-import net.andresbustamante.yafoot.services.UserManagementService;
+import net.andresbustamante.yafoot.commons.exceptions.LdapException;
+import net.andresbustamante.yafoot.auth.repository.UserRepository;
+import net.andresbustamante.yafoot.auth.model.PasswordResetDetails;
+import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.core.services.MessagingService;
+import net.andresbustamante.yafoot.auth.services.UserManagementService;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

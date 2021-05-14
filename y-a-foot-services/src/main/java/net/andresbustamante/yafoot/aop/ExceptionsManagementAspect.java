@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.aop;
 
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.exceptions.LdapException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.exceptions.LdapException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

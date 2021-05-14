@@ -1,12 +1,12 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.ldap.UserRepository;
-import net.andresbustamante.yafoot.model.User;
-import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.services.MessagingService;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.auth.repository.UserRepository;
+import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.core.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

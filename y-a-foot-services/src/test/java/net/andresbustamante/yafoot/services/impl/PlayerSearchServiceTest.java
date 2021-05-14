@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
-import net.andresbustamante.yafoot.model.Player;
+import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

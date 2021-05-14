@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.web.services;
 
-import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.model.User;
-import net.andresbustamante.yafoot.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.services.UserAuthenticationService;
+import net.andresbustamante.yafoot.commons.exceptions.LdapException;
+import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.auth.services.UserAuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

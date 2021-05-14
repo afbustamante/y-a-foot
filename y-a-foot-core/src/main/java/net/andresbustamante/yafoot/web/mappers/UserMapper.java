@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.mappers;
 
 import net.andresbustamante.yafoot.web.config.SpringMapperConfig;
-import net.andresbustamante.yafoot.model.User;
+import net.andresbustamante.yafoot.commons.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

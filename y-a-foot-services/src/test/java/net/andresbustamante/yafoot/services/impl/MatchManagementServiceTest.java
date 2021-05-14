@@ -1,19 +1,20 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.dao.SiteDAO;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.exceptions.PastMatchException;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
 import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
-import net.andresbustamante.yafoot.model.*;
-import net.andresbustamante.yafoot.services.CarManagementService;
-import net.andresbustamante.yafoot.services.CarpoolingService;
-import net.andresbustamante.yafoot.services.MessagingService;
-import net.andresbustamante.yafoot.services.SiteManagementService;
+import net.andresbustamante.yafoot.core.services.CarManagementService;
+import net.andresbustamante.yafoot.core.services.CarpoolingService;
+import net.andresbustamante.yafoot.core.services.MessagingService;
+import net.andresbustamante.yafoot.core.services.SiteManagementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.*;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

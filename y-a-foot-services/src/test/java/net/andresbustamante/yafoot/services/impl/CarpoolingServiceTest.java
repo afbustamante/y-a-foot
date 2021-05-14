@@ -1,12 +1,13 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
-import net.andresbustamante.yafoot.model.*;
-import net.andresbustamante.yafoot.services.MessagingService;
+import net.andresbustamante.yafoot.core.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

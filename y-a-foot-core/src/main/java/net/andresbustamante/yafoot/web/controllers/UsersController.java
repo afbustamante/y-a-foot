@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.services.UserAuthenticationService;
-import net.andresbustamante.yafoot.services.UserManagementService;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.LdapException;
+import net.andresbustamante.yafoot.auth.services.UserAuthenticationService;
+import net.andresbustamante.yafoot.auth.services.UserManagementService;
 import net.andresbustamante.yafoot.web.dto.Credentials;
 import net.andresbustamante.yafoot.web.dto.User;
 import net.andresbustamante.yafoot.web.mappers.UserMapper;
@@ -46,7 +46,7 @@ public class UsersController extends AbstractController implements UsersApi {
     @Override
     public ResponseEntity<User> authenticateUser(String email, @Valid User user) {
         try {
-            net.andresbustamante.yafoot.model.User authenticatedUser = userAuthenticationService.authenticate(userMapper.map(user));
+            net.andresbustamante.yafoot.commons.model.User authenticatedUser = userAuthenticationService.authenticate(userMapper.map(user));
 
             if (authenticatedUser == null) {
                 return ResponseEntity.notFound().build();
@@ -63,7 +63,7 @@ public class UsersController extends AbstractController implements UsersApi {
     @Override
     public ResponseEntity<User> findUser(@Pattern(regexp = "^[0-9A-F]{16}$") @Valid String token) {
         try {
-            net.andresbustamante.yafoot.model.User user = userAuthenticationService.findUserByToken(token);
+            net.andresbustamante.yafoot.commons.model.User user = userAuthenticationService.findUserByToken(token);
 
             return (user != null) ? ResponseEntity.ok(userMapper.map(user)) : ResponseEntity.notFound().build();
         } catch (LdapException e) {
@@ -74,7 +74,7 @@ public class UsersController extends AbstractController implements UsersApi {
     @Override
     public ResponseEntity<Void> generatePasswordResetToken(String email) {
         try {
-            net.andresbustamante.yafoot.model.User user = userAuthenticationService.findUserByEmail(email);
+            net.andresbustamante.yafoot.commons.model.User user = userAuthenticationService.findUserByEmail(email);
 
             if (user != null) {
                 userManagementService.createPasswordResetToken(user);
@@ -97,7 +97,7 @@ public class UsersController extends AbstractController implements UsersApi {
                 throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
             }
 
-            net.andresbustamante.yafoot.model.User user = userAuthenticationService.findUserByEmail(email);
+            net.andresbustamante.yafoot.commons.model.User user = userAuthenticationService.findUserByEmail(email);
 
             if (user == null) {
                 return ResponseEntity.notFound().build();

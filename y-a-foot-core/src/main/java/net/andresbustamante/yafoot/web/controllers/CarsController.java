@@ -1,13 +1,13 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.services.CarManagementService;
-import net.andresbustamante.yafoot.services.CarSearchService;
-import net.andresbustamante.yafoot.services.PlayerSearchService;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.core.model.Player;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.services.CarManagementService;
+import net.andresbustamante.yafoot.core.services.CarSearchService;
+import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -56,7 +56,7 @@ public class CarsController extends AbstractController implements CarsApi {
         try {
             UserContext ctx = getUserContext(request);
             Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
-            List<net.andresbustamante.yafoot.model.Car> cars = carSearchService.findCarsByPlayer(player);
+            List<net.andresbustamante.yafoot.core.model.Car> cars = carSearchService.findCarsByPlayer(player);
 
             List<Car> result = new ArrayList<>();
 
@@ -72,7 +72,7 @@ public class CarsController extends AbstractController implements CarsApi {
     @Override
     public ResponseEntity<Car> loadCar(Integer id) {
         try {
-            net.andresbustamante.yafoot.model.Car car = carSearchService.loadCar(id, getUserContext(request));
+            net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, getUserContext(request));
 
             if (car != null) {
                 return ResponseEntity.ok(carMapper.map(car));

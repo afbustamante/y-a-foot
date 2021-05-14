@@ -8,7 +8,7 @@
         WHERE p.ply_email = #{email}
     </select>
 
-    <select id="findPlayerById" resultType="net.andresbustamante.yafoot.model.Player">
+    <select id="findPlayerById" resultType="net.andresbustamante.yafoot.core.model.Player">
         SELECT
             p.ply_id                AS id,
             p.ply_surname           AS surname,
@@ -22,7 +22,7 @@
         WHERE p.ply_id = #{id}
     </select>
 
-    <select id="findPlayerByEmail" resultType="net.andresbustamante.yafoot.model.Player">
+    <select id="findPlayerByEmail" resultType="net.andresbustamante.yafoot.core.model.Player">
         SELECT
             p.ply_id                AS id,
             p.ply_surname           AS surname,

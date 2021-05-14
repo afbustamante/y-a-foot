@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.controllers;
 
-import net.andresbustamante.yafoot.model.User;
-import net.andresbustamante.yafoot.services.UserAuthenticationService;
+import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.auth.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
 import net.andresbustamante.yafoot.web.config.MappingTestConfig;
 import net.andresbustamante.yafoot.web.config.WebSecurityTestConfig;

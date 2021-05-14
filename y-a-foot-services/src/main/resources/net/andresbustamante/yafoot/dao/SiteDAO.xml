@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.andresbustamante.yafoot.dao.SiteDAO">
-    <select id="findSitesByPlayer" resultType="net.andresbustamante.yafoot.model.Site">
+    <select id="findSitesByPlayer" resultType="net.andresbustamante.yafoot.core.model.Site">
         SELECT DISTINCT
           sit.sit_id           AS id,
           sit.sit_name         AS name,
@@ -22,7 +22,7 @@
         WHERE sit.sit_creator_id = #{player.id}
     </select>
 
-    <select id="findSiteById" resultType="net.andresbustamante.yafoot.model.Site">
+    <select id="findSiteById" resultType="net.andresbustamante.yafoot.core.model.Site">
         SELECT
             sit.sit_id           AS id,
             sit.sit_name         AS name,

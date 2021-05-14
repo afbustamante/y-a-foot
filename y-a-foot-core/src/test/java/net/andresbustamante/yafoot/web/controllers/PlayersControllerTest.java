@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.services.PlayerManagementService;
-import net.andresbustamante.yafoot.services.PlayerSearchService;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.services.PlayerManagementService;
+import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setPhoneNumber("0123456789");
         player.setPassword("test".getBytes());
 
-        given(playerManagementService.savePlayer(any(net.andresbustamante.yafoot.model.Player.class), any(UserContext.class))).willReturn(1);
+        given(playerManagementService.savePlayer(any(net.andresbustamante.yafoot.core.model.Player.class), any(UserContext.class))).willReturn(1);
 
         // When
         mvc.perform(post("/players")
@@ -73,7 +73,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setPhoneNumber("0123456789");
         player.setPassword("test".getBytes());
 
-        given(playerManagementService.savePlayer(any(net.andresbustamante.yafoot.model.Player.class),
+        given(playerManagementService.savePlayer(any(net.andresbustamante.yafoot.core.model.Player.class),
                 any(UserContext.class))).willThrow(DatabaseException.class);
 
         // When
@@ -90,7 +90,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         // Given
         String email = VALID_EMAIL;
 
-        net.andresbustamante.yafoot.model.Player player = new net.andresbustamante.yafoot.model.Player();
+        net.andresbustamante.yafoot.core.model.Player player = new net.andresbustamante.yafoot.core.model.Player();
         player.setFirstName("Test");
         player.setSurname("User");
         player.setEmail(email);
@@ -152,7 +152,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
-        net.andresbustamante.yafoot.model.Player storedPlayer = new net.andresbustamante.yafoot.model.Player(1);
+        net.andresbustamante.yafoot.core.model.Player storedPlayer = new net.andresbustamante.yafoot.core.model.Player(1);
         storedPlayer.setEmail(email);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
@@ -181,7 +181,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
-        net.andresbustamante.yafoot.model.Player storedPlayer = new net.andresbustamante.yafoot.model.Player(1);
+        net.andresbustamante.yafoot.core.model.Player storedPlayer = new net.andresbustamante.yafoot.core.model.Player(1);
         storedPlayer.setEmail(email);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
@@ -210,7 +210,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
-        net.andresbustamante.yafoot.model.Player storedPlayer = new net.andresbustamante.yafoot.model.Player(1);
+        net.andresbustamante.yafoot.core.model.Player storedPlayer = new net.andresbustamante.yafoot.core.model.Player(1);
         storedPlayer.setEmail(email);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
@@ -232,7 +232,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         // Given
         String email = VALID_EMAIL;
 
-        net.andresbustamante.yafoot.model.Player storedPlayer = new net.andresbustamante.yafoot.model.Player(1);
+        net.andresbustamante.yafoot.core.model.Player storedPlayer = new net.andresbustamante.yafoot.core.model.Player(1);
         storedPlayer.setEmail(email);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");

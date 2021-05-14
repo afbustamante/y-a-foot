@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.services.impl;
 
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
-import net.andresbustamante.yafoot.ldap.UserRepository;
-import net.andresbustamante.yafoot.model.User;
-import net.andresbustamante.yafoot.services.UserAuthenticationService;
+import net.andresbustamante.yafoot.auth.repository.UserRepository;
+import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.auth.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

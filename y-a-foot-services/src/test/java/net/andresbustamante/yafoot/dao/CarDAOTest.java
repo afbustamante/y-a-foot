@@ -2,9 +2,9 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import net.andresbustamante.yafoot.model.Car;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Player;
+import net.andresbustamante.yafoot.core.model.Car;
+import net.andresbustamante.yafoot.core.model.Match;
+import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

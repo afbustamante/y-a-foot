@@ -248,7 +248,7 @@
         AND ply.ply_id != pma.pma_player_id
     </select>
 
-    <resultMap id="matchDetails" type="net.andresbustamante.yafoot.model.Match">
+    <resultMap id="matchDetails" type="net.andresbustamante.yafoot.core.model.Match">
         <id property="id" column="id"/>
         <result property="code" column="code"/>
         <result property="date" column="date"/>
@@ -260,32 +260,32 @@
         <result property="codeSharingEnabled" column="codeSharingEnabled"/>
         <result property="creationDate" column="creationDate"/>
         <result property="lastUpdateDate" column="lastUpdateDate"/>
-        <association property="site" javaType="net.andresbustamante.yafoot.model.Site">
+        <association property="site" javaType="net.andresbustamante.yafoot.core.model.Site">
             <id column="siteId" property="id"/>
             <result column="siteName" property="name"/>
             <result column="siteAddress" property="address"/>
             <result column="sitePhoneNumber" property="phoneNumber"/>
-            <association property="location" javaType="net.andresbustamante.yafoot.model.GpsCoordinates">
+            <association property="location" javaType="net.andresbustamante.yafoot.commons.model.GpsCoordinates">
                 <result column="siteLatitude" property="latitude"/>
                 <result column="siteLongitude" property="longitude"/>
             </association>
         </association>
-        <association property="creator" javaType="net.andresbustamante.yafoot.model.Player">
+        <association property="creator" javaType="net.andresbustamante.yafoot.core.model.Player">
             <id column="creatorId" property="id"/>
             <result column="creatorSurname" property="surname"/>
             <result column="creatorFirstName" property="firstName"/>
             <result column="creatorEmail" property="email"/>
         </association>
-        <collection property="registrations" ofType="net.andresbustamante.yafoot.model.Registration">
+        <collection property="registrations" ofType="net.andresbustamante.yafoot.core.model.Registration">
             <result column="matchId" property="id.matchId" />
             <result column="playerId" property="id.playerId" />
             <result column="carConfirmed" property="carConfirmed" />
-            <association property="player" javaType="net.andresbustamante.yafoot.model.Player">
+            <association property="player" javaType="net.andresbustamante.yafoot.core.model.Player">
                 <id column="playerId" property="id" />
                 <result column="playerFirstName" property="firstName" />
                 <result column="playerEmail" property="email" />
             </association>
-            <association property="car" javaType="net.andresbustamante.yafoot.model.Car">
+            <association property="car" javaType="net.andresbustamante.yafoot.core.model.Car">
                 <id column="carId" property="id" />
                 <result column="carName" property="name" />
                 <result column="carNumSeats" property="numSeats" />
@@ -293,17 +293,17 @@
         </collection>
     </resultMap>
 
-    <resultMap id="registrationDetails" type="net.andresbustamante.yafoot.model.Registration">
+    <resultMap id="registrationDetails" type="net.andresbustamante.yafoot.core.model.Registration">
       <result property="id.matchId" column="matchId"/>
       <result property="id.playerId" column="playerId"/>
       <result property="carConfirmed" column="carConfirmed"/>
-      <association property="player" javaType="net.andresbustamante.yafoot.model.Player">
+      <association property="player" javaType="net.andresbustamante.yafoot.core.model.Player">
         <id column="playerId" property="id"/>
       </association>
-      <association property="car" javaType="net.andresbustamante.yafoot.model.Car">
+      <association property="car" javaType="net.andresbustamante.yafoot.core.model.Car">
         <id column="carId" property="id"/>
         <result column="carName" property="name"/>
-        <association property="driver" javaType="net.andresbustamante.yafoot.model.Player">
+        <association property="driver" javaType="net.andresbustamante.yafoot.core.model.Player">
           <id property="id" column="driverId"/>
           <result property="firstName" column="driverFirstName"/>
           <result property="email" column="driverEmail"/>

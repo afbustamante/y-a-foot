@@ -2,8 +2,8 @@ package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.util.LocaleUtils;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.commons.util.LocaleUtils;
 import net.andresbustamante.yafoot.web.dto.ErrorResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;

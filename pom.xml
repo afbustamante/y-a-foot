@@ -12,10 +12,12 @@
   <url>https://github.com/afbustamante/y-a-foot</url>
 
   <modules>
-    <module>y-a-foot-api</module>
+    <module>y-a-foot-core-api</module>
     <module>y-a-foot-services</module>
     <module>y-a-foot-core</module>
     <module>y-a-foot-commons-test</module>
+    <module>y-a-foot-commons-api</module>
+    <module>y-a-foot-auth-api</module>
   </modules>
 
   <properties>
@@ -786,11 +788,8 @@
             <exclude>**/*Constants.*</exclude>
             <exclude>**/*Test.*</exclude>
             <exclude>**/*Exception.*</exclude>
-            <exclude>**/*Bean.*</exclude>
-            <exclude>**/*ViewModel.*</exclude>
-            <exclude>**/*UIService.*</exclude>
-            <exclude>**/yafoot/model/**</exclude>
-            <exclude>**/yafoot/web/dto/**</exclude>
+            <exclude>**/yafoot/**/model/**</exclude>
+            <exclude>**/yafoot/**/dto/**</exclude>
             <exclude>org/w3/**</exclude>
           </excludes>
         </configuration>
@@ -830,8 +829,6 @@
                     <exclude>*Constants</exclude>
                     <exclude>*Test</exclude>
                     <exclude>*Exception</exclude>
-                    <exclude>*ViewModel</exclude>
-                    <exclude>*UIService</exclude>
                     <exclude>*Mapper</exclude>
                     <exclude>*MapperImpl</exclude>
                     <exclude>*Api</exclude>

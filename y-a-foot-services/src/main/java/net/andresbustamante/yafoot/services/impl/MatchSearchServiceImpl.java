@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.services.MatchSearchService;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.core.model.Match;
+import net.andresbustamante.yafoot.core.model.Player;
+import net.andresbustamante.yafoot.core.services.MatchSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

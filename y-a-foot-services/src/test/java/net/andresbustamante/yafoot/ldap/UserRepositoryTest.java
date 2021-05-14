@@ -1,9 +1,10 @@
 package net.andresbustamante.yafoot.ldap;
 
+import net.andresbustamante.yafoot.auth.repository.UserRepository;
 import net.andresbustamante.yafoot.config.LdapConfig;
 import net.andresbustamante.yafoot.config.LdapTestConfig;
-import net.andresbustamante.yafoot.model.User;
-import net.andresbustamante.yafoot.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

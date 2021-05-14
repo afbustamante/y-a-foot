@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import net.andresbustamante.yafoot.model.*;
+import net.andresbustamante.yafoot.core.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,8 +10,8 @@ import java.time.*;
 import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
-import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CREATED;
-import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.PLAYED;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.PLAYED;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DatabaseSetup(value = "classpath:datasets/matchesDataset.xml")

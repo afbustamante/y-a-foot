@@ -15,7 +15,7 @@
   <dependencies>
     <dependency>
       <groupId>net.andresbustamante</groupId>
-      <artifactId>y-a-foot-api</artifactId>
+      <artifactId>y-a-foot-commons-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -23,6 +23,16 @@
       <artifactId>y-a-foot-commons-test</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-auth-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-core-api</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- Spring -->

@@ -2,9 +2,9 @@ package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.dao.MatchDAO;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.UserContext;
+import net.andresbustamante.yafoot.core.model.Match;
+import net.andresbustamante.yafoot.core.model.Player;
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

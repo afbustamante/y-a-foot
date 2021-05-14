@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.dao;
 
-import net.andresbustamante.yafoot.model.Car;
-import net.andresbustamante.yafoot.model.Match;
-import net.andresbustamante.yafoot.model.Player;
+import net.andresbustamante.yafoot.core.model.Car;
+import net.andresbustamante.yafoot.core.model.Match;
+import net.andresbustamante.yafoot.core.model.Player;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

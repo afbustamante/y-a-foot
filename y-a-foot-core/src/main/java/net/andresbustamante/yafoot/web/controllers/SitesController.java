@@ -1,12 +1,12 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.Player;
-import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.services.PlayerSearchService;
-import net.andresbustamante.yafoot.services.SiteManagementService;
-import net.andresbustamante.yafoot.services.SiteSearchService;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.core.model.Player;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.services.PlayerSearchService;
+import net.andresbustamante.yafoot.core.services.SiteManagementService;
+import net.andresbustamante.yafoot.core.services.SiteSearchService;
 import net.andresbustamante.yafoot.web.dto.Site;
 import net.andresbustamante.yafoot.web.mappers.SiteMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -62,7 +62,7 @@ public class SitesController extends AbstractController implements SitesApi {
         try {
             UserContext ctx = getUserContext(request);
             Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
-            List<net.andresbustamante.yafoot.model.Site> sites = siteSearchService.findSitesByPlayer(player);
+            List<net.andresbustamante.yafoot.core.model.Site> sites = siteSearchService.findSitesByPlayer(player);
 
             List<Site> result = new ArrayList<>();
 

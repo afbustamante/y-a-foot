@@ -1,13 +1,14 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.model.*;
-import net.andresbustamante.yafoot.services.CarpoolingService;
-import net.andresbustamante.yafoot.services.MatchManagementService;
-import net.andresbustamante.yafoot.services.MatchSearchService;
-import net.andresbustamante.yafoot.services.PlayerSearchService;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.model.*;
+import net.andresbustamante.yafoot.core.services.CarpoolingService;
+import net.andresbustamante.yafoot.core.services.MatchManagementService;
+import net.andresbustamante.yafoot.core.services.MatchSearchService;
+import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.CarConfirmation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.CREATED;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

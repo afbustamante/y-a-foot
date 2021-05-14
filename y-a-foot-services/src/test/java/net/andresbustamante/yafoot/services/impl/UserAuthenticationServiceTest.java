@@ -1,11 +1,11 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
-import net.andresbustamante.yafoot.exceptions.LdapException;
-import net.andresbustamante.yafoot.ldap.UserRepository;
-import net.andresbustamante.yafoot.model.User;
+import net.andresbustamante.yafoot.commons.exceptions.LdapException;
+import net.andresbustamante.yafoot.auth.repository.UserRepository;
+import net.andresbustamante.yafoot.commons.model.User;
 import net.andresbustamante.yafoot.util.JwtTokenUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
