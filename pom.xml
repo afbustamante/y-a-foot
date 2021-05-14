@@ -15,6 +15,7 @@
     <module>y-a-foot-api</module>
     <module>y-a-foot-services</module>
     <module>y-a-foot-core</module>
+    <module>y-a-foot-commons-test</module>
   </modules>
 
   <properties>

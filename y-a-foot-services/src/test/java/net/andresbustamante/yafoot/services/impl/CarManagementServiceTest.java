@@ -1,22 +1,20 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.model.Car;
-import net.andresbustamante.yafoot.model.UserContext;
 import net.andresbustamante.yafoot.model.Player;
+import net.andresbustamante.yafoot.model.UserContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-class CarManagementServiceImplTest extends AbstractServiceTest {
+class CarManagementServiceTest extends AbstractServiceTest {
 
     private Player player;
 

@@ -1,9 +1,10 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.dao.MatchDAO;
+import net.andresbustamante.yafoot.model.Match;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.UserContext;
-import net.andresbustamante.yafoot.model.Match;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class MatchSearchServiceImplTest extends AbstractServiceTest {
+class MatchSearchServiceTest extends AbstractServiceTest {
 
     @InjectMocks
     private MatchSearchServiceImpl matchSearchService;

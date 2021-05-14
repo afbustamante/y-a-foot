@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.dao.SiteDAO;
 import net.andresbustamante.yafoot.model.Player;
 import net.andresbustamante.yafoot.model.Site;
@@ -15,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class SiteSearchServiceImplTest extends AbstractServiceTest {
+class SiteSearchServiceTest extends AbstractServiceTest {
 
     private final Site site1 = new Site(1);
     private final Site site2 = new Site(2);

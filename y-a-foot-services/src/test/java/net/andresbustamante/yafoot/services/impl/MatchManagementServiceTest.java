@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
@@ -29,7 +30,7 @@ import static net.andresbustamante.yafoot.model.enums.MatchStatusEnum.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class MatchManagementServiceImplTest extends AbstractServiceTest {
+class MatchManagementServiceTest extends AbstractServiceTest {
 
     @InjectMocks
     private MatchManagementServiceImpl matchManagementService;

@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.services.impl;
 
 import freemarker.template.Configuration;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceIntegrationTest;
 import net.andresbustamante.yafoot.config.FreemarkerTestConfig;
 import net.andresbustamante.yafoot.config.MessagingTestConfig;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
@@ -8,7 +9,6 @@ import net.andresbustamante.yafoot.model.User;
 import net.andresbustamante.yafoot.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,21 +16,16 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.support.DelegatingMessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 /**
- * Tests for {@link MessagingServiceImpl}
+ * Integration tests for {@link MessagingServiceImpl}
  */
-@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {MessagingTestConfig.class, FreemarkerTestConfig.class})
-class MessagingServiceImplTest extends AbstractServiceTest {
+class MessagingServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -86,7 +81,6 @@ class MessagingServiceImplTest extends AbstractServiceTest {
 
     private void prepareMessageSource() {
         MessageSource messageSource = Mockito.mock(MessageSource.class);
-        when(messageSource.getMessage(anyString(), any(Object[].class),any(Locale.class))).thenReturn("");
         delegatingMessageSource.setParentMessageSource(messageSource);
     }
 }

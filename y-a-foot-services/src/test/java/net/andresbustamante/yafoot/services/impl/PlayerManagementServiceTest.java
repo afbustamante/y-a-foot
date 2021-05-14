@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.dao.PlayerDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.PlayerNotFoundException;
@@ -19,7 +20,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class PlayerManagementServiceImplTest extends AbstractServiceTest {
+class PlayerManagementServiceTest extends AbstractServiceTest {
 
     @InjectMocks
     private PlayerManagementServiceImpl playerManagementService;

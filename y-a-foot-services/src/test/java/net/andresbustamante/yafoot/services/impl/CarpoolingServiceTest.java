@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.dao.CarDAO;
 import net.andresbustamante.yafoot.dao.MatchDAO;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
@@ -20,7 +21,7 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class CarpoolingServiceImplTest extends AbstractServiceTest {
+class CarpoolingServiceTest extends AbstractServiceTest {
 
     @InjectMocks
     private CarpoolingServiceImpl carpoolingService;

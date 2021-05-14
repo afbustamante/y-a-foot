@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
 import net.andresbustamante.yafoot.exceptions.LdapException;
@@ -13,7 +14,7 @@ import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UserAuthenticationServiceImplTest extends AbstractServiceTest {
+class UserAuthenticationServiceTest extends AbstractServiceTest {
 
     private static final User USR_TEST = new User("test@email.com", "password", "TEST",
             "User");

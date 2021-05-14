@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.services.impl;
 
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.ldap.UserRepository;
 import net.andresbustamante.yafoot.model.User;
@@ -16,7 +17,7 @@ import org.mockito.internal.util.reflection.FieldSetter;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UserManagementServiceImplTest extends AbstractServiceTest {
+class UserManagementServiceTest extends AbstractServiceTest {
 
     @InjectMocks
     private UserManagementServiceImpl userManagementService;
