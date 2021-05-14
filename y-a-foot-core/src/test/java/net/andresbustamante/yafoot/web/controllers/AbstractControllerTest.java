@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import net.andresbustamante.yafoot.auth.services.UserAuthenticationService;
-import net.andresbustamante.yafoot.auth.util.JwtTokenUtils;
 import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.commons.util.JwtTokenUtils;
 import net.andresbustamante.yafoot.web.config.MappingTestConfig;
 import net.andresbustamante.yafoot.web.config.WebSecurityTestConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.text.MessageFormat;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.eq;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -38,7 +37,7 @@ public abstract class AbstractControllerTest {
     @BeforeEach
     void initUserDetailsService() throws Exception {
         User testUser = new User("john.doe@email.com", "passwd", "DOE", "John");
-        given(userAuthenticationService.findUserByEmail(eq(VALID_EMAIL))).willReturn(testUser);
+        given(userAuthenticationService.findUserByEmail(VALID_EMAIL)).willReturn(testUser);
     }
 
     protected String getAuthString(String email) {

@@ -15,6 +15,7 @@
     <module>y-a-foot-commons-test</module>
     <module>y-a-foot-commons-api</module>
     <module>y-a-foot-commons-services</module>
+    <module>y-a-foot-commons-security</module>
     <module>y-a-foot-auth-api</module>
     <module>y-a-foot-auth-services</module>
     <module>y-a-foot-core-api</module>

@@ -1,8 +1,7 @@
-package net.andresbustamante.yafoot.auth.util;
+package net.andresbustamante.yafoot.commons.util;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import net.andresbustamante.yafoot.core.config.JwtTestConfig;
-import net.andresbustamante.yafoot.auth.util.JwtTokenUtils;
+import net.andresbustamante.yafoot.commons.config.JwtTestConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

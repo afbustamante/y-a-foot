@@ -34,7 +34,7 @@ public class JdbcTestConfig {
     }
 
     @PostConstruct
-    public void updateDatabase() throws Exception {
+    public void updateDatabase() {
         Flyway flyway = Flyway.configure().dataSource(dataSource()).load();
 
         // Start the migration

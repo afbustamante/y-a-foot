@@ -1,9 +1,8 @@
-package net.andresbustamante.yafoot.auth.util;
+package net.andresbustamante.yafoot.commons.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import net.andresbustamante.yafoot.commons.util.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

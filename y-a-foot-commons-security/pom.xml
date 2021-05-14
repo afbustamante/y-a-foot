@@ -9,9 +9,33 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>y-a-foot-commons-services</artifactId>
+  <artifactId>y-a-foot-commons-security</artifactId>
 
   <dependencies>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-commons-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-commons-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Java EE / javax -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Spring -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -22,31 +46,14 @@
       <artifactId>spring-context</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-support</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aspects</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <scope>provided</scope>
     </dependency>
 
-    <!-- Logging -->
+    <!-- Others -->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
     </dependency>
   </dependencies>
 </project>

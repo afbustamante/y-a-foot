@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.web.filters;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import net.andresbustamante.yafoot.auth.util.JwtTokenUtils;
+import net.andresbustamante.yafoot.commons.util.JwtTokenUtils;
 import net.andresbustamante.yafoot.web.services.JwtUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

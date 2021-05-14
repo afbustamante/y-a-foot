@@ -56,11 +56,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>jakarta.xml.bind</groupId>
-      <artifactId>jakarta.xml.bind-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>javax.mail-api</artifactId>
       <scope>provided</scope>
