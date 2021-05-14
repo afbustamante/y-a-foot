@@ -8,7 +8,7 @@ import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
-import net.andresbustamante.yafoot.core.services.MessagingService;
+import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

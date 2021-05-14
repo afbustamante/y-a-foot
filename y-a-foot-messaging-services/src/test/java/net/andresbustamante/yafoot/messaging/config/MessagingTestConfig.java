@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.core.config;
+package net.andresbustamante.yafoot.messaging.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

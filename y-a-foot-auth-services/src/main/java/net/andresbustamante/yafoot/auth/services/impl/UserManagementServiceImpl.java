@@ -9,7 +9,7 @@ import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.LdapException;
 import net.andresbustamante.yafoot.commons.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.services.MessagingService;
+import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -6,7 +6,7 @@ import net.andresbustamante.yafoot.auth.services.UserManagementService;
 import net.andresbustamante.yafoot.commons.exceptions.LdapException;
 import net.andresbustamante.yafoot.commons.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.services.MessagingService;
+import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import net.andresbustamante.yafoot.web.dto.Credentials;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

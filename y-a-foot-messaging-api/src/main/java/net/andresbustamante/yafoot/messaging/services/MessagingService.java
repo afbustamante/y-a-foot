@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.core.services;
+package net.andresbustamante.yafoot.messaging.services;
 
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 

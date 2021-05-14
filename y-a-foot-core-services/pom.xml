@@ -34,6 +34,11 @@
     </dependency>
     <dependency>
       <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-messaging-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
       <artifactId>y-a-foot-core-api</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -54,16 +59,6 @@
       <groupId>jakarta.annotation</groupId>
       <artifactId>jakarta.annotation-api</artifactId>
       <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>javax.mail-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.mail</groupId>
-      <artifactId>javax.mail</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <!-- MyBatis -->
@@ -99,16 +94,6 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
-    </dependency>
-
-    <!-- Others -->
-    <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.freemarker</groupId>
-      <artifactId>freemarker</artifactId>
     </dependency>
   </dependencies>
 

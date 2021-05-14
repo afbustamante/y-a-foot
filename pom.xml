@@ -18,6 +18,8 @@
     <module>y-a-foot-commons-security</module>
     <module>y-a-foot-auth-api</module>
     <module>y-a-foot-auth-services</module>
+    <module>y-a-foot-messaging-api</module>
+    <module>y-a-foot-messaging-services</module>
     <module>y-a-foot-core-api</module>
     <module>y-a-foot-core-services</module>
     <module>y-a-foot-core</module>

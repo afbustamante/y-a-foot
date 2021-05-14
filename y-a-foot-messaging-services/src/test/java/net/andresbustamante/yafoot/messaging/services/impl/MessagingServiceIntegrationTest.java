@@ -1,13 +1,12 @@
-package net.andresbustamante.yafoot.core.services.impl;
+package net.andresbustamante.yafoot.messaging.services.impl;
 
 import freemarker.template.Configuration;
-import net.andresbustamante.yafoot.commons.services.AbstractServiceIntegrationTest;
-import net.andresbustamante.yafoot.core.config.FreemarkerTestConfig;
-import net.andresbustamante.yafoot.core.config.MessagingTestConfig;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.model.User;
-import net.andresbustamante.yafoot.core.services.MessagingService;
-import net.andresbustamante.yafoot.core.services.impl.MessagingServiceImpl;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceIntegrationTest;
+import net.andresbustamante.yafoot.messaging.config.FreemarkerTestConfig;
+import net.andresbustamante.yafoot.messaging.config.MessagingTestConfig;
+import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

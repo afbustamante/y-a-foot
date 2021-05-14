@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.core.services.*;
 import net.andresbustamante.yafoot.core.dao.CarDAO;
