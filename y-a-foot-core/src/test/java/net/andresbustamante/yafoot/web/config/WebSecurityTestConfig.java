@@ -22,7 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = {
-        "net.andresbustamante.yafoot.util",
+        "net.andresbustamante.yafoot.auth.util",
+        "net.andresbustamante.yafoot.core.util",
         "net.andresbustamante.yafoot.web.util",
         "net.andresbustamante.yafoot.web.services"
 })

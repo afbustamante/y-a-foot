@@ -13,7 +13,12 @@
   <dependencies>
     <dependency>
       <groupId>net.andresbustamante</groupId>
-      <artifactId>y-a-foot-services</artifactId>
+      <artifactId>y-a-foot-auth-services</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-core-services</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

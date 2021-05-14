@@ -12,12 +12,14 @@
   <url>https://github.com/afbustamante/y-a-foot</url>
 
   <modules>
-    <module>y-a-foot-core-api</module>
-    <module>y-a-foot-services</module>
-    <module>y-a-foot-core</module>
     <module>y-a-foot-commons-test</module>
     <module>y-a-foot-commons-api</module>
+    <module>y-a-foot-commons-services</module>
     <module>y-a-foot-auth-api</module>
+    <module>y-a-foot-auth-services</module>
+    <module>y-a-foot-core-api</module>
+    <module>y-a-foot-core-services</module>
+    <module>y-a-foot-core</module>
   </modules>
 
   <properties>

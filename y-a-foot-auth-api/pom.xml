@@ -24,11 +24,22 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Spring -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Others -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
     </dependency>
   </dependencies>
 </project>

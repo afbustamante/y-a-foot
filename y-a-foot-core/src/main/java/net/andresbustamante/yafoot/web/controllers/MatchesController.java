@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.web.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.exceptions.UserNotAuthorisedException;
+import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;

@@ -1,8 +1,8 @@
 package net.andresbustamante.yafoot.web.controllers;
 
-import net.andresbustamante.yafoot.commons.model.User;
 import net.andresbustamante.yafoot.auth.services.UserAuthenticationService;
-import net.andresbustamante.yafoot.util.JwtTokenUtils;
+import net.andresbustamante.yafoot.auth.util.JwtTokenUtils;
+import net.andresbustamante.yafoot.commons.model.User;
 import net.andresbustamante.yafoot.web.config.MappingTestConfig;
 import net.andresbustamante.yafoot.web.config.WebSecurityTestConfig;
 import org.junit.jupiter.api.BeforeEach;

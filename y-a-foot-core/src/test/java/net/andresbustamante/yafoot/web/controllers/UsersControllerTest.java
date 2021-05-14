@@ -1,12 +1,12 @@
 package net.andresbustamante.yafoot.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.exceptions.InvalidCredentialsException;
+import net.andresbustamante.yafoot.auth.exceptions.InvalidCredentialsException;
+import net.andresbustamante.yafoot.auth.services.UserManagementService;
 import net.andresbustamante.yafoot.commons.exceptions.LdapException;
 import net.andresbustamante.yafoot.commons.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.MessagingService;
-import net.andresbustamante.yafoot.auth.services.UserManagementService;
 import net.andresbustamante.yafoot.web.dto.Credentials;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.web.config;
 
-import net.andresbustamante.yafoot.util.LdapPasswordEncoder;
+import net.andresbustamante.yafoot.auth.util.LdapPasswordEncoder;
 import net.andresbustamante.yafoot.web.filters.JwtRequestFilter;
 import net.andresbustamante.yafoot.web.services.JwtUserDetailsService;
 import net.andresbustamante.yafoot.web.util.JwtAuthenticationEntryPoint;
@@ -35,21 +35,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtRequestFilter jwtRequestFilter;
 
-    private LdapPasswordEncoder ldapPasswordEncoder;
-
     @Autowired
     public WebSecurityConfig(JwtUserDetailsService jwtUserDetailsService,
                              JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                             JwtRequestFilter jwtRequestFilter, LdapPasswordEncoder ldapPasswordEncoder) {
+                             JwtRequestFilter jwtRequestFilter) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtRequestFilter = jwtRequestFilter;
-        this.ldapPasswordEncoder = ldapPasswordEncoder;
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(ldapPasswordEncoder);
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(new LdapPasswordEncoder());
     }
 
     @Override
