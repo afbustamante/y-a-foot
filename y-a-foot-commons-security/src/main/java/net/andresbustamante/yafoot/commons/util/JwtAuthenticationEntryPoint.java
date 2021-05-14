@@ -1,4 +1,4 @@
-package net.andresbustamante.yafoot.web.util;
+package net.andresbustamante.yafoot.commons.util;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

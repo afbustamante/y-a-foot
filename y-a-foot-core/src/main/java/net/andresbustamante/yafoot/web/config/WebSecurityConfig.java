@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.web.config;
 
 import net.andresbustamante.yafoot.auth.util.LdapPasswordEncoder;
+import net.andresbustamante.yafoot.commons.util.JwtAuthenticationEntryPoint;
 import net.andresbustamante.yafoot.web.filters.JwtRequestFilter;
 import net.andresbustamante.yafoot.web.services.JwtUserDetailsService;
-import net.andresbustamante.yafoot.web.util.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
