@@ -317,6 +317,18 @@ paths:
           type: string
           format: date
         description: End date for the research
+      - in: query
+        name: sport
+        required: false
+        schema:
+          $ref: '#/components/schemas/SportCode'
+        description: Sport to search
+      - in: query
+        name: status
+        required: false
+        schema:
+          $ref: '#/components/schemas/MatchStatus'
+        description: Match status to search
       responses:
         200: # OK
           description: List of matches found for the active player
@@ -766,6 +778,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /sports:
+    get:
+      operationId: loadSports
+      summary: Loads the list of supported sports
+      tags:
+        - sports
+      responses:
+        200: # OK
+          description: List of sports available in the application
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sport'
+        500: # Internal server error
+          description: A database error occurred when loading the list of sports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     User:
@@ -873,11 +906,25 @@ components:
           $ref: '#/components/schemas/Car'
         carConfirmed:
           type: boolean
+    Sport:
+      type: object
+      required:
+        - id
+        - code
+        - name
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
     Match:
       type: object
       required:
       - date
       - site
+      - sport
       properties:
         id:
           type: integer
@@ -900,6 +947,8 @@ components:
         numRegisteredPlayers:
           type: integer
           minimum: 0
+        sport:
+          $ref: '#/components/schemas/SportCode'
         site:
           $ref: '#/components/schemas/Site'
         creator:
@@ -915,6 +964,24 @@ components:
         - CREATED
         - PLAYED
         - CANCELLED
+    SportCode:
+      type: string
+      enum:
+        - FOOTBALL
+        - RUGBY
+        - BASKETBALL
+        - VOLLEYBALL
+        - HANDBALL
+        - TENNIS
+        - HOCKEY
+        - BASEBALL
+        - HIKING
+        - BADMINTON
+        - FUTSAL
+        - ICE_HOCKEY
+        - SWIMMING
+        - TABLE_TENNIS
+        - OTHER
     GpsCoordinates:
       type: object
       required:

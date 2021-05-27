@@ -4,6 +4,8 @@ import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Registration;
+import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
+import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.OffsetDateTime;
@@ -38,11 +40,16 @@ public interface MatchDAO {
      * Find the list of matches associated to a player by optionally using a date interval
      *
      * @param player Player to use for the research
+     * @param sport Sport to search in the list of matches
+     * @param status Match status to search
      * @param startDate Start date for the research
      * @param endDate Limit date for the research
      * @return List of matches returned by the research
      */
-    List<Match> findMatchesByPlayer(@Param(PLAYER) Player player, @Param(START_DATE) OffsetDateTime startDate,
+    List<Match> findMatchesByPlayer(@Param(PLAYER) Player player,
+                                    @Param(SPORT) SportEnum sport,
+                                    @Param(STATUS) MatchStatusEnum status,
+                                    @Param(START_DATE) OffsetDateTime startDate,
                                     @Param(END_DATE) OffsetDateTime endDate);
 
     /**

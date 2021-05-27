@@ -5,6 +5,8 @@ import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.model.*;
+import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
+import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
 import net.andresbustamante.yafoot.core.services.MatchManagementService;
 import net.andresbustamante.yafoot.core.services.MatchSearchService;
@@ -29,6 +31,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
+import static net.andresbustamante.yafoot.web.dto.SportCode.BASKETBALL;
+import static net.andresbustamante.yafoot.web.dto.SportCode.RUGBY;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -160,11 +164,11 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         Match match1 = new Match(1);
         match1.setDate(today.minusDays(3).atTime(OffsetTime.now()));
-        Match match2 = new Match(1);
+        Match match2 = new Match(2);
         match2.setDate(today.minusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), any(LocalDate.class))).willReturn(
-                List.of(match1, match2));
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), eq(null), any(LocalDate.class)))
+                .willReturn(List.of(match1, match2));
 
         // When
         mvc.perform(get("/matches?endDate={0}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
@@ -185,14 +189,97 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         Match match1 = new Match(1);
         match1.setDate(today.plusDays(3).atTime(OffsetTime.now()));
-        Match match2 = new Match(1);
+        Match match2 = new Match(2);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), any(LocalDate.class), eq(null))).willReturn(
-                List.of(match1, match2));
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class), eq(null)))
+                .willReturn(List.of(match1, match2));
 
         // When
         mvc.perform(get("/matches?startDate={0}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
+                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(playerSearchService).findPlayerByEmail(anyString());
+    }
+
+    @Test
+    void findFutureMatchesBySport() throws Exception {
+        // Given
+        LocalDate today = LocalDate.now();
+
+        Match match1 = new Match(1);
+        match1.setSport(SportEnum.BASKETBALL);
+        match1.setDate(today.plusDays(3).atTime(OffsetTime.now()));
+        Match match2 = new Match(2);
+        match2.setSport(SportEnum.BASKETBALL);
+        match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
+
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(SportEnum.BASKETBALL), any(LocalDate.class), eq(null)))
+                .willReturn(List.of(match1, match2));
+
+        // When
+        mvc.perform(get("/matches?startDate={0}&sport={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE), SportEnum.BASKETBALL.name())
+                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(playerSearchService).findPlayerByEmail(anyString());
+    }
+
+    @Test
+    void findMatchesBySport() throws Exception {
+        // Given
+        LocalDate today = LocalDate.now();
+
+        Match match1 = new Match(1);
+        match1.setSport(SportEnum.FOOTBALL);
+        match1.setDate(today.plusDays(3).atTime(OffsetTime.now()));
+        Match match2 = new Match(2);
+        match2.setSport(SportEnum.FOOTBALL);
+        match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
+
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(SportEnum.FOOTBALL), eq(null), eq(null)))
+                .willReturn(List.of(match1, match2));
+
+        // When
+        mvc.perform(get("/matches?sport={0}", SportEnum.FOOTBALL.name())
+                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(playerSearchService).findPlayerByEmail(anyString());
+    }
+
+    @Test
+    void findMatchesByStatus() throws Exception {
+        // Given
+        LocalDate today = LocalDate.now();
+
+        Match match1 = new Match(1);
+        match1.setSport(SportEnum.FOOTBALL);
+        match1.setStatus(MatchStatusEnum.CANCELLED);
+        match1.setDate(today.plusDays(3).atTime(OffsetTime.now()));
+        Match match2 = new Match(2);
+        match2.setSport(SportEnum.FOOTBALL);
+        match2.setStatus(MatchStatusEnum.CANCELLED);
+        match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
+
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(MatchStatusEnum.CANCELLED), eq(null), eq(null), eq(null)))
+                .willReturn(List.of(match1, match2));
+
+        // When
+        mvc.perform(get("/matches?status={0}", MatchStatusEnum.CANCELLED.name())
                 .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -226,7 +313,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), any(LocalDate.class), any(LocalDate.class))).willReturn(null);
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class), any(LocalDate.class)))
+                .willReturn(null);
 
         // When
         mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE), tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
@@ -247,7 +335,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate tomorrow = today.plusDays(1);
 
         given(playerSearchService.findPlayerByEmail(anyString())).willThrow(DatabaseException.class);
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), any(LocalDate.class), any(LocalDate.class)))
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class), any(LocalDate.class)))
                 .willThrow(DatabaseException.class);
 
         // When
@@ -264,6 +352,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         // Given
         net.andresbustamante.yafoot.web.dto.Match match = new net.andresbustamante.yafoot.web.dto.Match();
         match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setSport(RUGBY);
         match.setNumPlayersMin(8);
 
         net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
@@ -316,6 +405,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         // Given
         net.andresbustamante.yafoot.web.dto.Match match = new net.andresbustamante.yafoot.web.dto.Match();
         match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setSport(BASKETBALL);
         match.setNumPlayersMin(8);
 
         net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();

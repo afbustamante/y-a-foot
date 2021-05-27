@@ -10,8 +10,9 @@ import java.time.*;
 import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
-import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
-import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.PLAYED;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.*;
+import static net.andresbustamante.yafoot.core.model.enums.SportEnum.FOOTBALL;
+import static net.andresbustamante.yafoot.core.model.enums.SportEnum.HANDBALL;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DatabaseSetup(value = "classpath:datasets/matchesDataset.xml")
@@ -108,7 +109,7 @@ class MatchDAOTest extends AbstractDAOTest {
         OffsetDateTime startDate = LocalDate.of(2018, 10, 2).atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime();
 
         // When
-        List<Match> matchs = matchDAO.findMatchesByPlayer(player1, startDate, null);
+        List<Match> matchs = matchDAO.findMatchesByPlayer(player1, null, null, startDate, null);
 
         // Then
         assertNotNull(matchs);
@@ -123,13 +124,57 @@ class MatchDAOTest extends AbstractDAOTest {
     }
 
     @Test
+    void findMatchesByPlayerAndSport() throws Exception {
+        // Given
+        Player player2 = new Player(2);
+
+        // When
+        List<Match> matchs = matchDAO.findMatchesByPlayer(player2, HANDBALL, null, null, null);
+
+        // Then
+        assertNotNull(matchs);
+        assertEquals(1 ,matchs.size());
+        assertNotNull(matchs.get(0));
+        assertEquals("QWERTZ-1234", matchs.get(0).getCode());
+        assertNotNull(matchs.get(0).getCreator());
+        assertEquals("Lionel", matchs.get(0).getCreator().getFirstName());
+        assertEquals("Messi", matchs.get(0).getCreator().getSurname());
+        assertEquals("messi@email.com", matchs.get(0).getCreator().getEmail());
+        assertNotNull(matchs.get(0).getSport());
+        assertEquals(HANDBALL, matchs.get(0).getSport());
+    }
+
+    @Test
+    void findMatchesByPlayerAndStatus() throws Exception {
+        // Given
+        Player player2 = new Player(2);
+
+        // When
+        List<Match> matchs = matchDAO.findMatchesByPlayer(player2, null, CANCELLED, null, null);
+
+        // Then
+        assertNotNull(matchs);
+        assertEquals(1 ,matchs.size());
+        assertNotNull(matchs.get(0));
+        assertEquals("QWERTZ-1234", matchs.get(0).getCode());
+        assertNotNull(matchs.get(0).getCreator());
+        assertEquals("Lionel", matchs.get(0).getCreator().getFirstName());
+        assertEquals("Messi", matchs.get(0).getCreator().getSurname());
+        assertEquals("messi@email.com", matchs.get(0).getCreator().getEmail());
+        assertNotNull(matchs.get(0).getSport());
+        assertEquals(HANDBALL, matchs.get(0).getSport());
+        assertNotNull(matchs.get(0).getStatus());
+        assertEquals(CANCELLED, matchs.get(0).getStatus());
+    }
+
+    @Test
     void findMatchesByPlayerAndEndDate() throws Exception {
         // Given
         Player player2 = new Player(2);
         OffsetDateTime endDate = LocalDate.of(2018, 10, 3).atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime();
 
         // When
-        List<Match> matchs = matchDAO.findMatchesByPlayer(player2, null, endDate);
+        List<Match> matchs = matchDAO.findMatchesByPlayer(player2, null, null, null, endDate);
 
         // Then
         assertNotNull(matchs);
@@ -170,6 +215,7 @@ class MatchDAOTest extends AbstractDAOTest {
         Match match = new Match();
         match.setCode("C-" + (Instant.now().toEpochMilli() / 1000));
         match.setDate(now);
+        match.setSport(FOOTBALL);
         match.setNumPlayersMin(10);
         match.setNumPlayersMax(12);
         match.setCarpoolingEnabled(true);
@@ -300,7 +346,7 @@ class MatchDAOTest extends AbstractDAOTest {
 
         // When
         int numLines = matchDAO.unregisterPlayerFromAllMatches(player);
-        List<Match> matchesByPlayer = matchDAO.findMatchesByPlayer(player, startDate, null);
+        List<Match> matchesByPlayer = matchDAO.findMatchesByPlayer(player, null, null, startDate, null);
 
         // Then
         assertEquals(1, numLines);

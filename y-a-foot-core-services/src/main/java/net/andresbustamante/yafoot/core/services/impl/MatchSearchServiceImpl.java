@@ -4,6 +4,8 @@ import net.andresbustamante.yafoot.core.dao.MatchDAO;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
+import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
+import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import net.andresbustamante.yafoot.core.services.MatchSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,11 +42,11 @@ public class MatchSearchServiceImpl implements MatchSearchService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Match> findMatchesByPlayer(Player player, LocalDate startDate, LocalDate endDate) throws DatabaseException {
+    public List<Match> findMatchesByPlayer(Player player, MatchStatusEnum status, SportEnum sport, LocalDate startDate, LocalDate endDate) throws DatabaseException {
         if (player != null && player.getId() > 0) {
             OffsetDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime() : null;
             OffsetDateTime endDateTime = (endDate != null) ? endDate.plusDays(1L).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1L).toOffsetDateTime() : null;
-            return matchDAO.findMatchesByPlayer(player, startDateTime, endDateTime);
+            return matchDAO.findMatchesByPlayer(player, sport, status, startDateTime, endDateTime);
         } else {
             return Collections.emptyList();
         }
