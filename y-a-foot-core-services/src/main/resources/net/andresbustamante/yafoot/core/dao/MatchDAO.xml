@@ -15,6 +15,7 @@
           mat.mat_date                   AS date,
           mat.mat_description            AS description,
           mat.mat_status                 AS status,
+          spt.spt_code                   AS sport,
           mat.mat_num_players_min        AS numPlayersMin,
           mat.mat_num_players_max        AS numPlayersMax,
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
@@ -40,6 +41,7 @@
           car.car_name                   AS carName,
           car.car_num_seats              AS carNumSeats
         FROM t_match mat
+          JOIN t_sport spt ON mat.mat_sport_id = spt.spt_id
           JOIN t_site sit ON mat.mat_site_id = sit.sit_id
           JOIN t_player cre ON mat.mat_creator_id = cre.ply_id
           LEFT JOIN t_player_match pma ON mat.mat_id = pma.pma_match_id
@@ -54,6 +56,7 @@
                mat.mat_date                 AS date,
                mat.mat_description          AS description,
                mat.mat_status               AS status,
+               spt.spt_code                 AS sport,
                mat.mat_num_players_min      AS numPlayersMin,
                mat.mat_num_players_max      AS numPlayersMax,
                mat.mat_carpooling_enabled   AS carpoolingEnabled,
@@ -79,6 +82,7 @@
                car.car_name                 AS carName,
                car.car_num_seats            AS carNumSeats
         FROM t_match mat
+            JOIN t_sport spt ON mat.mat_sport_id = spt.spt_id
             JOIN t_site sit ON mat.mat_site_id = sit.sit_id
             JOIN t_player cre ON mat.mat_creator_id = cre.ply_id
             JOIN t_player_match pma ON mat.mat_id = pma.pma_match_id
@@ -90,6 +94,12 @@
       </if>
       <if test="endDate != null">
         AND mat.mat_date &lt;= #{endDate}
+      </if>
+      <if test="sport != null">
+        AND mat.mat_sport_id = #{sport.id}
+      </if>
+      <if test="status != null">
+        AND mat.mat_status = #{status}
       </if>
       <choose>
         <when test="startDate != null">
@@ -107,6 +117,7 @@
           mat.mat_code                   AS code,
           mat.mat_date                   AS date,
           mat.mat_description            AS description,
+          spt.spt_code                   AS sport,
           mat.mat_status                 AS status,
           mat.mat_num_players_min        AS numPlayersMin,
           mat.mat_num_players_max        AS numPlayersMax,
@@ -126,7 +137,8 @@
           sit.sit_longitude              AS siteLongitude
         FROM t_match mat
           JOIN t_site sit ON mat.mat_site_id = sit.sit_id
-          JOIN t_player cre on mat.mat_creator_id = cre.ply_id
+          JOIN t_player cre ON mat.mat_creator_id = cre.ply_id
+          JOIN t_sport spt ON mat.mat_sport_id = spt.spt_id
         WHERE mat.mat_id = #{id}
     </select>
 
@@ -144,6 +156,7 @@
             mat_num_players_max,
             mat_site_id,
             mat_code,
+            mat_sport_id,
             mat_created_at,
             mat_carpooling_enabled,
             mat_code_sharing_enabled,
@@ -157,6 +170,7 @@
             #{match.numPlayersMax},
             #{match.site.id},
             #{match.code},
+            #{match.sport.id},
             CURRENT_TIMESTAMP,
             #{match.carpoolingEnabled},
             #{match.codeSharingEnabled},
@@ -253,6 +267,7 @@
         <result property="code" column="code"/>
         <result property="date" column="date"/>
         <result property="description" column="description"/>
+        <result property="sport" column="sport"/>
         <result property="status" column="status"/>
         <result property="numPlayersMin" column="numPlayersMin"/>
         <result property="numPlayersMax" column="numPlayersMax"/>

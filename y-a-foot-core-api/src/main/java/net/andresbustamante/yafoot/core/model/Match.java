@@ -5,13 +5,15 @@ import lombok.Setter;
 import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
+import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.*;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
+import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.DRAFT;
 
 /**
  * @author andresbustamante
@@ -25,6 +27,7 @@ public class Match implements Serializable, Identifiable, Auditable {
     private String code;
     private String description;
     private MatchStatusEnum status;
+    private SportEnum sport;
     private Integer numPlayersMin;
     private Integer numPlayersMax;
     private List<Registration> registrations;

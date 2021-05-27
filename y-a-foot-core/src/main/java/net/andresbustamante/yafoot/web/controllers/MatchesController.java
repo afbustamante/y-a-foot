@@ -6,14 +6,13 @@ import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
+import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
 import net.andresbustamante.yafoot.core.services.MatchManagementService;
 import net.andresbustamante.yafoot.core.services.MatchSearchService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
-import net.andresbustamante.yafoot.web.dto.Car;
-import net.andresbustamante.yafoot.web.dto.CarConfirmation;
-import net.andresbustamante.yafoot.web.dto.Match;
-import net.andresbustamante.yafoot.web.dto.Registration;
+import net.andresbustamante.yafoot.web.dto.*;
 import net.andresbustamante.yafoot.web.mappers.CarMapper;
 import net.andresbustamante.yafoot.web.mappers.MatchMapper;
 import net.andresbustamante.yafoot.web.mappers.RegistrationMapper;
@@ -121,7 +120,9 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     @Override
     public ResponseEntity<List<Match>> findMatches(@DateTimeFormat(iso = DATE) LocalDate startDate,
-                                                   @DateTimeFormat(iso = DATE) LocalDate endDate) {
+                                                   @DateTimeFormat(iso = DATE) LocalDate endDate,
+                                                   SportCode sport,
+                                                   MatchStatus status) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             return ResponseEntity.badRequest().build();
         }
@@ -132,6 +133,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
             Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
 
             List<net.andresbustamante.yafoot.core.model.Match> matches = matchSearchService.findMatchesByPlayer(player,
+                    (status != null) ? MatchStatusEnum.valueOf(status.name()) : null,
+                    (sport != null) ? SportEnum.valueOf(sport.name()) : null,
                     startDate, endDate);
 
             if (CollectionUtils.isNotEmpty(matches)) {

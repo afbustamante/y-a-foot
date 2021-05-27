@@ -5,7 +5,6 @@ import net.andresbustamante.yafoot.core.dao.MatchDAO;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.services.impl.MatchSearchServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -89,13 +88,13 @@ class MatchSearchServiceTest extends AbstractServiceTest {
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
-        when(matchDAO.findMatchesByPlayer(any(Player.class), any(), any())).thenReturn(Arrays.asList(match1, match2));
-        List<Match> matches = matchSearchService.findMatchesByPlayer(player1, null, LocalDate.now());
+        when(matchDAO.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(), any())).thenReturn(Arrays.asList(match1, match2));
+        List<Match> matches = matchSearchService.findMatchesByPlayer(player1, null, null, null, LocalDate.now());
 
         // Then
         assertNotNull(matches);
         assertEquals(2, matches.size());
-        verify(matchDAO).findMatchesByPlayer(any(Player.class), any(), any());
+        verify(matchDAO).findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(), any());
     }
 
     @Test
@@ -105,11 +104,11 @@ class MatchSearchServiceTest extends AbstractServiceTest {
         ctx.setTimezone(ZoneId.systemDefault());
 
         // When
-        List<Match> matches = matchSearchService.findMatchesByPlayer(null, null, null);
+        List<Match> matches = matchSearchService.findMatchesByPlayer(null, null, null, null, null);
 
         // Then
         assertNotNull(matches);
         assertTrue(matches.isEmpty());
-        verify(matchDAO, never()).findMatchesByPlayer(any(Player.class), any(), any());
+        verify(matchDAO, never()).findMatchesByPlayer(any(Player.class), eq(null), eq(null), eq(null), eq(null));
     }
 }
