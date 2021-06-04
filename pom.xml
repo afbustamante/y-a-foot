@@ -102,7 +102,7 @@
     <jjwt.version>0.9.1</jjwt.version>
     <unboundid-ldapsdk.version>3.1.1</unboundid-ldapsdk.version>
     <freemarker.version>2.3.30</freemarker.version>
-    <hibernate-validator.version>6.0.18.Final</hibernate-validator.version>
+    <hibernate-validator.version>6.0.20.Final</hibernate-validator.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
