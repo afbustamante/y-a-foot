@@ -916,7 +916,7 @@ components:
         id:
           type: integer
         code:
-          type: string
+          $ref: '#/components/schemas/SportCode'
         name:
           type: string
     Match:
@@ -960,28 +960,28 @@ components:
     MatchStatus:
       type: string
       enum:
-        - DRAFT
-        - CREATED
-        - PLAYED
-        - CANCELLED
+        - draft
+        - created
+        - played
+        - cancelled
     SportCode:
       type: string
       enum:
-        - FOOTBALL
-        - RUGBY
-        - BASKETBALL
-        - VOLLEYBALL
-        - HANDBALL
-        - TENNIS
-        - HOCKEY
-        - BASEBALL
-        - HIKING
-        - BADMINTON
-        - FUTSAL
-        - ICE_HOCKEY
-        - SWIMMING
-        - TABLE_TENNIS
-        - OTHER
+        - football
+        - rugby
+        - basketball
+        - volleyball
+        - handball
+        - tennis
+        - hockey
+        - baseball
+        - hiking
+        - badminton
+        - futsal
+        - ice-hockey
+        - swimming
+        - table-tennis
+        - other
     GpsCoordinates:
       type: object
       required:

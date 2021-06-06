@@ -7,8 +7,10 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(config = SpringMapperConfig.class, uses = {CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
-        RegistrationMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {
+        CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
+        SportMapper.class, RegistrationMapper.class
+})
 public interface MatchMapper {
 
     @Mapping(target = "registrations", ignore = true)
