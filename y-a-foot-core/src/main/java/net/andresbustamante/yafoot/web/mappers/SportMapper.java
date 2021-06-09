@@ -23,7 +23,7 @@ public interface SportMapper {
 
     default SportCode mapSportCode(String code) {
         if (code != null) {
-            return SportCode.fromValue(code);
+            return SportCode.valueOf(code);
         }
         return null;
     }
