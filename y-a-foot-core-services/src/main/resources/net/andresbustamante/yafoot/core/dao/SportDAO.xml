@@ -7,6 +7,6 @@
                spt_code AS code,
                spt_name AS name
         FROM t_sport
-        ORDER BY spt_code
+        ORDER BY spt_rank, spt_code
     </select>
 </mapper>

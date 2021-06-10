@@ -16,7 +16,7 @@ public enum SportEnum {
     TENNIS(6),
     HOCKEY(7),
     BASEBALL(8),
-    HIKING(9),
+    CRICKET(9),
     BADMINTON(10),
     FUTSAL(11),
     ICE_HOCKEY(12),

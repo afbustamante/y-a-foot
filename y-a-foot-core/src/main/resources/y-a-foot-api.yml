@@ -19,6 +19,8 @@ tags:
     description: Sites management API. Allows to manage information about the sites for playing football between friends
   - name: cars
     description: Cars management API. Allows to add new cars from players organising new matches.
+  - name: sports
+    description: Sports management API. Allows to search and manage sports in order to create matches in the application.
 paths:
   /users:
     get:
@@ -975,7 +977,7 @@ components:
         - tennis
         - hockey
         - baseball
-        - hiking
+        - cricket
         - badminton
         - futsal
         - ice-hockey
