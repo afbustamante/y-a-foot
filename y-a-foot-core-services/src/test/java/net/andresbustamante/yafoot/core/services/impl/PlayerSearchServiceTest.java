@@ -3,12 +3,9 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.core.dao.PlayerDAO;
 import net.andresbustamante.yafoot.core.model.Player;
-import net.andresbustamante.yafoot.core.services.impl.PlayerSearchServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -20,11 +17,6 @@ class PlayerSearchServiceTest extends AbstractServiceTest {
 
     @Mock
     private PlayerDAO playerDAO;
-
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     void findInvalidPlayerByEmail() throws Exception {

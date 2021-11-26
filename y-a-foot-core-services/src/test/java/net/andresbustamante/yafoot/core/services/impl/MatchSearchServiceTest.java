@@ -1,15 +1,13 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.core.dao.MatchDAO;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
-import net.andresbustamante.yafoot.commons.model.UserContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -26,11 +24,6 @@ class MatchSearchServiceTest extends AbstractServiceTest {
 
     @Mock
     private MatchDAO matchDAO;
-
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     void findExistingMatchByCode() throws Exception {

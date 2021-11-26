@@ -1,22 +1,19 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
+import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.auth.services.UserManagementService;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.core.exceptions.PlayerNotFoundException;
-import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.core.dao.PlayerDAO;
+import net.andresbustamante.yafoot.core.exceptions.PlayerNotFoundException;
+import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.MatchManagementService;
-import net.andresbustamante.yafoot.auth.services.UserManagementService;
-import net.andresbustamante.yafoot.core.services.impl.PlayerManagementServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -37,11 +34,6 @@ class PlayerManagementServiceTest extends AbstractServiceTest {
 
     @Mock
     private CarManagementService carManagementService;
-
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     void registerNewPlayer() throws Exception {

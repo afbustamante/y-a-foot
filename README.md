@@ -5,6 +5,17 @@
 *Y'a foot !* is an application for football amateurs to manage logistics and organisation of matches between colleagues,
 friends, classmates and so on.
 
+## Technologies and frameworks
+
+Some frameworks and libraries used in this application:
+
+* Spring Boot 2.5
+* Spring Framework 5.3
+* Spring Security 5.5
+* OpenAPI 3.0
+* MyBatis 3.5
+* JUnit 5.7
+
 ## Required installation
 
 ### Minimum requirements for building
@@ -15,7 +26,7 @@ friends, classmates and so on.
 
 ### Minimum requirements for deploying
 
-* Wildfly 16 or JBoss EAP 7.2
+* Wildfly 23 or JBoss EAP 7.3
 * PostgreSQL 9.6+
 * OpenLDAP 3
 

@@ -1,25 +1,23 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.core.dao.CarDAO;
 import net.andresbustamante.yafoot.core.dao.MatchDAO;
 import net.andresbustamante.yafoot.core.dao.PlayerDAO;
 import net.andresbustamante.yafoot.core.dao.SiteDAO;
-import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
-import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
+import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
-import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import net.andresbustamante.yafoot.core.services.SiteManagementService;
-import org.junit.jupiter.api.BeforeEach;
+import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -59,11 +57,6 @@ class MatchManagementServiceTest extends AbstractServiceTest {
 
     @Mock
     private MessagingService messagingService;
-
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     void saveMatchUsingExistingSite() throws Exception {

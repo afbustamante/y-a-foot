@@ -11,8 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.internal.util.reflection.FieldSetter;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -31,9 +30,7 @@ class UserManagementServiceTest extends AbstractServiceTest {
     @BeforeEach
     public void setUp() throws Exception {
         String passwordResetUrl = "http://dummy-url/{0}";
-        MockitoAnnotations.initMocks(this);
-        FieldSetter.setField(userManagementService, userManagementService.getClass().getDeclaredField("passwordResetUrl"),
-                passwordResetUrl);
+        ReflectionTestUtils.setField(userManagementService, "passwordResetUrl", passwordResetUrl);
     }
 
     @Test

@@ -62,47 +62,48 @@
     <javax.mail-api.version>1.6.2</javax.mail-api.version>
 
     <!-- Spring Framework -->
-    <spring.version>5.2.12.RELEASE</spring.version>
-    <spring-ldap.version>2.3.3.RELEASE</spring-ldap.version>
-    <spring-data.version>2.2.13.RELEASE</spring-data.version>
-    <spring-security.version>5.2.11.RELEASE</spring-security.version>
-    <jackson-databind.version>2.11.4</jackson-databind.version>
-    <jackson-datatype-jsr310.version>2.11.4</jackson-datatype-jsr310.version>
-    <spring-boot.version>2.2.13.RELEASE</spring-boot.version>
+    <spring.version>5.3.13</spring.version>
+    <spring-ldap.version>2.3.4.RELEASE</spring-ldap.version>
+    <spring-data.version>2.5.7</spring-data.version>
+    <spring-security.version>5.5.3</spring-security.version>
+    <jackson-databind.version>2.13.0</jackson-databind.version>
+    <jackson-datatype-jsr310.version>2.13.0</jackson-datatype-jsr310.version>
+    <spring-boot.version>2.5.7</spring-boot.version>
 
     <!-- MyBatis -->
-    <mybatis.version>3.5.6</mybatis.version>
-    <mybatis-spring.version>2.0.5</mybatis-spring.version>
-    <mybatis-spring-boot.version>2.1.3</mybatis-spring-boot.version>
+    <mybatis.version>3.5.7</mybatis.version>
+    <mybatis-spring.version>2.0.6</mybatis-spring.version>
+    <mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
 
     <!-- Apache Commons -->
     <commons-text.version>1.9</commons-text.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
     <commons-collections4.version>4.4</commons-collections4.version>
     <commons-logging.version>1.2</commons-logging.version>
-    <commons-dbcp2.version>2.7.0</commons-dbcp2.version>
+    <commons-dbcp2.version>2.9.0</commons-dbcp2.version>
 
     <!-- Tests -->
-    <junit.jupiter.version>5.5.2</junit.jupiter.version>
-    <junit-platform.version>1.5.2</junit-platform.version>
+    <junit.jupiter.version>5.7.1</junit.jupiter.version>
+    <junit-platform.version>1.8.1</junit-platform.version>
     <spring-test-dbunit.version>1.3.0</spring-test-dbunit.version>
-    <mockito-core.version>3.1.0</mockito-core.version>
+    <mockito-core.version>3.9.0</mockito-core.version>
     <byte-buddy.version>1.9.10</byte-buddy.version>
-    <dbunit.version>2.7.0</dbunit.version>
+    <dbunit.version>2.7.2</dbunit.version>
+    <apiguardian.version>1.1.2</apiguardian.version>
 
     <!-- Other libraries -->
-    <lombok.version>1.18.16</lombok.version>
+    <lombok.version>1.18.22</lombok.version>
     <postgresql.version>42.2.12</postgresql.version>
     <mapstruct.version>1.3.0.Final</mapstruct.version>
-    <flyway-core.version>5.2.4</flyway-core.version>
-    <slf4j-api.version>1.7.25</slf4j-api.version>
+    <flyway-core.version>7.7.3</flyway-core.version>
+    <slf4j-api.version>1.7.32</slf4j-api.version>
     <javassist.version>3.21.0-GA</javassist.version>
-    <logback.version>1.2.3</logback.version>
+    <logback.version>1.2.7</logback.version>
     <swagger-annotations.version>2.1.5</swagger-annotations.version>
     <jjwt.version>0.9.1</jjwt.version>
     <unboundid-ldapsdk.version>3.1.1</unboundid-ldapsdk.version>
-    <freemarker.version>2.3.30</freemarker.version>
-    <hibernate-validator.version>6.0.20.Final</hibernate-validator.version>
+    <freemarker.version>2.3.31</freemarker.version>
+    <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
@@ -458,6 +459,16 @@
         <groupId>net.bytebuddy</groupId>
         <artifactId>byte-buddy-agent</artifactId>
         <version>${byte-buddy.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apiguardian</groupId>
+        <artifactId>apiguardian</artifactId>
+        <version>${apiguardian.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apiguardian</groupId>
+        <artifactId>apiguardian-api</artifactId>
+        <version>${apiguardian.version}</version>
       </dependency>
 
       <!-- DBUnit -->

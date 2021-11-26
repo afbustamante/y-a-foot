@@ -1,19 +1,18 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.core.dao.CarDAO;
 import net.andresbustamante.yafoot.core.dao.MatchDAO;
-import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
+import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.internal.util.reflection.FieldSetter;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -38,11 +37,9 @@ class CarpoolingServiceTest extends AbstractServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
-        FieldSetter.setField(carpoolingService, CarpoolingServiceImpl.class.getDeclaredField("carpoolingManagementUrl"),
+        ReflectionTestUtils.setField(carpoolingService, "carpoolingManagementUrl",
                 "http://localhost/api/test/{0}");
-        FieldSetter.setField(carpoolingService, CarpoolingServiceImpl.class.getDeclaredField("matchManagementUrl"),
+        ReflectionTestUtils.setField(carpoolingService, "matchManagementUrl",
                 "http://localhost/api/test/{0}");
     }
 
