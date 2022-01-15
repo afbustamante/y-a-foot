@@ -62,7 +62,7 @@
     <javax.mail-api.version>1.6.2</javax.mail-api.version>
 
     <!-- Spring Framework -->
-    <spring.version>5.3.13</spring.version>
+    <spring.version>5.3.14</spring.version>
     <spring-ldap.version>2.3.4.RELEASE</spring-ldap.version>
     <spring-data.version>2.5.7</spring-data.version>
     <spring-security.version>5.5.3</spring-security.version>
