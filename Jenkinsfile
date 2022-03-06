@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         jdk 'JDK-11'
-        maven 'Maven-3.5'
+        maven 'Maven-3.8'
     }
 
     options {
@@ -24,7 +24,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Run the maven build
-                sh 'mvn -DskipTests=false -Dmaven.test.failure.ignore clean install -P jenkins --batch-mode --errors --fail-at-end'
+                sh 'mvn clean install -P jenkins --batch-mode --errors --fail-at-end'
             }
         }
         stage('Analyze') {
