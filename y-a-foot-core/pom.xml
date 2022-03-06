@@ -23,6 +23,11 @@
     </dependency>
     <dependency>
       <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-core-db</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
       <artifactId>y-a-foot-core-services</artifactId>
       <version>${project.version}</version>
     </dependency>

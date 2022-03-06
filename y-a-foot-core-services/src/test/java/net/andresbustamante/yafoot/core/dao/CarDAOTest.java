@@ -2,18 +2,24 @@ package net.andresbustamante.yafoot.core.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import net.andresbustamante.yafoot.commons.config.DbUnitTestConfig;
+import net.andresbustamante.yafoot.commons.config.JdbcTestConfig;
+import net.andresbustamante.yafoot.commons.dao.AbstractDAOTest;
+import net.andresbustamante.yafoot.core.config.MyBatisTestConfig;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
 @DatabaseSetup(value = "classpath:datasets/carsDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/carsDataset.xml", type = DELETE_ALL)
 class CarDAOTest extends AbstractDAOTest {

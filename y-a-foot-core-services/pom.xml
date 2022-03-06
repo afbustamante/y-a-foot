@@ -42,6 +42,11 @@
       <artifactId>y-a-foot-core-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-core-db</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <!-- Spring -->
     <dependency>

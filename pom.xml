@@ -21,6 +21,7 @@
     <module>y-a-foot-messaging-api</module>
     <module>y-a-foot-messaging-services</module>
     <module>y-a-foot-core-api</module>
+    <module>y-a-foot-core-db</module>
     <module>y-a-foot-core-services</module>
     <module>y-a-foot-core</module>
   </modules>
