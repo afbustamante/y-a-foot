@@ -54,7 +54,7 @@
     <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
 
     <!-- Spring Framework -->
-    <spring-boot.version>2.5.9</spring-boot.version>
+    <spring-boot.version>2.5.12</spring-boot.version>
 
     <!-- MyBatis -->
     <mybatis.version>3.5.9</mybatis.version>
