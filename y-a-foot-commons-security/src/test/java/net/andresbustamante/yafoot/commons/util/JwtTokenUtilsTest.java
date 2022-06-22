@@ -24,7 +24,7 @@ class JwtTokenUtilsTest {
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
 
-    @Value("${jwt.token.active.minutes}")
+    @Value("${app.security.jwt.token.active.minutes}")
     private Long tokenMaxTime;
 
     @Test

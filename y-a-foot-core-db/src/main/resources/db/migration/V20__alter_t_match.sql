@@ -1,5 +1,3 @@
-SET SEARCH_PATH TO yafoot;
-
 ALTER TABLE t_match DROP CONSTRAINT IF EXISTS t_match_pkey CASCADE;
 CREATE UNIQUE INDEX i_match_id ON t_match (mat_id);
 ALTER TABLE t_match ADD CONSTRAINT pk_match PRIMARY KEY USING INDEX i_match_id;

@@ -2,9 +2,12 @@ package net.andresbustamante.yafoot.commons.exceptions;
 
 import lombok.Getter;
 
-@Getter
+/**
+ * Generic functional exception
+ */
 public class ApplicationException extends Exception {
 
+    @Getter
     protected final String code;
 
     public ApplicationException(String code, String message) {

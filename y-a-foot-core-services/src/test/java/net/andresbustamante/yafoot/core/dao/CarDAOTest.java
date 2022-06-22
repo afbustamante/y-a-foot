@@ -31,7 +31,7 @@ class CarDAOTest extends AbstractDAOTest {
 
     @BeforeEach
     void setUp() {
-        player = new Player(1);
+        player = new Player(101);
         player.setEmail("john.doe@email.com");
     }
 
@@ -72,7 +72,7 @@ class CarDAOTest extends AbstractDAOTest {
     @Test
     void findCarsByPlayer() throws Exception {
         // Given
-        Player player = new Player(1);
+        Player player = new Player(101);
 
         List<Car> cars = carDAO.findCarsByPlayer(player);
 
@@ -90,7 +90,7 @@ class CarDAOTest extends AbstractDAOTest {
     @Test
     void findCarsByMatch() throws Exception {
         // Given
-        Match match = new Match(1);
+        Match match = new Match(101);
         Car car1 = new Car(1001);
         Car car3 = new Car(1003);
 

@@ -1,0 +1,244 @@
+openapi: 3.0.2
+
+info:
+  title: Y'a foot - Users
+  description: Y'a foot Users Registration and Authentication REST API
+  version: 2.0.0
+
+servers:
+  - url: http://localhost:8580/api
+    description: Localhost deployment
+
+tags:
+  - name: users
+    description: Users authentication API. It allows to authenticate users and update authentication details
+
+paths:
+  /users:
+    get:
+      operationId: findUser
+      summary: When a token parameter is used, it finds a user that requested a password reset by the token that he/she received by email.
+      tags:
+        - users
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+            pattern: ^[0-9A-F]{16}$
+          description: Token to search
+      responses:
+        200: # OK
+          description: User found for the given criteria. First name and surname fields are anonymised for security reasons
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No used found for the given criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal Server Error
+          description: A problem occurred while looking for the user by using the given criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{email}:
+    parameters:
+      - in: path
+        name: email
+        required: true
+        schema:
+          type: string
+          format: email
+        description: Email address identifying the user
+    patch:
+      operationId: updateUserCredentials
+      summary: Updates the authentication credentials for a user
+      tags:
+        - users
+      requestBody:
+        description: Credentials to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        202: # Accepted
+          description: User credentials updated
+        400: # Bad request
+          description: Invalid password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403: # Forbidden
+          description: User not allowed to perform this operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while looking for user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{email}/auth-token:
+    parameters:
+      - in: path
+        name: email
+        required: true
+        schema:
+          type: string
+          format: email
+        description: Email address identifying the user
+    post:
+      operationId: authenticateUser
+      summary: Authenticates a user and returns a valid token
+      tags:
+        - users
+      requestBody:
+        description: User to authenticate
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201: # Created
+          description: User authenticated and token successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401: # Unauthorized
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while authenticating user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{email}/reset-token:
+    parameters:
+      - in: path
+        name: email
+        required: true
+        schema:
+          type: string
+          format: email
+        description: Email address identifying the user
+    post:
+      operationId: generatePasswordResetToken
+      summary: Generate a new token for resetting users's password
+      tags:
+        - users
+      responses:
+        201: # Created
+          description: Token created for user
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal Server Error
+          description: An error occurred while generating a reset password token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: byte
+        token:
+          type: string
+          pattern: ^[A-Z0-9]{8,16}$
+        firstName:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        surname:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        mainRole:
+          $ref: '#/components/schemas/Role'
+
+    Credentials:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          format: email
+        password:
+          type: string
+          format: byte
+        validationToken:
+          type: string
+          pattern: ^[0-9A-F]{10,16}$
+        oldPassword:
+          type: string
+          format: byte
+
+    Role:
+      type: string
+      enum:
+        - administrator
+        - player
+
+    ErrorResponse:
+      type: object
+      required:
+        - timestamp
+        - error
+        - message
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+          format: uri

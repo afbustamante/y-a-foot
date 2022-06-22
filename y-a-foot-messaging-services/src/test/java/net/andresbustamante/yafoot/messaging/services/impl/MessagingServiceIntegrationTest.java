@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.messaging.services.impl;
 
 import freemarker.template.Configuration;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceIntegrationTest;
 import net.andresbustamante.yafoot.messaging.config.FreemarkerTestConfig;
 import net.andresbustamante.yafoot.messaging.config.MessagingTestConfig;

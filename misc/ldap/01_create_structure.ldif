@@ -14,12 +14,12 @@ objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
 objectClass: top
-cn: Administrateur
-displayName: Administrateur
-sn:: U3lzdMOobWU=
+cn: Administrator
+displayName: Administrator
+givenName: Administrator
 uid: admin
-userPassword:: e1NIQTI1Nn1RQkc2QXVVUkJNWjR3eHAycEVSSVd6anpobDVRVFluRG9LZ0xRN
- XV4b2pjPQ==
+mail: admin@localhost
+userPassword:: e0JDUllQVH0kMmEkMTAkc0RXeXh1NVhCSXVyWm9CY0lDWXFBdXJDQVZ4UVFhMEFwS1dtb0s4c1BzeDB4a3BnTG8uZmE=
 
 dn: ou=Roles,ou=yafoot,dc=andresbustamante,dc=net
 objectClass: organizationalUnit

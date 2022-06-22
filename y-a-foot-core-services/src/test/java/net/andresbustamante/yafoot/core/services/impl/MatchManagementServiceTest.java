@@ -1,6 +1,5 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
@@ -10,6 +9,7 @@ import net.andresbustamante.yafoot.core.dao.MatchDAO;
 import net.andresbustamante.yafoot.core.dao.PlayerDAO;
 import net.andresbustamante.yafoot.core.dao.SiteDAO;
 import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
+import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
@@ -496,7 +496,7 @@ class MatchManagementServiceTest extends AbstractServiceTest {
         UserContext userContext = new UserContext("another.user@email.com");
 
         // When
-        assertThrows(UserNotAuthorisedException.class, () ->
+        assertThrows(UnauthorisedUserException.class, () ->
                 matchManagementService.cancelMatch(match, userContext));
 
         // Then

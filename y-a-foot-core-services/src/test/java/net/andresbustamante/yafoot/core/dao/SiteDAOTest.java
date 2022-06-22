@@ -28,7 +28,7 @@ class SiteDAOTest extends AbstractDAOTest {
     @Test
     void findSitesByPlayer() throws Exception {
         // Given
-        Player player1 = new Player(1);
+        Player player1 = new Player(101);
 
         // When
         List<Site> sites = siteDAO.findSitesByPlayer(player1);
@@ -36,7 +36,7 @@ class SiteDAOTest extends AbstractDAOTest {
         // Then
         assertNotNull(sites);
         assertEquals(1, sites.size());
-        assertEquals(1, sites.get(0).getId().intValue());
+        assertEquals(101, sites.get(0).getId().intValue());
         assertEquals("1234567890", sites.get(0).getPhoneNumber());
     }
 
@@ -44,7 +44,7 @@ class SiteDAOTest extends AbstractDAOTest {
     void findSiteById() throws Exception {
         // Given
         // When
-        Site site = siteDAO.findSiteById(1);
+        Site site = siteDAO.findSiteById(101);
 
         // Then
         assertNotNull(site);
@@ -57,7 +57,7 @@ class SiteDAOTest extends AbstractDAOTest {
     void saveSite() throws Exception {
         // Given
         Site newSite = new Site("Nouveau site", "123 Rue du site", "0412345678", null);
-        Player player1 = new Player(1);
+        Player player1 = new Player(101);
 
         // When
         int numLines = siteDAO.saveSite(newSite, player1);

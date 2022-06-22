@@ -1,17 +1,20 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.messaging.services.MessagingService;
-import net.andresbustamante.yafoot.core.model.*;
-import net.andresbustamante.yafoot.core.services.*;
 import net.andresbustamante.yafoot.core.dao.CarDAO;
 import net.andresbustamante.yafoot.core.dao.MatchDAO;
 import net.andresbustamante.yafoot.core.dao.PlayerDAO;
 import net.andresbustamante.yafoot.core.dao.SiteDAO;
-import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
-import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
+import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
+import net.andresbustamante.yafoot.core.model.*;
+import net.andresbustamante.yafoot.core.services.CarManagementService;
+import net.andresbustamante.yafoot.core.services.CarpoolingService;
+import net.andresbustamante.yafoot.core.services.MatchManagementService;
+import net.andresbustamante.yafoot.core.services.SiteManagementService;
+import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
@@ -220,7 +223,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         if (match.getDate().isBefore(OffsetDateTime.now())) {
             throw new PastMatchException("It is not possible to cancel a match in the past");
         } else if (match.getCreator() == null || !match.getCreator().getEmail().equals(userContext.getUsername())) {
-            throw new UserNotAuthorisedException("This match can only be cancelled by its creator");
+            throw new UnauthorisedUserException("This match can only be cancelled by its creator");
         }
 
         match.setStatus(CANCELLED);

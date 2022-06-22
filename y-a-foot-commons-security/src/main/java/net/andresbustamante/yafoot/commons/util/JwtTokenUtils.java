@@ -16,10 +16,10 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtils {
 
-    @Value("${jwt.token.secret}")
+    @Value("${app.security.jwt.token.secret}")
     private String secret;
 
-    @Value("${jwt.token.active.minutes}")
+    @Value("${app.security.jwt.token.active.minutes}")
     private Long tokenMaxTime;
 
     public String getUsernameFromToken(String token) {

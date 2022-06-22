@@ -1,0 +1,73 @@
+server:
+  address: localhost
+  port: 8680
+  servlet:
+    context-path: /api
+  error:
+    include-message: always
+  tomcat:
+    accesslog:
+      enabled: true
+      request-attributes-enabled: true
+
+spring:
+  application:
+    name: y-a-foot-users-admin
+  profiles:
+    active: ${spring.profile}
+  security:
+    user:
+      name: ${security.api.username}
+      password: ${security.api.password}
+      roles: ADMINISTRATOR
+  ldap:
+    urls: ${ldap.url}
+    username: ${ldap.dn}
+    password: ${ldap.password}
+  mail:
+    host: ${mail.host}
+    port: ${mail.port}
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          auth: ${mail.smtp.auth}
+          starttls:
+            enable: ${mail.smtp.starttls.enable}
+            required: ${mail.smtp.starttls.required}
+
+app:
+  ldap:
+    config:
+      users:
+        dn: ${ldap.users.dn}
+      roles:
+        dn: ${ldap.roles.dn}
+  mail:
+    sender:
+      address: ${mail.sender.address}
+      name: ${mail.sender.name}
+  web:
+    public:
+      url: ${web.app.public.url}
+      password-reset:
+        url: dummy
+  security:
+    jwt:
+      token:
+        secret: dummy
+        active:
+          minutes: 0
+api:
+  rest:
+    logging:
+      include:
+        headers: ${rest.logging.include.headers}
+        query: ${rest.logging.include.query}
+        payload: ${rest.logging.include.payload}
+      max-payload-length: ${rest.logging.max.payload.length}
+  public:
+    url: ${rest.api.public.url}
+  users:
+    path: /users

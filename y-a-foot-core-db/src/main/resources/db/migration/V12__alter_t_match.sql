@@ -1,5 +1,3 @@
-SET SEARCH_PATH TO yafoot;
-
 ALTER TABLE t_match RENAME COLUMN mat_num_joueurs_min TO mat_num_players_min;
 ALTER TABLE t_match RENAME COLUMN mat_num_joueurs_max TO mat_num_players_max;
 ALTER TABLE t_match RENAME COLUMN mat_site_fk TO mat_site_id;

@@ -1,17 +1,16 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.commons.exceptions.LdapException;
+import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.adapters.UserManagementAdapter;
+import net.andresbustamante.yafoot.core.dao.PlayerDAO;
 import net.andresbustamante.yafoot.core.exceptions.PlayerNotFoundException;
 import net.andresbustamante.yafoot.core.model.Player;
-import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.MatchManagementService;
 import net.andresbustamante.yafoot.core.services.PlayerManagementService;
-import net.andresbustamante.yafoot.auth.services.UserManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,32 +24,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerManagementServiceImpl implements PlayerManagementService {
 
-    private PlayerDAO playerDAO;
-
-    private UserManagementService userManagementService;
-
-    private MatchManagementService matchManagementService;
-
-    private CarManagementService carManagementService;
+    private final PlayerDAO playerDAO;
+    private final UserManagementAdapter userManagementAdapter;
+    private final MatchManagementService matchManagementService;
+    private final CarManagementService carManagementService;
 
     private final Logger log = LoggerFactory.getLogger(PlayerManagementServiceImpl.class);
 
     @Autowired
-    public PlayerManagementServiceImpl(PlayerDAO playerDAO, UserManagementService userManagementService,
+    public PlayerManagementServiceImpl(PlayerDAO playerDAO, UserManagementAdapter userManagementAdapter,
                                        MatchManagementService matchManagementService,
                                        CarManagementService carManagementService) {
         this.playerDAO = playerDAO;
-        this.userManagementService = userManagementService;
+        this.userManagementAdapter = userManagementAdapter;
         this.matchManagementService = matchManagementService;
         this.carManagementService = carManagementService;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Integer savePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException {
+    public Integer savePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException, ApplicationException {
         if (!playerDAO.isPlayerAlreadySignedUp(player.getEmail())) {
             // Create the player in LDAP directory
-            userManagementService.createUser(player, RolesEnum.PLAYER, userContext);
+            userManagementAdapter.createUser(player, userContext);
             // Create the player in database
             playerDAO.savePlayer(player);
             log.info("New player registered with the address {}", player.getEmail());
@@ -63,7 +59,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public void updatePlayer(Player player, UserContext userContext) throws LdapException, ApplicationException {
+    public void updatePlayer(Player player, UserContext userContext) throws DirectoryException, ApplicationException {
         Player existingPlayer = playerDAO.findPlayerByEmail(player.getEmail());
         boolean needsDirectoryUpdate = false;
 
@@ -81,7 +77,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             }
 
             if (needsDirectoryUpdate) {
-                userManagementService.updateUser(player, userContext);
+                userManagementAdapter.updateUser(player, userContext);
             }
             playerDAO.updatePlayer(existingPlayer);
             log.info("Player {} updated", player.getEmail());
@@ -93,7 +89,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException {
+    public void deactivatePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException {
         // Delete all data from player
         matchManagementService.unregisterPlayerFromAllMatches(player, userContext);
         carManagementService.deleteCarsByPlayer(player, userContext);
@@ -101,6 +97,6 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
         int numPlayers = playerDAO.deactivatePlayer(player);
         log.info("Players deactivated: {}", numPlayers);
 
-        userManagementService.deleteUser(player, userContext);
+        userManagementAdapter.deleteUser(player, userContext);
     }
 }

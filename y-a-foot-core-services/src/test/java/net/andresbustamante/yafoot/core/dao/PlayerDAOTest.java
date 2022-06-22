@@ -28,7 +28,7 @@ class PlayerDAOTest extends AbstractDAOTest {
     private static final String FIRST_NAME = "Alan";
     private static final String NEW_EMAIL = "nonInscrit@email.com";
 
-    private static final Player JOHN_DOE = new Player(1, "Doe", "John", EMAIL, "01234656789");
+    private static final Player JOHN_DOE = new Player(101, "Doe", "John", EMAIL, "01234656789");
 
     @Autowired
     private PlayerDAO playerDAO;

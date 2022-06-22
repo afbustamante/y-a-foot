@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>y-a-foot</artifactId>
+    <groupId>net.andresbustamante</groupId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>y-a-foot-core-web</artifactId>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-commons-web</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-commons-security</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-messaging-services</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-core-db</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-core-services</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-commons-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Java EE / javax -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+    </dependency>
+
+    <!-- Spring Boot -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-mail</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- MyBatis -->
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+    </dependency>
+
+    <!-- Other libraries -->
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>y-a-foot-core</finalName>
+
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <filters>
+      <filter>${basedir}/src/main/filters/filter-${env}.properties</filter>
+    </filters>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${mapstruct.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>io.swagger.codegen.v3</groupId>
+        <artifactId>swagger-codegen-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-core-api</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/y-a-foot-core-api.yml</inputSpec>
+              <language>spring</language>
+              <modelPackage>net.andresbustamante.yafoot.web.dto</modelPackage>
+              <apiPackage>net.andresbustamante.yafoot.core.web.controllers</apiPackage>
+              <generateModels>true</generateModels>
+              <generateModelDocumentation>true</generateModelDocumentation>
+              <generateModelTests>false</generateModelTests>
+              <generateSupportingFiles>false</generateSupportingFiles>
+              <generateApis>true</generateApis>
+              <generateApiDocumentation>true</generateApiDocumentation>
+              <generateApiTests>false</generateApiTests>
+              <configOptions>
+                <java8>true</java8>
+                <interfaceOnly>true</interfaceOnly>
+                <defaultInterfaces>false</defaultInterfaces>
+              </configOptions>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-auth-api</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/../y-a-foot-users-auth-web/src/main/resources/y-a-foot-users-api.yml</inputSpec>
+              <language>spring</language>
+              <modelPackage>net.andresbustamante.yafoot.auth.dto</modelPackage>
+              <apiPackage>net.andresbustamante.yafoot.auth.controllers</apiPackage>
+              <generateModels>true</generateModels>
+              <generateModelDocumentation>true</generateModelDocumentation>
+              <generateModelTests>false</generateModelTests>
+              <generateSupportingFiles>false</generateSupportingFiles>
+              <generateApis>false</generateApis>
+              <generateApiDocumentation>false</generateApiDocumentation>
+              <generateApiTests>false</generateApiTests>
+              <configOptions>
+                <java8>true</java8>
+                <interfaceOnly>true</interfaceOnly>
+                <defaultInterfaces>false</defaultInterfaces>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

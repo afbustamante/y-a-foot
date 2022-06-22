@@ -1,5 +1,3 @@
-SET SEARCH_PATH TO yafoot;
-
 ALTER TABLE t_player_match DROP CONSTRAINT IF EXISTS t_joueur_match_pkey CASCADE;
 
 CREATE UNIQUE INDEX i_player_match_id ON t_player_match (pma_match_id, pma_player_id);

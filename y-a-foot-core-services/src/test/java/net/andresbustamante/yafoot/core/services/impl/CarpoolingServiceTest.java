@@ -1,11 +1,11 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.core.dao.CarDAO;
 import net.andresbustamante.yafoot.core.dao.MatchDAO;
+import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;
@@ -104,7 +104,7 @@ class CarpoolingServiceTest extends AbstractServiceTest {
         // When
         when(carDAO.findCarById(anyInt())).thenReturn(car);
         // Then
-        assertThrows(UserNotAuthorisedException.class,
+        assertThrows(UnauthorisedUserException.class,
                 () -> carpoolingService.updateCarpoolingInformation(match, player, car, true, context));
     }
 
@@ -148,7 +148,7 @@ class CarpoolingServiceTest extends AbstractServiceTest {
         when(carDAO.findCarById(anyInt())).thenReturn(car);
 
         // Then
-        assertThrows(UserNotAuthorisedException.class,
+        assertThrows(UnauthorisedUserException.class,
                 () -> carpoolingService.updateCarpoolingInformation(match, player,  car,false, context));
     }
 

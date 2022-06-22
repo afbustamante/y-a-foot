@@ -30,11 +30,9 @@ import java.util.Locale;
 @Service
 public class MessagingServiceImpl implements MessagingService {
 
-    private JavaMailSender mailSender;
-
-    private Configuration freemarkerConfiguration;
-
-    private ApplicationContext applicationContext;
+    private final JavaMailSender mailSender;
+    private final Configuration freemarkerConfiguration;
+    private final ApplicationContext applicationContext;
 
     @Value("${app.mail.sender.address}")
     private String mailSenderAddress;

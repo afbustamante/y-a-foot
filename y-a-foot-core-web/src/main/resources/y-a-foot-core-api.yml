@@ -1,0 +1,888 @@
+openapi: 3.0.2
+
+info:
+  title: Y'a foot REST API
+  description: REST controllers API
+  version: 2.0.0
+
+servers:
+- url: http://localhost:8280/api
+  description: Localhost deployment
+- url: https://yafoot.marca2.net/api
+  description: Development environment
+
+tags:
+  - name: players
+    description: Players management API. Allows to manage players' details
+  - name: matches
+    description: Matches management API. Allows to create and update the detail of matches organised by players
+  - name: sites
+    description: Sites management API. Allows to manage information about the sites for playing football between friends
+  - name: cars
+    description: Cars management API. Allows to add new cars from players organising new matches.
+  - name: sports
+    description: Sports management API. Allows to search and manage sports in order to create matches in the application.
+
+paths:
+  /players:
+    get:
+      operationId: findPlayers
+      summary: Finds a list of players matching with a given criteria
+      parameters:
+      - in: query
+        name: email
+        required: false
+        schema:
+          type: string
+          format: email
+        description: Email address identifying a player
+      tags:
+      - players
+      responses:
+        200: # OK
+          description: List of players found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No player found for the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while loading player details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      operationId: createPlayer
+      summary: Create a new player
+      tags:
+      - players
+      requestBody:
+        description: Player to save
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        201: # Created
+          description: Player successfully created. Player's ID is returned in Location header
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while creating a player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /players/{playerId}:
+    parameters:
+    - in: path
+      name: playerId
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      description: Player's numeric identifier
+    get:
+      operationId: loadPlayer
+      summary: Loads details for a player
+      tags:
+        - players
+      responses:
+        200: # OK
+          description: Player details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403: # Forbidden
+          description: If the current user is not allowed to load this user's details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No player found for the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while loading player details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      operationId: updatePlayer
+      tags:
+      - players
+      requestBody:
+        description: Player with updated information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        202: # Accepted
+          description: Player successfully updated
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while updating player details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      operationId: deactivatePlayer
+      summary: Deactivates a player in the application. This action can only be requested by the own player
+      tags:
+      - players
+      responses:
+        204: # No content
+          description: Player successfully deactivated
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while deactivating a player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /matches:
+    get:
+      operationId: findMatches
+      summary: Loads the matches available for the active player
+      tags:
+      - matches
+      parameters:
+      - in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Start date for the research
+      - in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date
+        description: End date for the research
+      - in: query
+        name: sport
+        required: false
+        schema:
+          $ref: '#/components/schemas/SportCode'
+        description: Sport to search
+      - in: query
+        name: status
+        required: false
+        schema:
+          $ref: '#/components/schemas/MatchStatus'
+        description: Match status to search
+      responses:
+        200: # OK
+          description: List of matches found for the active player
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while looking for matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      operationId: createMatch
+      summary: Creates a match
+      tags:
+      - matches
+      requestBody:
+        description: Match to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Match'
+      responses:
+        201: # Created
+          description: Match successfully created. Match code returned in Location header
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while creating a new match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /matches/{matchCode}:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Z]{10}$
+      description: Unique match code
+    get:
+      operationId: loadMatchByCode
+      summary: Load a match by its unique code
+      tags:
+      - matches
+      responses:
+        200: # OK
+          description: Match details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while loading a match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      operationId: cancelMatch
+      summary: Operation to cancel a match. It can only be executed by the creator of the match.
+      tags:
+      - matches
+      responses:
+        204: # No content
+          description: Match successfully cancelled
+        403: # Forbidden
+          description: The user is not allowed to cancel the match or the match is not able anymore to be cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No match found for the given code
+        500: # Internal server error
+          description: Unexpected server error while trying to cancel the match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /matches/{matchCode}/registrations:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Z]{10}$
+      description: Unique match code
+    get:
+      operationId: loadMatchRegistrations
+      summary: Loads the registrations list for a match identified by its unique code
+      tags:
+      - matches
+      responses:
+        200: # OK
+          description: Match registrations list and details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Registration'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: Match not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while loading the list of registrations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      operationId: registerPlayerToMatch
+      summary: Registers an existing player to a match
+      tags:
+      - matches
+      requestBody:
+        description: Player registration including informations about the car proposed/chosen to assist to the match
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Registration'
+      responses:
+        201: # Created
+          description: Registration saved
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: Match not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while registering the player
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /matches/{matchCode}/registrations/{playerId}:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Z]{10}$
+      description: Unique match code
+    - in: path
+      name: playerId
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      description: Unique player ID
+    patch:
+      operationId: updateCarForRegistration
+      tags:
+      - matches
+      requestBody:
+        description: Car ID to use for the registration and confirmation update (true or false)
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarConfirmation'
+      responses:
+        202: # Accepted
+          description: Registration succesfully updated
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403: # Forbidden
+          description: If the user performing the action is not the owner of the car already confirmed in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: Match or player not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: Database problem while loading data or unregistering the player from match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      operationId: unregisterPlayerFromMatch
+      tags:
+      - matches
+      responses:
+        204: # No content
+          description: Player unregistered from match
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: Match not found or player not registered in this match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: Database problem while loading data or unregistering the player from match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /matches/{matchCode}/cars:
+    parameters:
+    - in: path
+      name: matchCode
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Z]{10}$
+      description: Unique match code
+    get:
+      operationId: findCarsForMatch
+      tags:
+      - matches
+      responses:
+        200: # OK
+          description: List of cars registered for a match
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: Match not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: Database problem while loading data from match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sites:
+    get:
+      operationId: loadSites
+      summary: Loads the sites visited or registrated by the active player
+      tags:
+      - sites
+      responses:
+        200: # OK
+          description: List of sites found for the active player
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Site'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while looking for sites
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      operationId: addNewSite
+      summary: Registers a new site for a player
+      tags:
+      - sites
+      requestBody:
+        description: Site to save
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Site'
+      responses:
+        201: # Created
+          description: Site successfully saved. Site's ID is returned in Location header
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: A database error occurred while saving site's information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /cars:
+    get:
+      operationId: loadCars
+      summary: Loads the list of cars registered by the active player
+      tags:
+      - cars
+      responses:
+        200: # OK
+          description: List of cars found for the active player
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An unexpected error occurred while looking for cars
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      operationId: addNewCar
+      summary: Registers a new car for a player
+      tags:
+      - cars
+      requestBody:
+        description: Car to save for a player
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        201: # Created
+          description: Car successfully saved. Car's ID is returned in Location header
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: A database error occurred when saving the car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /cars/{id}:
+    parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      description: Unique car identifier
+    get:
+      operationId: loadCar
+      summary: Load a car registered by the active player
+      tags:
+      - cars
+      responses:
+        200: # OK
+          description: Details found for car identified by the ID parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403: # Forbidden
+          description: Current user is not allowed to load the details of a car from another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No car found for the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: A database error occurred when loading the car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sports:
+    get:
+      operationId: loadSports
+      summary: Loads the list of supported sports
+      tags:
+        - sports
+      responses:
+        200: # OK
+          description: List of sports available in the application
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sport'
+        500: # Internal server error
+          description: A database error occurred when loading the list of sports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Player:
+      type: object
+      required:
+        - email
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: byte
+        token:
+          type: string
+          pattern: ^[A-Z0-9]{8,16}$
+        firstName:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        surname:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        phoneNumber:
+          type: string
+          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+
+    Site:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\& ]{1,255}$
+        address:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\r\n\t\#\- ]{1,255}$
+        phoneNumber:
+          type: string
+          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+        location:
+          $ref: '#/components/schemas/GpsCoordinates'
+
+    Car:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\& ]{1,255}$
+        numSeats:
+          type: integer
+          minimum: 0
+        numPassengers:
+          type: integer
+          minimum: 0
+        driver:
+          $ref: '#/components/schemas/Player'
+
+    CarConfirmation:
+      type: object
+      required:
+      - car
+      properties:
+        car:
+          $ref: '#/components/schemas/Car'
+        confirmed:
+          type: boolean
+
+    Registration:
+      type: object
+      required:
+        - player
+      properties:
+        player:
+          $ref: '#/components/schemas/Player'
+        car:
+          $ref: '#/components/schemas/Car'
+        carConfirmed:
+          type: boolean
+
+    Sport:
+      type: object
+      required:
+        - id
+        - code
+        - name
+      properties:
+        id:
+          type: integer
+        code:
+          $ref: '#/components/schemas/SportCode'
+        name:
+          type: string
+
+    Match:
+      type: object
+      required:
+      - date
+      - site
+      - sport
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        date:
+          type: string
+          format: date-time
+        description:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\, ]{1,1024}$
+        status:
+          $ref: '#/components/schemas/MatchStatus'
+        numPlayersMin:
+          type: integer
+          minimum: 0
+        numPlayersMax:
+          type: integer
+          minimum: 2
+        numRegisteredPlayers:
+          type: integer
+          minimum: 0
+        sport:
+          $ref: '#/components/schemas/SportCode'
+        site:
+          $ref: '#/components/schemas/Site'
+        creator:
+          $ref: '#/components/schemas/Player'
+        carpoolingEnabled:
+          type: boolean
+        codeSharingEnabled:
+          type: boolean
+
+    MatchStatus:
+      type: string
+      enum:
+        - draft
+        - created
+        - played
+        - cancelled
+    SportCode:
+      type: string
+      enum:
+        - football
+        - rugby
+        - basketball
+        - volleyball
+        - handball
+        - tennis
+        - hockey
+        - baseball
+        - cricket
+        - badminton
+        - futsal
+        - ice-hockey
+        - swimming
+        - table-tennis
+        - other
+    GpsCoordinates:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+    ErrorResponse:
+      type: object
+      required:
+      - timestamp
+      - error
+      - message
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+          format: uri

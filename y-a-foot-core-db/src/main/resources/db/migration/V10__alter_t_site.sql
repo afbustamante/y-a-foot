@@ -1,5 +1,3 @@
-SET SEARCH_PATH TO yafoot;
-
 ALTER TABLE t_site RENAME COLUMN sit_nom TO sit_name;
 ALTER TABLE t_site RENAME COLUMN sit_adresse TO sit_address;
 ALTER TABLE t_site RENAME COLUMN sit_telephone TO sit_phone_number;

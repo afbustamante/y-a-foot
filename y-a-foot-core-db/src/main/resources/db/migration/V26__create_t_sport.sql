@@ -1,5 +1,3 @@
-SET SEARCH_PATH TO yafoot;
-
 CREATE TABLE t_sport
 (
     spt_id   smallint     NOT NULL,

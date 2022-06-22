@@ -1,5 +1,3 @@
-SET SEARCH_PATH TO yafoot;
-
 UPDATE t_sport SET spt_code = 'CRICKET', spt_name = 'Cricket' WHERE spt_id = 9;
 
 UPDATE t_sport SET spt_rank = 1 WHERE spt_code = 'FOOTBALL';

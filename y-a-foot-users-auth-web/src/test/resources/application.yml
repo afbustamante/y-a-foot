@@ -1,0 +1,28 @@
+# Spring config
+spring:
+  profiles:
+    active: "test"
+  security:
+    user:
+      name: test-user
+      password: test-password
+
+# Security config
+jwt:
+  token:
+    secret: "test"
+    active:
+      minutes: 5
+
+app:
+  security:
+    jwt:
+      token:
+        active:
+          minutes: 5
+
+api:
+  public:
+    url: 'http://localhost:9900/api'
+  users:
+    path: /users

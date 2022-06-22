@@ -16,14 +16,17 @@
     <module>y-a-foot-commons-api</module>
     <module>y-a-foot-commons-services</module>
     <module>y-a-foot-commons-security</module>
-    <module>y-a-foot-auth-api</module>
-    <module>y-a-foot-auth-services</module>
+    <module>y-a-foot-commons-web</module>
+    <module>y-a-foot-users-api</module>
+    <module>y-a-foot-users-services</module>
+    <module>y-a-foot-users-admin-web</module>
+    <module>y-a-foot-users-auth-web</module>
     <module>y-a-foot-messaging-api</module>
     <module>y-a-foot-messaging-services</module>
     <module>y-a-foot-core-api</module>
     <module>y-a-foot-core-db</module>
     <module>y-a-foot-core-services</module>
-    <module>y-a-foot-core</module>
+    <module>y-a-foot-core-web</module>
   </modules>
 
   <properties>
@@ -116,28 +119,6 @@
         <version>${spring-boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-        <version>${spring-boot.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-mail</artifactId>
-        <version>${spring-boot.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <!-- MyBatis -->
@@ -249,7 +230,7 @@
     <profile>
       <id>jenkins</id>
       <properties>
-        <env>pic</env>
+        <env>ci</env>
       </properties>
     </profile>
   </profiles>
@@ -514,7 +495,7 @@
                     <limit>
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.54</minimum>
+                      <minimum>0.52</minimum>
                     </limit>
                   </limits>
                 </rule>

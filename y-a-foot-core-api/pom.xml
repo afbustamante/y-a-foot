@@ -19,6 +19,11 @@
     </dependency>
     <dependency>
       <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-users-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
       <artifactId>y-a-foot-commons-test</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>

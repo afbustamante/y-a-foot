@@ -1,3 +1,1 @@
-SET SEARCH_PATH TO yafoot;
-
 ALTER TABLE t_site ALTER COLUMN sit_nom SET NOT NULL;

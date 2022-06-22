@@ -1,12 +1,12 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.model.*;
-import net.andresbustamante.yafoot.core.dao.CarDAO;
-import net.andresbustamante.yafoot.core.dao.MatchDAO;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.auth.exceptions.UserNotAuthorisedException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.core.dao.CarDAO;
+import net.andresbustamante.yafoot.core.dao.MatchDAO;
+import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
+import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
 import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -28,15 +28,13 @@ import java.util.Locale;
 public class CarpoolingServiceImpl implements CarpoolingService {
 
     private CarDAO carDAO;
-
     private MatchDAO matchDAO;
-
     private MessagingService messagingService;
 
-    @Value("${web.public.carpooling-management.url}")
+    @Value("${app.web.public.carpooling-management.url}")
     private String carpoolingManagementUrl;
 
-    @Value("${web.public.match-management.url}")
+    @Value("${app.web.public.match-management.url}")
     private String matchManagementUrl;
 
     private final Logger log = LoggerFactory.getLogger(CarpoolingServiceImpl.class);
@@ -85,7 +83,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
             } else if (storedCar == null) {
                 throw new ApplicationException("car.not.found.error", "No car found for the given ID");
             } else {
-                throw new UserNotAuthorisedException("User not allowed to update carpooling details for registration");
+                throw new UnauthorisedUserException("User not allowed to update carpooling details for registration");
             }
         } else {
             throw new ApplicationException("car.not.found.error", "No car found as no valid ID was used");

@@ -19,6 +19,11 @@
     </dependency>
     <dependency>
       <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-users-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
       <artifactId>y-a-foot-messaging-api</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -36,9 +41,8 @@
 
     <!-- Java EE / javax -->
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>javax.mail-api</artifactId>
-      <scope>provided</scope>
+      <groupId>jakarta.mail</groupId>
+      <artifactId>jakarta.mail-api</artifactId>
     </dependency>
     <dependency>
       <groupId>com.sun.mail</groupId>

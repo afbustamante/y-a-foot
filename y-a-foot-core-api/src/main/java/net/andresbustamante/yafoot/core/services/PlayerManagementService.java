@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.core.services;
 
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.commons.exceptions.LdapException;
+import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 
@@ -20,9 +20,9 @@ public interface PlayerManagementService {
      * @param userContext Request context
      * @return New player's identifier
      * @throws DatabaseException
-     * @throws LdapException
+     * @throws DirectoryException
      */
-    Integer savePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
+    Integer savePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException, ApplicationException;
 
     /**
      * Updates basic details for a player
@@ -30,10 +30,10 @@ public interface PlayerManagementService {
      * @param player Player to update
      * @param userContext Request context
      * @throws DatabaseException
-     * @throws LdapException
+     * @throws DirectoryException
      * @throws ApplicationException
      */
-    void updatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException, ApplicationException;
+    void updatePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException, ApplicationException;
 
     /**
      * Deactivates a player and deletes his/her history in the application
@@ -41,7 +41,7 @@ public interface PlayerManagementService {
      * @param player Player to deactivate
      * @param userContext Request context
      * @throws DatabaseException
-     * @throws LdapException
+     * @throws DirectoryException
      */
-    void deactivatePlayer(Player player, UserContext userContext) throws LdapException, DatabaseException;
+    void deactivatePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException;
 }

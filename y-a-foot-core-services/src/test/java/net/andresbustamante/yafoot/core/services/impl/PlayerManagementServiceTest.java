@@ -1,11 +1,10 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.auth.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.auth.services.UserManagementService;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.core.adapters.UserManagementAdapter;
 import net.andresbustamante.yafoot.core.dao.PlayerDAO;
 import net.andresbustamante.yafoot.core.exceptions.PlayerNotFoundException;
 import net.andresbustamante.yafoot.core.model.Player;
@@ -27,7 +26,7 @@ class PlayerManagementServiceTest extends AbstractServiceTest {
     private PlayerDAO playerDAO;
 
     @Mock
-    private UserManagementService userManagementService;
+    private UserManagementAdapter userManagementAdapter;
 
     @Mock
     private MatchManagementService matchManagementService;
@@ -48,7 +47,7 @@ class PlayerManagementServiceTest extends AbstractServiceTest {
 
         // Then
         verify(playerDAO).isPlayerAlreadySignedUp(anyString());
-        verify(userManagementService).createUser(any(User.class), any(RolesEnum.class), any(UserContext.class));
+        verify(userManagementAdapter).createUser(any(User.class), any(UserContext.class));
         verify(playerDAO).savePlayer(any());
     }
 
@@ -65,7 +64,7 @@ class PlayerManagementServiceTest extends AbstractServiceTest {
 
         // Then
         verify(playerDAO).isPlayerAlreadySignedUp(anyString());
-        verify(userManagementService, never()).createUser(any(User.class), any(RolesEnum.class), any(UserContext.class));
+        verify(userManagementAdapter, never()).createUser(any(User.class), any(UserContext.class));
         verify(playerDAO, never()).savePlayer(any());
     }
 
@@ -91,7 +90,7 @@ class PlayerManagementServiceTest extends AbstractServiceTest {
 
         // Then
         verify(playerDAO).findPlayerByEmail(any());
-        verify(userManagementService).updateUser(any(User.class), any(UserContext.class));
+        verify(userManagementAdapter).updateUser(any(User.class), any(UserContext.class));
         verify(playerDAO).updatePlayer(any());
     }
 
@@ -110,7 +109,7 @@ class PlayerManagementServiceTest extends AbstractServiceTest {
 
         // Then
         verify(playerDAO).findPlayerByEmail(any());
-        verify(userManagementService, never()).updateUser(any(User.class), any(UserContext.class));
+        verify(userManagementAdapter, never()).updateUser(any(User.class), any(UserContext.class));
         verify(playerDAO, never()).updatePlayer(any());
     }
 

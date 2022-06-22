@@ -63,7 +63,7 @@ class MatchDAOTest extends AbstractDAOTest {
 
         // Then
         assertNotNull(match);
-        assertEquals(2, match.getId().intValue());
+        assertEquals(102, match.getId().intValue());
         assertEquals(date.toOffsetDateTime().atZoneSameInstant(ZoneId.of("UTC")), match.getDate().atZoneSameInstant(ZoneId.of("UTC")));
         assertEquals(8, match.getNumPlayersMin().intValue());
         assertEquals(12, match.getNumPlayersMax().intValue());
@@ -97,7 +97,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void loadMatchWithoutRegistrations() throws Exception {
         // Given
-        Integer matchId = 3;
+        Integer matchId = 103;
 
         // When
         Match match = matchDAO.findMatchById(matchId);
@@ -111,7 +111,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void findMatchesByPlayerAndStartDate() throws Exception {
         // Given
-        Player player1 = new Player(1);
+        Player player1 = new Player(101);
         OffsetDateTime startDate = LocalDate.of(2018, 10, 2).atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime();
 
         // When
@@ -132,7 +132,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void findMatchesByPlayerAndSport() throws Exception {
         // Given
-        Player player2 = new Player(2);
+        Player player2 = new Player(102);
 
         // When
         List<Match> matchs = matchDAO.findMatchesByPlayer(player2, HANDBALL, null, null, null);
@@ -153,7 +153,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void findMatchesByPlayerAndStatus() throws Exception {
         // Given
-        Player player2 = new Player(2);
+        Player player2 = new Player(102);
 
         // When
         List<Match> matchs = matchDAO.findMatchesByPlayer(player2, null, CANCELLED, null, null);
@@ -176,7 +176,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void findMatchesByPlayerAndEndDate() throws Exception {
         // Given
-        Player player2 = new Player(2);
+        Player player2 = new Player(102);
         OffsetDateTime endDate = LocalDate.of(2018, 10, 3).atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime();
 
         // When
@@ -197,7 +197,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void findMatchById() throws Exception {
         // Given
-        Integer matchId = 1;
+        Integer matchId = 101;
 
         // When
         Match match = matchDAO.findMatchById(matchId);
@@ -208,15 +208,15 @@ class MatchDAOTest extends AbstractDAOTest {
         assertNotNull(match.getSite());
         assertNotNull(match.getNumPlayersMin());
         assertNotNull(match.getRegistrations());
-        assertEquals(1, match.getSite().getId().intValue());
+        assertEquals(101, match.getSite().getId().intValue());
     }
 
     @Test
     void saveMatch() throws Exception {
         // Given
         OffsetDateTime now = OffsetDateTime.now();
-        Player player = playerDAO.findPlayerById(1);
-        Site site = siteDAO.findSiteById(1);
+        Player player = playerDAO.findPlayerById(101);
+        Site site = siteDAO.findSiteById(101);
 
         Match match = new Match();
         match.setCode("C-" + (Instant.now().toEpochMilli() / 1000));
@@ -242,9 +242,9 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void registerPlayerWithCar() throws Exception {
         // Given
-        Player player = playerDAO.findPlayerById(1);
-        Match match = matchDAO.findMatchById(2);
-        Car car = carDAO.findCarById(1);
+        Player player = playerDAO.findPlayerById(101);
+        Match match = matchDAO.findMatchById(102);
+        Car car = carDAO.findCarById(101);
 
         // When
         int numLines = matchDAO.registerPlayer(player, match, car, true);
@@ -257,8 +257,8 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void registerPlayerWithNoCar() throws Exception {
         // Given
-        Player player = playerDAO.findPlayerById(1);
-        Match match = matchDAO.findMatchById(2);
+        Player player = playerDAO.findPlayerById(101);
+        Match match = matchDAO.findMatchById(102);
 
         // When
         matchDAO.registerPlayer(player, match, null, false);
@@ -270,9 +270,9 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void updateCarForRegistration() throws Exception {
         // Given
-        Player playerWithCar = playerDAO.findPlayerById(1);
-        Player playerWithoutCar = playerDAO.findPlayerById(2);
-        Match match = matchDAO.findMatchById(1);
+        Player playerWithCar = playerDAO.findPlayerById(101);
+        Player playerWithoutCar = playerDAO.findPlayerById(102);
+        Match match = matchDAO.findMatchById(101);
 
         // When
         Car car = matchDAO.loadRegistration(match, playerWithCar).getCar();
@@ -291,9 +291,9 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void isPlayerRegistered() throws Exception {
         // Given
-        Player registeredPlayer = playerDAO.findPlayerById(1);
-        Player unregisteredPlayer = playerDAO.findPlayerById(3);
-        Match match = matchDAO.findMatchById(1);
+        Player registeredPlayer = playerDAO.findPlayerById(101);
+        Player unregisteredPlayer = playerDAO.findPlayerById(103);
+        Match match = matchDAO.findMatchById(101);
 
         // When
         boolean test1 = matchDAO.isPlayerRegistered(registeredPlayer, match);
@@ -307,9 +307,9 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void loadRegistration() throws Exception {
         // Given
-        Player playerWithCar = playerDAO.findPlayerById(1);
-        Player playerWithoutCar = playerDAO.findPlayerById(2);
-        Match match = matchDAO.findMatchById(1);
+        Player playerWithCar = playerDAO.findPlayerById(101);
+        Player playerWithoutCar = playerDAO.findPlayerById(102);
+        Match match = matchDAO.findMatchById(101);
 
         // When
         Registration registration1 = matchDAO.loadRegistration(match, playerWithCar);
@@ -322,7 +322,7 @@ class MatchDAOTest extends AbstractDAOTest {
         assertNotNull(registration1.getCar().getId());
         assertNotNull(registration1.getCar().getName());
         assertNotNull(registration1.getCar().getDriver());
-        assertEquals(1, registration1.getCar().getId().intValue());
+        assertEquals(101, registration1.getCar().getId().intValue());
         assertEquals(playerWithCar, registration1.getCar().getDriver());
 
         assertNotNull(registration2);
@@ -333,8 +333,8 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void unregisterPlayer() throws Exception {
         // Given
-        Player player = playerDAO.findPlayerById(1);
-        Match match = matchDAO.findMatchById(1);
+        Player player = playerDAO.findPlayerById(101);
+        Match match = matchDAO.findMatchById(101);
         assertTrue(matchDAO.isPlayerRegistered(player, match));
 
         // When
@@ -347,7 +347,7 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
-        Player player = playerDAO.findPlayerById(1);
+        Player player = playerDAO.findPlayerById(101);
         OffsetDateTime startDate = OffsetDateTime.now().minusYears(5L); // 5 years ago
 
         // When
@@ -363,14 +363,15 @@ class MatchDAOTest extends AbstractDAOTest {
     @Test
     void updateStatus() {
         // Given
-        Match match = matchDAO.findMatchById(1);
+        int matchId = 101;
+        Match match = matchDAO.findMatchById(matchId);
         assertEquals(CREATED, match.getStatus());
 
         match.setStatus(PLAYED);
 
         // When
         matchDAO.updateMatchStatus(match);
-        Match updatedMatch = matchDAO.findMatchById(1);
+        Match updatedMatch = matchDAO.findMatchById(matchId);
 
         // Then
         assertNotNull(updatedMatch);

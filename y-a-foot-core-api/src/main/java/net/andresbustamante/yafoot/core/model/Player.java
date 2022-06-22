@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
-import net.andresbustamante.yafoot.commons.model.User;
+import net.andresbustamante.yafoot.users.model.User;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
