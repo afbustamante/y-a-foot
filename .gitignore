@@ -131,3 +131,7 @@ local.properties
 
 # VS Code
 settings.json
+
+# External environments configuration
+*-dev.properties
+*-prod.properties

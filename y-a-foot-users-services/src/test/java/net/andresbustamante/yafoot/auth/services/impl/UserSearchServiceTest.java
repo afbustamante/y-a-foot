@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class UserSearchServiceTest extends AbstractServiceTest {
+class UserSearchServiceTest extends AbstractServiceTest {
 
     private static final User USR_TEST = new User("test@email.com", "password", "TEST",
             "User");

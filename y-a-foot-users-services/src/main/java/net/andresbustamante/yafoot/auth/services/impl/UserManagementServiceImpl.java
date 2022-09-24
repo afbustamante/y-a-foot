@@ -56,7 +56,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         log.info("Details updated for user {}", user);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void updateUserPassword(User user, UserContext ctx) throws DirectoryException, ApplicationException {
         userRepository.updatePassword(user);
@@ -87,7 +87,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         return token;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void resetUserPassword(User user, String passwordResetToken) throws DirectoryException, ApplicationException {
         User tokenUser = userRepository.findUserByToken(passwordResetToken);
