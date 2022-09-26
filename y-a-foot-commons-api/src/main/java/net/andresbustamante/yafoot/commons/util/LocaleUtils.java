@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.commons.util;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 public class LocaleUtils {
@@ -21,11 +22,6 @@ public class LocaleUtils {
     private LocaleUtils() {}
 
     public static boolean isSupportedLocale(Locale locale) {
-        for (Locale l : SUPPORTED_LOCALES) {
-            if (l.equals(locale)) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(SUPPORTED_LOCALES).anyMatch(l -> l.equals(locale));
     }
 }

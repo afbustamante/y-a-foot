@@ -57,11 +57,7 @@ public class Match implements Serializable, Identifiable, Auditable {
 
     public boolean isPlayerRegistered(Player player) {
         if (registrations != null) {
-            for (Registration registration : registrations) {
-                if (registration.getPlayer().equals(player)) {
-                    return true;
-                }
-            }
+            return registrations.stream().anyMatch(registration -> registration.getPlayer().equals(player));
         }
         return false;
     }
