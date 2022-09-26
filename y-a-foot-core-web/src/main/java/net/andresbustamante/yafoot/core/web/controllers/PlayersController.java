@@ -33,11 +33,9 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 public class PlayersController extends AbstractController implements PlayersApi {
 
-    private PlayerManagementService playerManagementService;
-
-    private PlayerSearchService playerSearchService;
-
-    private PlayerMapper playerMapper;
+    private final PlayerManagementService playerManagementService;
+    private final PlayerSearchService playerSearchService;
+    private final PlayerMapper playerMapper;
 
     @Value("${player.api.service.path}")
     private String playerApiPath;

@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class MatchSearchServiceImpl implements MatchSearchService {
 
-    private MatchDAO matchDAO;
+    private final MatchDAO matchDAO;
 
     @Autowired
     public MatchSearchServiceImpl(MatchDAO matchDAO) {

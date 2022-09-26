@@ -27,9 +27,9 @@ import java.util.Locale;
 @Service
 public class CarpoolingServiceImpl implements CarpoolingService {
 
-    private CarDAO carDAO;
-    private MatchDAO matchDAO;
-    private MessagingService messagingService;
+    private final CarDAO carDAO;
+    private final MatchDAO matchDAO;
+    private final MessagingService messagingService;
 
     @Value("${app.web.public.carpooling-management.url}")
     private String carpoolingManagementUrl;

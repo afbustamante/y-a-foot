@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerSearchServiceImpl implements PlayerSearchService {
 
-    private PlayerDAO playerDAO;
+    private final PlayerDAO playerDAO;
 
     @Autowired
     public PlayerSearchServiceImpl(PlayerDAO playerDAO) {

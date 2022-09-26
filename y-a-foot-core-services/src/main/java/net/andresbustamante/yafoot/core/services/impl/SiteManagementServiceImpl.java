@@ -17,9 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SiteManagementServiceImpl implements SiteManagementService {
 
-    private SiteDAO siteDAO;
-
-    private PlayerSearchService playerSearchService;
+    private final SiteDAO siteDAO;
+    private final PlayerSearchService playerSearchService;
 
     @Autowired
     public SiteManagementServiceImpl(SiteDAO siteDAO, PlayerSearchService playerSearchService) {

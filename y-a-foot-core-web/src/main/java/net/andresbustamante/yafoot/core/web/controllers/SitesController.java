@@ -35,13 +35,10 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RestController
 public class SitesController extends AbstractController implements SitesApi {
 
-    private SiteSearchService siteSearchService;
-
-    private SiteManagementService siteManagementService;
-
-    private PlayerSearchService playerSearchService;
-
-    private SiteMapper siteMapper;
+    private final SiteSearchService siteSearchService;
+    private final SiteManagementService siteManagementService;
+    private final PlayerSearchService playerSearchService;
+    private final SiteMapper siteMapper;
 
     @Value("${site.api.service.path}")
     private String siteApiPath;

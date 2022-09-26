@@ -32,13 +32,10 @@ public class CarsController extends AbstractController implements CarsApi {
 
     private static final String CAR_NOT_FOUND_ERROR = "car.not.found.error";
 
-    private CarSearchService carSearchService;
-
-    private PlayerSearchService playerSearchService;
-
-    private CarManagementService carManagementService;
-
-    private CarMapper carMapper;
+    private final CarSearchService carSearchService;
+    private final PlayerSearchService playerSearchService;
+    private final CarManagementService carManagementService;
+    private final CarMapper carMapper;
 
     @Autowired
     public CarsController(CarSearchService carSearchService, PlayerSearchService playerSearchService,

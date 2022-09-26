@@ -20,9 +20,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RestController
 public class SportsController extends AbstractController implements SportsApi {
     
-    private SportSearchService sportSearchService;
-
-    private SportMapper sportMapper;
+    private final SportSearchService sportSearchService;
+    private final SportMapper sportMapper;
 
     @Autowired
     public SportsController(HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext,

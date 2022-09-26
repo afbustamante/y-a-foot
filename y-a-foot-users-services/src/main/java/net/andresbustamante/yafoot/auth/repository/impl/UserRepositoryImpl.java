@@ -26,17 +26,15 @@ import static net.andresbustamante.yafoot.auth.util.LdapConstants.*;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private LdapTemplate ldapTemplate;
+    private final LdapTemplate ldapTemplate;
+    private final LdapUserMapper ldapUserMapper;
+    private final LdapPasswordEncoder passwordEncoder;
 
     @Value("${app.ldap.config.users.dn}")
     private String usersDn;
 
     @Value("${app.ldap.config.roles.dn}")
     private String rolesDn;
-
-    private LdapUserMapper ldapUserMapper;
-
-    private LdapPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserRepositoryImpl(LdapTemplate ldapTemplate, LdapUserMapper ldapUserMapper) {

@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class SiteSearchServiceImpl implements SiteSearchService {
 
-    private SiteDAO siteDAO;
+    private final SiteDAO siteDAO;
 
     @Autowired
     public SiteSearchServiceImpl(SiteDAO siteDAO) {

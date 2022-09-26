@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class SportSearchServiceImpl implements SportSearchService {
 
-    private SportDAO sportDAO;
+    private final SportDAO sportDAO;
 
     @Autowired
     public SportSearchServiceImpl(SportDAO sportDAO) {

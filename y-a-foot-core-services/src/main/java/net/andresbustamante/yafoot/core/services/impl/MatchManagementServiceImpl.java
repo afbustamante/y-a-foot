@@ -45,21 +45,14 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     private final Logger log = LoggerFactory.getLogger(MatchManagementServiceImpl.class);
 
-    private MatchDAO matchDAO;
-
-    private SiteDAO siteDAO;
-
-    private SiteManagementService siteManagementService;
-
-    private CarDAO carDAO;
-
-    private CarManagementService carManagementService;
-
-    private CarpoolingService carpoolingService;
-
-    private PlayerDAO playerDAO;
-
-    private MessagingService messagingService;
+    private final MatchDAO matchDAO;
+    private final SiteDAO siteDAO;
+    private final SiteManagementService siteManagementService;
+    private final CarDAO carDAO;
+    private final CarManagementService carManagementService;
+    private final CarpoolingService carpoolingService;
+    private final PlayerDAO playerDAO;
+    private final MessagingService messagingService;
 
     @Autowired
     public MatchManagementServiceImpl(MatchDAO matchDAO, SiteDAO siteDAO, CarDAO carDAO, PlayerDAO playerDAO,
