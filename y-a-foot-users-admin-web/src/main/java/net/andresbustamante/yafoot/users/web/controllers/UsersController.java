@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -49,6 +50,17 @@ public class UsersController extends AbstractController implements UsersApi {
             return ResponseEntity.created(getLocationURI("/users/" + user.getEmail())).build();
         } catch (DirectoryException e) {
             log.error("Error while creating a new user", e);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<User> loadUser(@Pattern(regexp = "^[0-9A-F]{16}$") @Valid String email) {
+        try {
+            net.andresbustamante.yafoot.users.model.User user = userSearchService.findUserByEmail(email);
+
+            return (user != null) ? ResponseEntity.ok(userMapper.map(user)) : ResponseEntity.notFound().build();
+        } catch (DirectoryException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
         }
     }

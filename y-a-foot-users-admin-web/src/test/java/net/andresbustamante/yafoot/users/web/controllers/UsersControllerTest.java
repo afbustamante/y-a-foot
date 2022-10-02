@@ -80,6 +80,32 @@ class UsersControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void loadExistingUser() throws Exception {
+        // Given
+        User user = new User(VALID_EMAIL, null, "DOE", "Joe");
+
+        given(userSearchService.findUserByEmail(anyString())).willReturn(user);
+
+        // When
+        mvc.perform(get("/users/" + VALID_EMAIL)
+                .contentType(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void loadUnknownUser() throws Exception {
+        // Given
+        given(userSearchService.findUserByEmail(anyString())).willReturn(null);
+
+        // When
+        mvc.perform(get("/users/" + VALID_EMAIL)
+                .contentType(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void updateValidUser() throws Exception {
         // Given
         net.andresbustamante.yafoot.users.web.dto.User user = new net.andresbustamante.yafoot.users.web.dto.User();

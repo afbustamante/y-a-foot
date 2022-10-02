@@ -46,7 +46,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Override
     public void createUser(User user, RolesEnum role, UserContext ctx) throws DirectoryException {
         userRepository.saveUser(user, role);
-        log.info("User {} created", user.getEmail());
+        log.info("User {} successfully created", user.getEmail());
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -67,7 +67,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Override
     public void deleteUser(User user, UserContext ctx) throws DirectoryException {
         userRepository.deleteUser(user);
-        log.info("User {} deleted", user.getEmail());
+        log.info("User {} successfully deleted", user.getEmail());
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

@@ -42,7 +42,9 @@ public class JwtUserDetailsService implements UserDetailsService {
                     new SimpleGrantedAuthority(RolesEnum.PLAYER.name())
             );
 
-            return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
+            String password = ""; // Empty password needed to create credentials
+
+            return new org.springframework.security.core.userdetails.User(username, password, authorities);
         } catch (DirectoryException e) {
             log.error("An LDAP error occurred while looking for user's authentication details", e);
             throw new UsernameNotFoundException("Authentication service not available");

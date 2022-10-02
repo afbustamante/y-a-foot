@@ -32,7 +32,7 @@ class JwtUserDetailsServiceTest {
     void loadUserByUsername() throws Exception {
         // Given
         String email = "john.doe@email.com";
-        String passwd = "passwd";
+        String passwd = "";
         User testUser = new User(email, passwd, "DOE", "John");
         when(userManagementAdapter.findUserByEmail(anyString())).thenReturn(testUser);
 
