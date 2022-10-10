@@ -7,9 +7,8 @@ pipeline {
     }
 
     options {
-        timeout(time: 1, unit: 'HOURS')
+        timeout(time: 30, unit: 'MINUTES')
         timestamps()
-        retry(3)
         disableConcurrentBuilds()
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
@@ -18,19 +17,29 @@ pipeline {
         stage('Prepare') {
             steps {
                 // Get code from GitHub repository
-                git branch: 'develop', url: 'https://github.com/afbustamante/y-a-foot'
+                // git branch: 'develop', url: 'https://github.com/afbustamante/y-a-foot'
+                sh 'echo \'Pulling branch ${env.BRANCH_NAME}\''
             }
         }
         stage('Build') {
             steps {
-                // Run the maven build
-                sh 'mvn clean install -P jenkins --batch-mode --errors --fail-at-end'
+                // Run the maven build without tests
+                sh 'mvn clean install -P jenkins -DskipTests=true'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test -P jenkins --batch-mode --errors --fail-at-end'
             }
         }
         stage('Analyze') {
             steps {
-                // Run the Sonar analysis
-                sh 'mvn sonar:sonar -P jenkins -Dsonar.organization=afbustamante-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=f141b07519c6a6eb8ac0e400c56cfdabb1775cdc'
+                script {
+                    if (env.BRANCH_NAME == 'develop') {
+                        // Run the Sonar analysis
+                        sh 'mvn sonar:sonar -P jenkins -Dsonar.organization=afbustamante-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=f141b07519c6a6eb8ac0e400c56cfdabb1775cdc'
+                    }
+                }
             }
         }
         stage('Report') {
