@@ -32,7 +32,7 @@ public abstract class AbstractControllerTest {
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
 
-    @Value("${api.public.url}")
+    @Value("${api.config.public.url}")
     protected String apiPublicUrl;
 
     @BeforeEach

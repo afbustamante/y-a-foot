@@ -22,7 +22,11 @@ app:
           minutes: 5
 
 api:
-  public:
-    url: 'http://localhost:9900/api'
+  config:
+    public:
+      url: 'http://localhost:9900/api'
   users:
-    path: /users
+    root:
+      path: /users
+    one:
+      path: ${api.users.root.path}/{0}

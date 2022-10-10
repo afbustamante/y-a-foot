@@ -8,16 +8,16 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 @Configuration
 public class LoggingConfig {
 
-    @Value("${api.rest.logging.include.headers}")
+    @Value("${api.config.rest.logging.include.headers}")
     private boolean includeHeaders;
 
-    @Value("${api.rest.logging.include.query}")
+    @Value("${api.config.rest.logging.include.query}")
     private boolean includeQueryString;
 
-    @Value("${api.rest.logging.include.payload}")
+    @Value("${api.config.rest.logging.include.payload}")
     private boolean includePayload;
 
-    @Value("${api.rest.logging.max-payload-length}")
+    @Value("${api.config.rest.logging.max-payload-length}")
     private Integer maxPayloadLength;
 
     @Bean

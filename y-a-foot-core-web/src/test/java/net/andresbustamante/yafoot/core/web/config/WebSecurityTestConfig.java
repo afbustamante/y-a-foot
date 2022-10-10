@@ -33,7 +33,7 @@ public class WebSecurityTestConfig extends WebSecurityConfigurerAdapter {
     @Value("${api.users.path}")
     private String usersApiPath;
 
-    @Value("${players.api.service.path}")
+    @Value("${api.players.root.path}")
     private String playersApiPath;
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;

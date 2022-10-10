@@ -49,7 +49,7 @@ class CarsControllerTest extends AbstractControllerTest {
     @MockBean
     private CarManagementService carManagementService;
 
-    @Value("${cars.api.service.path}")
+    @Value("${api.cars.root.path}")
     private String carsApiPath;
 
     @Test

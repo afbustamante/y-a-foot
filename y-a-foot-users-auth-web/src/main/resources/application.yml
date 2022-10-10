@@ -59,19 +59,23 @@ app:
         url: ${app.web.public.url}/password-reset?token={0}
 
 api:
-  rest:
-    logging:
-      include:
-        headers: ${rest.logging.include.headers}
-        query: ${rest.logging.include.query}
-        payload: ${rest.logging.include.payload}
-      max-payload-length: ${rest.logging.max.payload.length}
-  public:
-    url: ${rest.api.public.url}
-  security:
-    jwt:
-      token:
-        active:
-          minutes: 60
+  config:
+    rest:
+      logging:
+        include:
+          headers: ${rest.logging.include.headers}
+          query: ${rest.logging.include.query}
+          payload: ${rest.logging.include.payload}
+        max-payload-length: ${rest.logging.max.payload.length}
+    public:
+      url: ${rest.api.public.url}
+    security:
+      jwt:
+        token:
+          active:
+            minutes: 60
   users:
-    path: /users
+    root:
+      path: /users
+    one:
+      path: ${api.users.root.path}/{0}

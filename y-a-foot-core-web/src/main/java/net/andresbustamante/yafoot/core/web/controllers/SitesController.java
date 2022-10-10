@@ -40,7 +40,7 @@ public class SitesController extends AbstractController implements SitesApi {
     private final PlayerSearchService playerSearchService;
     private final SiteMapper siteMapper;
 
-    @Value("${site.api.service.path}")
+    @Value("${api.sites.one.path}")
     private String siteApiPath;
 
     @Autowired

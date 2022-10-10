@@ -48,7 +48,7 @@ public abstract class AbstractController {
 
     protected ObjectMapper objectMapper;
 
-    @Value("${api.public.url}")
+    @Value("${api.config.public.url}")
     protected String apiPublicUrl;
 
     protected AbstractController(HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {

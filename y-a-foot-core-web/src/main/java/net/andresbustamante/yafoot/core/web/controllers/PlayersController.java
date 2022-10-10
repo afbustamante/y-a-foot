@@ -37,7 +37,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
     private final PlayerSearchService playerSearchService;
     private final PlayerMapper playerMapper;
 
-    @Value("${player.api.service.path}")
+    @Value("${api.players.one.path}")
     private String playerApiPath;
 
     @Autowired

@@ -49,7 +49,7 @@ class SitesControllerTest extends AbstractControllerTest {
     @MockBean
     private PlayerSearchService playerSearchService;
 
-    @Value("${site.api.service.path}")
+    @Value("${api.sites.one.path}")
     private String siteApiPath;
 
     @Test

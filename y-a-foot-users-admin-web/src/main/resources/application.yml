@@ -37,6 +37,7 @@ spring:
             enable: ${mail.smtp.starttls.enable}
             required: ${mail.smtp.starttls.required}
 
+# Application configuration
 app:
   ldap:
     config:
@@ -59,15 +60,21 @@ app:
         secret: dummy
         active:
           minutes: 0
+
+# REST API
 api:
-  rest:
-    logging:
-      include:
-        headers: ${rest.logging.include.headers}
-        query: ${rest.logging.include.query}
-        payload: ${rest.logging.include.payload}
-      max-payload-length: ${rest.logging.max.payload.length}
-  public:
-    url: ${rest.api.public.url}
+  config:
+    rest:
+      logging:
+        include:
+          headers: ${rest.logging.include.headers}
+          query: ${rest.logging.include.query}
+          payload: ${rest.logging.include.payload}
+        max-payload-length: ${rest.logging.max.payload.length}
+    public:
+      url: ${rest.api.public.url}
   users:
-    path: /users
+    root:
+      path: /users
+    one:
+      path: ${api.users.root.path}/{0}

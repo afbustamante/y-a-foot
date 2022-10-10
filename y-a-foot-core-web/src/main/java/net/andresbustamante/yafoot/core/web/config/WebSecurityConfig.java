@@ -29,7 +29,7 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${players.api.service.path}")
+    @Value("${api.players.root.path}")
     private String playersApiPath;
 
     private final JwtUserDetailsService jwtUserDetailsService;

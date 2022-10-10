@@ -60,10 +60,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
     private final RegistrationMapper registrationMapper;
     private final CarMapper carMapper;
 
-    @Value("${match.api.service.path}")
+    @Value("${api.matches.one.path}")
     private String matchApiPath;
 
-    @Value("${match.registration.api.service.path}")
+    @Value("${api.matches.one.registrations.one.path}")
     private String matchRegistrationApiPath;
 
     @Autowired

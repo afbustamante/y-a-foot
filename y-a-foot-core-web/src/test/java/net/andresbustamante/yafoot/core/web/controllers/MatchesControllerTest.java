@@ -63,7 +63,7 @@ class MatchesControllerTest extends AbstractControllerTest {
     @MockBean
     private CarpoolingService carpoolingService;
 
-    @Value("${matches.api.service.path}")
+    @Value("${api.matches.root.path}")
     private String matchesApiPath;
 
     @Test

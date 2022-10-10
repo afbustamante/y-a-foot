@@ -10,6 +10,7 @@ import net.andresbustamante.yafoot.users.web.dto.User;
 import net.andresbustamante.yafoot.users.web.mappers.RoleMapper;
 import net.andresbustamante.yafoot.users.web.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+
+import java.text.MessageFormat;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -30,6 +33,9 @@ public class UsersController extends AbstractController implements UsersApi {
     private final UserManagementService userManagementService;
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;
+
+    @Value("${api.users.one.path}")
+    private String userApiPath;
 
     @Autowired
     public UsersController(UserMapper userMapper, RoleMapper roleMapper,
@@ -47,7 +53,7 @@ public class UsersController extends AbstractController implements UsersApi {
     public ResponseEntity<Void> createUser(@Valid User user) {
         try {
             userManagementService.createUser(userMapper.map(user), roleMapper.map(user.getMainRole()), getUserContext(request));
-            return ResponseEntity.created(getLocationURI("/users/" + user.getEmail())).build();
+            return ResponseEntity.created(getLocationURI(MessageFormat.format(userApiPath, user.getEmail()))).build();
         } catch (DirectoryException e) {
             log.error("Error while creating a new user", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));
