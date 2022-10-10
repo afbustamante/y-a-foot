@@ -17,8 +17,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 // Get code from GitHub repository
-                // git branch: 'develop', url: 'https://github.com/afbustamante/y-a-foot'
-                sh 'echo \'Pulling branch ${env.BRANCH_NAME}\''
+                echo 'Pulling branch ' + env.GIT_BRANCH
             }
         }
         stage('Build') {
@@ -38,6 +37,8 @@ pipeline {
                     if (env.BRANCH_NAME == 'develop') {
                         // Run the Sonar analysis
                         sh 'mvn sonar:sonar -P jenkins -Dsonar.organization=afbustamante-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=f141b07519c6a6eb8ac0e400c56cfdabb1775cdc'
+                    } else {
+                        echo 'Skipped Sonar analysis'
                     }
                 }
             }
