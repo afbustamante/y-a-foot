@@ -33,7 +33,7 @@ This is the global deployment diagram showing the main components of this projec
 * JDK 14
 * Maven 3.6
 
-### Minimum requirements for deploying
+### Minimum requirements for deployment
 
 * JRE 14
 * PostgreSQL 12+
