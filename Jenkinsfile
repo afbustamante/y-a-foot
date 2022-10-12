@@ -36,7 +36,11 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'develop') {
                         // Run the Sonar analysis
-                        sh 'mvn sonar:sonar -P jenkins -Dsonar.organization=afbustamante-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=f141b07519c6a6eb8ac0e400c56cfdabb1775cdc'
+                        configFileProvider([configFile(fileId: '8d47e8c5-f619-4f36-a1dc-590dca78adb1', variable: 'SONAR_CONFIG')]) {
+                            // some block
+                            def props = readProperties file: "${SONAR_CONFIG}"
+                            sh "mvn sonar:sonar -P jenkins -Dsonar.login=${props['sonar.login']}"
+                        }
                     } else {
                         echo 'Skipped Sonar analysis'
                     }

@@ -82,6 +82,7 @@
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
     <sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
 
   <scm>
