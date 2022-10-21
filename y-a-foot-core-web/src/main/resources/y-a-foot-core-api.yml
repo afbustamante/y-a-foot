@@ -8,8 +8,10 @@ info:
 servers:
 - url: http://localhost:8280/api
   description: Localhost deployment
-- url: https://yafoot.marca2.net/api
+- url: https://dev-api.footero.net/api
   description: Development environment
+- url: https://api.footero.net/api
+  description: Production environment
 
 tags:
   - name: players

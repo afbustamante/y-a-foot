@@ -65,6 +65,7 @@ app:
 api:
   config:
     rest:
+      allowed-origin: ${rest.api.allowed.url}
       logging:
         include:
           headers: ${rest.logging.include.headers}

@@ -32,6 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${api.players.root.path}")
     private String playersApiPath;
 
+    @Value("${app.web.public.url}")
+    private String webPublicUrl;
+
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
@@ -69,8 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        String origin = "http://localhost:4200";
-        configuration.setAllowedOrigins(List.of(origin));
+        configuration.setAllowedOrigins(List.of(webPublicUrl));
         configuration.setAllowedMethods(List.of("HEAD", "OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("Authorization", "Accept", "Cache-Control", "Content-Type", "Origin"));

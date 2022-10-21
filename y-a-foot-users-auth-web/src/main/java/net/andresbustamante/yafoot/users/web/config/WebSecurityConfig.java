@@ -5,6 +5,7 @@ import net.andresbustamante.yafoot.commons.util.JwtAuthenticationEntryPoint;
 import net.andresbustamante.yafoot.commons.util.LdapPasswordEncoder;
 import net.andresbustamante.yafoot.users.web.services.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -31,6 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
+
+    @Value("${app.web.public.url}")
+    private String webPublicUrl;
 
     @Autowired
     public WebSecurityConfig(JwtUserDetailsService jwtUserDetailsService,
@@ -71,8 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        String origin = "http://localhost:4200";
-        configuration.setAllowedOrigins(List.of(origin));
+        configuration.setAllowedOrigins(List.of(webPublicUrl));
         configuration.setAllowedMethods(List.of("HEAD", "OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("Authorization", "Accept", "Cache-Control", "Content-Type", "Origin"));
