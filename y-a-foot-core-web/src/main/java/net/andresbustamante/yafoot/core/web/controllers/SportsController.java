@@ -24,7 +24,8 @@ public class SportsController extends AbstractController implements SportsApi {
     private final SportMapper sportMapper;
 
     @Autowired
-    public SportsController(HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext,
+    public SportsController(HttpServletRequest request, ObjectMapper objectMapper,
+                            ApplicationContext applicationContext,
                             SportSearchService sportSearchService, SportMapper sportMapper) {
         super(request, objectMapper, applicationContext);
         this.sportSearchService = sportSearchService;

@@ -40,7 +40,8 @@ public class UsersController extends AbstractController implements UsersApi {
     @Autowired
     public UsersController(UserMapper userMapper, RoleMapper roleMapper,
                            UserManagementService userManagementService, UserSearchService userSearchService,
-                           HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {
+                           HttpServletRequest request, ObjectMapper objectMapper,
+                           ApplicationContext applicationContext) {
         super(request, objectMapper, applicationContext);
         this.userManagementService = userManagementService;
         this.userSearchService = userSearchService;
@@ -52,7 +53,8 @@ public class UsersController extends AbstractController implements UsersApi {
     @Override
     public ResponseEntity<Void> createUser(@Valid User user) {
         try {
-            userManagementService.createUser(userMapper.map(user), roleMapper.map(user.getMainRole()), getUserContext(request));
+            userManagementService.createUser(userMapper.map(user), roleMapper.map(user.getMainRole()), getUserContext(
+                    request));
             return ResponseEntity.created(getLocationURI(MessageFormat.format(userApiPath, user.getEmail()))).build();
         } catch (DirectoryException e) {
             log.error("Error while creating a new user", e);
@@ -87,7 +89,7 @@ public class UsersController extends AbstractController implements UsersApi {
             userManagementService.updateUser(userMapper.map(userDto), getUserContext(request));
             return ResponseEntity.accepted().build();
         } catch (ApplicationException e) {
-            throw new ResponseStatusException(FORBIDDEN, translate(AbstractController.UNAUTHORISED_USER_ERROR, null));
+            throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
         } catch (DirectoryException e) {
             log.error("Error while updating a user", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DIRECTORY_BASIC_ERROR, null));

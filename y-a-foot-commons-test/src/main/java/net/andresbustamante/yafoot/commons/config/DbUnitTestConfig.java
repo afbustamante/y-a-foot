@@ -26,7 +26,8 @@ public class DbUnitTestConfig {
 
     @Bean
     public DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection(DataSource dataSource) {
-        DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnectionFactory = new DatabaseDataSourceConnectionFactoryBean();
+        DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnectionFactory =
+                new DatabaseDataSourceConnectionFactoryBean();
         dbUnitDatabaseConnectionFactory.setDatabaseConfig(dbUnitDatabaseConfig());
         dbUnitDatabaseConnectionFactory.setDataSource(dataSource);
         dbUnitDatabaseConnectionFactory.setTransactionAware(true);

@@ -41,7 +41,8 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     private static final Integer CODE_LENGTH = 10;
 
-    private final RandomStringGenerator codeGenerator = new RandomStringGenerator.Builder().withinRange('A', 'Z').build();
+    private final RandomStringGenerator codeGenerator =
+            new RandomStringGenerator.Builder().withinRange('A', 'Z').build();
 
     private final Logger log = LoggerFactory.getLogger(MatchManagementServiceImpl.class);
 
@@ -136,12 +137,14 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      * @param userContext Context of the user making the registration
      * @throws ApplicationException
      */
-    private void processCarpoolingImpacts(Player player, Match match, Car car, UserContext userContext) throws ApplicationException {
+    private void processCarpoolingImpacts(Player player, Match match, Car car, UserContext userContext)
+            throws ApplicationException {
         if (match.isCarpoolingEnabled()) {
             // Check if an update of carpooling must be made when a driver changes of transportation option
             Registration oldRegistration = matchDAO.loadRegistration(match, player);
 
-            if (oldRegistration != null && oldRegistration.getCar() != null && player.equals(oldRegistration.getCar().getDriver())) {
+            if (oldRegistration != null && oldRegistration.getCar() != null && player.equals(
+                    oldRegistration.getCar().getDriver())) {
                 // The driver already registered is changing of mind
                 carpoolingService.processTransportationChange(match, oldRegistration.getCar(), car, userContext);
             }
@@ -150,9 +153,11 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public void unregisterPlayer(Player player, Match match, UserContext ctx) throws DatabaseException, ApplicationException {
+    public void unregisterPlayer(Player player, Match match, UserContext ctx)
+            throws DatabaseException, ApplicationException {
         // Two players are authorised to unregister a player: himself/herself or the player who created the match
-        boolean isUserAuthorised = ctx.getUsername().equals(match.getCreator().getEmail()) || ctx.getUsername().equals(player.getEmail());
+        boolean isUserAuthorised = ctx.getUsername().equals(match.getCreator().getEmail()) || ctx.getUsername().equals(
+                player.getEmail());
         // A match is impacted when the last player before arriving to the lowest number of players expected quits
         boolean isMatchImpacted = match.getNumRegisteredPlayers().equals(match.getNumPlayersMin());
 
@@ -180,7 +185,8 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      * @param player Player quitting the match
      * @param match Match being abandoned by the player
      */
-    private void processCarpoolingImpactsAfterAbandon(Player player, Match match, UserContext ctx) throws DatabaseException, ApplicationException {
+    private void processCarpoolingImpactsAfterAbandon(Player player, Match match, UserContext ctx)
+            throws DatabaseException, ApplicationException {
         List<Car> registeredCars = carpoolingService.findAvailableCarsByMatch(match);
 
         if (CollectionUtils.isNotEmpty(registeredCars)) {
@@ -190,13 +196,15 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
             if (ownedCar.isPresent()) {
                 // The system found a car driven by the player
-                List<Registration> impactedRegistrations = matchDAO.findPassengerRegistrationsByCar(match, ownedCar.get());
+                List<Registration> impactedRegistrations = matchDAO.findPassengerRegistrationsByCar(match,
+                        ownedCar.get());
 
                 if (CollectionUtils.isNotEmpty(impactedRegistrations)) {
                     // At least one player asked or was confirmed for a seat in this car
                     // Update carpooling information to remove confirmations on this car
                     for (Registration registration : impactedRegistrations) {
-                        carpoolingService.updateCarpoolingInformation(match, registration.getPlayer(), ownedCar.get(), false, ctx);
+                        carpoolingService.updateCarpoolingInformation(match, registration.getPlayer(), ownedCar.get(),
+                                false, ctx);
                     }
                 }
             }

@@ -64,7 +64,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void deleteUser(User usr) {
-        List<RolesEnum> userRoles = Collections.singletonList(RolesEnum.PLAYER); // TODO Calculate roles for the given user
+        List<RolesEnum> userRoles = Collections.singletonList(RolesEnum.PLAYER);
         removeRolesForUser(usr, userRoles);
         ldapTemplate.unbind(getUid(usr));
     }
@@ -80,7 +80,8 @@ public class UserRepositoryImpl implements UserRepository {
         User user = new User(uid);
         user = findUserByUid(getUid(user).toString());
 
-        return (user != null && user.getPassword() != null && passwordEncoder.matches(password, user.getPassword())) ? user : null;
+        return (user != null && user.getPassword() != null && passwordEncoder.matches(password, user.getPassword())) ?
+                user : null;
     }
 
     @Override

@@ -58,7 +58,8 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
     @Transactional
     @Override
-    public void updateCarpoolingInformation(Match match, Player player, Car car, boolean isCarConfirmed, UserContext ctx)
+    public void updateCarpoolingInformation(Match match, Player player, Car car, boolean isCarConfirmed,
+                                            UserContext ctx)
             throws DatabaseException, ApplicationException {
         if (car.getId() != null) {
             Car storedCar = carDAO.findCarById(car.getId());
@@ -105,13 +106,14 @@ public class CarpoolingServiceImpl implements CarpoolingService {
         request.setLink(link);
         request.setMatchDate(matchDate);
 
-        messagingService.sendEmail(car.getDriver().getEmail(), "carpool.request.email.subject", new String[]{player.getFirstName()},
-                template, request, locale);
+        messagingService.sendEmail(car.getDriver().getEmail(), "carpool.request.email.subject",
+                new String[]{player.getFirstName()}, template, request, locale);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void processTransportationChange(Match match, Car oldCar, Car newCar, UserContext ctx) throws ApplicationException {
+    public void processTransportationChange(Match match, Car oldCar, Car newCar, UserContext ctx)
+            throws ApplicationException {
         List<Registration> registrations = matchDAO.findPassengerRegistrationsByCar(match, oldCar);
         Car storedNewCar = (newCar != null && newCar.getId() != null) ? carDAO.findCarById(newCar.getId()) : null;
 
@@ -120,14 +122,16 @@ public class CarpoolingServiceImpl implements CarpoolingService {
                 // Changing between two owned cars
                 if (storedNewCar.getNumSeats() >= registrations.size()) {
                     // Transfer the passengers to the new car
-                    registrations.forEach(registration -> matchDAO.updateCarForRegistration(match, registration.getPlayer(),
-                            storedNewCar, registration.isCarConfirmed()));
+                    registrations.forEach(registration -> matchDAO.updateCarForRegistration(match,
+                            registration.getPlayer(), storedNewCar, registration.isCarConfirmed()));
                 } else {
-                    throw new ApplicationException("carpooling.passengers.transfer.failed", "There are not enough seats for all your passengers");
+                    throw new ApplicationException("carpooling.passengers.transfer.failed",
+                            "There are not enough seats for all your passengers");
                 }
             } else if (storedNewCar == null && newCar != null) {
                 // Changing to an unregistered car
-                throw new ApplicationException("carpooling.passengers.transfer.failed", "The new car must have been registered before this operation");
+                throw new ApplicationException("carpooling.passengers.transfer.failed",
+                        "The new car must have been registered before this operation");
             } else {
                 // Changing to a car belonging to somebody else or not using a car at all
                 registrations.forEach(registration -> matchDAO.resetCarDetails(match, registration.getPlayer()));
@@ -140,7 +144,8 @@ public class CarpoolingServiceImpl implements CarpoolingService {
         String confirmationTemplate = "carpooling-confirmation-email_" + player.getPreferredLanguage() + ".ftl";
         String rejectionTemplate = "carpooling-rejection-email_" + player.getPreferredLanguage() + ".ftl";
         String template = (isCarSeatConfirmed) ? confirmationTemplate : rejectionTemplate;
-        String subject = (isCarSeatConfirmed) ? "carpool.confirmation.email.subject" : "carpool.rejection.email.subject";
+        String subject = (isCarSeatConfirmed) ? "carpool.confirmation.email.subject" :
+                "carpool.rejection.email.subject";
 
         String link = MessageFormat.format(matchManagementUrl, match.getCode());
         Locale locale = new Locale(player.getPreferredLanguage());

@@ -34,7 +34,8 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     private final UserRepository userRepository;
     private final MessagingService messagingService;
-    private final RandomStringGenerator tokenGenerator = new RandomStringGenerator.Builder().withinRange('0', '9').build();
+    private final RandomStringGenerator tokenGenerator = new RandomStringGenerator.Builder().withinRange('0', '9')
+            .build();
 
     @Autowired
     public UserManagementServiceImpl(UserRepository userRepository, MessagingService messagingService) {
@@ -89,7 +90,8 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void resetUserPassword(User user, String passwordResetToken) throws DirectoryException, ApplicationException {
+    public void resetUserPassword(User user, String passwordResetToken)
+            throws DirectoryException, ApplicationException {
         User tokenUser = userRepository.findUserByToken(passwordResetToken);
 
         if (tokenUser != null && tokenUser.equals(user)) {

@@ -71,7 +71,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
                              CarpoolingService carpoolingService,
                              MatchManagementService matchManagementService,
                              MatchMapper matchMapper, RegistrationMapper registrationMapper, CarMapper carMapper,
-                             HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {
+                             HttpServletRequest request, ObjectMapper objectMapper,
+                             ApplicationContext applicationContext) {
         super(request, objectMapper, applicationContext);
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
@@ -186,7 +187,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
             if (match != null) {
-                List<net.andresbustamante.yafoot.core.model.Car> cars = carpoolingService.findAvailableCarsByMatch(match);
+                List<net.andresbustamante.yafoot.core.model.Car> cars = carpoolingService.findAvailableCarsByMatch(
+                        match);
                 return ResponseEntity.ok(carMapper.map(cars));
             } else {
                 throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
@@ -225,7 +227,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Void> updateCarForRegistration(String matchCode, Integer playerId, CarConfirmation carConfirmation) {
+    public ResponseEntity<Void> updateCarForRegistration(String matchCode, Integer playerId,
+                                                         CarConfirmation carConfirmation) {
         try {
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
@@ -236,14 +239,14 @@ public class MatchesController extends AbstractController implements MatchesApi 
                     throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_PLAYER_REGISTRATION_ERROR, null));
                 }
 
-                Optional<net.andresbustamante.yafoot.core.model.Registration> registration = match.getRegistrations().stream().filter(
-                        reg -> reg.getPlayer().equals(player)).findFirst();
+                Optional<net.andresbustamante.yafoot.core.model.Registration> registration =
+                        match.getRegistrations().stream().filter(reg -> reg.getPlayer().equals(player)).findFirst();
 
                 if (registration.isPresent()) {
                     UserContext ctx = getUserContext(request);
 
-                    carpoolingService.updateCarpoolingInformation(match, player, carMapper.map(carConfirmation.getCar()),
-                                carConfirmation.isConfirmed(), ctx);
+                    carpoolingService.updateCarpoolingInformation(match, player,
+                            carMapper.map(carConfirmation.getCar()), carConfirmation.isConfirmed(), ctx);
                     return ResponseEntity.accepted().build();
                 } else {
                     throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_PLAYER_REGISTRATION_ERROR, null));

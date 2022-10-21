@@ -29,7 +29,8 @@ public interface CarSearchService {
      * @param ctx Context information for the actual user
      * @return Car details
      * @throws DatabaseException
-     * @throws ApplicationException If the user is not the owner of the car. This operation is only allowed to the car's owner
+     * @throws ApplicationException If the user is not the owner of the car. This operation is only allowed to the car's
+     *                              owner
      */
     Car loadCar(Integer id, UserContext ctx) throws DatabaseException, ApplicationException;
 }

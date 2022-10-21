@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.commons.util;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class LocaleUtils {
+public final class LocaleUtils {
 
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
@@ -19,7 +19,9 @@ public class LocaleUtils {
             new Locale("es")
     };
 
-    private LocaleUtils() {}
+    private LocaleUtils() {
+        // no-op
+    }
 
     public static boolean isSupportedLocale(Locale locale) {
         return Arrays.stream(SUPPORTED_LOCALES).anyMatch(l -> l.equals(locale));

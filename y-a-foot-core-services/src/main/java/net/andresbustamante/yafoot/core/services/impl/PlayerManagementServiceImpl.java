@@ -43,7 +43,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Integer savePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException, ApplicationException {
+    public Integer savePlayer(Player player, UserContext userContext) throws DirectoryException, ApplicationException {
         if (!playerDAO.isPlayerAlreadySignedUp(player.getEmail())) {
             // Create the player in LDAP directory
             userManagementAdapter.createUser(player, userContext);
@@ -53,7 +53,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             return player.getId();
         } else {
             log.info("Existing player with the address {}", player.getEmail());
-            throw new ApplicationException("email.already.registered.error", "A player already exists for this email address");
+            throw new ApplicationException("email.already.registered.error",
+                    "A player already exists for this email address");
         }
     }
 

@@ -51,7 +51,8 @@ public abstract class AbstractController {
     @Value("${api.config.public.url}")
     protected String apiPublicUrl;
 
-    protected AbstractController(HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {
+    protected AbstractController(HttpServletRequest request, ObjectMapper objectMapper,
+                                 ApplicationContext applicationContext) {
         this.request = request;
         this.applicationContext = applicationContext;
         this.objectMapper = objectMapper;
@@ -71,7 +72,8 @@ public abstract class AbstractController {
     protected UserContext getUserContext(HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String username = (authentication instanceof AnonymousAuthenticationToken) ? "anonymous" : authentication.getName();
+        String username = (authentication instanceof AnonymousAuthenticationToken) ? "anonymous" :
+                authentication.getName();
         String timeZone = request.getHeader(UserContext.TZ);
 
         UserContext userContext = new UserContext(username);

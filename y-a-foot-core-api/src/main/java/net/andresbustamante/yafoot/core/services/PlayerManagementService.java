@@ -22,7 +22,8 @@ public interface PlayerManagementService {
      * @throws DatabaseException
      * @throws DirectoryException
      */
-    Integer savePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException, ApplicationException;
+    Integer savePlayer(Player player, UserContext userContext)
+            throws DirectoryException, DatabaseException, ApplicationException;
 
     /**
      * Updates basic details for a player
@@ -33,7 +34,8 @@ public interface PlayerManagementService {
      * @throws DirectoryException
      * @throws ApplicationException
      */
-    void updatePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException, ApplicationException;
+    void updatePlayer(Player player, UserContext userContext)
+            throws DirectoryException, DatabaseException, ApplicationException;
 
     /**
      * Deactivates a player and deletes his/her history in the application

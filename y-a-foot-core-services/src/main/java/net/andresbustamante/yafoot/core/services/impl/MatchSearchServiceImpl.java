@@ -42,10 +42,14 @@ public class MatchSearchServiceImpl implements MatchSearchService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Match> findMatchesByPlayer(Player player, MatchStatusEnum status, SportEnum sport, LocalDate startDate, LocalDate endDate) throws DatabaseException {
+    public List<Match> findMatchesByPlayer(Player player, MatchStatusEnum status, SportEnum sport, LocalDate startDate,
+                                           LocalDate endDate) {
         if (player != null && player.getId() > 0) {
-            OffsetDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime() : null;
-            OffsetDateTime endDateTime = (endDate != null) ? endDate.plusDays(1L).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1L).toOffsetDateTime() : null;
+            OffsetDateTime startDateTime = (startDate != null) ?
+                    startDate.atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime() : null;
+            OffsetDateTime endDateTime = (endDate != null) ?
+                    endDate.plusDays(1L).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1L).toOffsetDateTime() :
+                    null;
             return matchDAO.findMatchesByPlayer(player, sport, status, startDateTime, endDateTime);
         } else {
             return Collections.emptyList();

@@ -36,7 +36,8 @@ public class UsersController extends AbstractController implements UsersApi {
     @Autowired
     public UsersController(UserAuthenticationService userAuthenticationService, UserMapper userMapper,
                            UserManagementService userManagementService, UserSearchService userSearchService,
-                           HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext) {
+                           HttpServletRequest request, ObjectMapper objectMapper,
+                           ApplicationContext applicationContext) {
         super(request, objectMapper, applicationContext);
         this.userAuthenticationService = userAuthenticationService;
         this.userManagementService = userManagementService;
@@ -52,7 +53,8 @@ public class UsersController extends AbstractController implements UsersApi {
                 return ResponseEntity.badRequest().build();
             }
 
-            net.andresbustamante.yafoot.users.model.User authenticatedUser = userAuthenticationService.authenticate(userMapper.map(user));
+            net.andresbustamante.yafoot.users.model.User authenticatedUser = userAuthenticationService.authenticate(
+                    userMapper.map(user));
 
             if (authenticatedUser == null) {
                 return ResponseEntity.notFound().build();
@@ -100,7 +102,7 @@ public class UsersController extends AbstractController implements UsersApi {
     public ResponseEntity<Void> updateUserCredentials(String email, @Valid Credentials credentials) {
         try {
             if (!email.equals(credentials.getUsername())) {
-                throw new ResponseStatusException(FORBIDDEN, translate(AbstractController.UNAUTHORISED_USER_ERROR, null));
+                throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
             }
 
             net.andresbustamante.yafoot.users.model.User user = userSearchService.findUserByEmail(email);

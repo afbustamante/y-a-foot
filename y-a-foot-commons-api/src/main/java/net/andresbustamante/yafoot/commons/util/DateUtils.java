@@ -7,9 +7,11 @@ import java.util.Date;
 /**
  * @author andresbustamante
  */
-public class DateUtils {
+public final class DateUtils {
 
-    private DateUtils() {}
+    private DateUtils() {
+        // no-op
+    }
 
     public static LocalDateTime toLocalDateTime(Date date) {
         if (date == null) {
