@@ -59,7 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, playersApiPath).permitAll() // Sign-up
-                .antMatchers(HttpMethod.OPTIONS, playersApiPath).permitAll() // Sign-up
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/error").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

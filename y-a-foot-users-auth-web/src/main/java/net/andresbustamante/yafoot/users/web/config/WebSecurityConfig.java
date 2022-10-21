@@ -55,10 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS,
-                        "/error",
-                        "/users/**"  // Password-reset token generation
-                ).permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/error").permitAll()
                 .antMatchers(HttpMethod.POST,
                         "/users/**"  // Sign-in and Password-reset token generation
@@ -79,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedMethods(List.of("HEAD", "OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("Authorization", "Accept", "Cache-Control", "Content-Type", "Origin"));
-        configuration.setExposedHeaders(List.of("Access-Control-Allow-Origin", "Location", "Content-Type", "Authorization"));
+        configuration.setExposedHeaders(List.of("Access-Control-Allow-Origin", "Location", "Content-Type"));
         configuration.setMaxAge(1209600L);
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
