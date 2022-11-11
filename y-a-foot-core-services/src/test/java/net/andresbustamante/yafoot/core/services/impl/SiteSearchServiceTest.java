@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.SiteDAO;
+import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class SiteSearchServiceTest extends AbstractServiceTest {
     private SiteSearchServiceImpl rechercheSitesService;
 
     @Mock
-    private SiteDAO siteDAO;
+    private SiteDao siteDAO;
 
     @Test
     void findSitesByPlayer() throws Exception {

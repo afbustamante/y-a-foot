@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +16,7 @@ class PlayerSearchServiceTest extends AbstractServiceTest {
     private PlayerSearchServiceImpl playerSearchService;
 
     @Mock
-    private PlayerDAO playerDAO;
+    private PlayerDao playerDAO;
 
     @Test
     void findInvalidPlayerByEmail() throws Exception {

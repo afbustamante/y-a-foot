@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.dao.CarDAO;
+import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Player;
@@ -17,10 +17,10 @@ import java.util.List;
 @Service
 public class CarSearchServiceImpl implements CarSearchService {
 
-    private final CarDAO carDAO;
+    private final CarDao carDAO;
 
     @Autowired
-    public CarSearchServiceImpl(CarDAO carDAO) {
+    public CarSearchServiceImpl(CarDao carDAO) {
         this.carDAO = carDAO;
     }
 

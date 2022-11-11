@@ -10,7 +10,7 @@ import static net.andresbustamante.yafoot.core.util.DaoConstants.*;
  *
  * @author andresbustamante
  */
-public interface PlayerDAO {
+public interface PlayerDao {
 
     /**
      * Looks for a player in the database using a technical identifier

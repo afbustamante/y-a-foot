@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerSearchServiceImpl implements PlayerSearchService {
 
-    private final PlayerDAO playerDAO;
+    private final PlayerDao playerDAO;
 
     @Autowired
-    public PlayerSearchServiceImpl(PlayerDAO playerDAO) {
+    public PlayerSearchServiceImpl(PlayerDao playerDAO) {
         this.playerDAO = playerDAO;
     }
 

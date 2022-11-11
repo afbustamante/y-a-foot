@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.core.dao.SiteDAO;
+import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
@@ -17,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SiteManagementServiceImpl implements SiteManagementService {
 
-    private final SiteDAO siteDAO;
+    private final SiteDao siteDAO;
     private final PlayerSearchService playerSearchService;
 
     @Autowired
-    public SiteManagementServiceImpl(SiteDAO siteDAO, PlayerSearchService playerSearchService) {
+    public SiteManagementServiceImpl(SiteDao siteDAO, PlayerSearchService playerSearchService) {
         this.siteDAO = siteDAO;
         this.playerSearchService = playerSearchService;
     }

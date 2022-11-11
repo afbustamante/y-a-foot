@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.core.model.Sport;
 
 import java.util.List;
 
-public interface SportDAO {
+public interface SportDao {
 
     List<Sport> loadSports();
 }

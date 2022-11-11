@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.andresbustamante.yafoot.core.dao.SportDAO">
+<mapper namespace="net.andresbustamante.yafoot.core.dao.SportDao">
     <select id="loadSports" resultType="net.andresbustamante.yafoot.core.model.Sport">
         SELECT spt_id AS id,
                spt_code AS code,

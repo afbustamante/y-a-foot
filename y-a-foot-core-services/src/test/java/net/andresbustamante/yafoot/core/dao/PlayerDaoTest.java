@@ -4,7 +4,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.commons.config.DbUnitTestConfig;
 import net.andresbustamante.yafoot.commons.config.JdbcTestConfig;
-import net.andresbustamante.yafoot.commons.dao.AbstractDAOTest;
+import net.andresbustamante.yafoot.commons.dao.AbstractDaoTest;
 import net.andresbustamante.yafoot.core.config.MyBatisTestConfig;
 import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
 @DatabaseSetup(value = "classpath:datasets/playersDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/playersDataset.xml", type = DELETE_ALL)
-class PlayerDAOTest extends AbstractDAOTest {
+class PlayerDaoTest extends AbstractDaoTest {
 
     private static final String EMAIL = "john.doe@email.com";
     private static final String PHONE_NUMBER = "0423456789";
@@ -31,7 +31,7 @@ class PlayerDAOTest extends AbstractDAOTest {
     private static final Player JOHN_DOE = new Player(101, "Doe", "John", EMAIL, "01234656789");
 
     @Autowired
-    private PlayerDAO playerDAO;
+    private PlayerDao playerDAO;
 
     @Test
     void savePlayer() throws Exception {

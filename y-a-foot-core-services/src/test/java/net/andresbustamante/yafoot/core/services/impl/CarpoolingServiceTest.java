@@ -3,8 +3,8 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.CarDAO;
-import net.andresbustamante.yafoot.core.dao.MatchDAO;
+import net.andresbustamante.yafoot.core.dao.CarDao;
+import net.andresbustamante.yafoot.core.dao.MatchDao;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.messaging.services.MessagingService;
@@ -27,10 +27,10 @@ class CarpoolingServiceTest extends AbstractServiceTest {
     private CarpoolingServiceImpl carpoolingService;
 
     @Mock
-    private MatchDAO matchDAO;
+    private MatchDao matchDAO;
 
     @Mock
-    private CarDAO carDAO;
+    private CarDao carDAO;
 
     @Mock
     private MessagingService messagingService;

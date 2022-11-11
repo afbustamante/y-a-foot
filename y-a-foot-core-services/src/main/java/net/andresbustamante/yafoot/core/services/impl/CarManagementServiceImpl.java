@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.core.dao.CarDAO;
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
+import net.andresbustamante.yafoot.core.dao.CarDao;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Player;
@@ -18,11 +18,11 @@ public class CarManagementServiceImpl implements CarManagementService {
 
     private final Logger log = LoggerFactory.getLogger(CarManagementServiceImpl.class);
 
-    private final CarDAO carDAO;
-    private final PlayerDAO playerDAO;
+    private final CarDao carDAO;
+    private final PlayerDao playerDAO;
 
     @Autowired
-    public CarManagementServiceImpl(CarDAO carDAO, PlayerDAO playerDAO) {
+    public CarManagementServiceImpl(CarDao carDAO, PlayerDao playerDAO) {
         this.carDAO = carDAO;
         this.playerDAO = playerDAO;
     }

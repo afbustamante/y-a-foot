@@ -1,12 +1,11 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.CarDAO;
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
+import net.andresbustamante.yafoot.core.dao.CarDao;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.services.impl.CarManagementServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,10 +24,10 @@ class CarManagementServiceTest extends AbstractServiceTest {
     private CarManagementServiceImpl carManagementService;
 
     @Mock
-    private CarDAO carDAO;
+    private CarDao carDAO;
 
     @Mock
-    private PlayerDAO playerDAO;
+    private PlayerDao playerDAO;
 
     @BeforeEach
     void setUp() {

@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.core.dao;
 
 import net.andresbustamante.yafoot.commons.config.DbUnitTestConfig;
 import net.andresbustamante.yafoot.commons.config.JdbcTestConfig;
-import net.andresbustamante.yafoot.commons.dao.AbstractDAOTest;
+import net.andresbustamante.yafoot.commons.dao.AbstractDaoTest;
 import net.andresbustamante.yafoot.core.config.MyBatisTestConfig;
 import net.andresbustamante.yafoot.core.model.Sport;
 import net.andresbustamante.yafoot.core.model.enums.SportEnum;
@@ -15,10 +15,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
-class SportDAOTest extends AbstractDAOTest {
+class SportDaoTest extends AbstractDaoTest {
 
     @Autowired
-    private SportDAO sportDAO;
+    private SportDao sportDAO;
 
     @Test
     void loadSports() {

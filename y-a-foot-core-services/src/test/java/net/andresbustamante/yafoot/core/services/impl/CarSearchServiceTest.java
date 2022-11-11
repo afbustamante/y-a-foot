@@ -1,12 +1,11 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.CarDAO;
+import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.services.impl.CarSearchServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,7 +22,7 @@ class CarSearchServiceTest extends AbstractServiceTest {
     private CarSearchServiceImpl carSearchService;
 
     @Mock
-    private CarDAO carDAO;
+    private CarDao carDAO;
 
     @Test
     void findCarsByPlayer() throws Exception {

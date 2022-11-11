@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.core.dao.SiteDAO;
+import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
@@ -17,10 +17,10 @@ import java.util.List;
 @Service
 public class SiteSearchServiceImpl implements SiteSearchService {
 
-    private final SiteDAO siteDAO;
+    private final SiteDao siteDAO;
 
     @Autowired
-    public SiteSearchServiceImpl(SiteDAO siteDAO) {
+    public SiteSearchServiceImpl(SiteDao siteDAO) {
         this.siteDAO = siteDAO;
     }
 

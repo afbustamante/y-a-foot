@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.MatchDAO;
+import net.andresbustamante.yafoot.core.dao.MatchDao;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class MatchSearchServiceTest extends AbstractServiceTest {
     private MatchSearchServiceImpl matchSearchService;
 
     @Mock
-    private MatchDAO matchDAO;
+    private MatchDao matchDAO;
 
     @Test
     void findExistingMatchByCode() throws Exception {

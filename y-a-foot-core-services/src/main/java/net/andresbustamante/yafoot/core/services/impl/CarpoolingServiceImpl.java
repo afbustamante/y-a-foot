@@ -3,8 +3,8 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.dao.CarDAO;
-import net.andresbustamante.yafoot.core.dao.MatchDAO;
+import net.andresbustamante.yafoot.core.dao.CarDao;
+import net.andresbustamante.yafoot.core.dao.MatchDao;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.*;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
@@ -27,8 +27,8 @@ import java.util.Locale;
 @Service
 public class CarpoolingServiceImpl implements CarpoolingService {
 
-    private final CarDAO carDAO;
-    private final MatchDAO matchDAO;
+    private final CarDao carDAO;
+    private final MatchDao matchDAO;
     private final MessagingService messagingService;
 
     @Value("${app.web.public.carpooling-management.url}")
@@ -40,7 +40,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
     private final Logger log = LoggerFactory.getLogger(CarpoolingServiceImpl.class);
 
     @Autowired
-    public CarpoolingServiceImpl(CarDAO carDAO, MatchDAO matchDAO, MessagingService messagingService) {
+    public CarpoolingServiceImpl(CarDao carDAO, MatchDao matchDAO, MessagingService messagingService) {
         this.carDAO = carDAO;
         this.matchDAO = matchDAO;
         this.messagingService = messagingService;

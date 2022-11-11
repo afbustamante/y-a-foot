@@ -4,10 +4,10 @@ import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.CarDAO;
-import net.andresbustamante.yafoot.core.dao.MatchDAO;
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
-import net.andresbustamante.yafoot.core.dao.SiteDAO;
+import net.andresbustamante.yafoot.core.dao.CarDao;
+import net.andresbustamante.yafoot.core.dao.MatchDao;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
+import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.*;
@@ -35,13 +35,13 @@ class MatchManagementServiceTest extends AbstractServiceTest {
     private MatchManagementServiceImpl matchManagementService;
 
     @Mock
-    private MatchDAO matchDAO;
+    private MatchDao matchDAO;
 
     @Mock
-    private SiteDAO siteDAO;
+    private SiteDao siteDAO;
 
     @Mock
-    private CarDAO carDAO;
+    private CarDao carDAO;
 
     @Mock
     private SiteManagementService siteManagementService;
@@ -50,7 +50,7 @@ class MatchManagementServiceTest extends AbstractServiceTest {
     private CarManagementService carManagementService;
 
     @Mock
-    private PlayerDAO playerDAO;
+    private PlayerDao playerDAO;
 
     @Mock
     private CarpoolingService carpoolingService;

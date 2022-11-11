@@ -4,7 +4,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.commons.config.DbUnitTestConfig;
 import net.andresbustamante.yafoot.commons.config.JdbcTestConfig;
-import net.andresbustamante.yafoot.commons.dao.AbstractDAOTest;
+import net.andresbustamante.yafoot.commons.dao.AbstractDaoTest;
 import net.andresbustamante.yafoot.core.config.MyBatisTestConfig;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
 @DatabaseSetup(value = "classpath:datasets/matchesDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/matchesDataset.xml", type = DELETE_ALL)
-class SiteDAOTest extends AbstractDAOTest {
+class SiteDaoTest extends AbstractDaoTest {
 
     @Autowired
-    private SiteDAO siteDAO;
+    private SiteDao siteDAO;
 
     @Test
     void findSitesByPlayer() throws Exception {

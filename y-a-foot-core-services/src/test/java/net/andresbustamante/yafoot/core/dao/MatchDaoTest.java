@@ -4,7 +4,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.commons.config.DbUnitTestConfig;
 import net.andresbustamante.yafoot.commons.config.JdbcTestConfig;
-import net.andresbustamante.yafoot.commons.dao.AbstractDAOTest;
+import net.andresbustamante.yafoot.commons.dao.AbstractDaoTest;
 import net.andresbustamante.yafoot.core.config.MyBatisTestConfig;
 import net.andresbustamante.yafoot.core.model.*;
 import org.junit.jupiter.api.Test;
@@ -23,19 +23,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
 @DatabaseSetup(value = "classpath:datasets/matchesDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/matchesDataset.xml", type = DELETE_ALL)
-class MatchDAOTest extends AbstractDAOTest {
+class MatchDaoTest extends AbstractDaoTest {
 
     @Autowired
-    private MatchDAO matchDAO;
+    private MatchDao matchDAO;
 
     @Autowired
-    private PlayerDAO playerDAO;
+    private PlayerDao playerDAO;
 
     @Autowired
-    private SiteDAO siteDAO;
+    private SiteDao siteDAO;
 
     @Autowired
-    private CarDAO carDAO;
+    private CarDao carDAO;
 
     @Test
     void isCodeAlreadyRegistered() throws Exception {

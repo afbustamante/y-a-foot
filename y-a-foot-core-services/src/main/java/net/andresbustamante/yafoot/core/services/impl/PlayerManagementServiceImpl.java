@@ -5,7 +5,7 @@ import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.adapters.UserManagementAdapter;
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.exceptions.PlayerNotFoundException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PlayerManagementServiceImpl implements PlayerManagementService {
 
-    private final PlayerDAO playerDAO;
+    private final PlayerDao playerDAO;
     private final UserManagementAdapter userManagementAdapter;
     private final MatchManagementService matchManagementService;
     private final CarManagementService carManagementService;
@@ -32,7 +32,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     private final Logger log = LoggerFactory.getLogger(PlayerManagementServiceImpl.class);
 
     @Autowired
-    public PlayerManagementServiceImpl(PlayerDAO playerDAO, UserManagementAdapter userManagementAdapter,
+    public PlayerManagementServiceImpl(PlayerDao playerDAO, UserManagementAdapter userManagementAdapter,
                                        MatchManagementService matchManagementService,
                                        CarManagementService carManagementService) {
         this.playerDAO = playerDAO;

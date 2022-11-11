@@ -18,7 +18,7 @@ import static net.andresbustamante.yafoot.core.util.DaoConstants.*;
  *
  * @author andresbustamante
  */
-public interface MatchDAO {
+public interface MatchDao {
 
     /**
      * Verifies if the code passed as parameter has already been used for another match

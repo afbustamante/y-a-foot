@@ -11,5 +11,5 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 @ExtendWith(SpringExtension.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
-public abstract class AbstractDAOTest {
+public abstract class AbstractDaoTest {
 }

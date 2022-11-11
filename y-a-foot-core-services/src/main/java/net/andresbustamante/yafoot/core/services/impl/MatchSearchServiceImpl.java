@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.core.dao.MatchDAO;
+import net.andresbustamante.yafoot.core.dao.MatchDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
@@ -23,10 +23,10 @@ import java.util.List;
 @Service
 public class MatchSearchServiceImpl implements MatchSearchService {
 
-    private final MatchDAO matchDAO;
+    private final MatchDao matchDAO;
 
     @Autowired
-    public MatchSearchServiceImpl(MatchDAO matchDAO) {
+    public MatchSearchServiceImpl(MatchDao matchDAO) {
         this.matchDAO = matchDAO;
     }
 

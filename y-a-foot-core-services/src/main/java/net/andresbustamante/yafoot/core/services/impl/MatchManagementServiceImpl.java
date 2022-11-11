@@ -3,10 +3,10 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.dao.CarDAO;
-import net.andresbustamante.yafoot.core.dao.MatchDAO;
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
-import net.andresbustamante.yafoot.core.dao.SiteDAO;
+import net.andresbustamante.yafoot.core.dao.CarDao;
+import net.andresbustamante.yafoot.core.dao.MatchDao;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
+import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.*;
@@ -46,17 +46,17 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     private final Logger log = LoggerFactory.getLogger(MatchManagementServiceImpl.class);
 
-    private final MatchDAO matchDAO;
-    private final SiteDAO siteDAO;
+    private final MatchDao matchDAO;
+    private final SiteDao siteDAO;
     private final SiteManagementService siteManagementService;
-    private final CarDAO carDAO;
+    private final CarDao carDAO;
     private final CarManagementService carManagementService;
     private final CarpoolingService carpoolingService;
-    private final PlayerDAO playerDAO;
+    private final PlayerDao playerDAO;
     private final MessagingService messagingService;
 
     @Autowired
-    public MatchManagementServiceImpl(MatchDAO matchDAO, SiteDAO siteDAO, CarDAO carDAO, PlayerDAO playerDAO,
+    public MatchManagementServiceImpl(MatchDao matchDAO, SiteDao siteDAO, CarDao carDAO, PlayerDao playerDAO,
                                       SiteManagementService siteManagementService, MessagingService messagingService,
                                       CarManagementService carManagementService, CarpoolingService carpoolingService) {
         this.matchDAO = matchDAO;

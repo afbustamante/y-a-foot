@@ -5,7 +5,7 @@ import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.core.adapters.UserManagementAdapter;
-import net.andresbustamante.yafoot.core.dao.PlayerDAO;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.exceptions.PlayerNotFoundException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
@@ -23,7 +23,7 @@ class PlayerManagementServiceTest extends AbstractServiceTest {
     private PlayerManagementServiceImpl playerManagementService;
 
     @Mock
-    private PlayerDAO playerDAO;
+    private PlayerDao playerDAO;
 
     @Mock
     private UserManagementAdapter userManagementAdapter;

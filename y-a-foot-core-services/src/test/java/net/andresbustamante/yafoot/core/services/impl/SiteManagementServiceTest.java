@@ -1,13 +1,12 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.SiteDAO;
+import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
-import net.andresbustamante.yafoot.core.services.impl.SiteManagementServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +20,7 @@ class SiteManagementServiceTest extends AbstractServiceTest {
     private SiteManagementServiceImpl siteManagementService;
 
     @Mock
-    private SiteDAO siteDAO;
+    private SiteDao siteDAO;
 
     @Mock
     private PlayerSearchService playerSearchService;

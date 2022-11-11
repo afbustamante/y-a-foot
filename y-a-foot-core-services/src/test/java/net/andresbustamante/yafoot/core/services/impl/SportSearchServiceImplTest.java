@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
-import net.andresbustamante.yafoot.core.dao.SportDAO;
+import net.andresbustamante.yafoot.core.dao.SportDao;
 import net.andresbustamante.yafoot.core.model.Sport;
 import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class SportSearchServiceImplTest extends AbstractServiceTest {
     private SportSearchServiceImpl sportSearchService;
 
     @Mock
-    private SportDAO sportDAO;
+    private SportDao sportDAO;
 
     @Test
     void loadSports() throws Exception {

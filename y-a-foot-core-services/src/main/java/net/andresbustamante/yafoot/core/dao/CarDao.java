@@ -14,7 +14,7 @@ import static net.andresbustamante.yafoot.core.util.DaoConstants.*;
  *
  * @author andresbustamante
  */
-public interface CarDAO {
+public interface CarDao {
 
     /**
      * Loads a car details from database

@@ -13,7 +13,7 @@ import static net.andresbustamante.yafoot.core.util.DaoConstants.*;
  *
  * @author andresbustamante
  */
-public interface SiteDAO {
+public interface SiteDao {
 
     /**
      * Looks for the sites related to a player. It will look in player's history to get the sites where the player has

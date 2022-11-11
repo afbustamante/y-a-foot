@@ -4,7 +4,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.commons.config.DbUnitTestConfig;
 import net.andresbustamante.yafoot.commons.config.JdbcTestConfig;
-import net.andresbustamante.yafoot.commons.dao.AbstractDAOTest;
+import net.andresbustamante.yafoot.commons.dao.AbstractDaoTest;
 import net.andresbustamante.yafoot.core.config.MyBatisTestConfig;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Match;
@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
 @DatabaseSetup(value = "classpath:datasets/carsDataset.xml")
 @DatabaseTearDown(value = "classpath:datasets/carsDataset.xml", type = DELETE_ALL)
-class CarDAOTest extends AbstractDAOTest {
+class CarDaoTest extends AbstractDaoTest {
 
     @Autowired
-    private CarDAO carDAO;
+    private CarDao carDAO;
 
     private Player player;
 
