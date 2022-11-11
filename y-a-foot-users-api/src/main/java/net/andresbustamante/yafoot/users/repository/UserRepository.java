@@ -1,15 +1,15 @@
 package net.andresbustamante.yafoot.users.repository;
 
 import net.andresbustamante.yafoot.users.model.User;
-import net.andresbustamante.yafoot.commons.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 
 /**
- * Interface describing the operations allowed on user in the LDAP directory
+ * Interface describing the operations allowed on user in the LDAP directory.
  */
 public interface UserRepository {
 
     /**
-     * Creates a user in LDAP directory
+     * Creates a user in LDAP directory.
      *
      * @param usr User to create
      * @param role Role to give to the user when created
@@ -17,36 +17,36 @@ public interface UserRepository {
     void saveUser(User usr, RolesEnum role);
 
     /**
-     * Update user's personal details in LDAP directory
+     * Update user's personal details in LDAP directory.
      *
      * @param usr
      */
     void updateUser(User usr);
 
     /**
-     * Update a user's password
+     * Update a user's password.
      *
      * @param usr User to update
      */
     void updatePassword(User usr);
 
     /**
-     * Deletes a user from LDAP directory
+     * Deletes a user from LDAP directory.
      *
      * @param usr User to delete
      */
     void deleteUser(User usr);
 
     /**
-     * Find a user by using his email address
+     * Find a user by using his email address.
      *
      * @param email Email address to search
-     * @return
+     * @return User found using this email. Null if no user is found.
      */
     User findUserByEmail(String email);
 
     /**
-     * Authenticate user by using his email address and his password
+     * Authenticate user by using his email address and his password.
      *
      * @param uid User's ID (email address)
      * @param password User's password
@@ -55,7 +55,7 @@ public interface UserRepository {
     User authenticateUser(String uid, String password);
 
     /**
-     * Find a user by the token generated to reset his password
+     * Find a user by the token generated to reset his password.
      *
      * @param token Token to search
      * @return The user found for this token or null if nobody is found
@@ -63,7 +63,7 @@ public interface UserRepository {
     User findUserByToken(String token);
 
     /**
-     * Sets a token for password change to the user
+     * Sets a token for password change to the user.
      *
      * @param token Token to set
      * @param user User to modify
@@ -71,7 +71,7 @@ public interface UserRepository {
     void saveTokenForUser(String token, User user);
 
     /**
-     * Removes the token for password change given to a user
+     * Removes the token for password change given to a user.
      *
      * @param user User to update
      */

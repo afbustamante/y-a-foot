@@ -6,22 +6,22 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.model.Car;
 
 /**
- * Service for managing cars in the DB
+ * Service for managing cars in the DB.
  */
 public interface CarManagementService {
 
     /**
-     * Registers a new car in the database
+     * Registers a new car in the database.
      *
      * @param car New car to register
      * @param ctx User context
-     * @return
+     * @return New car ID
      * @throws DatabaseException
      */
     Integer saveCar(Car car, UserContext ctx) throws DatabaseException;
 
     /**
-     * Deletes all cars registered by a player
+     * Deletes all cars registered by a player.
      *
      * @param player Player to look for
      * @param ctx User context for the responsible of this operation

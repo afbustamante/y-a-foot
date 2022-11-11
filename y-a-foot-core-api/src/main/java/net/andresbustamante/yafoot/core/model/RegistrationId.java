@@ -8,23 +8,29 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Registration ID
+ * Registration ID.
  *
  * @author andresbustamante
  */
 @Getter @Setter @NoArgsConstructor
-public class RegistrationId implements Serializable {
+public final class RegistrationId implements Serializable {
 
     /**
-     * Match ID for this registration
+     * Match ID for this registration.
      */
     private Integer matchId;
 
     /**
-     * Player ID for this registration
+     * Player ID for this registration.
      */
     private Integer playerId;
 
+    /**
+     * Constructor for testing purposes only.
+     *
+     * @param matchId Match ID
+     * @param playerId Player ID
+     */
     public RegistrationId(Integer matchId, Integer playerId) {
         this.matchId = matchId;
         this.playerId = playerId;
@@ -35,8 +41,8 @@ public class RegistrationId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RegistrationId that = (RegistrationId) o;
-        return Objects.equals(matchId, that.matchId) &&
-                Objects.equals(playerId, that.playerId);
+        return Objects.equals(matchId, that.matchId)
+                && Objects.equals(playerId, that.playerId);
     }
 
     @Override

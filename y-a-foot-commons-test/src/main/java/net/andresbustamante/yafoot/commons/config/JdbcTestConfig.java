@@ -10,19 +10,42 @@ import org.springframework.context.annotation.PropertySource;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+/**
+ * Test configuration for JDBC.
+ */
 @Configuration
 @PropertySource("classpath:application.properties")
 public class JdbcTestConfig {
 
+    /**
+     * Connection URL.
+     */
     @Value("${spring.datasource.url}")
     private String jdbcUrl;
+
+    /**
+     * Connection username.
+     */
     @Value("${spring.datasource.username}")
     private String jdbcUsername;
+
+    /**
+     * Connection password.
+     */
     @Value("${spring.datasource.password}")
     private String jdbcPassword;
+
+    /**
+     * Connection driver class.
+     */
     @Value("${spring.datasource.driver-class-name}")
     private String jdbcDriverClassName;
 
+    /**
+     * Datasource bean for testing.
+     *
+     * @return Datasource to use for tests
+     */
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
@@ -33,6 +56,9 @@ public class JdbcTestConfig {
         return dataSource;
     }
 
+    /**
+     * Tells Flyway to create or update de database model.
+     */
     @PostConstruct
     public void updateDatabase() {
         Flyway flyway = Flyway.configure().dataSource(dataSource()).load();

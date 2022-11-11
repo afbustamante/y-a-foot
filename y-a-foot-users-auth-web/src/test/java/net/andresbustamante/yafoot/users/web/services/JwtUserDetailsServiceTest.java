@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.users.web.services;
 
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
-import net.andresbustamante.yafoot.commons.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.users.services.UserSearchService;
 import org.junit.jupiter.api.Test;

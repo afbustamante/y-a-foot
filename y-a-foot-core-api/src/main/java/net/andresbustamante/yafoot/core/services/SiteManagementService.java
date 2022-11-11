@@ -5,12 +5,12 @@ import net.andresbustamante.yafoot.core.model.Site;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 
 /**
- * Site management service
+ * Site management service.
  */
 public interface SiteManagementService {
 
     /**
-     * Registers a new site
+     * Registers a new site.
      *
      * @param site Site to register
      * @param userContext User context for the responsible of this action

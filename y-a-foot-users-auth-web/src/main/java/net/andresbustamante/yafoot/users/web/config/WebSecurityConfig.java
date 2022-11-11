@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.users.web.config;
 import net.andresbustamante.yafoot.commons.filters.JwtRequestFilter;
 import net.andresbustamante.yafoot.commons.util.JwtAuthenticationEntryPoint;
 import net.andresbustamante.yafoot.commons.util.LdapPasswordEncoder;
+import net.andresbustamante.yafoot.commons.web.util.CorsConstants;
 import net.andresbustamante.yafoot.users.web.services.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,8 +24,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Spring Security configuration for the users module.
+ */
 @Configuration
-@Profile({"development","production"})
+@Profile({"development", "production"})
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -45,6 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
+    /**
+     * Manually configure the password encoder to use for the LDAP tree.
+     *
+     * @param auth Authentication manager builder
+     * @throws Exception Configuration exception
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(jwtUserDetailsService).passwordEncoder(new LdapPasswordEncoder());
@@ -69,6 +79,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * Builds the bean having the CORS configuration for this Web application.
+     *
+     * @return CORS configuration source bean
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
@@ -77,7 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("Authorization", "Accept", "Cache-Control", "Content-Type", "Origin"));
         configuration.setExposedHeaders(List.of("Access-Control-Allow-Origin", "Location", "Content-Type"));
-        configuration.setMaxAge(1209600L);
+        configuration.setMaxAge(CorsConstants.MAX_AGE);
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

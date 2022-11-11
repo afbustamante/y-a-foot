@@ -8,17 +8,18 @@ import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Car;
 
 /**
- * Matches management service
+ * Matches management service.
  *
  * @author andresbustamante
  */
 public interface MatchManagementService {
 
     /**
-     * Create a new match in database
+     * Create a new match in database.
      *
      * @param match Match to create
      * @param userContext
+     * @return New match ID
      * @throws DatabaseException
      * @throws ApplicationException Invalid arguments
      */
@@ -26,7 +27,7 @@ public interface MatchManagementService {
 
     /**
      * Register a player to an existing match. If the player is already registered, the existing registration is
-     * updated by the new one
+     * updated by the new one.
      *
      * @param player Player to register
      * @param match Match to update
@@ -41,7 +42,7 @@ public interface MatchManagementService {
             throws ApplicationException, DatabaseException;
 
     /**
-     * Unregister a player from a match
+     * Unregister a player from a match.
      *
      * @param player Player to unregister
      * @param match Match to search
@@ -54,7 +55,7 @@ public interface MatchManagementService {
             throws DatabaseException, ApplicationException;
 
     /**
-     * Unregister a player from all matches
+     * Unregister a player from all matches.
      *
      * @param player Player to search
      * @param userContext User context
@@ -63,7 +64,7 @@ public interface MatchManagementService {
     void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException;
 
     /**
-     * Cancels a match by a logical suppression in database. All registrations are kept for consultation
+     * Cancels a match by a logical suppression in database. All registrations are kept for consultation.
      *
      * @param match Match to cancel
      * @param userContext Context of the user asking for this action

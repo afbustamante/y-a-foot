@@ -3,14 +3,19 @@ package net.andresbustamante.yafoot.commons.util;
 import java.util.Arrays;
 import java.util.Locale;
 
+/**
+ * Locale and i18n utilities.
+ */
 public final class LocaleUtils {
 
+    /**
+     * Default system locale.
+     */
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
-    static final String SPANISH = "es";
-    static final String FRENCH = "fr";
-    static final String ENGLISH = "en";
-
+    /**
+     * List of supported locales.
+     */
     private static final Locale[] SUPPORTED_LOCALES = {
             Locale.ENGLISH,
             Locale.UK,
@@ -23,7 +28,13 @@ public final class LocaleUtils {
         // no-op
     }
 
+    /**
+     * Indicates whether a locale is already supported.
+     *
+     * @param locale Locale to check
+     * @return True if a locale is supported
+     */
     public static boolean isSupportedLocale(Locale locale) {
-        return Arrays.stream(SUPPORTED_LOCALES).anyMatch(l -> l.equals(locale));
+        return Arrays.asList(SUPPORTED_LOCALES).contains(locale);
     }
 }

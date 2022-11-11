@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.users.web.config;
 
+import net.andresbustamante.yafoot.commons.web.util.CorsConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Spring Security configuration for the users module.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -29,6 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+    /**
+     * Builds the bean having the CORS configuration for this Web application.
+     *
+     * @return CORS configuration source bean
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
@@ -38,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedHeaders(List.of("Authorization", "Accept", "Cache-Control", "Content-Type", "Origin",
                 "X-Requested-With"));
         configuration.setExposedHeaders(List.of("Origin", "Access-Control-Allow-Origin", "Content-Type", "Location"));
-        configuration.setMaxAge(1209600L);
+        configuration.setMaxAge(CorsConstants.MAX_AGE);
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

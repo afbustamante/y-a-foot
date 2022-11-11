@@ -8,17 +8,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Aspect that controls logging on main services.
+ */
 @Aspect
 @Component
 public class LoggingAspect {
 
+    /**
+     * Logger to use for this class.
+     */
     private final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
+    /**
+     * Pointcut for service implementations.
+     */
     @Pointcut("execution(* net.andresbustamante.yafoot.*.services.impl.*ServiceImpl.*(..))")
     public void filterServicesMethods() {
         // no-op
     }
 
+    /**
+     * Adds a log for every call on a service public method.
+     *
+     * @param joinPoint Join point for the called method
+     */
     @Before("filterServicesMethods()")
     public void logServicesMethods(JoinPoint joinPoint) {
         if (joinPoint != null && joinPoint.getSignature() != null && log.isDebugEnabled()) {

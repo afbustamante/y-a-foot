@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 
 @Getter @Setter @NoArgsConstructor
-public class MatchAlert implements Serializable {
+public final class MatchAlert implements Serializable {
 
     private String creatorFirstName;
     private String matchDate;

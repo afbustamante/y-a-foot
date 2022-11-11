@@ -10,14 +10,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Matches search service. Only used for reading data
+ * Matches search service. Only used for reading data.
  *
  * @author andresbustamante
  */
 public interface MatchSearchService {
 
     /**
-     * Find a match by its identifying code
+     * Find a match by its identifying code.
      *
      * @param code Code to search
      * @return Match found for this code
@@ -26,14 +26,14 @@ public interface MatchSearchService {
     Match findMatchByCode(String code) throws DatabaseException;
 
     /**
-     * Find the matches where a player is attending in an interval of time
+     * Find the matches where a player is attending in an interval of time.
      *
      * @param player Player to use for the research
      * @param status Match status
      * @param sport Sport to use for filtering research results
      * @param startDate Start date for the research
      * @param endDate End date for the research
-     * @return
+     * @return List of matches found
      * @throws DatabaseException
      */
     List<Match> findMatchesByPlayer(Player player, MatchStatusEnum status, SportEnum sport,

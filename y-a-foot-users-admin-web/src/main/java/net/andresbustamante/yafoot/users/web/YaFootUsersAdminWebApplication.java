@@ -10,6 +10,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class YaFootUsersAdminWebApplication extends SpringBootServletInitializer {
 
+    /**
+     * Main method to start the application.
+     *
+     * @param args Application parameters
+     */
     public static void main(String[] args) {
         SpringApplication.run(YaFootUsersAdminWebApplication.class);
     }

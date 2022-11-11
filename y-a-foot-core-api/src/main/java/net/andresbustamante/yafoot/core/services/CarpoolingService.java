@@ -10,12 +10,12 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 import java.util.List;
 
 /**
- * Carpooling services
+ * Carpooling services.
  */
 public interface CarpoolingService {
 
     /**
-     * Finds the list of cars available to carpool for a given match
+     * Finds the list of cars available to carpool for a given match.
      *
      * @param match Match to search
      * @return The list of cars registered for the match
@@ -40,7 +40,7 @@ public interface CarpoolingService {
 
     /**
      * If the carpooling feature is enabled for the input match, it sends an email message asking for a place to
-     * the driver of the input car for this match
+     * the driver of the input car for this match.
      *
      * @param match The match selected by the player
      * @param player Player asking for a seat

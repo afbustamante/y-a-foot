@@ -12,6 +12,7 @@
   <url>https://github.com/afbustamante/y-a-foot</url>
 
   <modules>
+    <module>y-a-foot-commons-tools</module>
     <module>y-a-foot-commons-test</module>
     <module>y-a-foot-commons-api</module>
     <module>y-a-foot-commons-services</module>
@@ -474,23 +475,21 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
+          <configLocation>checkstyle/checkstyle.xml</configLocation>
           <consoleOutput>true</consoleOutput>
           <failsOnError>true</failsOnError>
           <linkXRef>false</linkXRef>
-          <checkstyleRules>
-            <module name="Checker">
-              <module name="LineLength">
-                <property name="max" value="120"/>
-                <property name="fileExtensions" value="java"/>
-              </module>
-            </module>
-          </checkstyleRules>
         </configuration>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
             <version>${checkstyle.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>y-a-foot-commons-tools</artifactId>
+            <version>${project.version}</version>
           </dependency>
         </dependencies>
         <executions>
@@ -599,6 +598,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>checkstyle/checkstyle.xml</configLocation>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>

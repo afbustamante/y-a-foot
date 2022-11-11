@@ -4,7 +4,7 @@ import net.andresbustamante.yafoot.users.repository.UserRepository;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.commons.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
 import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;

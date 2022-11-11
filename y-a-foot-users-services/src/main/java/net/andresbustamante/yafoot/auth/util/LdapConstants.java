@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.auth.util;
 
-public class LdapConstants {
+public final class LdapConstants {
 
     public static final String OBJECT_CLASS = "objectclass";
     public static final String UID = "uid";
@@ -13,5 +13,7 @@ public class LdapConstants {
     public static final String MEMBER = "member";
     public static final String USER_PASSWORD = "userPassword";
 
-    private LdapConstants() {}
+    private LdapConstants() {
+        // no-op
+    }
 }

@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.auth.services.impl;
 
-import net.andresbustamante.yafoot.users.exceptions.UserNotAuthorisedException;
+import net.andresbustamante.yafoot.users.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.users.model.PasswordResetDetails;
 import net.andresbustamante.yafoot.users.repository.UserRepository;
 import net.andresbustamante.yafoot.users.services.UserManagementService;
@@ -8,7 +8,7 @@ import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.commons.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
@@ -99,12 +99,12 @@ public class UserManagementServiceImpl implements UserManagementService {
             userRepository.removeTokenForUser(user);
             log.info("Password reset for user {}", user.getEmail());
         } else {
-            throw new UserNotAuthorisedException("Invalid token used to reset password");
+            throw new UnauthorisedUserException("Invalid token used to reset password");
         }
     }
 
     /**
-     * Sends an email to the user that asked for resetting his/her password with a link to access the web application
+     * Sends an email to the user that asked for resetting his/her password with a link to access the web application.
      *
      * @param token Token to use in the message
      * @param user User to notify

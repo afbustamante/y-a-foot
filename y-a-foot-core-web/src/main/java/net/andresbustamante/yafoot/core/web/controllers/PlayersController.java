@@ -26,7 +26,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.*;
 
 /**
- * REST Controller to manage operations on players
+ * REST Controller to manage operations on players.
  *
  * @author andresbustamante
  */
@@ -48,7 +48,6 @@ public class PlayersController extends AbstractController implements PlayersApi 
         this.playerManagementService = playerManagementService;
         this.playerSearchService = playerSearchService;
         this.playerMapper = playerMapper;
-        this.request = request;
     }
 
     @Override
@@ -75,7 +74,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
     @Override
     public ResponseEntity<Void> updatePlayer(Integer id, Player player) {
         try {
-            UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext();
 
             net.andresbustamante.yafoot.core.model.Player p = playerSearchService.findPlayerById(id);
 
@@ -111,7 +110,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
     @Override
     public ResponseEntity<Void> deactivatePlayer(Integer id) {
         try {
-            UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext();
 
             net.andresbustamante.yafoot.core.model.Player player = playerSearchService.findPlayerById(id);
 

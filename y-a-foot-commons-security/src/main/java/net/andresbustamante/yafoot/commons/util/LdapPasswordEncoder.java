@@ -8,14 +8,23 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
- * Password encoder used to store the encoded passwords in the LDAP directory
+ * Password encoder used to store the encoded passwords in the LDAP directory.
  */
-public class LdapPasswordEncoder implements PasswordEncoder {
+public final class LdapPasswordEncoder implements PasswordEncoder {
 
+    /**
+     * Prefix to use for every password to store in the LDAP tree.
+     */
     private static final String PWD_PREFIX = "{BCRYPT}";
 
+    /**
+     * Password encoder to use.
+     */
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Default constructor tu use BCRYPT encoding.
+     */
     public LdapPasswordEncoder() {
         passwordEncoder = new BCryptPasswordEncoder();
     }

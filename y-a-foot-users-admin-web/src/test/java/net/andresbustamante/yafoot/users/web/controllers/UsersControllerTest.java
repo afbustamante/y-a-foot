@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.users.web.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.commons.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.users.services.UserManagementService;
 import net.andresbustamante.yafoot.users.web.config.MappingTestConfig;

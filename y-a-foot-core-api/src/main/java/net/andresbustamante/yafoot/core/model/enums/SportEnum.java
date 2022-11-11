@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.core.model.enums;
 import lombok.Getter;
 
 /**
- * Enum of sports supported by the application
+ * Enum of sports supported by the application.
  */
 @Getter
 public enum SportEnum {

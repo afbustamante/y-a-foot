@@ -13,7 +13,7 @@ import javax.naming.directory.BasicAttributes;
 import static net.andresbustamante.yafoot.auth.util.LdapConstants.*;
 
 /**
- * LDAP attributes mapper for {@link User}
+ * LDAP attributes mapper for {@link User}.
  */
 @Component
 public class LdapUserMapper implements AttributesMapper<User> {
@@ -34,15 +34,15 @@ public class LdapUserMapper implements AttributesMapper<User> {
     }
 
     /**
-     * Build LDAP attributes from an user passed as a parameter
+     * Build LDAP attributes from an user passed as a parameter.
      *
      * @param usr User to process
-     * @return
+     * @return Mapped attributes
      */
     public Attributes mapToAttributes(User usr) {
         BasicAttribute objectClass = new BasicAttribute(OBJECT_CLASS);
-        for (String class_ : USER_CLASSES) {
-            objectClass.add(class_);
+        for (String cl : USER_CLASSES) {
+            objectClass.add(cl);
         }
 
         Attributes attrs = new BasicAttributes();
@@ -60,7 +60,7 @@ public class LdapUserMapper implements AttributesMapper<User> {
         }
 
         if (usr.getFirstName() != null && usr.getSurname() != null) {
-            attrs.put(DISPLAY_NAME, StringUtils.joinWith(" ",usr.getFirstName(), usr.getSurname()));
+            attrs.put(DISPLAY_NAME, StringUtils.joinWith(" ", usr.getFirstName(), usr.getSurname()));
         }
 
         if (usr.getPassword() != null) {

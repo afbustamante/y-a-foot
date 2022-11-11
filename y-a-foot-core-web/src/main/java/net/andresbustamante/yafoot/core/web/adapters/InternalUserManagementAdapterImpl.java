@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * LDAP adapter implementation
+ * LDAP adapter implementation.
  */
 @Component
 public class InternalUserManagementAdapterImpl implements UserManagementAdapter {

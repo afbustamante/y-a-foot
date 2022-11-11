@@ -19,7 +19,7 @@ import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.DRAFT
  * @author andresbustamante
  */
 @Getter @Setter
-public class Match implements Serializable, Identifiable, Auditable {
+public final class Match implements Serializable, Identifiable, Auditable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -39,14 +39,14 @@ public class Match implements Serializable, Identifiable, Auditable {
     private OffsetDateTime lastUpdateDate;
 
     /**
-     * Main constructor
+     * Main constructor.
      */
     public Match() {
         this.status = DRAFT;
     }
 
     /**
-     * Constructor for testing purposes
+     * Constructor for testing purposes.
      *
      * @param id Identifier to give to the match
      */
@@ -55,6 +55,12 @@ public class Match implements Serializable, Identifiable, Auditable {
         this.status = CREATED;
     }
 
+    /**
+     * Indicates whether a player is registered on the current match.
+     *
+     * @param player Player to check
+     * @return True if the player is already registered on this match
+     */
     public boolean isPlayerRegistered(Player player) {
         if (registrations != null) {
             return registrations.stream().anyMatch(registration -> registration.getPlayer().equals(player));
@@ -64,7 +70,7 @@ public class Match implements Serializable, Identifiable, Auditable {
 
     /**
      * A match is accepting registrations if the date of the match is in the future and the number of players expected
-     * is still higher than the number of players registered for the match
+     * is still higher than the number of players registered for the match.
      *
      * @return True if the match is still accepting registrations
      */
@@ -76,6 +82,11 @@ public class Match implements Serializable, Identifiable, Auditable {
         }
     }
 
+    /**
+     * Counts the number of registered players on the current match.
+     *
+     * @return Number of registered players
+     */
     public Integer getNumRegisteredPlayers() {
         if (registrations != null) {
             return registrations.size();

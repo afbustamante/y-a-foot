@@ -5,12 +5,12 @@ import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import java.util.Locale;
 
 /**
- * Messaging service for email notifications
+ * Messaging service for email notifications.
  */
 public interface MessagingService {
 
     /**
-     * Sends a plain text email message with a specific subject to a single destination
+     * Sends a plain text email message with a specific subject to a single destination.
      *
      * @param destinationEmail Email address of the destination
      * @param subject Subject of the message
@@ -19,7 +19,7 @@ public interface MessagingService {
     void sendEmail(String destinationEmail, String subject, String content) throws ApplicationException;
 
     /**
-     * Sends a plain text email message with a specific subject to a single destination by using a mail template
+     * Sends a plain text email message with a specific subject to a single destination by using a mail template.
      *
      * @param destinationEmail Email address to use for destination
      * @param subjectCode Code of the subject in the messages.properties file

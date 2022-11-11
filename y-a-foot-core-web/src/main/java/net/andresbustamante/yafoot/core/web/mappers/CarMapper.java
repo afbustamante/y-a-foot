@@ -10,9 +10,27 @@ import java.util.List;
 @Mapper(config = SpringMapperConfig.class, uses = {PlayerMapper.class, StringMapper.class})
 public interface CarMapper {
 
+    /**
+     * Maps a DTO into a car bean.
+     *
+     * @param car DTO to map
+     * @return Resulting car bean
+     */
     Car map(net.andresbustamante.yafoot.web.dto.Car car);
 
+    /**
+     * Maps a car bean into a DTO.
+     *
+     * @param car Bean to map
+     * @return Resulting car DTO
+     */
     net.andresbustamante.yafoot.web.dto.Car map(Car car);
-    
+
+    /**
+     * Maps a list of car beans into a list of DTOs.
+     *
+     * @param cars Beans to map
+     * @return Resulting DTO list
+     */
     List<net.andresbustamante.yafoot.web.dto.Car> map(List<Car> cars);
 }

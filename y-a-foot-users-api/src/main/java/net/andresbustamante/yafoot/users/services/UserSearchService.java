@@ -6,7 +6,7 @@ import net.andresbustamante.yafoot.users.model.User;
 public interface UserSearchService {
 
     /**
-     * Load a user for authentication by using his email address
+     * Load a user for authentication by using his email address.
      *
      * @param email Email address to search
      * @return User using this email address for authentication
@@ -15,7 +15,7 @@ public interface UserSearchService {
     User findUserByEmail(String email) throws DirectoryException;
 
     /**
-     * Find a user by the token created for reset his authentication password
+     * Find a user by the token created for reset his authentication password.
      *
      * @param token Token to search
      * @return User found for this token

@@ -16,11 +16,21 @@ import java.text.MessageFormat;
 @Component
 public class CoreExceptionsManagementAspect {
 
+    /**
+     * Pointcut for core service methods.
+     */
     @Pointcut("execution(* net.andresbustamante.yafoot.core.services.impl.*ServiceImpl.*(..))")
     public void filterServicesMethods() {
         // no-op
     }
 
+    /**
+     * Transform database related exceptions into {@link DatabaseException}.
+     *
+     * @param pjp Join point for a core method
+     * @return Method return
+     * @throws Throwable Method exception thrown
+     */
     @Around("filterServicesMethods()")
     public Object transformException(ProceedingJoinPoint pjp) throws Throwable {
         Object returnedObject;

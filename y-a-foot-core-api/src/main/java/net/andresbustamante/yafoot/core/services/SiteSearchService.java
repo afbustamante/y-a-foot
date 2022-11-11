@@ -7,17 +7,17 @@ import net.andresbustamante.yafoot.core.model.Site;
 import java.util.List;
 
 /**
- * Service useful for research operations
+ * Service useful for research operations.
  *
  * @author andresbustamante
  */
 public interface SiteSearchService {
 
     /**
-     * Load the sites associated to or registered by a player
+     * Load the sites associated to or registered by a player.
      *
      * @param player
-     * @return
+     * @return List of sites found
      * @throws DatabaseException
      */
     List<Site> findSitesByPlayer(Player player) throws DatabaseException;

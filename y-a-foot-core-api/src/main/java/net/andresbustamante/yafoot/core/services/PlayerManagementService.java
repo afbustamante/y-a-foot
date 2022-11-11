@@ -7,14 +7,14 @@ import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 
 /**
- * Players management service
+ * Players management service.
  *
  * @author andresbustamante
  */
 public interface PlayerManagementService {
 
     /**
-     * Creates a new player in the application
+     * Creates a new player in the application.
      *
      * @param player Player to create
      * @param userContext Request context
@@ -26,7 +26,7 @@ public interface PlayerManagementService {
             throws DirectoryException, DatabaseException, ApplicationException;
 
     /**
-     * Updates basic details for a player
+     * Updates basic details for a player.
      *
      * @param player Player to update
      * @param userContext Request context
@@ -38,7 +38,7 @@ public interface PlayerManagementService {
             throws DirectoryException, DatabaseException, ApplicationException;
 
     /**
-     * Deactivates a player and deletes his/her history in the application
+     * Deactivates a player and deletes his/her history in the application.
      *
      * @param player Player to deactivate
      * @param userContext Request context

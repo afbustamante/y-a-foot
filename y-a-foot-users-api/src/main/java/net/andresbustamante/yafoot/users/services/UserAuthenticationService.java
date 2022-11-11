@@ -5,12 +5,12 @@ import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.users.model.User;
 
 /**
- * Authentication service
+ * Authentication service.
  */
 public interface UserAuthenticationService {
 
     /**
-     * Authenticate a user and return a JWT token
+     * Authenticate a user and return a JWT token.
      *
      * @param user User to authenticate
      * @return Authenticated user including a JWT token

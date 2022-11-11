@@ -47,14 +47,13 @@ public class UsersController extends AbstractController implements UsersApi {
         this.userSearchService = userSearchService;
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
-        this.request = request;
     }
 
     @Override
     public ResponseEntity<Void> createUser(@Valid User user) {
         try {
-            userManagementService.createUser(userMapper.map(user), roleMapper.map(user.getMainRole()), getUserContext(
-                    request));
+            userManagementService.createUser(userMapper.map(user), roleMapper.map(user.getMainRole()),
+                    getUserContext());
             return ResponseEntity.created(getLocationURI(MessageFormat.format(userApiPath, user.getEmail()))).build();
         } catch (DirectoryException e) {
             log.error("Error while creating a new user", e);
@@ -86,7 +85,7 @@ public class UsersController extends AbstractController implements UsersApi {
                 return ResponseEntity.notFound().build();
             }
 
-            userManagementService.updateUser(userMapper.map(userDto), getUserContext(request));
+            userManagementService.updateUser(userMapper.map(userDto), getUserContext());
             return ResponseEntity.accepted().build();
         } catch (ApplicationException e) {
             throw new ResponseStatusException(FORBIDDEN, translate(UNAUTHORISED_USER_ERROR, null));
@@ -105,7 +104,7 @@ public class UsersController extends AbstractController implements UsersApi {
                 return ResponseEntity.notFound().build();
             }
 
-            userManagementService.deleteUser(user, getUserContext(request));
+            userManagementService.deleteUser(user, getUserContext());
             return ResponseEntity.noContent().build();
         } catch (DirectoryException e) {
             log.error("Error while deleting a new user", e);

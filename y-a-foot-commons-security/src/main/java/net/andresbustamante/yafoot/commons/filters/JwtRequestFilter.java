@@ -19,13 +19,32 @@ import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-public class JwtRequestFilter extends OncePerRequestFilter {
+/**
+ * Request filter for JWT security.
+ */
+public final class JwtRequestFilter extends OncePerRequestFilter {
 
+    /**
+     * Logger for this class.
+     */
     private final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
 
+    /**
+     * JWT utilities.
+     */
     private final JwtTokenUtils jwtTokenUtils;
+
+    /**
+     * User details service to use for this filter.
+     */
     private final UserDetailsService jwtUserDetailsService;
 
+    /**
+     * Default constructor.
+     *
+     * @param jwtTokenUtils JWT utilities
+     * @param jwtUserDetailsService User details service
+     */
     public JwtRequestFilter(JwtTokenUtils jwtTokenUtils, UserDetailsService jwtUserDetailsService) {
         this.jwtTokenUtils = jwtTokenUtils;
         this.jwtUserDetailsService = jwtUserDetailsService;
@@ -57,8 +76,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             log.warn("JWT token does not begin with Bearer string");
         }
 
-        if ((username != null) && (SecurityContextHolder.getContext().getAuthentication() == null) &&
-                jwtTokenUtils.isValidToken(jwtToken, username)) {
+        if ((username != null) && (SecurityContextHolder.getContext().getAuthentication() == null)
+                && jwtTokenUtils.isValidToken(jwtToken, username)) {
             // if token is valid configure Spring Security to manually set authentication
             UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
 

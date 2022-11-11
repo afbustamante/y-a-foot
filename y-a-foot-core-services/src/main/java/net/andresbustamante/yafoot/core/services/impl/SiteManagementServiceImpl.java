@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Site management service implementation
+ * Site management service implementation.
  */
 @Service
 public class SiteManagementServiceImpl implements SiteManagementService {

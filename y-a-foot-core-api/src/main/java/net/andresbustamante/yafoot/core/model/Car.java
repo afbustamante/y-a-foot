@@ -9,18 +9,31 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
+ * A car used to go to a match.
+ *
  * @author andresbustamante
  */
 @Getter @Setter @NoArgsConstructor
-public class Car implements Serializable, Identifiable {
+public final class Car implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String name;
+    /**
+     * Number of carpooling seats available on this car.
+     */
     private Integer numSeats;
+    /**
+     * Number of passengers using this car to go to a given match.
+     */
     private Integer numPassengers;
     private Player driver;
 
+    /**
+     * Constructor for testing purposes only.
+     *
+     * @param id Car ID
+     */
     public Car(Integer id) {
         this.id = id;
     }

@@ -40,7 +40,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import static org.springframework.http.HttpStatus.*;
 
 /**
- * REST service for managing and searching matches
+ * REST service for managing and searching matches.
  *
  * @author andresbustamante
  */
@@ -81,7 +81,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
         this.matchMapper = matchMapper;
         this.registrationMapper = registrationMapper;
         this.carMapper = carMapper;
-        this.request = request;
     }
 
     @Override
@@ -124,7 +123,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
         }
 
         try {
-            UserContext ctx = getUserContext(request);
+            UserContext ctx = getUserContext();
 
             Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
 
@@ -147,7 +146,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Override
     public ResponseEntity<Void> cancelMatch(String matchCode) {
         try {
-            UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext();
 
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(matchCode);
 
@@ -168,7 +167,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Override
     public ResponseEntity<Void> createMatch(@Valid Match match) {
         try {
-            UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext();
             net.andresbustamante.yafoot.core.model.Match m = matchMapper.map(match);
             matchManagementService.saveMatch(m, userContext);
 
@@ -202,7 +201,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Override
     public ResponseEntity<Void> registerPlayerToMatch(String matchCode, Registration registration) {
         try {
-            UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext();
             net.andresbustamante.yafoot.core.model.Registration reg = registrationMapper.map(registration);
 
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(matchCode);
@@ -243,7 +242,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
                         match.getRegistrations().stream().filter(reg -> reg.getPlayer().equals(player)).findFirst();
 
                 if (registration.isPresent()) {
-                    UserContext ctx = getUserContext(request);
+                    UserContext ctx = getUserContext();
 
                     carpoolingService.updateCarpoolingInformation(match, player,
                             carMapper.map(carConfirmation.getCar()), carConfirmation.isConfirmed(), ctx);
@@ -266,7 +265,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Override
     public ResponseEntity<Void> unregisterPlayerFromMatch(String matchCode, Integer playerId) {
         try {
-            UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext();
 
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(matchCode);
             Player player = playerSearchService.findPlayerById(playerId);

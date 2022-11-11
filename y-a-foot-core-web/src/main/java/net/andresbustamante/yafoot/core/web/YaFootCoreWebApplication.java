@@ -10,6 +10,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class YaFootCoreWebApplication extends SpringBootServletInitializer {
 
+    /**
+     * Main start method for the web app.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(YaFootCoreWebApplication.class);
     }

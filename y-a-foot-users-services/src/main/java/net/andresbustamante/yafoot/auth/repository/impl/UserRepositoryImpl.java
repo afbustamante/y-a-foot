@@ -1,10 +1,10 @@
 package net.andresbustamante.yafoot.auth.repository.impl;
 
-import net.andresbustamante.yafoot.commons.model.enums.RolesEnum;
-import net.andresbustamante.yafoot.users.repository.UserRepository;
-import net.andresbustamante.yafoot.commons.util.LdapPasswordEncoder;
 import net.andresbustamante.yafoot.auth.util.LdapUserMapper;
+import net.andresbustamante.yafoot.commons.util.LdapPasswordEncoder;
+import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.users.model.User;
+import net.andresbustamante.yafoot.users.repository.UserRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,8 +80,8 @@ public class UserRepositoryImpl implements UserRepository {
         User user = new User(uid);
         user = findUserByUid(getUid(user).toString());
 
-        return (user != null && user.getPassword() != null && passwordEncoder.matches(password, user.getPassword())) ?
-                user : null;
+        return (user != null && user.getPassword() != null && passwordEncoder.matches(password, user.getPassword()))
+                ? user : null;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Gets the LDAP identifier for a given user
+     * Gets the LDAP identifier for a given user.
      *
      * @param usr User to check
      * @return LDAP name for the given user
@@ -124,7 +124,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Gets the LDAP identifier for a given role
+     * Gets the LDAP identifier for a given role.
      *
      * @param role Role to check
      * @return LDAP name for the given role
@@ -134,7 +134,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Adds a role for a given user
+     * Adds a role for a given user.
      *
      * @param usr  User to update
      * @param role Role to give to the user
@@ -147,9 +147,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Remove a list of roles for a given user
+     * Remove a list of roles for a given user.
      *
      * @param usr User to check
+     * @param roles Roles to remove from user
      */
     private void removeRolesForUser(User usr, List<RolesEnum> roles) {
         for (RolesEnum role : roles) {
@@ -161,7 +162,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     * Update a user's password in LDAP directory
+     * Update a user's password in LDAP directory.
      *
      * @param usr User containing his/her new password
      */

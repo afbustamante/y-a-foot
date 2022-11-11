@@ -43,7 +43,6 @@ public class UsersController extends AbstractController implements UsersApi {
         this.userManagementService = userManagementService;
         this.userSearchService = userSearchService;
         this.userMapper = userMapper;
-        this.request = request;
     }
 
     @Override
@@ -114,7 +113,7 @@ public class UsersController extends AbstractController implements UsersApi {
             user.setPassword(new String(credentials.getPassword(), StandardCharsets.UTF_8));
 
             if (credentials.getOldPassword() != null) {
-                userManagementService.updateUserPassword(user, getUserContext(request));
+                userManagementService.updateUserPassword(user, getUserContext());
             } else if (credentials.getValidationToken() != null) {
                 userManagementService.resetUserPassword(user, credentials.getValidationToken());
             }

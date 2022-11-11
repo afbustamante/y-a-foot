@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.core.util;
 
 /**
- * Constants used for DAO operations
+ * Constants used for DAO operations.
  */
-public class DaoConstants {
+public final class DaoConstants {
 
     public static final String ID = "id";
     public static final String PLAYER = "player";
@@ -17,5 +17,7 @@ public class DaoConstants {
     public static final String STATUS = "status";
     public static final String CAR = "car";
 
-    private DaoConstants() {}
+    private DaoConstants() {
+        // no-op
+    }
 }

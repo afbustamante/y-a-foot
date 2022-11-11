@@ -129,7 +129,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     /**
      * If carpooling is enabled for a match, it checks if carpooling is impacted by the new registration request
-     * meaning that an existing player is changing his/her transportation options
+     * meaning that an existing player is changing his/her transportation options.
      *
      * @param player Player to check
      * @param match Match to check
@@ -184,6 +184,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      *
      * @param player Player quitting the match
      * @param match Match being abandoned by the player
+     * @param ctx User context
      */
     private void processCarpoolingImpactsAfterAbandon(Player player, Match match, UserContext ctx)
             throws DatabaseException, ApplicationException {
@@ -258,7 +259,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     }
 
     /**
-     * Loads or saves the car used to join a match
+     * Loads or saves the car used to join a match.
      *
      * @param car The car used by the registration
      * @param userContext
@@ -288,7 +289,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     }
 
     /**
-     * Generates a new alphabetic code for a match by using the maximum length as marked in CODE_LENGTH
+     * Generates a new alphabetic code for a match by using the maximum length as marked in CODE_LENGTH.
      *
      * @return New alphabetic random code
      */
@@ -299,7 +300,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     /**
      * Sends an alert message to the player who created the match to prevent him from an action leading a match to an
-     * imminent danger of being cancelled
+     * imminent danger of being cancelled.
      *
      * @param match The match concerned by the alert
      * @throws ApplicationException If a problem comes when sending the alert

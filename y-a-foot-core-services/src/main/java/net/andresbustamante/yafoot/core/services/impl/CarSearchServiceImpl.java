@@ -39,8 +39,7 @@ public class CarSearchServiceImpl implements CarSearchService {
             if (car.getDriver() != null && car.getDriver().getEmail().equals(ctx.getUsername())) {
                 return car;
             } else {
-                throw new UnauthorisedUserException("Actual user is not allowed to load the " +
-                        "details for a car");
+                throw new UnauthorisedUserException("Actual user is not allowed to load the details for a car");
             }
         }
         return null;

@@ -52,7 +52,7 @@ public class CarsController extends AbstractController implements CarsApi {
     @Override
     public ResponseEntity<List<Car>> loadCars() {
         try {
-            UserContext ctx = getUserContext(request);
+            UserContext ctx = getUserContext();
             Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
             List<net.andresbustamante.yafoot.core.model.Car> cars = carSearchService.findCarsByPlayer(player);
 
@@ -70,7 +70,7 @@ public class CarsController extends AbstractController implements CarsApi {
     @Override
     public ResponseEntity<Car> loadCar(Integer id) {
         try {
-            net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, getUserContext(request));
+            net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, getUserContext());
 
             if (car != null) {
                 return ResponseEntity.ok(carMapper.map(car));
@@ -92,7 +92,7 @@ public class CarsController extends AbstractController implements CarsApi {
     @Override
     public ResponseEntity<Void> addNewCar(@Valid Car car) {
         try {
-            int carId = carManagementService.saveCar(carMapper.map(car), getUserContext(request));
+            int carId = carManagementService.saveCar(carMapper.map(car), getUserContext());
 
             return ResponseEntity.created(getLocationURI("/cars/" + carId)).build();
         } catch (DatabaseException e) {

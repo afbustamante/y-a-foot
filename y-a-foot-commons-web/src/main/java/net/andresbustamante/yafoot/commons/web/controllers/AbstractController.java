@@ -25,7 +25,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Abstract controller for common RESTful controllers operations
+ * Abstract controller for common RESTful controllers operations.
  *
  * @author andresbustamante
  */
@@ -33,24 +33,44 @@ import java.util.Optional;
 public abstract class AbstractController {
 
     /* Common error messages */
+    /**
+     * Code to use for generic database errors.
+     */
     protected static final String DATABASE_BASIC_ERROR = "database.basic.error";
+
+    /**
+     * Code to use for authorisation errors.
+     */
     protected static final String UNAUTHORISED_USER_ERROR = "unauthorised.user.error";
 
     /**
-     * Injected request (constructors only)
+     * Injected request (constructors only).
      */
-    protected HttpServletRequest request;
+    private final HttpServletRequest request;
 
     /**
-     * Injected application context (constructors only)
+     * Injected application context (constructors only).
      */
-    protected ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
-    protected ObjectMapper objectMapper;
+    /**
+     * Default object mapper.
+     */
+    private final ObjectMapper objectMapper;
 
+    /**
+     * Public URL to access a controller from this app.
+     */
     @Value("${api.config.public.url}")
-    protected String apiPublicUrl;
+    private String apiPublicUrl;
 
+    /**
+     * Default constructor.
+     *
+     * @param request HTTP servlet request
+     * @param objectMapper Object mapper to use
+     * @param applicationContext Application context
+     */
     protected AbstractController(HttpServletRequest request, ObjectMapper objectMapper,
                                  ApplicationContext applicationContext) {
         this.request = request;
@@ -59,21 +79,38 @@ public abstract class AbstractController {
         this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
+    /**
+     * Transforms a ConstraintViolationException into a 400 error code.
+     *
+     * @param e Exception to check
+     * @return ResponseEntity with a "Bad request" code and message
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Void> handleConstraintViolationException(ConstraintViolationException e) {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
+    /**
+     * Builds a basic URI for a location header.
+     *
+     * @param location Relative location
+     * @return URI with absolute location
+     */
     protected URI getLocationURI(String location) {
         return URI.create(apiPublicUrl + location);
     }
 
-    protected UserContext getUserContext(HttpServletRequest request) {
+    /**
+     * Gets the connected user from a given request.
+     *
+     * @return Connected user's context
+     */
+    protected UserContext getUserContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String username = (authentication instanceof AnonymousAuthenticationToken) ? "anonymous" :
-                authentication.getName();
+        String username = (authentication instanceof AnonymousAuthenticationToken) ? "anonymous"
+                : authentication.getName();
         String timeZone = request.getHeader(UserContext.TZ);
 
         UserContext userContext = new UserContext(username);
@@ -81,10 +118,22 @@ public abstract class AbstractController {
         return userContext;
     }
 
+    /**
+     * Translates a given code using some parameters into the user's language.
+     *
+     * @param messageCode Code to find for translation
+     * @param parameters Parameters to replace on the translated message
+     * @return Translated message
+     */
     protected String translate(String messageCode, String[] parameters) {
         return applicationContext.getMessage(messageCode, parameters, getUserLocale());
     }
 
+    /**
+     * Finds the user's locale using the HTTP request.
+     *
+     * @return Main locale for the connected user
+     */
     private Locale getUserLocale() {
         String acceptedLanguages = request.getHeader(HttpHeaders.ACCEPT_LANGUAGE);
 
@@ -113,14 +162,18 @@ public abstract class AbstractController {
     }
 
     /**
-     * OpenAPI auto-generated method
+     * OpenAPI auto-generated method.
+     *
+     * @return Optional for object mapper
      */
     public Optional<ObjectMapper> getObjectMapper() {
         return Optional.of(objectMapper);
     }
 
     /**
-     * OpenAPI auto-generated method
+     * OpenAPI auto-generated method.
+     *
+     * @return Optional for object mapper
      */
     public Optional<HttpServletRequest> getRequest() {
         return Optional.of(request);

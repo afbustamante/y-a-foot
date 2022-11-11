@@ -1,18 +1,18 @@
 package net.andresbustamante.yafoot.users.services;
 
-import net.andresbustamante.yafoot.commons.model.enums.RolesEnum;
+import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 
 /**
- * User directory management service
+ * User directory management service.
  */
 public interface UserManagementService {
 
     /**
-     * Creates a new user with the given role in the LDAP directory
+     * Creates a new user with the given role in the LDAP directory.
      *
      * @param user
      * @param role
@@ -22,7 +22,7 @@ public interface UserManagementService {
     void createUser(User user, RolesEnum role, UserContext ctx) throws DirectoryException;
 
     /**
-     * Updates a user's details in the active directory. It does not updates user's password
+     * Updates a user's details in the active directory. It does not updates user's password.
      *
      * @param user
      * @param ctx
@@ -32,7 +32,7 @@ public interface UserManagementService {
     void updateUser(User user, UserContext ctx) throws ApplicationException, DirectoryException;
 
     /**
-     * Updates a user's password in the LDAP directory
+     * Updates a user's password in the LDAP directory.
      *
      * @param user
      * @param ctx
@@ -42,7 +42,7 @@ public interface UserManagementService {
     void updateUserPassword(User user, UserContext ctx) throws ApplicationException, DirectoryException;
 
     /**
-     * Removes a user from the LDAP directory
+     * Removes a user from the LDAP directory.
      *
      * @param user
      * @param ctx
@@ -51,7 +51,7 @@ public interface UserManagementService {
     void deleteUser(User user, UserContext ctx) throws DirectoryException;
 
     /**
-     * Generate a token for a user in order to reset his/her password
+     * Generate a token for a user in order to reset his/her password.
      *
      * @param user User to search
      * @return Generated token
@@ -61,7 +61,7 @@ public interface UserManagementService {
     String createPasswordResetToken(User user) throws DirectoryException, ApplicationException;
 
     /**
-     * Updates a user's password in the LDAP directory
+     * Updates a user's password in the LDAP directory.
      *
      * @param user User to update
      * @param passwordResetToken Token used to validate this update

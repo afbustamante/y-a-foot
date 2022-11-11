@@ -28,7 +28,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
- * REST controller for sites related operations
+ * REST controller for sites related operations.
  *
  * @author andresbustamante
  */
@@ -52,13 +52,12 @@ public class SitesController extends AbstractController implements SitesApi {
         this.siteManagementService = siteManagementService;
         this.playerSearchService = playerSearchService;
         this.siteMapper = siteMapper;
-        this.request = request;
     }
 
     @Override
     public ResponseEntity<List<Site>> loadSites() {
         try {
-            UserContext ctx = getUserContext(request);
+            UserContext ctx = getUserContext();
             Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
             List<net.andresbustamante.yafoot.core.model.Site> sites = siteSearchService.findSitesByPlayer(player);
 
@@ -77,7 +76,7 @@ public class SitesController extends AbstractController implements SitesApi {
     @Override
     public ResponseEntity<Void> addNewSite(Site site) {
         try {
-            UserContext userContext = getUserContext(request);
+            UserContext userContext = getUserContext();
             long id = siteManagementService.saveSite(siteMapper.map(site), userContext);
 
             String location = MessageFormat.format(siteApiPath, id);

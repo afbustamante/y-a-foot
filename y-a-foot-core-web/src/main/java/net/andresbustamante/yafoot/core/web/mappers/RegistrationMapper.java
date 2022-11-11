@@ -16,7 +16,19 @@ public interface RegistrationMapper {
     @Mapping(target = "lastUpdateDate", ignore = true)
     Registration map(net.andresbustamante.yafoot.web.dto.Registration registration);
 
+    /**
+     * Bean to DTO mapping for a registration object.
+     *
+     * @param registration Registration bean to map
+     * @return Mapped registration DTO
+     */
     net.andresbustamante.yafoot.web.dto.Registration map(Registration registration);
 
+    /**
+     * Bean to DTO mapping for a registration list.
+     *
+     * @param registration Registration beans to map
+     * @return Mapped registration list
+     */
     List<net.andresbustamante.yafoot.web.dto.Registration> map(List<Registration> registration);
 }

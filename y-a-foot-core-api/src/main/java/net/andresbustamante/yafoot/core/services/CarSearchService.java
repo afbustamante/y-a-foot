@@ -9,21 +9,21 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 import java.util.List;
 
 /**
- * Service useful for research operations
+ * Service useful for research operations.
  */
 public interface CarSearchService {
 
     /**
-     * Load the list of cars saved by a user
+     * Load the list of cars saved by a user.
      *
      * @param player Player to filter by
-     * @return
+     * @return List of cars
      * @throws DatabaseException
      */
     List<Car> findCarsByPlayer(Player player) throws DatabaseException;
 
     /**
-     * Loads the details of a car from its unique identifier
+     * Loads the details of a car from its unique identifier.
      *
      * @param id Car's identifier
      * @param ctx Context information for the actual user

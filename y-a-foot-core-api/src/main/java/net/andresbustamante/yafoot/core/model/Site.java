@@ -11,11 +11,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- *
  * @author andresbustamante
  */
-@Getter @Setter @NoArgsConstructor
-public class Site implements Locatable, Identifiable, Serializable {
+@Getter
+@Setter
+@NoArgsConstructor
+public final class Site implements Locatable, Identifiable, Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -24,10 +25,23 @@ public class Site implements Locatable, Identifiable, Serializable {
     private String phoneNumber;
     private GpsCoordinates location;
 
+    /**
+     * Constructor for testing purposes only.
+     *
+     * @param id Site ID
+     */
     public Site(Integer id) {
         this.id = id;
     }
 
+    /**
+     * Constructor for testing purposes only.
+     *
+     * @param name        Site name
+     * @param address     Address
+     * @param phoneNumber Phone number
+     * @param location    Location
+     */
     public Site(String name, String address, String phoneNumber, GpsCoordinates location) {
         this.name = name;
         this.address = address;
@@ -52,5 +66,5 @@ public class Site implements Locatable, Identifiable, Serializable {
     public String toString() {
         return "Site[ id=" + id + " ]";
     }
-    
+
 }

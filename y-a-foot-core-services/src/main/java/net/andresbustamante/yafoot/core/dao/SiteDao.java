@@ -9,7 +9,7 @@ import java.util.List;
 import static net.andresbustamante.yafoot.core.util.DaoConstants.*;
 
 /**
- * Interface describing the operations allowed on sites in database
+ * Interface describing the operations allowed on sites in database.
  *
  * @author andresbustamante
  */
@@ -25,7 +25,7 @@ public interface SiteDao {
     List<Site> findSitesByPlayer(@Param(PLAYER) Player player);
 
     /**
-     * Loads a site by its technical ID
+     * Loads a site by its technical ID.
      *
      * @param id Identifier to search
      * @return Site identified by the number used as parameter for this method
@@ -33,10 +33,11 @@ public interface SiteDao {
     Site findSiteById(@Param(ID) Integer id);
 
     /**
-     * Creates a site in database
+     * Creates a site in database.
      *
      * @param site Site to create
      * @param author Player creating the site
+     * @return Number of created sites. It should be 0 or 1
      */
     int saveSite(@Param(SITE) Site site, @Param(PLAYER) Player author);
 }

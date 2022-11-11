@@ -6,6 +6,11 @@ package net.andresbustamante.yafoot.commons.model;
  */
 @FunctionalInterface
 public interface Identifiable {
-    
+
+    /**
+     * Gets an object's unique identifier.
+     *
+     * @return Object identifier
+     */
     Integer getId();
 }

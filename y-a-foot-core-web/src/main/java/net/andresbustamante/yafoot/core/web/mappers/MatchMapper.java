@@ -19,7 +19,19 @@ public interface MatchMapper {
     @Mapping(target = "lastUpdateDate", ignore = true)
     Match map(net.andresbustamante.yafoot.web.dto.Match match);
 
+    /**
+     * Bean to DTO mapping for a match object.
+     *
+     * @param match Match bean to map
+     * @return Match DTO
+     */
     net.andresbustamante.yafoot.web.dto.Match map(Match match);
 
+    /**
+     * Bean list to DTO list mapping for a list of matches.
+     *
+     * @param matches Matches list to map
+     * @return Resulting DTO list
+     */
     List<net.andresbustamante.yafoot.web.dto.Match> map(List<Match> matches);
 }
