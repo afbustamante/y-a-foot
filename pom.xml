@@ -189,6 +189,14 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -247,7 +255,7 @@
       </activation>
       <properties>
         <env>local</env>
-        <distribution.url>file:///Users/andresbustamante/websites/y-a-foot</distribution.url>
+        <distribution.url>file:///Users/andresbustamante/Documents/websites/y-a-foot</distribution.url>
       </properties>
     </profile>
     <profile>
