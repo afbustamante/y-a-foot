@@ -10,6 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-commons-web</artifactId>
+  <name>Commons Web</name>
+  <description>Shared classes, interfaces and configurations for the Web layer</description>
 
   <dependencies>
     <dependency>

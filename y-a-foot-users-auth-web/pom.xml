@@ -10,6 +10,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-users-auth-web</artifactId>
+  <name>Users Auth Web</name>
+  <description>Users authentication Web application</description>
+  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>

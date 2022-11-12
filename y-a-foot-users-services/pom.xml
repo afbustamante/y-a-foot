@@ -10,6 +10,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-users-services</artifactId>
+  <name>Users Services</name>
+  <description>Users services implementations</description>
+  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>

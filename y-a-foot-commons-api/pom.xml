@@ -10,6 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-commons-api</artifactId>
+  <name>Commons API</name>
+  <description>Shared API classes and interfaces</description>
 
   <dependencies>
     <dependency>

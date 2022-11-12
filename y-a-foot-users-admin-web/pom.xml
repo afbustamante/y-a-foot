@@ -10,6 +10,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-users-admin-web</artifactId>
+  <name>Users Admin Web</name>
+  <description>Users administration Web application</description>
+  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>

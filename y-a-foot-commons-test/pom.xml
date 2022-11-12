@@ -10,6 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-commons-test</artifactId>
+  <name>Commons Test</name>
+  <description>Shared classes, interfaces and configurations for the testing phase</description>
 
   <dependencies>
     <!-- Java EE / javax -->

@@ -10,6 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-commons-services</artifactId>
+  <name>Commons Services</name>
+  <description>Shared classes and interfaces for the services layer</description>
 
   <dependencies>
     <!-- Spring -->

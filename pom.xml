@@ -7,8 +7,8 @@
   <packaging>pom</packaging>
   <version>2.0.0-SNAPSHOT</version>
 
-  <name>y-a-foot</name>
-  <description>Football planning for amateurs</description>
+  <name>Y'a foot</name>
+  <description>Sport planning for amateurs</description>
   <url>https://github.com/afbustamante/y-a-foot</url>
 
   <modules>
@@ -247,7 +247,7 @@
       </activation>
       <properties>
         <env>local</env>
-        <distribution.url>file:///home/andresbustamante/websites/y-a-foot</distribution.url>
+        <distribution.url>file:///Users/andresbustamante/websites/y-a-foot</distribution.url>
       </properties>
     </profile>
     <profile>
@@ -478,6 +478,7 @@
           <configLocation>checkstyle/checkstyle.xml</configLocation>
           <consoleOutput>true</consoleOutput>
           <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
           <linkXRef>false</linkXRef>
         </configuration>
         <dependencies>

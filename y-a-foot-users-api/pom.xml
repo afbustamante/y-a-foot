@@ -10,6 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>y-a-foot-users-api</artifactId>
+  <name>Users API</name>
+  <description>Users API classes and interfaces</description>
 
   <dependencies>
     <dependency>
