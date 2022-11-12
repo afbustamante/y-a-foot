@@ -8,9 +8,9 @@ import net.andresbustamante.yafoot.commons.model.Identifiable;
 import java.io.Serializable;
 
 @Getter @Setter @NoArgsConstructor
-public final class Sport implements Serializable, Identifiable {
+public final class Sport implements Serializable, Identifiable<Short> {
 
-    private Integer id;
+    private Short id;
     private String code;
     private String name;
 
@@ -20,7 +20,7 @@ public final class Sport implements Serializable, Identifiable {
      * @param id Sport ID
      * @param code Sport code
      */
-    public Sport(Integer id, String code) {
+    public Sport(Short id, String code) {
         this.id = id;
         this.code = code;
     }

@@ -19,7 +19,7 @@ import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.DRAFT
  * @author andresbustamante
  */
 @Getter @Setter
-public final class Match implements Serializable, Identifiable, Auditable {
+public final class Match implements Serializable, Identifiable<Integer>, Auditable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;

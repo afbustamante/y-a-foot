@@ -11,9 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,9 +61,6 @@ class PlayerDaoTest extends AbstractDaoTest {
         assertNotNull(player1.getPhoneNumber());
         assertNotNull(player1.getEmail());
         assertEquals(JOHN_DOE.getPhoneNumber(), player1.getPhoneNumber());
-        assertNotNull(player1.getCreationDate());
-        assertEquals(OffsetDateTime.of(2019, 1, 2, 12, 34, 56, 0, ZoneOffset.UTC),
-                player1.getCreationDate());
     }
 
     @Test

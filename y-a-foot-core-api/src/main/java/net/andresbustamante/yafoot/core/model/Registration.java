@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.andresbustamante.yafoot.commons.model.Auditable;
+import net.andresbustamante.yafoot.commons.model.Identifiable;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
@@ -15,7 +16,7 @@ import java.util.Objects;
  * @author andresbustamante
  */
 @Getter @Setter @NoArgsConstructor
-public final class Registration implements Serializable, Auditable {
+public final class Registration implements Identifiable<RegistrationId>, Serializable, Auditable {
 
     private static final long serialVersionUID = 1L;
 

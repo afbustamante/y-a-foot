@@ -18,7 +18,7 @@ import java.util.Objects;
  * @author andresbustamante
  */
 @Getter @Setter @NoArgsConstructor
-public final class Player extends User implements Serializable, Identifiable, Auditable {
+public final class Player extends User implements Serializable, Identifiable<Integer>, Auditable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;

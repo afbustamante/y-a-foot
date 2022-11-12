@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.commons.config;
 import com.github.springtestdbunit.bean.DatabaseConfigBean;
 import com.github.springtestdbunit.bean.DatabaseDataSourceConnectionFactoryBean;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
+import org.dbunit.ext.h2.H2DataTypeFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,13 +16,13 @@ import javax.sql.DataSource;
 public class DbUnitTestConfig {
 
     /**
-     * DBUnit data type factory bean using PostgreSQL.
+     * DBUnit data type factory bean using H2 Database.
      *
-     * @return Data type factory bean using PostgreSQL
+     * @return Data type factory bean using H2
      */
     @Bean
     public IDataTypeFactory dbUnitDataTypeFactory() {
-        return new PostgresqlDataTypeFactory();
+        return new H2DataTypeFactory();
     }
 
     /**

@@ -16,7 +16,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public final class Site implements Locatable, Identifiable, Serializable {
+public final class Site implements Locatable, Identifiable<Integer>, Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;

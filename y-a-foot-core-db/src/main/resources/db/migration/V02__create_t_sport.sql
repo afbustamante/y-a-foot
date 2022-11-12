@@ -5,10 +5,9 @@ CREATE TABLE t_sport
     spt_name varchar(100) NOT NULL
 );
 
-CREATE UNIQUE INDEX i_sport_id ON t_sport (spt_id);
 CREATE UNIQUE INDEX i_sport_code ON t_sport (spt_code);
 
-ALTER TABLE t_sport ADD CONSTRAINT pk_sport PRIMARY KEY USING INDEX i_sport_id;
+ALTER TABLE t_sport ADD CONSTRAINT pk_sport PRIMARY KEY (spt_id);
 
 INSERT INTO t_sport (spt_id, spt_code, spt_name) VALUES (1, 'FOOTBALL', 'Football');
 INSERT INTO t_sport (spt_id, spt_code, spt_name) VALUES (2, 'RUGBY', 'Rugby');

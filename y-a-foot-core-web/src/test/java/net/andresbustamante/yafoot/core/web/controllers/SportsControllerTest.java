@@ -34,8 +34,8 @@ class SportsControllerTest extends AbstractControllerTest {
     void loadSportsOk() throws Exception {
         // Given
         List<Sport> sports = List.of(
-                new Sport(1, SportEnum.FOOTBALL.name()),
-                new Sport(2, SportEnum.RUGBY.name())
+                new Sport((short) 1, SportEnum.FOOTBALL.name()),
+                new Sport((short) 2, SportEnum.RUGBY.name())
         );
         given(sportSearchService.loadSports()).willReturn(sports);
 

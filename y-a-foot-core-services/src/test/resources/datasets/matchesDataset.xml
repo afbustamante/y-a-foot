@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     <t_player ply_id="101" ply_surname="Ronaldo" ply_first_name="Cristiano" ply_phone_number="01234656789" ply_email="cr7@email.com"
-              ply_created_at="2019-01-01"/>
+              ply_created_at="2019-01-01" ply_active="true"/>
     <t_player ply_id="102" ply_surname="Messi" ply_first_name="Lionel" ply_phone_number="02234656789" ply_email="messi@email.com"
-              ply_created_at="2019-01-02"/>
+              ply_created_at="2019-01-02" ply_active="true"/>
     <t_player ply_id="103" ply_surname="Griezmann" ply_first_name="Antoine" ply_phone_number="03234656789"
               ply_email="griezmann@email.com"
-              ply_created_at="2019-01-03"/>
+              ply_created_at="2019-01-03" ply_active="true"/>
 
     <t_car car_id="101" car_name="Peugeot 207" car_num_seats="4" car_driver_id="101" />
 
@@ -26,9 +26,10 @@
              mat_num_players_min="8" mat_num_players_max="12" mat_site_id="102" mat_creator_id="102"
              mat_created_at="2019-01-02" mat_carpooling_enabled="false" mat_code_sharing_enabled="true"/>
 
-    <t_player_match pma_match_id="101" pma_player_id="101" pma_car_id="101" pma_car_confirmation="true"/>
-    <t_player_match pma_match_id="101" pma_player_id="102"/>
-    <t_player_match pma_match_id="102" pma_player_id="102"/>
-    <t_player_match pma_match_id="102" pma_player_id="103"/>
-    <t_player_match pma_match_id="103" pma_player_id="102"/>
+    <t_player_match pma_match_id="101" pma_player_id="101" pma_car_id="101" pma_car_confirmation="true"
+                    pma_created_at="[now]"/>
+    <t_player_match pma_match_id="101" pma_player_id="102" pma_created_at="[now]"/>
+    <t_player_match pma_match_id="102" pma_player_id="102" pma_created_at="[now]"/>
+    <t_player_match pma_match_id="102" pma_player_id="103" pma_created_at="[now]"/>
+    <t_player_match pma_match_id="103" pma_player_id="102" pma_created_at="[now]"/>
 </dataset>

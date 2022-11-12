@@ -1,1 +1,0 @@
-ALTER TABLE t_joueur ADD COLUMN jou_actif BOOLEAN NOT NULL DEFAULT true;

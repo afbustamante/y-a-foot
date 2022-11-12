@@ -14,7 +14,7 @@ import java.util.Objects;
  * @author andresbustamante
  */
 @Getter @Setter @NoArgsConstructor
-public final class Car implements Serializable, Identifiable {
+public final class Car implements Serializable, Identifiable<Integer> {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
