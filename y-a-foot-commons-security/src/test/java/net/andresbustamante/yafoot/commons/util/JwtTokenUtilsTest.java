@@ -17,9 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = JwtTestConfig.class)
 class JwtTokenUtilsTest {
 
-    private static final String EXPIRED_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwZXRlLnNhbXByYXNAZW1haWwuY29tIiwiZXhwI" +
-            "joxNTgzNTk1MTQ4LCJpYXQiOjE1ODM1OTE1NDh9.DWT_uyluFJkZAaC39OiytIRIJpGnjqriisBau-lq-xAzRZBRdr_Ks_HGBQcQfXZ" +
-            "hkmVdX89s_bVXcDvKVn-mGQ";
+    private static final String EXPIRED_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwZXRlLnNhbXByYXNAZW1haWwuY29tIiwiZXhwI"
+            + "joxNTgzNTk1MTQ4LCJpYXQiOjE1ODM1OTE1NDh9.DWT_uyluFJkZAaC39OiytIRIJpGnjqriisBau-lq-xAzRZBRdr_Ks_HGBQcQfXZ"
+            + "hkmVdX89s_bVXcDvKVn-mGQ";
+    private static final int SECS = 60;
 
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
@@ -54,7 +55,7 @@ class JwtTokenUtilsTest {
 
             // Then
             assertNotNull(expirationDate);
-            assertTrue(now.plusSeconds(tokenMaxTime * 60 + 1).isAfter(expirationDate));
+            assertTrue(now.plusSeconds(tokenMaxTime * SECS + 1).isAfter(expirationDate));
         } catch (ExpiredJwtException e) {
             // Then
             fail("Unexpected exception");
@@ -79,12 +80,13 @@ class JwtTokenUtilsTest {
         assertNotNull(token);
         assertTrue(jwtTokenUtils.isValidToken(token, username));
         assertNotNull(jwtTokenUtils.getExpirationDateFromToken(token));
-        assertTrue(now.plusSeconds(tokenMaxTime * 60 + 1).isAfter(jwtTokenUtils.getExpirationDateFromToken(token)));
+        assertTrue(now.plusSeconds(tokenMaxTime * SECS + 1).isAfter(jwtTokenUtils.getExpirationDateFromToken(token)));
     }
 
     @Test
     void testIsValidTokenWithExpiredToken() {
         // Then
-        assertThrows(ExpiredJwtException.class, () -> jwtTokenUtils.isValidToken(EXPIRED_TOKEN, "pete.sampras@email.com"));
+        assertThrows(ExpiredJwtException.class, () -> jwtTokenUtils.isValidToken(EXPIRED_TOKEN,
+                "pete.sampras@email.com"));
     }
 }

@@ -71,11 +71,10 @@ class CarDaoTest extends AbstractDaoTest {
 
     @Test
     void findCarsByPlayer() throws Exception {
-        // Given
-        Player player = new Player(101);
-
+        // When
         List<Car> cars = carDAO.findCarsByPlayer(player);
 
+        // Then
         assertNotNull(cars);
         assertEquals(2, cars.size());
 

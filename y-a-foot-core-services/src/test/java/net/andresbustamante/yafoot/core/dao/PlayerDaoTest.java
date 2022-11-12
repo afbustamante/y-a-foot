@@ -133,7 +133,7 @@ class PlayerDaoTest extends AbstractDaoTest {
     }
 
     /**
-     * Initialises a new temporary player
+     * Initialises a new temporary player.
      *
      * @return Temporary test player
      */

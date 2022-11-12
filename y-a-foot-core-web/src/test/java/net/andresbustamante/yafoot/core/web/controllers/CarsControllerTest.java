@@ -49,6 +49,9 @@ class CarsControllerTest extends AbstractControllerTest {
     @MockBean
     private CarManagementService carManagementService;
 
+    @Value("${api.config.public.url}")
+    private String apiPublicUrl;
+
     @Value("${api.cars.root.path}")
     private String carsApiPath;
 
@@ -192,7 +195,8 @@ class CarsControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.LOCATION, MessageFormat.format(apiPublicUrl + carsApiPath + "/{0}", id)));
+                .andExpect(header().string(HttpHeaders.LOCATION, MessageFormat.format(apiPublicUrl + carsApiPath
+                        + "/{0}", id)));
     }
 
     @Test

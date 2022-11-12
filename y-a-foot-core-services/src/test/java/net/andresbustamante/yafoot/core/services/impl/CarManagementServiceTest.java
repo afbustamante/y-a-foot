@@ -54,9 +54,6 @@ class CarManagementServiceTest extends AbstractServiceTest {
 
     @Test
     void deleteCarsByPlayer() throws Exception {
-        // Given
-        Player player = new Player(1);
-
         // When
         carManagementService.deleteCarsByPlayer(player, userContext);
 

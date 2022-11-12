@@ -7,6 +7,7 @@ import net.andresbustamante.yafoot.users.exceptions.InvalidCredentialsException;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.users.services.UserAuthenticationService;
 import net.andresbustamante.yafoot.users.services.UserManagementService;
+import net.andresbustamante.yafoot.users.services.UserSearchService;
 import net.andresbustamante.yafoot.users.web.config.MappingTestConfig;
 import net.andresbustamante.yafoot.users.web.config.WebSecurityTestConfig;
 import net.andresbustamante.yafoot.users.web.dto.Credentials;
@@ -43,6 +44,9 @@ class UsersControllerTest extends AbstractControllerTest {
 
     @MockBean
     private UserAuthenticationService userAuthenticationService;
+
+    @MockBean
+    private UserSearchService userSearchService;
 
     @Test
     void authenticateValidUser() throws Exception {

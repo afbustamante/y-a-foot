@@ -9,7 +9,6 @@ import net.andresbustamante.yafoot.core.web.config.WebSecurityTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,13 +26,10 @@ public abstract class AbstractControllerTest {
     protected static final String VALID_EMAIL = "john.doe@email.com";
 
     @MockBean
-    protected UserManagementAdapter userManagementAdapter;
+    private UserManagementAdapter userManagementAdapter;
 
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
-
-    @Value("${api.config.public.url}")
-    protected String apiPublicUrl;
 
     @BeforeEach
     void initUserDetailsService() throws Exception {
@@ -41,6 +37,12 @@ public abstract class AbstractControllerTest {
         given(userManagementAdapter.findUserByEmail(VALID_EMAIL)).willReturn(testUser);
     }
 
+    /**
+     * Builds a new Authorization header string using a given email.
+     *
+     * @param email Email to use to create the security token
+     * @return Authorization header string value
+     */
     protected String getAuthString(String email) {
         String token = jwtTokenUtils.generateToken(email);
         return MessageFormat.format("Bearer {0}", token);

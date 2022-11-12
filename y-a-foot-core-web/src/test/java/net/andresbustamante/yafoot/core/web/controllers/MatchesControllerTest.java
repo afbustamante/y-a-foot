@@ -63,6 +63,9 @@ class MatchesControllerTest extends AbstractControllerTest {
     @MockBean
     private CarpoolingService carpoolingService;
 
+    @Value("${api.config.public.url}")
+    private String apiPublicUrl;
+
     @Value("${api.matches.root.path}")
     private String matchesApiPath;
 
@@ -169,7 +172,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         Match match2 = new Match(2);
         match2.setDate(today.minusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), eq(null), any(LocalDate.class)))
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), eq(null),
+                any(LocalDate.class)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -194,7 +198,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         Match match2 = new Match(2);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class), eq(null)))
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null),
+                any(LocalDate.class), eq(null)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -221,11 +226,13 @@ class MatchesControllerTest extends AbstractControllerTest {
         match2.setSport(SportEnum.BASKETBALL);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(SportEnum.BASKETBALL), any(LocalDate.class), eq(null)))
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(SportEnum.BASKETBALL),
+                any(LocalDate.class), eq(null)))
                 .willReturn(List.of(match1, match2));
 
         // When
-        mvc.perform(get("/matches?startDate={0}&sport={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE), SportEnum.BASKETBALL.name())
+        mvc.perform(get("/matches?startDate={0}&sport={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                SportEnum.BASKETBALL.name())
                 .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -248,7 +255,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         match2.setSport(SportEnum.FOOTBALL);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(SportEnum.FOOTBALL), eq(null), eq(null)))
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(SportEnum.FOOTBALL),
+                eq(null), eq(null)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -277,7 +285,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         match2.setStatus(MatchStatusEnum.CANCELLED);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(MatchStatusEnum.CANCELLED), eq(null), eq(null), eq(null)))
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(MatchStatusEnum.CANCELLED), eq(null),
+                eq(null), eq(null)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -299,7 +308,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate tomorrow = today.plusDays(1);
 
         // When
-        mvc.perform(get("/matches?startDate={0}&endDate={1}", tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE), today.format(DateTimeFormatter.ISO_LOCAL_DATE))
+        mvc.perform(get("/matches?startDate={0}&endDate={1}",
+                tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE), today.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -315,11 +325,13 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class), any(LocalDate.class)))
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null),
+                any(LocalDate.class), any(LocalDate.class)))
                 .willReturn(null);
 
         // When
-        mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE), tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
+        mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -337,11 +349,13 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate tomorrow = today.plusDays(1);
 
         given(playerSearchService.findPlayerByEmail(anyString())).willThrow(DatabaseException.class);
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class), any(LocalDate.class)))
+        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class),
+                any(LocalDate.class)))
                 .willThrow(DatabaseException.class);
 
         // When
-        mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE), tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
+        mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -415,7 +429,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         site.setAddress("123 Fake Address");
         match.setSite(site);
 
-        given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class))).willThrow(DatabaseException.class);
+        given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class)))
+                .willThrow(DatabaseException.class);
 
         // When
         mvc.perform(post("/matches")
@@ -504,7 +519,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         playerDto.setId(2);
         playerDto.setEmail(email);
 
-        net.andresbustamante.yafoot.web.dto.Registration registration = new net.andresbustamante.yafoot.web.dto.Registration();
+        net.andresbustamante.yafoot.web.dto.Registration registration =
+                new net.andresbustamante.yafoot.web.dto.Registration();
         registration.setPlayer(playerDto);
         registration.setCarConfirmed(false);
 
@@ -520,7 +536,8 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(LOCATION))
-                .andExpect(header().string(LOCATION, apiPublicUrl + matchesApiPath + "/" + match.getCode() + "/registrations/" + player.getId()));
+                .andExpect(header().string(LOCATION, apiPublicUrl + matchesApiPath + "/" + match.getCode()
+                        + "/registrations/" + player.getId()));
     }
 
     @Test
@@ -534,7 +551,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         playerDto.setId(2);
         playerDto.setEmail(email);
 
-        net.andresbustamante.yafoot.web.dto.Registration registration = new net.andresbustamante.yafoot.web.dto.Registration();
+        net.andresbustamante.yafoot.web.dto.Registration registration =
+                new net.andresbustamante.yafoot.web.dto.Registration();
         registration.setPlayer(playerDto);
         registration.setCarConfirmed(false);
 
@@ -565,7 +583,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         playerDto.setId(2);
         playerDto.setEmail(email);
 
-        net.andresbustamante.yafoot.web.dto.Registration registration = new net.andresbustamante.yafoot.web.dto.Registration();
+        net.andresbustamante.yafoot.web.dto.Registration registration =
+                new net.andresbustamante.yafoot.web.dto.Registration();
         registration.setPlayer(playerDto);
         registration.setCarConfirmed(false);
 

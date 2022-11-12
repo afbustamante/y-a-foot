@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for {@link JwtUserDetailsService}
+ * Unit tests for {@link JwtUserDetailsService}.
  */
 @ExtendWith(MockitoExtension.class)
 class JwtUserDetailsServiceTest {

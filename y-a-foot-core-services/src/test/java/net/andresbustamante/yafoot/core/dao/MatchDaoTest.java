@@ -64,7 +64,8 @@ class MatchDaoTest extends AbstractDaoTest {
         // Then
         assertNotNull(match);
         assertEquals(102, match.getId().intValue());
-        assertEquals(date.toOffsetDateTime().atZoneSameInstant(ZoneId.of("UTC")), match.getDate().atZoneSameInstant(ZoneId.of("UTC")));
+        assertEquals(date.toOffsetDateTime().atZoneSameInstant(ZoneId.of("UTC")),
+                match.getDate().atZoneSameInstant(ZoneId.of("UTC")));
         assertEquals(8, match.getNumPlayersMin().intValue());
         assertEquals(12, match.getNumPlayersMax().intValue());
         assertNotNull(match.getCreator());
@@ -119,7 +120,7 @@ class MatchDaoTest extends AbstractDaoTest {
 
         // Then
         assertNotNull(matchs);
-        assertEquals(1 ,matchs.size());
+        assertEquals(1, matchs.size());
         assertNotNull(matchs.get(0));
         assertEquals("AZERTY-1234", matchs.get(0).getCode());
         assertTrue(matchs.get(0).getDate().isAfter(startDate));
@@ -139,7 +140,7 @@ class MatchDaoTest extends AbstractDaoTest {
 
         // Then
         assertNotNull(matchs);
-        assertEquals(1 ,matchs.size());
+        assertEquals(1, matchs.size());
         assertNotNull(matchs.get(0));
         assertEquals("QWERTZ-1234", matchs.get(0).getCode());
         assertNotNull(matchs.get(0).getCreator());
@@ -160,7 +161,7 @@ class MatchDaoTest extends AbstractDaoTest {
 
         // Then
         assertNotNull(matchs);
-        assertEquals(1 ,matchs.size());
+        assertEquals(1, matchs.size());
         assertNotNull(matchs.get(0));
         assertEquals("QWERTZ-1234", matchs.get(0).getCode());
         assertNotNull(matchs.get(0).getCreator());
@@ -184,7 +185,7 @@ class MatchDaoTest extends AbstractDaoTest {
 
         // Then
         assertNotNull(matchs);
-        assertEquals(1 ,matchs.size());
+        assertEquals(1, matchs.size());
         assertNotNull(matchs.get(0));
         assertEquals("AZERTY-1234", matchs.get(0).getCode());
         assertEquals(LocalDate.of(2018, 10, 2), LocalDate.from(matchs.get(0).getDate()));

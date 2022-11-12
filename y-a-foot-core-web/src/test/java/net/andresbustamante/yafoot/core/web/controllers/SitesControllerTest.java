@@ -49,6 +49,9 @@ class SitesControllerTest extends AbstractControllerTest {
     @MockBean
     private PlayerSearchService playerSearchService;
 
+    @Value("${api.config.public.url}")
+    private String apiPublicUrl;
+
     @Value("${api.sites.one.path}")
     private String siteApiPath;
 
@@ -133,7 +136,8 @@ class SitesControllerTest extends AbstractControllerTest {
         site.setAddress("123 Fake Address");
         site.setPhoneNumber("01234567890");
 
-        given(siteManagementService.saveSite(any(Site.class), any(UserContext.class))).willThrow(DatabaseException.class);
+        given(siteManagementService.saveSite(any(Site.class), any(UserContext.class)))
+                .willThrow(DatabaseException.class);
 
         // When
         mvc.perform(post("/sites")

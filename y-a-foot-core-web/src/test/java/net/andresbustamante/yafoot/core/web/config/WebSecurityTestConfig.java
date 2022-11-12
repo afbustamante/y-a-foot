@@ -41,13 +41,19 @@ public class WebSecurityTestConfig extends WebSecurityConfigurerAdapter {
     private final JwtUserDetailsService jwtUserDetailsService;
 
     @Autowired
-    public WebSecurityTestConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtRequestFilter jwtRequestFilter,
-                                 JwtUserDetailsService jwtUserDetailsService) {
+    public WebSecurityTestConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                                 JwtRequestFilter jwtRequestFilter, JwtUserDetailsService jwtUserDetailsService) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtRequestFilter = jwtRequestFilter;
         this.jwtUserDetailsService = jwtUserDetailsService;
     }
 
+    /**
+     * Global security config for testing.
+     *
+     * @param auth Test builder
+     * @throws Exception Config exception
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(jwtUserDetailsService);

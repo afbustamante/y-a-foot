@@ -88,7 +88,8 @@ class CarpoolingServiceTest extends AbstractServiceTest {
         verify(carDAO).findCarById(anyInt());
         verify(matchDAO).loadRegistration(any(Match.class), any(Player.class));
         verify(matchDAO).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), eq(true));
-        verify(messagingService).sendEmail(anyString(), anyString(), eq(null), anyString(), any(CarpoolingRequest.class), any(Locale.class));
+        verify(messagingService).sendEmail(anyString(), anyString(), eq(null), anyString(),
+                any(CarpoolingRequest.class), any(Locale.class));
     }
 
     @Test
@@ -149,7 +150,7 @@ class CarpoolingServiceTest extends AbstractServiceTest {
 
         // Then
         assertThrows(UnauthorisedUserException.class,
-                () -> carpoolingService.updateCarpoolingInformation(match, player,  car,false, context));
+                () -> carpoolingService.updateCarpoolingInformation(match, player,  car, false, context));
     }
 
     @Test
@@ -169,7 +170,8 @@ class CarpoolingServiceTest extends AbstractServiceTest {
         carpoolingService.processCarSeatRequest(match, player, car, new UserContext());
 
         // Then
-        verify(messagingService).sendEmail(anyString(), anyString(), any(), anyString(), any(CarpoolingRequest.class), any(Locale.class));
+        verify(messagingService).sendEmail(anyString(), anyString(), any(), anyString(), any(CarpoolingRequest.class),
+                any(Locale.class));
     }
 
     @Test
@@ -210,7 +212,8 @@ class CarpoolingServiceTest extends AbstractServiceTest {
         carpoolingService.processTransportationChange(match, car1, car2, ctx);
 
         // Then
-        verify(matchDAO, times(2)).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), anyBoolean());
+        verify(matchDAO, times(2)).updateCarForRegistration(any(Match.class), any(Player.class),
+                any(Car.class), anyBoolean());
         verify(matchDAO, never()).resetCarDetails(any(Match.class), any(Player.class));
     }
 
@@ -259,7 +262,8 @@ class CarpoolingServiceTest extends AbstractServiceTest {
         }
 
         // Then
-        verify(matchDAO, never()).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), anyBoolean());
+        verify(matchDAO, never()).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class),
+                anyBoolean());
         verify(matchDAO, never()).resetCarDetails(any(Match.class), any(Player.class));
     }
 
@@ -309,7 +313,8 @@ class CarpoolingServiceTest extends AbstractServiceTest {
         }
 
         // Then
-        verify(matchDAO, never()).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), anyBoolean());
+        verify(matchDAO, never()).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class),
+                anyBoolean());
         verify(matchDAO, never()).resetCarDetails(any(Match.class), any(Player.class));
     }
 
@@ -352,7 +357,8 @@ class CarpoolingServiceTest extends AbstractServiceTest {
         carpoolingService.processTransportationChange(match, car1, car2, ctx);
 
         // Then
-        verify(matchDAO, never()).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), anyBoolean());
+        verify(matchDAO, never()).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class),
+                anyBoolean());
         verify(matchDAO, times(2)).resetCarDetails(any(Match.class), any(Player.class));
     }
 

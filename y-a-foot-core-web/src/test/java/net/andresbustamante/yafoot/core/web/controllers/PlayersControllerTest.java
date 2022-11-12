@@ -51,7 +51,8 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setPhoneNumber("0123456789");
         player.setPassword("test".getBytes());
 
-        given(playerManagementService.savePlayer(any(net.andresbustamante.yafoot.core.model.Player.class), any(UserContext.class))).willReturn(1);
+        given(playerManagementService.savePlayer(any(net.andresbustamante.yafoot.core.model.Player.class),
+                any(UserContext.class))).willReturn(1);
 
         // When
         mvc.perform(post("/players")
@@ -154,7 +155,8 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
-        net.andresbustamante.yafoot.core.model.Player storedPlayer = new net.andresbustamante.yafoot.core.model.Player(1);
+        net.andresbustamante.yafoot.core.model.Player storedPlayer =
+                new net.andresbustamante.yafoot.core.model.Player(1);
         storedPlayer.setEmail(email);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
@@ -183,7 +185,8 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
-        net.andresbustamante.yafoot.core.model.Player storedPlayer = new net.andresbustamante.yafoot.core.model.Player(1);
+        net.andresbustamante.yafoot.core.model.Player storedPlayer =
+                new net.andresbustamante.yafoot.core.model.Player(1);
         storedPlayer.setEmail(email);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
@@ -212,7 +215,8 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
-        net.andresbustamante.yafoot.core.model.Player storedPlayer = new net.andresbustamante.yafoot.core.model.Player(1);
+        net.andresbustamante.yafoot.core.model.Player storedPlayer =
+                new net.andresbustamante.yafoot.core.model.Player(1);
         storedPlayer.setEmail(email);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
@@ -234,7 +238,8 @@ class PlayersControllerTest extends AbstractControllerTest {
         // Given
         String email = VALID_EMAIL;
 
-        net.andresbustamante.yafoot.core.model.Player storedPlayer = new net.andresbustamante.yafoot.core.model.Player(1);
+        net.andresbustamante.yafoot.core.model.Player storedPlayer =
+                new net.andresbustamante.yafoot.core.model.Player(1);
         storedPlayer.setEmail(email);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");

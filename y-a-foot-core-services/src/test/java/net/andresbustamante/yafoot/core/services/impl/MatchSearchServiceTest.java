@@ -81,7 +81,8 @@ class MatchSearchServiceTest extends AbstractServiceTest {
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
-        when(matchDAO.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(), any())).thenReturn(Arrays.asList(match1, match2));
+        when(matchDAO.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(), any()))
+                .thenReturn(Arrays.asList(match1, match2));
         List<Match> matches = matchSearchService.findMatchesByPlayer(player1, null, null, null, LocalDate.now());
 
         // Then

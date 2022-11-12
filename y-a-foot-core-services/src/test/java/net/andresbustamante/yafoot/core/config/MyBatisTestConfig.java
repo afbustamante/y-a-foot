@@ -17,6 +17,11 @@ public class MyBatisTestConfig {
     @Resource
     private DataSource dataSource;
 
+    /**
+     * Test transaction manager.
+     *
+     * @return Transaction manager bean
+     */
     @Bean
     public DataSourceTransactionManager transactionManager() {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
@@ -25,6 +30,11 @@ public class MyBatisTestConfig {
         return transactionManager;
     }
 
+    /**
+     * Test SQL session factory.
+     *
+     * @return Factory bean
+     */
     @Bean("sqlSessionFactory")
     public SqlSessionFactoryBean sqlSessionFactory() {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();

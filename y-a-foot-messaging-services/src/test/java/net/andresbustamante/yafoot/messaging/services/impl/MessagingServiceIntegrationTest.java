@@ -22,7 +22,7 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Integration tests for {@link MessagingServiceImpl}
+ * Integration tests for {@link MessagingServiceImpl}.
  */
 @ContextConfiguration(classes = {MessagingTestConfig.class, FreemarkerTestConfig.class})
 class MessagingServiceIntegrationTest extends AbstractServiceIntegrationTest {
@@ -53,7 +53,8 @@ class MessagingServiceIntegrationTest extends AbstractServiceIntegrationTest {
 
     @Test
     void sendEmailToInvalidDestination() {
-        assertThrows(ApplicationException.class, () -> messagingService.sendEmail("not-an-email", "subject", "content"));
+        assertThrows(ApplicationException.class, () -> messagingService.sendEmail("not-an-email", "subject",
+                "content"));
     }
 
     @Test

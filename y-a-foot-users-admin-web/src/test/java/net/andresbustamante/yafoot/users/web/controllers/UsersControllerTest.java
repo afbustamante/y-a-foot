@@ -6,6 +6,7 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.users.services.UserManagementService;
+import net.andresbustamante.yafoot.users.services.UserSearchService;
 import net.andresbustamante.yafoot.users.web.config.MappingTestConfig;
 import net.andresbustamante.yafoot.users.web.config.WebSecurityTestConfig;
 import net.andresbustamante.yafoot.users.web.dto.Role;
@@ -38,6 +39,9 @@ class UsersControllerTest extends AbstractControllerTest {
 
     @MockBean
     private UserManagementService userManagementService;
+
+    @MockBean
+    private UserSearchService userSearchService;
 
     @Test
     void createValidUser() throws Exception {

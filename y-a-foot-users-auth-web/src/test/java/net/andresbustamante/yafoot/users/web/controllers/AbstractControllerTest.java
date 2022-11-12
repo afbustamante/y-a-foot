@@ -6,7 +6,6 @@ import net.andresbustamante.yafoot.users.services.UserSearchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
@@ -24,13 +23,10 @@ public abstract class AbstractControllerTest {
     protected static final String VALID_EMAIL = "john.doe@email.com";
 
     @MockBean
-    protected UserSearchService userSearchService;
+    private UserSearchService userSearchService;
 
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
-
-    @Value("${api.config.public.url}")
-    protected String apiPublicUrl;
 
     @BeforeEach
     void initUserDetailsService() throws Exception {
@@ -38,6 +34,12 @@ public abstract class AbstractControllerTest {
         given(userSearchService.findUserByEmail(VALID_EMAIL)).willReturn(testUser);
     }
 
+    /**
+     * Builds a new token and an Authorization text for testing.
+     *
+     * @param email Email to use for the token
+     * @return Authorization header value
+     */
     protected String getAuthString(String email) {
         String token = jwtTokenUtils.generateToken(email);
         return MessageFormat.format("Bearer {0}", token);

@@ -19,6 +19,11 @@ public class MessagingTestConfig {
     @Value("${spring.mail.port}")
     private Integer smtpPort;
 
+    /**
+     * Test mail sender.
+     *
+     * @return Mail sender bean
+     */
     @Bean
     public JavaMailSender mailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

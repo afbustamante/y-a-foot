@@ -220,7 +220,8 @@ class MatchManagementServiceTest extends AbstractServiceTest {
         verify(carDAO).findCarById(anyInt());
         verify(carManagementService, never()).saveCar(any(Car.class), any(UserContext.class));
         verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), any(Car.class), eq(false));
-        verify(carpoolingService).processCarSeatRequest(any(Match.class), any(Player.class), any(Car.class), any(UserContext.class));
+        verify(carpoolingService).processCarSeatRequest(any(Match.class), any(Player.class), any(Car.class),
+                any(UserContext.class));
     }
 
     @Test
@@ -294,7 +295,8 @@ class MatchManagementServiceTest extends AbstractServiceTest {
         assertDoesNotThrow(() -> matchManagementService.registerPlayer(player1, match, car1, ctx));
 
         // Then
-        verify(carpoolingService).processTransportationChange(any(Match.class), any(Car.class), any(Car.class), any(UserContext.class));
+        verify(carpoolingService).processTransportationChange(any(Match.class), any(Car.class), any(Car.class),
+                any(UserContext.class));
         verify(matchDAO).unregisterPlayer(any(Player.class), any(Match.class));
         verify(matchDAO).registerPlayer(any(Player.class), any(Match.class), any(Car.class), anyBoolean());
     }
@@ -384,7 +386,8 @@ class MatchManagementServiceTest extends AbstractServiceTest {
 
         // When
         verify(matchDAO).unregisterPlayer(any(), any());
-        verify(messagingService).sendEmail(anyString(), anyString(), any(String[].class), anyString(), any(MatchAlert.class), any(Locale.class));
+        verify(messagingService).sendEmail(anyString(), anyString(), any(String[].class), anyString(),
+                any(MatchAlert.class), any(Locale.class));
     }
 
     @Test
@@ -417,7 +420,8 @@ class MatchManagementServiceTest extends AbstractServiceTest {
 
         // Then
         when(carpoolingService.findAvailableCarsByMatch(any(Match.class))).thenReturn(List.of(car));
-        when(matchDAO.findPassengerRegistrationsByCar(any(Match.class), any(Car.class))).thenReturn(List.of(registration2));
+        when(matchDAO.findPassengerRegistrationsByCar(any(Match.class), any(Car.class)))
+                .thenReturn(List.of(registration2));
 
         matchManagementService.unregisterPlayer(player, match, ctx);
 

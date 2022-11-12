@@ -163,7 +163,9 @@
     </module>
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
+    <!-- Disabled because of magic number checks on tests
     <module name="MagicNumber"/>
+    -->
     <module name="MissingSwitchDefault"/>
     <module name="MultipleVariableDeclarations"/>
     <module name="SimplifyBooleanExpression"/>

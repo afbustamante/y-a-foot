@@ -18,6 +18,8 @@ import org.springframework.ldap.test.unboundid.LdifPopulator;
 @PropertySource("classpath:application.properties")
 public class LdapTestConfig {
 
+    private static final int LDAP_TEST_PORT = 6389;
+
     @Value("${ldap.config.url}")
     private String url;
 
@@ -27,15 +29,25 @@ public class LdapTestConfig {
     @Value("${ldap.config.password}")
     private String password;
 
+    /**
+     * LDAP server bean for testing.
+     *
+     * @return Embedded server bean
+     */
     @Bean
     public EmbeddedLdapServerFactoryBean embeddedLdapServer() {
         EmbeddedLdapServerFactoryBean ldapServerFactoryBean = new EmbeddedLdapServerFactoryBean();
         ldapServerFactoryBean.setPartitionName("test");
         ldapServerFactoryBean.setPartitionSuffix("ou=yafoot,dc=andresbustamante,dc=net");
-        ldapServerFactoryBean.setPort(6389);
+        ldapServerFactoryBean.setPort(LDAP_TEST_PORT);
         return ldapServerFactoryBean;
     }
 
+    /**
+     * LDIF data loader bean.
+     *
+     * @return Data loader bean for LDIF test file
+     */
     @Bean
     public LdifPopulator ldifPopulator() {
         LdifPopulator ldifPopulator = new LdifPopulator();
@@ -47,9 +59,14 @@ public class LdapTestConfig {
         return ldifPopulator;
     }
 
+    /**
+     * Test context source.
+     *
+     * @return Context bean for tests
+     */
     @Bean
     public LdapContextSource contextSource() {
-        LdapContextSource contextSource= new LdapContextSource();
+        LdapContextSource contextSource = new LdapContextSource();
         contextSource.setUrl(url);
         contextSource.setUserDn(userDn);
         contextSource.setPassword(password);
