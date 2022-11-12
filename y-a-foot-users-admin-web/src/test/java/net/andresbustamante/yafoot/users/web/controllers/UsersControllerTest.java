@@ -31,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {WebSecurityTestConfig.class, MappingTestConfig.class})
 class UsersControllerTest extends AbstractControllerTest {
 
+    private static final String VALID_EMAIL = "john.doe@email.com";
+
     @Autowired
     private MockMvc mvc;
 

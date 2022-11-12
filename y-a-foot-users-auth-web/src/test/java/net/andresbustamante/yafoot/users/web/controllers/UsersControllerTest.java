@@ -11,6 +11,7 @@ import net.andresbustamante.yafoot.users.services.UserSearchService;
 import net.andresbustamante.yafoot.users.web.config.MappingTestConfig;
 import net.andresbustamante.yafoot.users.web.config.WebSecurityTestConfig;
 import net.andresbustamante.yafoot.users.web.dto.Credentials;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {WebSecurityTestConfig.class, MappingTestConfig.class})
 class UsersControllerTest extends AbstractControllerTest {
 
+    private static final String VALID_EMAIL = "john.doe@email.com";
+
     @Autowired
     private MockMvc mvc;
 
@@ -47,6 +50,12 @@ class UsersControllerTest extends AbstractControllerTest {
 
     @MockBean
     private UserSearchService userSearchService;
+
+    @BeforeEach
+    void initUserDetailsService() throws Exception {
+        User testUser = new User("john.doe@email.com", "passwd", "DOE", "John");
+        given(userSearchService.findUserByEmail(VALID_EMAIL)).willReturn(testUser);
+    }
 
     @Test
     void authenticateValidUser() throws Exception {

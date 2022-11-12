@@ -9,6 +9,4 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @PropertySource("classpath:application.yml")
 public abstract class AbstractControllerTest {
-
-    protected static final String VALID_EMAIL = "john.doe@email.com";
 }
