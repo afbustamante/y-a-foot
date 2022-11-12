@@ -41,7 +41,7 @@ public class InternalUserManagementAdapterImpl implements UserManagementAdapter 
     public void createUser(User user, UserContext context) throws DirectoryException {
         UriComponentsBuilder uriBuilder = getUriBuilder();
 
-        HttpEntity<net.andresbustamante.yafoot.auth.dto.User> body = new HttpEntity<>(userMapper.map(user));
+        HttpEntity<net.andresbustamante.yafoot.users.dto.User> body = new HttpEntity<>(userMapper.map(user));
 
         try {
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, body, Void.class);
@@ -55,7 +55,7 @@ public class InternalUserManagementAdapterImpl implements UserManagementAdapter 
         UriComponentsBuilder uriBuilder = getUriBuilder();
         uriBuilder.path("/").path(user.getEmail());
 
-        HttpEntity<net.andresbustamante.yafoot.auth.dto.User> body = new HttpEntity<>(userMapper.map(user));
+        HttpEntity<net.andresbustamante.yafoot.users.dto.User> body = new HttpEntity<>(userMapper.map(user));
 
         try {
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, body, Void.class);
@@ -83,9 +83,9 @@ public class InternalUserManagementAdapterImpl implements UserManagementAdapter 
         uriBuilder.path("/").path(email);
 
         try {
-            ResponseEntity<net.andresbustamante.yafoot.auth.dto.User> response = restTemplate.exchange(
+            ResponseEntity<net.andresbustamante.yafoot.users.dto.User> response = restTemplate.exchange(
                     uriBuilder.toUriString(), HttpMethod.GET, HttpEntity.EMPTY,
-                    net.andresbustamante.yafoot.auth.dto.User.class);
+                    net.andresbustamante.yafoot.users.dto.User.class);
 
             return userMapper.map(response.getBody());
         } catch (HttpClientErrorException | HttpServerErrorException e) {

@@ -10,8 +10,8 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
     @Mapping(target = "preferredLanguage", ignore = true)
-    User map(net.andresbustamante.yafoot.auth.dto.User usr);
+    User map(net.andresbustamante.yafoot.users.dto.User usr);
 
     @Mapping(target = "mainRole", constant = "PLAYER")
-    net.andresbustamante.yafoot.auth.dto.User map(User usr);
+    net.andresbustamante.yafoot.users.dto.User map(User usr);
 }

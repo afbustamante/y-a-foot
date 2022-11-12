@@ -131,7 +131,7 @@ class InternalUserManagementAdapterTest {
     @Test
     void findExistingUserByEmail() throws Exception {
         // Given
-        net.andresbustamante.yafoot.auth.dto.User testUser = new net.andresbustamante.yafoot.auth.dto.User();
+        net.andresbustamante.yafoot.users.dto.User testUser = new net.andresbustamante.yafoot.users.dto.User();
         String email = "test@mail.com";
         testUser.setEmail(email);
         testUser.setFirstName("John");
@@ -147,7 +147,7 @@ class InternalUserManagementAdapterTest {
     @Test
     void findNewUserByEmail() throws Exception {
         // Given
-        net.andresbustamante.yafoot.auth.dto.User testUser = new net.andresbustamante.yafoot.auth.dto.User();
+        net.andresbustamante.yafoot.users.dto.User testUser = new net.andresbustamante.yafoot.users.dto.User();
         String email = "test@mail.com";
         testUser.setEmail(email);
         testUser.setFirstName("John");
@@ -162,7 +162,7 @@ class InternalUserManagementAdapterTest {
     @Test
     void findUserByEmailWithServerError() throws Exception {
         // Given
-        net.andresbustamante.yafoot.auth.dto.User testUser = new net.andresbustamante.yafoot.auth.dto.User();
+        net.andresbustamante.yafoot.users.dto.User testUser = new net.andresbustamante.yafoot.users.dto.User();
         String email = "test@mail.com";
         testUser.setEmail(email);
         testUser.setFirstName("John");
