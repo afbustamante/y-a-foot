@@ -50,6 +50,15 @@ pipeline {
         stage('Report') {
             steps {
                 junit '**/target/surefire-reports/TEST-*.xml'
+
+                script {
+                    if (env.BRANCH_NAME == 'develop') {
+                        // Generate the updated site for the project
+                        sh 'mvn site:site site:deploy -P jenkins -pl !y-a-foot-commons-tools'
+                    } else {
+                        echo 'No site files generated for this branch'
+                    }
+                }
             }
         }
     }
