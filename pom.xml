@@ -55,11 +55,12 @@
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <swagger-codegen-maven-plugin.version>3.0.35</swagger-codegen-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+    <dependency-check-maven-plugin.version>7.3.2</dependency-check-maven-plugin.version>
 
     <!-- Spring Framework -->
     <spring-boot.version>2.6.13</spring-boot.version>
-    <spring.version>5.3.23</spring.version>
-    <spring-security.version>5.6.8</spring-security.version>
+    <spring.version>5.3.24</spring.version>
+    <spring-security.version>5.6.9</spring-security.version>
     <spring-ldap-core.version>2.3.8.RELEASE</spring-ldap-core.version>
 
     <!-- Java EE -->
@@ -71,8 +72,8 @@
 
     <!-- Database -->
     <postgresql.version>42.4.1</postgresql.version>
-    <h2.version>1.4.200</h2.version>
-    <flyway.version>8.0.5</flyway.version>
+    <h2.version>2.1.210</h2.version>
+    <flyway.version>8.5.13</flyway.version>
 
     <!-- MyBatis -->
     <mybatis.version>3.5.11</mybatis.version>
@@ -109,6 +110,7 @@
     <jboss-logging.version>3.4.3.Final</jboss-logging.version>
     <freemarker.version>2.3.31</freemarker.version>
     <checkstyle.version>10.3.4</checkstyle.version>
+    <snakeyaml.version>1.33</snakeyaml.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
@@ -428,6 +430,11 @@
         <artifactId>jboss-logging</artifactId>
         <version>${jboss-logging.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>${snakeyaml.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -597,6 +604,12 @@
           <groupId>org.sonarsource.scanner.maven</groupId>
           <artifactId>sonar-maven-plugin</artifactId>
           <version>${sonar-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>${dependency-check-maven-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -812,6 +825,18 @@
           <reportSet>
             <reports>
               <report>checkstyle</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>${dependency-check-maven-plugin.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>aggregate</report>
             </reports>
           </reportSet>
         </reportSets>
