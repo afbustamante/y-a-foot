@@ -9,12 +9,12 @@ friends, classmates and so on.
 
 Some frameworks and libraries used in this application:
 
-* Spring Boot 2.5
+* Spring Boot 2.6
 * Spring Framework 5.3
-* Spring Security 5.5
+* Spring Security 5.6
 * OpenAPI 3.0
 * MyBatis 3.5
-* JUnit 5.7
+* JUnit 5.8
 
 ## Deployment
 
@@ -36,7 +36,7 @@ This is the global deployment diagram showing the main components of this projec
 ### Minimum requirements for deployment
 
 * JRE 14
-* PostgreSQL 12+
+* PostgreSQL 13+
 * OpenLDAP 3
 
 ### LDAP directory structure

@@ -18,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 import java.text.MessageFormat;
 
@@ -62,7 +61,7 @@ public class UsersController extends AbstractController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<User> loadUser(@Pattern(regexp = "^[0-9A-F]{16}$") @Valid String email) {
+    public ResponseEntity<User> loadUser(String email) {
         try {
             net.andresbustamante.yafoot.users.model.User user = userSearchService.findUserByEmail(email);
 

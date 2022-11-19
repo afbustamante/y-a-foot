@@ -30,6 +30,11 @@ pipeline {
             steps {
                 sh 'mvn test -P jenkins --batch-mode --errors --fail-at-end'
             }
+            post {
+                always {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                }
+            }
         }
         stage('Analyze') {
             steps {
@@ -47,10 +52,8 @@ pipeline {
                 }
             }
         }
-        stage('Report') {
+        stage('Publish') {
             steps {
-                junit '**/target/surefire-reports/TEST-*.xml'
-
                 script {
                     if (env.BRANCH_NAME == 'develop') {
                         // Generate the updated site for the project
