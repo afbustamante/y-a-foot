@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SportSearchServiceImplTest extends AbstractServiceTest {
+class SportSearchServiceTest extends AbstractServiceTest {
 
     @InjectMocks
     private SportSearchServiceImpl sportSearchService;
