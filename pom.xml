@@ -748,12 +748,10 @@
             <exclude>META-INF/**</exclude>
             <exclude>**/*Aspect.*</exclude>
             <exclude>**/*Config.*</exclude>
-            <exclude>**/*Constants.*</exclude>
             <exclude>**/*Test.*</exclude>
             <exclude>**/*Exception.*</exclude>
             <exclude>**/yafoot/**/model/**</exclude>
             <exclude>**/yafoot/**/dto/**</exclude>
-            <exclude>org/w3/**</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -789,7 +787,6 @@
                     <exclude>*Filter</exclude>
                     <exclude>*Aspect</exclude>
                     <exclude>*Config</exclude>
-                    <exclude>*Constants</exclude>
                     <exclude>*Test</exclude>
                     <exclude>*Exception</exclude>
                     <exclude>*Mapper</exclude>
