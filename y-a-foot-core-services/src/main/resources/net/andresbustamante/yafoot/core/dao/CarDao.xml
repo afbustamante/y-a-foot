@@ -21,8 +21,8 @@
       SELECT NEXTVAL('s_car') AS id;
     </selectKey>
 
-    INSERT INTO t_car (car_id, car_name, car_num_seats, car_driver_id)
-    VALUES (#{car.id}, #{car.name}, #{car.numSeats}, #{car.driver.id})
+    INSERT INTO t_car (car_id, car_name, car_num_seats, car_driver_id, car_created_at)
+    VALUES (#{car.id}, #{car.name}, #{car.numSeats}, #{car.driver.id}, CURRENT_TIMESTAMP)
   </insert>
 
   <delete id="deleteCarsByPlayer">

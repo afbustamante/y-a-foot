@@ -21,7 +21,7 @@
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
           mat.mat_code_sharing_enabled   AS codeSharingEnabled,
           mat.mat_created_at             AS creationDate,
-          mat.mat_last_update            AS lastUpdateDate,
+          mat.mat_updated_at             AS lastUpdateDate,
           sit.sit_id                     AS siteId,
           sit.sit_name                   AS siteName,
           sit.sit_address                AS siteAddress,
@@ -62,7 +62,7 @@
                mat.mat_carpooling_enabled   AS carpoolingEnabled,
                mat.mat_code_sharing_enabled AS codeSharingEnabled,
                mat.mat_created_at           AS creationDate,
-               mat.mat_last_update          AS lastUpdateDate,
+               mat.mat_updated_at           AS lastUpdateDate,
                sit.sit_id                   AS siteId,
                sit.sit_name                 AS siteName,
                sit.sit_address              AS siteAddress,
@@ -124,7 +124,7 @@
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
           mat.mat_code_sharing_enabled   AS codeSharingEnabled,
           mat.mat_created_at             AS creationDate,
-          mat.mat_last_update            AS lastUpdateDate,
+          mat.mat_updated_at             AS lastUpdateDate,
           cre.ply_id                     AS creatorId,
           cre.ply_surname                AS creatorSurname,
           cre.ply_first_name             AS creatorFirstName,
@@ -209,7 +209,7 @@
       UPDATE t_player_match
       SET pma_car_id         = #{car.id},
         pma_car_confirmation = #{confirmed},
-        pma_last_update      = CURRENT_TIMESTAMP
+        pma_updated_at       = CURRENT_TIMESTAMP
       WHERE pma_match_id = #{match.id} AND pma_player_id = #{player.id}
     </update>
 
@@ -217,13 +217,13 @@
       UPDATE t_player_match
       SET pma_car_id           = null,
           pma_car_confirmation = false,
-          pma_last_update      = CURRENT_TIMESTAMP
+          pma_updated_at       = CURRENT_TIMESTAMP
       WHERE pma_match_id = #{match.id} AND pma_player_id = #{player.id}
     </update>
 
   <update id="updateMatchStatus">
     UPDATE t_match
-    SET mat_status = #{match.status}, mat_last_update = CURRENT_TIMESTAMP
+    SET mat_status = #{match.status}, mat_updated_at = CURRENT_TIMESTAMP
     WHERE mat_id = #{match.id}
   </update>
 

@@ -14,7 +14,7 @@ CREATE TABLE t_car
 CREATE TABLE t_match
 (
     mat_id                   integer      NOT NULL,
-    mat_date                 timestamp(7) NOT NULL,
+    mat_date                 timestamp    NOT NULL,
     mat_code                 varchar(12)  NOT NULL,
     mat_description          text,
     mat_status               varchar(10)  NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE t_match
     mat_site_id              integer      NOT NULL,
     mat_creator_id           integer      NOT NULL,
     mat_created_at           timestamp    NOT NULL,
-    mat_last_update          timestamp,
+    mat_updated_at           timestamp,
     mat_carpooling_enabled   bool         NOT NULL,
     mat_code_sharing_enabled bool         NOT NULL
 );
@@ -37,7 +37,7 @@ CREATE TABLE t_player
     ply_email        varchar(255) NOT NULL,
     ply_active       bool         NOT NULL,
     ply_created_at   timestamp    NOT NULL,
-    ply_last_update  timestamp
+    ply_updated_at   timestamp
 );
 
 CREATE TABLE t_player_match
@@ -47,7 +47,7 @@ CREATE TABLE t_player_match
     pma_car_id           integer,
     pma_car_confirmation bool,
     pma_created_at       timestamp NOT NULL,
-    pma_last_update      timestamp
+    pma_updated_at       timestamp
 );
 
 CREATE TABLE t_site

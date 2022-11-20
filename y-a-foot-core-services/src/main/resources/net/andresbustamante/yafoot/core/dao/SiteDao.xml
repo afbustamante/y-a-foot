@@ -37,7 +37,7 @@
             SELECT NEXTVAL('s_site') AS id;
         </selectKey>
 
-        INSERT INTO t_site (sit_id, sit_name, sit_address, sit_phone_number, sit_creator_id)
-        VALUES (#{site.id}, #{site.name}, #{site.address}, #{site.phoneNumber}, #{player.id})
+        INSERT INTO t_site (sit_id, sit_name, sit_address, sit_phone_number, sit_creator_id, sit_created_at)
+        VALUES (#{site.id}, #{site.name}, #{site.address}, #{site.phoneNumber}, #{player.id}, CURRENT_TIMESTAMP)
     </insert>
 </mapper>

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <t_site sit_id="100" sit_name="Foot-à-5 de la ville" sit_address="9 Rue du sport" sit_phone_number="1234567890" />
+  <t_site sit_id="100" sit_name="Foot-à-5 de la ville" sit_address="9 Rue du sport" sit_phone_number="1234567890" sit_created_at="[now]" />
 </dataset>

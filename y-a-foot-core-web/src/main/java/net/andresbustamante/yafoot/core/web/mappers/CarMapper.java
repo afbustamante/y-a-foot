@@ -4,6 +4,7 @@ import net.andresbustamante.yafoot.commons.web.mappers.StringMapper;
 import net.andresbustamante.yafoot.commons.web.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.core.model.Car;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface CarMapper {
      * @param car DTO to map
      * @return Resulting car bean
      */
+    @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "lastUpdateDate", ignore = true)
     Car map(net.andresbustamante.yafoot.web.dto.Car car);
 
     /**

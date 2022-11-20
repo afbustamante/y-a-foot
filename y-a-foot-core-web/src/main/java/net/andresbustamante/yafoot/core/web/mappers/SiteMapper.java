@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.core.web.mappers;
 import net.andresbustamante.yafoot.commons.web.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.core.model.Site;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface SiteMapper {
      * @param site Site form data to map
      * @return Site bean
      */
+    @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "lastUpdateDate", ignore = true)
     Site map(net.andresbustamante.yafoot.web.dto.Site site);
 
     /**

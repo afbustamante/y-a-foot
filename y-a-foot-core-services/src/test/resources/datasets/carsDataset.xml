@@ -7,11 +7,11 @@
   <t_player ply_id="103" ply_surname="Test" ply_first_name="User" ply_phone_number="01234656789" ply_email="test.user@email.com"
             ply_created_at="2020-11-22 12:34:56" ply_active="true"/>
 
-  <t_car car_id="1001" car_name="Peugeot 207" car_num_seats="4" car_driver_id="101" />
-  <t_car car_id="1002" car_name="Renault Mégane GTi" car_num_seats="3" car_driver_id="101" />
-  <t_car car_id="1003" car_name="Volkswagen Golf" car_num_seats="3" car_driver_id="102" />
+  <t_car car_id="1001" car_name="Peugeot 207" car_num_seats="4" car_driver_id="101" car_created_at="[now]" />
+  <t_car car_id="1002" car_name="Renault Mégane GTi" car_num_seats="3" car_driver_id="101" car_created_at="[now]" />
+  <t_car car_id="1003" car_name="Volkswagen Golf" car_num_seats="3" car_driver_id="102" car_created_at="[now]" />
 
-  <t_site sit_id="101" sit_name="Foot-à-5 de la ville" sit_address="9 Rue du sport" sit_phone_number="1234567890" sit_creator_id="101"/>
+  <t_site sit_id="101" sit_name="Foot-à-5 de la ville" sit_address="9 Rue du sport" sit_phone_number="1234567890" sit_creator_id="101" sit_created_at="[now]" />
 
   <t_match mat_id="101" mat_date="2020-01-02 18:30:00" mat_code="AZERTY-1234" mat_description="Mon match dans le passé"
            mat_num_players_min="9" mat_site_id="101" mat_creator_id="101" mat_created_at="2019-01-02 18:30:00"
