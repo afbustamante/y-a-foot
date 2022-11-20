@@ -1,8 +1,10 @@
 package net.andresbustamante.yafoot.core.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 import net.andresbustamante.yafoot.users.model.User;
@@ -10,7 +12,6 @@ import net.andresbustamante.yafoot.users.model.User;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A match player.
@@ -18,6 +19,7 @@ import java.util.Objects;
  * @author andresbustamante
  */
 @Getter @Setter @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true, of = {"id"}) @ToString(of = {"id"})
 public final class Player extends User implements Serializable, Identifiable<Integer>, Auditable {
 
     private static final long serialVersionUID = 1L;
@@ -55,24 +57,4 @@ public final class Player extends User implements Serializable, Identifiable<Int
         this.id = id;
         this.phoneNumber = phoneNumber;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Player that = (Player) o;
-        return Objects.equals(id, that.id) && Objects.equals(getEmail(), that.getEmail());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), id, getEmail());
-    }
-
-    @Override
-    public String toString() {
-        return "Player[ id=" + id + " ]";
-    }
-
 }

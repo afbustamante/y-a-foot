@@ -1,14 +1,15 @@
 package net.andresbustamante.yafoot.core.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /**
  * Registration from a player to a match.
@@ -16,6 +17,7 @@ import java.util.Objects;
  * @author andresbustamante
  */
 @Getter @Setter @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"}) @ToString(of = {"id"})
 public final class Registration implements Identifiable<RegistrationId>, Serializable, Auditable {
 
     private static final long serialVersionUID = 1L;
@@ -68,23 +70,4 @@ public final class Registration implements Identifiable<RegistrationId>, Seriali
     public Registration(int matchId, int playerId) {
         this.id = new RegistrationId(matchId, playerId);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Registration that = (Registration) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Registration [ id=" + id + " ]";
-    }
-
 }

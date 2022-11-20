@@ -56,7 +56,10 @@ class SiteDaoTest extends AbstractDaoTest {
     @Test
     void saveSite() throws Exception {
         // Given
-        Site newSite = new Site("Nouveau site", "123 Rue du site", "0412345678", null);
+        Site newSite = new Site();
+        newSite.setName("Nouveau site");
+        newSite.setAddress("123 Rue du site");
+        newSite.setPhoneNumber("0412345678");
         Player player1 = new Player(101);
 
         // When

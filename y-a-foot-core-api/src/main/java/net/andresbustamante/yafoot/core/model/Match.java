@@ -1,7 +1,9 @@
 package net.andresbustamante.yafoot.core.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
@@ -10,15 +12,17 @@ import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 
 import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
 import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.DRAFT;
 
 /**
+ * A match planned by a player.
+ *
  * @author andresbustamante
  */
 @Getter @Setter
+@EqualsAndHashCode(of = {"id", "code"}) @ToString(of = {"id", "code"})
 public final class Match implements Serializable, Identifiable<Integer>, Auditable {
 
     private static final long serialVersionUID = 1L;
@@ -93,23 +97,4 @@ public final class Match implements Serializable, Identifiable<Integer>, Auditab
         }
         return 0;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Match that = (Match) o;
-        return Objects.equals(id, that.id) && Objects.equals(code, that.code);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, code);
-    }
-
-    @Override
-    public String toString() {
-        return "Match [ id=" + id + " ]";
-    }
-
 }
