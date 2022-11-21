@@ -766,7 +766,6 @@
             <phase>test</phase>
             <goals>
               <goal>report</goal>
-              <goal>report-aggregate</goal>
               <goal>check</goal>
             </goals>
             <configuration>
@@ -844,7 +843,7 @@
         <reportSets>
           <reportSet>
             <reports>
-              <report>report-aggregate</report>
+              <report>report</report>
             </reports>
           </reportSet>
         </reportSets>
