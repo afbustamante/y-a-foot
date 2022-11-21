@@ -766,6 +766,7 @@
             <phase>test</phase>
             <goals>
               <goal>report</goal>
+              <goal>report-aggregate</goal>
               <goal>check</goal>
             </goals>
             <configuration>
@@ -829,11 +830,21 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>${dependency-check-maven-plugin.version}</version>
         <reportSets>
           <reportSet>
             <reports>
               <report>aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report-aggregate</report>
             </reports>
           </reportSet>
         </reportSets>
