@@ -71,7 +71,7 @@
     <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
 
     <!-- Database -->
-    <postgresql.version>42.4.1</postgresql.version>
+    <postgresql.version>42.4.3</postgresql.version>
     <h2.version>2.1.210</h2.version>
     <flyway.version>8.5.13</flyway.version>
 
