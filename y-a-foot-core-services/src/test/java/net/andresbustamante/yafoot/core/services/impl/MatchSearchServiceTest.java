@@ -29,7 +29,6 @@ class MatchSearchServiceTest extends AbstractServiceTest {
     void findExistingMatchByCode() throws Exception {
         // Given
         String code = "code";
-        UserContext ctx = new UserContext();
         Match match = new Match(1);
         match.setCode(code);
 
@@ -46,8 +45,6 @@ class MatchSearchServiceTest extends AbstractServiceTest {
     @Test
     void findMatchByCodeUsingEmptyCode() throws Exception {
         // Given
-        UserContext ctx = new UserContext();
-
         // When
         Match match = matchSearchService.findMatchByCode(null);
 
@@ -60,7 +57,6 @@ class MatchSearchServiceTest extends AbstractServiceTest {
     void findMatchByCodeUsingInvalidCode() throws Exception {
         // Given
         String code = "code";
-        UserContext ctx = new UserContext();
 
         // When
         when(matchDAO.findMatchByCode(anyString())).thenReturn(null);

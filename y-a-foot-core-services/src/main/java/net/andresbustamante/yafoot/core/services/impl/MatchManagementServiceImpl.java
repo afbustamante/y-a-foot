@@ -285,7 +285,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
         // Case 1: No confirmation needed for the driver of a car. This car is confirmed
         // Case 2: This car doesn't belong to the user registering to the match. He/She is not confirmed yet
-        return (car.getDriver() != null) && (car.getDriver().getEmail().equals(userContext.getUsername()));
+        return car.getDriver() != null && car.getDriver().getEmail().equals(userContext.getUsername());
     }
 
     /**

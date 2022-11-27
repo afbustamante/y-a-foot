@@ -133,6 +133,7 @@
     <module name="MethodParamPad"/>
     <module name="NoWhitespaceAfter"/>
     <module name="NoWhitespaceBefore"/>
+    <module name="NoWhitespaceBeforeCaseDefaultColon"/>
     <module name="OperatorWrap"/>
     <module name="ParenPad"/>
     <module name="TypecastParenPad"/>
@@ -149,18 +150,18 @@
     <module name="AvoidNestedBlocks"/>
     <module name="EmptyBlock"/>
     <module name="LeftCurly"/>
-    <!--
     <module name="NeedBraces"/>
-    -->
     <module name="RightCurly"/>
 
     <!-- Checks for common coding problems               -->
     <!-- See https://checkstyle.org/config_coding.html -->
+    <module name="DeclarationOrder"/>
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
     <module name="HiddenField">
       <property name="ignoreConstructorParameter" value="true" />
     </module>
+    <module name="IllegalType"/>
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
     <!-- Disabled because of magic number checks on tests
@@ -170,6 +171,15 @@
     <module name="MultipleVariableDeclarations"/>
     <module name="SimplifyBooleanExpression"/>
     <module name="SimplifyBooleanReturn"/>
+    <module name="UnnecessaryParentheses"/>
+    <module name="UnnecessarySemicolonAfterOuterTypeDeclaration"/>
+    <module name="UnnecessarySemicolonAfterTypeMemberDeclaration"/>
+    <module name="UnnecessarySemicolonInEnumeration"/>
+    <module name="UnnecessarySemicolonInTryWithResources"/>
+    <module name="UnusedLocalVariable"/>
+    <module name="NoEnumTrailingComma"/>
+    <module name="NoArrayTrailingComma"/>
+    <module name="RequireThis"/>
 
     <!-- Checks for class design                         -->
     <!-- See https://checkstyle.org/config_design.html -->

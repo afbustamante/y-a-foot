@@ -143,8 +143,8 @@ public class CarpoolingServiceImpl implements CarpoolingService {
             throws ApplicationException {
         String confirmationTemplate = "carpooling-confirmation-email_" + player.getPreferredLanguage() + ".ftl";
         String rejectionTemplate = "carpooling-rejection-email_" + player.getPreferredLanguage() + ".ftl";
-        String template = (isCarSeatConfirmed) ? confirmationTemplate : rejectionTemplate;
-        String subject = (isCarSeatConfirmed) ? "carpool.confirmation.email.subject"
+        String template = isCarSeatConfirmed ? confirmationTemplate : rejectionTemplate;
+        String subject = isCarSeatConfirmed ? "carpool.confirmation.email.subject"
                 : "carpool.rejection.email.subject";
 
         String link = MessageFormat.format(matchManagementUrl, match.getCode());

@@ -27,8 +27,6 @@ class LdapPasswordEncoderTest {
     @Test
     void matches() {
         // Given
-        String password = "demodemo";
-
         // When
         var matches = passwordEncoder.matches("fjBE7dmxrRrD524u",
                 "{BCRYPT}JDJhJDEwJEVOQ3R4Y3FYZzIycjFaT3ZmTnVwSi42blJmU2E0cHF4YlpmTkUvdkJyMTBoZEc0OUdkTXEy");

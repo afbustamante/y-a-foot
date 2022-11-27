@@ -80,7 +80,7 @@ public final class Match implements Serializable, Identifiable<Integer>, Auditab
      */
     public boolean isAcceptingRegistrations() {
         if (status.isActiveStatus() && OffsetDateTime.now().isBefore(date)) {
-            return (numPlayersMax == null) || numPlayersMax > getNumRegisteredPlayers();
+            return numPlayersMax == null || numPlayersMax > getNumRegisteredPlayers();
         } else {
             return false;
         }
