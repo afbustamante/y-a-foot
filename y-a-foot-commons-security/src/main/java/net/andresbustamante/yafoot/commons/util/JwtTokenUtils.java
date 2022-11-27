@@ -70,12 +70,12 @@ public class JwtTokenUtils {
      * @return Whether the token is valid or not
      */
     public boolean isValidToken(String token, String username) {
-        final String tokenUsername = getUsernameFromToken(token);
+        String tokenUsername = getUsernameFromToken(token);
         return tokenUsername.equals(username) && !isTokenExpired(token);
     }
 
     private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
+        Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
 
@@ -84,7 +84,7 @@ public class JwtTokenUtils {
     }
 
     private boolean isTokenExpired(String token) {
-        final LocalDateTime expiration = getExpirationDateFromToken(token);
+        LocalDateTime expiration = getExpirationDateFromToken(token);
         return expiration.isBefore(LocalDateTime.now());
     }
 
