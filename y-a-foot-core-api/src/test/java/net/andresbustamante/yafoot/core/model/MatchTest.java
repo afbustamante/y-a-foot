@@ -55,6 +55,19 @@ class MatchTest {
     }
 
     @Test
+    void isPlayerNotRegisteredNewMatch() {
+        // Given
+        Player player1 = new Player(1);
+        Match match1 = new Match(1);
+
+        // When
+        var result = match1.isPlayerRegistered(player1);
+
+        // Then
+        assertFalse(result);
+    }
+
+    @Test
     void isAcceptingRegistrations() {
         // Given
         Player player1 = new Player(1);
@@ -146,5 +159,17 @@ class MatchTest {
 
         // Then
         assertEquals(2, result);
+    }
+
+    @Test
+    void getNumRegisteredPlayersNewMatch() {
+        // Given
+        Match match1 = new Match(1);
+
+        // When
+        var result = match1.getNumRegisteredPlayers();
+
+        // Then
+        assertEquals(0, result);
     }
 }

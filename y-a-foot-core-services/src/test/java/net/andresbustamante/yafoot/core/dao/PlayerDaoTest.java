@@ -15,8 +15,8 @@ import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_AL
 import static org.junit.jupiter.api.Assertions.*;
 
 @ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
-@DatabaseSetup(value = "classpath:datasets/playersDataset.xml")
-@DatabaseTearDown(value = "classpath:datasets/playersDataset.xml", type = DELETE_ALL)
+@DatabaseSetup(value = "classpath:datasets/players/t_player.csv")
+@DatabaseTearDown(value = "classpath:datasets/players/t_player.csv", type = DELETE_ALL)
 class PlayerDaoTest extends AbstractDaoTest {
 
     private static final String EMAIL = "john.doe@email.com";

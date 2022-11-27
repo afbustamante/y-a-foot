@@ -20,8 +20,8 @@ import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_AL
 import static org.junit.jupiter.api.Assertions.*;
 
 @ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
-@DatabaseSetup(value = "classpath:datasets/carsDataset.xml")
-@DatabaseTearDown(value = "classpath:datasets/carsDataset.xml", type = DELETE_ALL)
+@DatabaseSetup(value = "classpath:datasets/cars/t_player_match.csv")
+@DatabaseTearDown(value = "classpath:datasets/cars/t_player_match.csv", type = DELETE_ALL)
 class CarDaoTest extends AbstractDaoTest {
 
     @Autowired

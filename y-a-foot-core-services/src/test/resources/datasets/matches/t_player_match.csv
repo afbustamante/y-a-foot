@@ -1,0 +1,6 @@
+pma_match_id,pma_player_id,pma_car_id,pma_car_confirmation,pma_created_at
+101,101,101,true,[now]
+101,102,null,false,[now]
+102,102,null,false,[now]
+102,103,null,false,[now]
+103,102,null,false,[now]

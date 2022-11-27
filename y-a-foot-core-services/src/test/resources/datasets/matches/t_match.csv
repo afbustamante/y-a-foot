@@ -1,0 +1,4 @@
+mat_id,mat_date,mat_code,mat_description,mat_num_players_min,mat_site_id,mat_creator_id,mat_created_at,mat_status,mat_carpooling_enabled,mat_code_sharing_enabled,mat_sport_id,mat_updated_at,mat_num_players_max
+101,2018-10-02 18:30:00,AZERTY-1234,Mon match dans le passé,9,101,101,2019-01-02 09:10:11,CREATED,true,true,1,2019-01-02 10:10:11,null
+102,2019-10-02 19:10:00,QWERTY-1234,Mon match dans le futur,8,102,102,2019-01-02,CREATED,false,true,1,null,12
+103,2019-10-02 20:50:00,QWERTZ-1234,Mon match sans inscriptions,8,102,102,2019-01-02,CANCELLED,false,true,5,null,12
