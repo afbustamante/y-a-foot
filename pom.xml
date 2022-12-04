@@ -72,7 +72,7 @@
 
     <!-- Database -->
     <postgresql.version>42.4.3</postgresql.version>
-    <h2.version>2.1.210</h2.version>
+    <h2.version>2.1.214</h2.version>
     <flyway.version>8.5.13</flyway.version>
 
     <!-- MyBatis -->
