@@ -58,10 +58,10 @@
     <dependency-check-maven-plugin.version>7.3.2</dependency-check-maven-plugin.version>
 
     <!-- Spring Framework -->
-    <spring-boot.version>2.6.13</spring-boot.version>
+    <spring-boot.version>2.7.6</spring-boot.version>
     <spring.version>5.3.24</spring.version>
-    <spring-security.version>5.6.9</spring-security.version>
-    <spring-ldap-core.version>2.3.8.RELEASE</spring-ldap-core.version>
+    <spring-security.version>5.7.5</spring-security.version>
+    <spring-ldap-core.version>2.4.1</spring-ldap-core.version>
 
     <!-- Java EE -->
     <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
