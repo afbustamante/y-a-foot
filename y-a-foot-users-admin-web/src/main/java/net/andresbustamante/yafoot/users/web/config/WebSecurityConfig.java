@@ -4,11 +4,10 @@ import net.andresbustamante.yafoot.commons.web.util.CorsConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,18 +18,26 @@ import java.util.List;
  * Spring Security configuration for the users module.
  */
 @Configuration
+@Profile({"development", "production"})
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
     @Value("${api.config.rest.allowed-origin}")
     private String allowedOrigin;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and().authorizeRequests().anyRequest().authenticated();
+    /**
+     * Security configuration on URL.
+     *
+     * @param http
+     * @return Security filter chain with updated configuration
+     * @throws Exception
+     */
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeHttpRequests(authz -> authz
+                .anyRequest().authenticated()).httpBasic();
+        return http.build();
     }
 
     /**

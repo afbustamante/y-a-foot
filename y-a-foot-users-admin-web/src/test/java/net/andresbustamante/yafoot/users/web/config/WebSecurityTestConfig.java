@@ -1,34 +1,43 @@
 package net.andresbustamante.yafoot.users.web.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@Profile("test")
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityTestConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityTestConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    /**
+     * Security configuration on HTTP requests.
+     *
+     * @param http
+     * @return Security filter chain with updated configuration
+     * @throws Exception
+     */
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.httpBasic().disable();
         http.csrf().disable();
 
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/users").permitAll()
-                .antMatchers(HttpMethod.POST, new String[]{"/users", "/users/**"}).permitAll()
-                .antMatchers(HttpMethod.GET, "/users/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/users/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/users/**").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/users/**").permitAll()
+        http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.OPTIONS, "/users").permitAll()
+                .requestMatchers(HttpMethod.POST, new String[]{"/users", "/users/**"}).permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/users/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/users/**").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/users/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        return http.build();
     }
 }
