@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.users.services.impl;
 
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.users.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 /**
  * Unit tests for {@link UserSearchServiceImpl}.
  */
-class UserSearchServiceTest extends AbstractServiceTest {
+class UserSearchServiceTest extends AbstractServiceUnitTest {
 
     private static final User USR_TEST = new User("test@email.com", "password", "TEST",
             "User");

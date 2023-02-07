@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.model.Car;
@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class CarManagementServiceTest extends AbstractServiceTest {
+class CarManagementServiceTest extends AbstractServiceUnitTest {
 
     private Player player;
 

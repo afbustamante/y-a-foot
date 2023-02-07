@@ -13,5 +13,5 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
 @DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
-public abstract class AbstractDaoTest {
+public abstract class AbstractDaoIntegrationTest {
 }

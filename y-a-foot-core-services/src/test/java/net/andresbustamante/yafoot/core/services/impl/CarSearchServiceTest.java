@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.core.model.Car;
@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class CarSearchServiceTest extends AbstractServiceTest {
+class CarSearchServiceTest extends AbstractServiceUnitTest {
 
     @InjectMocks
     private CarSearchServiceImpl carSearchService;

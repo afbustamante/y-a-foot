@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Integration tests for {@link MessagingServiceImpl}.
  */
 @ContextConfiguration(classes = {MessagingTestConfig.class, FreemarkerTestConfig.class})
-class MessagingServiceIntegrationTest extends AbstractServiceIntegrationTest {
+class MessagingServiceIT extends AbstractServiceIntegrationTest {
 
     @Autowired
     private ApplicationContext applicationContext;

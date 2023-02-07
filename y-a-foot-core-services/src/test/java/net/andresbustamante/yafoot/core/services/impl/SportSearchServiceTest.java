@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.SportDao;
 import net.andresbustamante.yafoot.core.model.Sport;
 import net.andresbustamante.yafoot.core.model.enums.SportEnum;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SportSearchServiceTest extends AbstractServiceTest {
+class SportSearchServiceTest extends AbstractServiceUnitTest {
 
     @InjectMocks
     private SportSearchServiceImpl sportSearchService;

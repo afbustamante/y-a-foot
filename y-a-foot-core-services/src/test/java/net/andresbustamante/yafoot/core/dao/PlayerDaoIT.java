@@ -4,7 +4,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import net.andresbustamante.yafoot.commons.config.DbUnitTestConfig;
 import net.andresbustamante.yafoot.commons.config.JdbcTestConfig;
-import net.andresbustamante.yafoot.commons.dao.AbstractDaoTest;
+import net.andresbustamante.yafoot.commons.dao.AbstractDaoIntegrationTest;
 import net.andresbustamante.yafoot.core.config.MyBatisTestConfig;
 import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {JdbcTestConfig.class, MyBatisTestConfig.class, DbUnitTestConfig.class})
 @DatabaseSetup(value = "classpath:datasets/players/t_player.csv")
 @DatabaseTearDown(value = "classpath:datasets/players/t_player.csv", type = DELETE_ALL)
-class PlayerDaoTest extends AbstractDaoTest {
+class PlayerDaoIT extends AbstractDaoIntegrationTest {
 
     private static final String EMAIL = "john.doe@email.com";
     private static final String PHONE_NUMBER = "0423456789";

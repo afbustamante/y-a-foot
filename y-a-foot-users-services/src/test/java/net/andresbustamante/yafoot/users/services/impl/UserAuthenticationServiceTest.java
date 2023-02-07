@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.users.services.impl;
 
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.commons.util.JwtTokenUtils;
 import net.andresbustamante.yafoot.users.exceptions.InvalidCredentialsException;
 import net.andresbustamante.yafoot.users.model.User;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 /**
  * Unit tests for {@link UserAuthenticationServiceImpl}.
  */
-class UserAuthenticationServiceTest extends AbstractServiceTest {
+class UserAuthenticationServiceTest extends AbstractServiceUnitTest {
 
     private static final User USR_TEST = new User("test@email.com", "password", "TEST",
             "User");

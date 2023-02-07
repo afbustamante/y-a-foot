@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
@@ -14,7 +14,7 @@ import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 
-class SiteManagementServiceTest extends AbstractServiceTest {
+class SiteManagementServiceTest extends AbstractServiceUnitTest {
 
     @InjectMocks
     private SiteManagementServiceImpl siteManagementService;

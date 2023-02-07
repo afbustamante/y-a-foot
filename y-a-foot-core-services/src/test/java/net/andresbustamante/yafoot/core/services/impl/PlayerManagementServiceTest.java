@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.adapters.UserManagementAdapter;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.exceptions.PlayerNotFoundException;
@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class PlayerManagementServiceTest extends AbstractServiceTest {
+class PlayerManagementServiceTest extends AbstractServiceUnitTest {
 
     @InjectMocks
     private PlayerManagementServiceImpl playerManagementService;

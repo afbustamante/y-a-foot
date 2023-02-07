@@ -3,7 +3,7 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.MatchDao;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
@@ -29,7 +29,7 @@ import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class MatchManagementServiceTest extends AbstractServiceTest {
+class MatchManagementServiceTest extends AbstractServiceUnitTest {
 
     @InjectMocks
     private MatchManagementServiceImpl matchManagementService;

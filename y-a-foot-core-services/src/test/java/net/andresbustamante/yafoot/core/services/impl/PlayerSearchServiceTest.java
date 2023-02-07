@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
-import net.andresbustamante.yafoot.commons.services.AbstractServiceTest;
+import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class PlayerSearchServiceTest extends AbstractServiceTest {
+class PlayerSearchServiceTest extends AbstractServiceUnitTest {
 
     @InjectMocks
     private PlayerSearchServiceImpl playerSearchService;
