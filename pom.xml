@@ -475,7 +475,7 @@
       <id>jenkins</id>
       <properties>
         <env>ci</env>
-        <distribution.url>file:///tmp/websites/y-a-foot</distribution.url>
+        <distribution.url>file:///var/www/html/apps.andresbustamante.net/y-a-foot</distribution.url>
       </properties>
     </profile>
   </profiles>
