@@ -6,12 +6,20 @@ import net.andresbustamante.yafoot.commons.config.DbUnitTestConfig;
 import net.andresbustamante.yafoot.commons.config.JdbcTestConfig;
 import net.andresbustamante.yafoot.commons.dao.AbstractDaoIntegrationTest;
 import net.andresbustamante.yafoot.core.config.MyBatisTestConfig;
-import net.andresbustamante.yafoot.core.model.*;
+import net.andresbustamante.yafoot.core.model.Car;
+import net.andresbustamante.yafoot.core.model.Match;
+import net.andresbustamante.yafoot.core.model.Player;
+import net.andresbustamante.yafoot.core.model.Registration;
+import net.andresbustamante.yafoot.core.model.Site;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;

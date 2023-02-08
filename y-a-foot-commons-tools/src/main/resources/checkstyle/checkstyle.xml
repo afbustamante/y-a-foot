@@ -54,6 +54,7 @@
 
   <!-- Checks that property files contain the same keys.         -->
   <!-- See https://checkstyle.org/config_misc.html#Translation -->
+  <module name="UniqueProperties"/>
   <module name="Translation"/>
 
   <!-- Checks for Size Violations.                    -->
@@ -110,6 +111,11 @@
     <module name="ParameterName"/>
     <module name="StaticVariableName"/>
     <module name="TypeName"/>
+    <module name="LambdaParameterName"/>
+    <module name="AbstractClassName"/>
+    <module name="ClassTypeParameterName"/>
+    <module name="InterfaceTypeParameterName"/>
+    <module name="IllegalIdentifierName"/>
 
     <!-- Checks for imports                              -->
     <!-- See https://checkstyle.org/config_imports.html -->
@@ -117,6 +123,9 @@
     <module name="RedundantImport"/>
     <module name="UnusedImports">
       <property name="processJavadoc" value="false"/>
+    </module>
+    <module name="AvoidStarImport">
+      <property name="allowStaticMemberImports" value="true"/>
     </module>
 
     <!-- Checks for Size Violations.                    -->
@@ -158,6 +167,7 @@
     <module name="DeclarationOrder"/>
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
+    <module name="EqualsAvoidNull"/>
     <module name="HiddenField">
       <property name="ignoreConstructorParameter" value="true" />
     </module>
@@ -168,6 +178,7 @@
     <module name="MagicNumber"/>
     -->
     <module name="MissingSwitchDefault"/>
+    <module name="DefaultComesLast"/>
     <module name="MultipleVariableDeclarations"/>
     <module name="SimplifyBooleanExpression"/>
     <module name="SimplifyBooleanReturn"/>
@@ -180,6 +191,8 @@
     <module name="NoEnumTrailingComma"/>
     <module name="NoArrayTrailingComma"/>
     <module name="RequireThis"/>
+    <module name="StringLiteralEquality"/>
+    <module name="ModifiedControlVariable"/>
 
     <!-- Checks for class design                         -->
     <!-- See https://checkstyle.org/config_design.html -->

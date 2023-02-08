@@ -461,7 +461,7 @@
       </activation>
       <properties>
         <env>local</env>
-        <distribution.url>file:///Users/andresbustamante/Documents/websites/y-a-foot</distribution.url>
+        <distribution.url>file://${user.home}/Public/y-a-foot</distribution.url>
       </properties>
     </profile>
     <profile>
@@ -475,7 +475,7 @@
       <id>jenkins</id>
       <properties>
         <env>ci</env>
-        <distribution.url>file:///var/www/html/apps.andresbustamante.net/y-a-foot</distribution.url>
+        <distribution.url>file:///tmp/websites/y-a-foot</distribution.url>
       </properties>
     </profile>
   </profiles>
@@ -879,6 +879,11 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
+        <configuration>
+          <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+          <nugetconfAnalyzerEnabled>false</nugetconfAnalyzerEnabled>
+          <nuspecAnalyzerEnabled>false</nuspecAnalyzerEnabled>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>
