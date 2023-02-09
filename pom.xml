@@ -114,7 +114,7 @@
     <snakeyaml.version>1.33</snakeyaml.version>
 
     <!-- JaCoCo + Sonar -->
-    <sonar.junit.reportPaths>${basedir}/target/surefire-reports</sonar.junit.reportPaths>
+    <sonar.junit.reportPaths>${basedir}/target/surefire-reports,${basedir}/target/failsafe-reports</sonar.junit.reportPaths>
     <sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     <sonar.dependencyCheck.htmlReportPath>${project.reporting.outputDirectory}/dependency-check-report.html</sonar.dependencyCheck.htmlReportPath>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -797,10 +797,23 @@
             </goals>
           </execution>
           <execution>
+            <id>pre-integration-test</id>
+            <goals>
+              <goal>prepare-agent-integration</goal>
+            </goals>
+          </execution>
+          <execution>
             <id>post-unit-test-report</id>
             <phase>test</phase>
             <goals>
               <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>post-integration-test-report</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>report-integration</goal>
             </goals>
           </execution>
           <execution>
@@ -855,6 +868,21 @@
               </rules>
             </configuration>
           </execution>
+          <execution>
+            <id>merge-unit-and-integration-tests-report</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>merge</goal>
+            </goals>
+            <configuration>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.directory}</directory>
+                  <includes>*.exec</includes>
+                </fileSet>
+              </fileSets>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
@@ -899,14 +927,6 @@
           <aggregate>true</aggregate>
           <linkXRef>true</linkXRef>
         </configuration>
-        <reportSets>
-          <reportSet>
-            <id>integration-tests</id>
-            <reports>
-              <report>failsafe-report-only</report>
-            </reports>
-          </reportSet>
-        </reportSets>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
