@@ -33,6 +33,10 @@ pipeline {
             post {
                 always {
                     junit '**/target/surefire-reports/TEST-*.xml'
+
+                    withChecks('Integration Tests') {
+                        junit '**/target/failsafe-reports/TEST-*.xml'
+                    }
                 }
             }
         }
