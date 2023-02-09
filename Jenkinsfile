@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'mvn test -P jenkins --batch-mode --errors --fail-at-end'
+                sh 'mvn test verify -P jenkins --batch-mode --errors --fail-at-end'
             }
             post {
                 always {
