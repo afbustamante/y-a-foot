@@ -47,7 +47,6 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
 
         // Then
         verify(playerDAO).isPlayerAlreadySignedUp(anyString());
-        verify(userManagementAdapter).createUser(any(User.class), any(UserContext.class));
         verify(playerDAO).savePlayer(any());
     }
 
@@ -64,7 +63,6 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
 
         // Then
         verify(playerDAO).isPlayerAlreadySignedUp(anyString());
-        verify(userManagementAdapter, never()).createUser(any(User.class), any(UserContext.class));
         verify(playerDAO, never()).savePlayer(any());
     }
 

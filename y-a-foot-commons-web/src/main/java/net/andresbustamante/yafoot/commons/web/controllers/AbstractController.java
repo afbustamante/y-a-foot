@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -109,8 +111,13 @@ public abstract class AbstractController {
     protected UserContext getUserContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String username = (authentication instanceof AnonymousAuthenticationToken) ? "anonymous"
-                : authentication.getName();
+        String username = null;
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            username = "anonymous";
+        } else if (authentication instanceof JwtAuthenticationToken) {
+            username = ((Jwt) authentication.getCredentials()).getClaimAsString("email");
+        }
         String timeZone = request.getHeader(UserContext.TZ);
 
         UserContext userContext = new UserContext(username);

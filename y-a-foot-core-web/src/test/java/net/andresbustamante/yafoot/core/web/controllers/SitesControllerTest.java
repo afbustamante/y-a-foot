@@ -2,18 +2,18 @@ package net.andresbustamante.yafoot.core.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
-import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.core.services.SiteManagementService;
 import net.andresbustamante.yafoot.core.services.SiteSearchService;
+import net.andresbustamante.yafoot.core.web.mappers.SiteMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,16 +22,15 @@ import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(SitesController.class)
-@Import(SitesController.class)
+@WebMvcTest(value = {SitesController.class, ObjectMapper.class}, properties = {
+        "api.config.public.url=http://myurl",
+        "api.sites.one.path=/sites/{0}"
+}, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class SitesControllerTest extends AbstractControllerTest {
 
     @Autowired
@@ -49,11 +48,8 @@ class SitesControllerTest extends AbstractControllerTest {
     @MockBean
     private PlayerSearchService playerSearchService;
 
-    @Value("${api.config.public.url}")
-    private String apiPublicUrl;
-
-    @Value("${api.sites.one.path}")
-    private String siteApiPath;
+    @MockBean
+    private SiteMapper siteMapper;
 
     @Test
     void loadSites() throws Exception {
@@ -67,7 +63,6 @@ class SitesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/sites")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -82,7 +77,6 @@ class SitesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/sites")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -98,7 +92,6 @@ class SitesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/sites")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -114,18 +107,18 @@ class SitesControllerTest extends AbstractControllerTest {
         site.setPhoneNumber("01234567890");
         Integer id = 1;
 
+        given(siteMapper.map(any(net.andresbustamante.yafoot.web.dto.Site.class))).willReturn(new Site());
         given(siteManagementService.saveSite(any(Site.class), any(UserContext.class))).willReturn(id);
 
         // When
         mvc.perform(post("/sites")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(site))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.LOCATION, MessageFormat.format(apiPublicUrl + siteApiPath, id)));
+                .andExpect(header().string(HttpHeaders.LOCATION, MessageFormat.format("http://myurl/sites/{0}", id)));
     }
 
     @Test
@@ -136,12 +129,12 @@ class SitesControllerTest extends AbstractControllerTest {
         site.setAddress("123 Fake Address");
         site.setPhoneNumber("01234567890");
 
+        given(siteMapper.map(any(net.andresbustamante.yafoot.web.dto.Site.class))).willReturn(new Site());
         given(siteManagementService.saveSite(any(Site.class), any(UserContext.class)))
                 .willThrow(DatabaseException.class);
 
         // When
         mvc.perform(post("/sites")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(site))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -157,7 +150,6 @@ class SitesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(post("/sites")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(site))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

@@ -210,13 +210,13 @@ public class MatchesController extends AbstractController implements MatchesApi 
             net.andresbustamante.yafoot.core.model.Registration reg = registrationMapper.map(registration);
 
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(matchCode);
-            Player player = playerSearchService.findPlayerByEmail(reg.getPlayer().getEmail());
+            Player player = playerSearchService.findPlayerById(reg.getPlayer().getId());
 
             if (match == null) {
                 throw new ResponseStatusException(NOT_FOUND, translate(UNKNOWN_MATCH_ERROR, null));
             } else if (player == null) {
                 throw new ResponseStatusException(BAD_REQUEST, translate(UNKNOWN_PLAYER_ERROR,
-                        new String[]{reg.getPlayer().getEmail()}));
+                        new String[]{reg.getPlayer().toString()}));
             }
 
             matchManagementService.registerPlayer(player, match, reg.getCar(), userContext);

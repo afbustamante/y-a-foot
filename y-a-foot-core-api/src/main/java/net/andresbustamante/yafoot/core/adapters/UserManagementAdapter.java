@@ -10,15 +10,6 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 public interface UserManagementAdapter {
 
     /**
-     * Creates and stores a new user.
-     *
-     * @param user User to create.
-     * @param context User context
-     * @throws DirectoryException When a problem comes from the storage layer
-     */
-    void createUser(User user, UserContext context) throws DirectoryException;
-
-    /**
      * Updates an existing user.
      *
      * @param user User to update

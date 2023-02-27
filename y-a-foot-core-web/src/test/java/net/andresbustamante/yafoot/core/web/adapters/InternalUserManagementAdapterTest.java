@@ -41,34 +41,6 @@ class InternalUserManagementAdapterTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void createUser() throws Exception {
-        // Given
-        User user = new User();
-        user.setEmail("test@email.com");
-        user.setFirstName("Test");
-        user.setSurname("Test");
-
-        server.expect(requestTo(serverUrl)).andRespond(withSuccess());
-
-        // When-Then
-        assertDoesNotThrow(() -> userManagementAdapter.createUser(user, null));
-    }
-
-    @Test
-    void createUserWithServerError() throws Exception {
-        // Given
-        User user = new User();
-        user.setEmail("test@email.com");
-        user.setFirstName("Test");
-        user.setSurname("Test");
-
-        server.expect(requestTo(serverUrl)).andRespond(withServerError());
-
-        // When-Then
-        assertThrows(DirectoryException.class, () -> userManagementAdapter.createUser(user, null));
-    }
-
-    @Test
     void updateUser() {
         // Given
         User user = new User();

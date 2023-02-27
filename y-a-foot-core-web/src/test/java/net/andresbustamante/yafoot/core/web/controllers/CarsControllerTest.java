@@ -9,12 +9,12 @@ import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarSearchService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
+import net.andresbustamante.yafoot.core.web.mappers.CarMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,15 +23,15 @@ import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CarsController.class)
-@Import(CarsController.class)
+@WebMvcTest(value = {CarsController.class, ObjectMapper.class}, properties = {
+        "api.config.public.url=http://myurl",
+        "api.cars.root.path=/cars"
+}, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class CarsControllerTest extends AbstractControllerTest {
 
     @Autowired
@@ -49,11 +49,8 @@ class CarsControllerTest extends AbstractControllerTest {
     @MockBean
     private CarManagementService carManagementService;
 
-    @Value("${api.config.public.url}")
-    private String apiPublicUrl;
-
-    @Value("${api.cars.root.path}")
-    private String carsApiPath;
+    @MockBean
+    private CarMapper carMapper;
 
     @Test
     void loadCars() throws Exception {
@@ -67,7 +64,6 @@ class CarsControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/cars")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -82,7 +78,6 @@ class CarsControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/cars")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -99,7 +94,6 @@ class CarsControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/cars")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -115,10 +109,10 @@ class CarsControllerTest extends AbstractControllerTest {
         car1.setName("Car 1");
 
         given(carSearchService.loadCar(anyInt(), any(UserContext.class))).willReturn(car1);
+        given(carMapper.map(any(Car.class))).willReturn(new net.andresbustamante.yafoot.web.dto.Car());
 
         // When
         mvc.perform(get("/cars/{0}", carId)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -135,7 +129,6 @@ class CarsControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/cars/{0}", carId)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -152,7 +145,6 @@ class CarsControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/cars/{0}", carId)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -168,7 +160,6 @@ class CarsControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/cars/{0}", carId)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -184,19 +175,18 @@ class CarsControllerTest extends AbstractControllerTest {
 
         Integer id = 1;
 
+        given(carMapper.map(any(net.andresbustamante.yafoot.web.dto.Car.class))).willReturn(new Car());
         given(carManagementService.saveCar(any(Car.class), any(UserContext.class))).willReturn(id);
 
         // When
         mvc.perform(post("/cars")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(car))
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.LOCATION, MessageFormat.format(apiPublicUrl + carsApiPath
-                        + "/{0}", id)));
+                .andExpect(header().string(HttpHeaders.LOCATION, MessageFormat.format("http://myurl/cars/{0}", id)));
     }
 
     @Test
@@ -206,11 +196,11 @@ class CarsControllerTest extends AbstractControllerTest {
         car.setName("Car 1");
         car.setNumSeats(4);
 
+        given(carMapper.map(any(net.andresbustamante.yafoot.web.dto.Car.class))).willReturn(new Car());
         given(carManagementService.saveCar(any(Car.class), any(UserContext.class))).willThrow(DatabaseException.class);
 
         // When
         mvc.perform(post("/cars")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(car))
                 .accept(MediaType.APPLICATION_JSON))

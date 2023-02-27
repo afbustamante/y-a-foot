@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * LDAP adapter implementation.
+ * Internal users adapter implementation.
  */
 @Component
 public class InternalUserManagementAdapterImpl implements UserManagementAdapter {
@@ -35,19 +35,6 @@ public class InternalUserManagementAdapterImpl implements UserManagementAdapter 
                                              @Qualifier("usersRestTemplate") RestTemplate restTemplate) {
         this.userMapper = userMapper;
         this.restTemplate = restTemplate;
-    }
-
-    @Override
-    public void createUser(User user, UserContext context) throws DirectoryException {
-        UriComponentsBuilder uriBuilder = getUriBuilder();
-
-        HttpEntity<net.andresbustamante.yafoot.users.dto.User> body = new HttpEntity<>(userMapper.map(user));
-
-        try {
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, body, Void.class);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            throw new DirectoryException(e.getMessage());
-        }
     }
 
     @Override

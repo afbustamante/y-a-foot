@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,22 +52,6 @@ public class PlayersController extends AbstractController implements PlayersApi 
     @Override
     public ResponseEntity<Player> loadPlayer(@Min(1) Integer playerId) {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
-    }
-
-    @Override
-    public ResponseEntity<Void> createPlayer(Player player) {
-        try {
-            net.andresbustamante.yafoot.core.model.Player newPlayer = playerMapper.map(player);
-            int id = playerManagementService.savePlayer(newPlayer, new UserContext());
-
-            String location = MessageFormat.format(playerApiPath, id);
-            return ResponseEntity.created(getLocationURI(location)).build();
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), new String[]{player.getEmail()}));
-        } catch (DatabaseException | DirectoryException e) {
-            log.error("An error occurred while creating a player", e);
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
-        }
     }
 
     @Override

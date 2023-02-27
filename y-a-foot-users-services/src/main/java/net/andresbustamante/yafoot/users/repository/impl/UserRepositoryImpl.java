@@ -1,9 +1,9 @@
 package net.andresbustamante.yafoot.users.repository.impl;
 
-import net.andresbustamante.yafoot.commons.util.LdapPasswordEncoder;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.users.repository.UserRepository;
+import net.andresbustamante.yafoot.users.util.LdapPasswordEncoder;
 import net.andresbustamante.yafoot.users.util.LdapUserMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;

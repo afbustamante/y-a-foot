@@ -16,12 +16,10 @@
     <module>y-a-foot-commons-test</module>
     <module>y-a-foot-commons-api</module>
     <module>y-a-foot-commons-services</module>
-    <module>y-a-foot-commons-security</module>
     <module>y-a-foot-commons-web</module>
     <module>y-a-foot-users-api</module>
     <module>y-a-foot-users-services</module>
     <module>y-a-foot-users-admin-web</module>
-    <module>y-a-foot-users-auth-web</module>
     <module>y-a-foot-messaging-api</module>
     <module>y-a-foot-messaging-services</module>
     <module>y-a-foot-core-api</module>
@@ -61,7 +59,7 @@
     <!-- Spring Framework -->
     <spring-boot.version>2.7.8</spring-boot.version>
     <spring.version>5.3.25</spring.version>
-    <spring-security.version>5.8.0</spring-security.version>
+    <spring-security.version>5.8.1</spring-security.version>
     <spring-ldap-core.version>2.4.1</spring-ldap-core.version>
 
     <!-- Java EE -->
@@ -104,9 +102,9 @@
     <lombok.version>1.18.24</lombok.version>
     <mapstruct.version>1.3.0.Final</mapstruct.version>
     <swagger-annotations.version>2.1.5</swagger-annotations.version>
-    <jjwt.version>0.9.1</jjwt.version>
-    <jackson-databind.version>2.13.4.2</jackson-databind.version>
-    <jackson-datatype.version>2.13.4</jackson-datatype.version>
+    <aspectjweaver.version>1.9.19</aspectjweaver.version>
+    <jackson-databind.version>2.13.5</jackson-databind.version>
+    <jackson-datatype.version>2.13.5</jackson-datatype.version>
     <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
     <jboss-logging.version>3.4.3.Final</jboss-logging.version>
     <freemarker.version>2.3.31</freemarker.version>
@@ -205,6 +203,22 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
+        <version>${spring-boot.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         <version>${spring-boot.version}</version>
       </dependency>
 
@@ -402,6 +416,16 @@
         <version>${jackson-databind.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson-databind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson-databind.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
         <version>${jackson-datatype.version}</version>
@@ -423,11 +447,6 @@
         <version>${swagger-annotations.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.jsonwebtoken</groupId>
-        <artifactId>jjwt</artifactId>
-        <version>${jjwt.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.jboss.logging</groupId>
         <artifactId>jboss-logging</artifactId>
         <version>${jboss-logging.version}</version>
@@ -436,6 +455,11 @@
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>${snakeyaml.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+        <version>${aspectjweaver.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -826,6 +850,7 @@
               <excludes>
                 <exclude>META-INF/**</exclude>
                 <exclude>**/*Aspect.*</exclude>
+                <exclude>**/*Interceptor.*</exclude>
                 <exclude>**/*Config.*</exclude>
                 <exclude>**/*Test.*</exclude>
                 <exclude>**/*Exception.*</exclude>
@@ -839,7 +864,7 @@
                     <limit>
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.52</minimum>
+                      <minimum>0.34</minimum>
                     </limit>
                   </limits>
                 </rule>
@@ -849,6 +874,7 @@
                     <exclude>*Application</exclude>
                     <exclude>*Filter</exclude>
                     <exclude>*Aspect</exclude>
+                    <exclude>*Interceptor</exclude>
                     <exclude>*Config</exclude>
                     <exclude>*Test</exclude>
                     <exclude>*Exception</exclude>

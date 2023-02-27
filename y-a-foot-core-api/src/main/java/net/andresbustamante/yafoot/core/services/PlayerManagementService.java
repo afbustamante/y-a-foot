@@ -20,10 +20,9 @@ public interface PlayerManagementService {
      * @param userContext Request context
      * @return New player's identifier
      * @throws DatabaseException
-     * @throws DirectoryException
      */
     Integer savePlayer(Player player, UserContext userContext)
-            throws DirectoryException, DatabaseException, ApplicationException;
+            throws DatabaseException, ApplicationException;
 
     /**
      * Updates basic details for a player.

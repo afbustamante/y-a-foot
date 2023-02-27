@@ -1,20 +1,15 @@
 package net.andresbustamante.yafoot.core.web.config;
 
-import net.andresbustamante.yafoot.commons.filters.JwtRequestFilter;
-import net.andresbustamante.yafoot.commons.util.JwtAuthenticationEntryPoint;
 import net.andresbustamante.yafoot.commons.web.util.CorsConstants;
-import net.andresbustamante.yafoot.core.web.services.JwtUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -32,30 +27,6 @@ public class WebSecurityConfig {
     @Value("${app.web.public.url}")
     private String webPublicUrl;
 
-    private final JwtUserDetailsService jwtUserDetailsService;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtRequestFilter jwtRequestFilter;
-
-    @Autowired
-    public WebSecurityConfig(JwtUserDetailsService jwtUserDetailsService,
-                             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                             JwtRequestFilter jwtRequestFilter) {
-        this.jwtUserDetailsService = jwtUserDetailsService;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
-
-    /**
-     * Manually set the userDetailsService to use for secured requests.
-     *
-     * @param auth Authentication manager builder
-     * @throws Exception Configuration exception
-     */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService);
-    }
-
     /**
      * Security configuration on URL.
      *
@@ -65,15 +36,13 @@ public class WebSecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors();
-        http.csrf().disable();
-        http.authorizeHttpRequests(authz -> authz
+        http.cors().and().csrf().disable();
+        http.oauth2Login().and()
+                .authorizeHttpRequests(authz -> authz
                 .requestMatchers(HttpMethod.POST, playersApiPath).permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .anyRequest().authenticated())
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint);
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated());
+        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         return http.build();
     }
 

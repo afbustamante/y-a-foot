@@ -67,33 +67,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-    post:
-      operationId: createPlayer
-      summary: Create a new player
-      tags:
-      - players
-      requestBody:
-        description: Player to save
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Player'
-      responses:
-        201: # Created
-          description: Player successfully created. Player's ID is returned in Location header
-        400: # Bad request
-          description: Invalid request structure
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        500: # Internal server error
-          description: An error occurred while creating a player
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
 
   /players/{playerId}:
     parameters:

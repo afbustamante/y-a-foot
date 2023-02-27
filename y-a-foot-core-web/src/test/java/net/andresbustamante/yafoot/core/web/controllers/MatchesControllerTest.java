@@ -15,15 +15,17 @@ import net.andresbustamante.yafoot.core.services.CarpoolingService;
 import net.andresbustamante.yafoot.core.services.MatchManagementService;
 import net.andresbustamante.yafoot.core.services.MatchSearchService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
+import net.andresbustamante.yafoot.core.web.mappers.CarMapper;
+import net.andresbustamante.yafoot.core.web.mappers.MatchMapper;
+import net.andresbustamante.yafoot.core.web.mappers.RegistrationMapper;
 import net.andresbustamante.yafoot.web.dto.CarConfirmation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -38,15 +40,17 @@ import java.util.List;
 import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
 import static net.andresbustamante.yafoot.web.dto.SportCode.BASKETBALL;
 import static net.andresbustamante.yafoot.web.dto.SportCode.RUGBY;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(MatchesController.class)
-@Import(MatchesController.class)
+@WebMvcTest(value = {MatchesController.class, ObjectMapper.class}, properties = {
+        "api.config.public.url=http://myurl",
+        "api.matches.root.path=/matches",
+        "api.matches.one.path=/matches/{0}",
+        "api.matches.one.registrations.one.path=/matches/{0}/registrations/{1}"
+}, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class MatchesControllerTest extends AbstractControllerTest {
 
     @Autowired
@@ -67,11 +71,14 @@ class MatchesControllerTest extends AbstractControllerTest {
     @MockBean
     private CarpoolingService carpoolingService;
 
-    @Value("${api.config.public.url}")
-    private String apiPublicUrl;
+    @MockBean
+    private MatchMapper matchMapper;
 
-    @Value("${api.matches.root.path}")
-    private String matchesApiPath;
+    @MockBean
+    private CarMapper carMapper;
+
+    @MockBean
+    private RegistrationMapper registrationMapper;
 
     @Test
     void loadMatchByExistingCode() throws Exception {
@@ -81,11 +88,11 @@ class MatchesControllerTest extends AbstractControllerTest {
         Match match = new Match(1);
         match.setCode(matchCode);
 
+        given(matchMapper.map(any(Match.class))).willReturn(new net.andresbustamante.yafoot.web.dto.Match());
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
 
         // When
         mvc.perform(get("/matches/{0}", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -103,7 +110,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get(path, matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -119,7 +125,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches/{0}", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -142,7 +147,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches/{0}/registrations", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -159,7 +163,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches/{0}/registrations", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -182,7 +185,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches?endDate={0}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -208,7 +210,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches?startDate={0}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -237,7 +238,6 @@ class MatchesControllerTest extends AbstractControllerTest {
         // When
         mvc.perform(get("/matches?startDate={0}&sport={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 SportEnum.BASKETBALL.name())
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -265,7 +265,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches?sport={0}", SportEnum.FOOTBALL.name())
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -295,7 +294,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches?status={0}", MatchStatusEnum.CANCELLED.name())
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -314,7 +312,6 @@ class MatchesControllerTest extends AbstractControllerTest {
         // When
         mvc.perform(get("/matches?startDate={0}&endDate={1}",
                 tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE), today.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -336,7 +333,6 @@ class MatchesControllerTest extends AbstractControllerTest {
         // When
         mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -360,7 +356,6 @@ class MatchesControllerTest extends AbstractControllerTest {
         // When
         mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -382,11 +377,11 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         Integer id = 1;
 
+        given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.Match.class))).willReturn(new Match());
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class))).willReturn(id);
 
         // When
         mvc.perform(post("/matches")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(match))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -412,7 +407,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(post("/matches")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(match))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -433,12 +427,12 @@ class MatchesControllerTest extends AbstractControllerTest {
         site.setAddress("123 Fake Address");
         match.setSite(site);
 
+        given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.Match.class))).willReturn(new Match());
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class)))
                 .willThrow(DatabaseException.class);
 
         // When
         mvc.perform(post("/matches")
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(match))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -462,7 +456,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches/{0}/cars", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -483,7 +476,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches/{0}/cars", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -501,7 +493,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/matches/{0}/cars", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -528,19 +519,22 @@ class MatchesControllerTest extends AbstractControllerTest {
         registration.setPlayer(playerDto);
         registration.setCarConfirmed(false);
 
+        Registration reg = new Registration();
+        reg.setPlayer(new Player(2));
+
+        given(registrationMapper.map(any(net.andresbustamante.yafoot.web.dto.Registration.class))).willReturn(reg);
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
-        given(playerSearchService.findPlayerByEmail(anyString())).willReturn(player);
+        given(playerSearchService.findPlayerById(anyInt())).willReturn(player);
 
         // When
         mvc.perform(post("/matches/{0}/registrations", matchCode)
-                .header(AUTHORIZATION, getAuthString(email))
                 .content(objectMapper.writeValueAsString(registration))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(LOCATION))
-                .andExpect(header().string(LOCATION, apiPublicUrl + matchesApiPath + "/" + match.getCode()
+                .andExpect(header().string(LOCATION, "http://myurl/matches/" + match.getCode()
                         + "/registrations/" + player.getId()));
     }
 
@@ -560,12 +554,15 @@ class MatchesControllerTest extends AbstractControllerTest {
         registration.setPlayer(playerDto);
         registration.setCarConfirmed(false);
 
+        Registration reg = new Registration();
+        reg.setPlayer(new Player());
+
+        given(registrationMapper.map(any(net.andresbustamante.yafoot.web.dto.Registration.class))).willReturn(reg);
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
         given(playerSearchService.findPlayerByEmail(anyString())).willReturn(player);
 
         // When
         mvc.perform(post("/matches/{0}/registrations", matchCode)
-                .header(AUTHORIZATION, getAuthString(email))
                 .content(objectMapper.writeValueAsString(registration))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -592,12 +589,15 @@ class MatchesControllerTest extends AbstractControllerTest {
         registration.setPlayer(playerDto);
         registration.setCarConfirmed(false);
 
+        Registration reg = new Registration();
+        reg.setPlayer(new Player());
+
+        given(registrationMapper.map(any(net.andresbustamante.yafoot.web.dto.Registration.class))).willReturn(reg);
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerByEmail(anyString())).willReturn(null);
 
         // When
         mvc.perform(post("/matches/{0}/registrations", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(registration))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -633,7 +633,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(patch("/matches/{0}/registrations/{1}", matchCode, player.getId())
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(confirmation))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -660,7 +659,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(patch("/matches/{0}/registrations/{1}", matchCode, player.getId())
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(confirmation))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -692,7 +690,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(patch("/matches/{0}/registrations/{1}", matchCode, player.getId())
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(confirmation))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -721,7 +718,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(patch("/matches/{0}/registrations/{1}", matchCode, 2)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(confirmation))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -746,7 +742,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(patch("/matches/{0}/registrations/{1}", matchCode, 2)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .content(objectMapper.writeValueAsString(confirmation))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -775,7 +770,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/matches/{0}/registrations/{1}", matchCode, player.getId())
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -798,7 +792,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/matches/{0}/registrations/{1}", matchCode, player.getId())
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -819,7 +812,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/matches/{0}/registrations/{1}", matchCode, 2)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -836,7 +828,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/matches/{0}/registrations/{1}", matchCode, 2)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -857,7 +848,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/matches/{0}", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -873,7 +863,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/matches/{0}", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -889,7 +878,6 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/matches/{0}", matchCode)
-                .header(AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then

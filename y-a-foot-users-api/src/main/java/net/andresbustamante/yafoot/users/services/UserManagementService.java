@@ -12,7 +12,7 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 public interface UserManagementService {
 
     /**
-     * Creates a new user with the given role in the LDAP directory.
+     * Creates a new user with the given role in the Keycloak directory.
      *
      * @param user
      * @param role
@@ -32,7 +32,7 @@ public interface UserManagementService {
     void updateUser(User user, UserContext ctx) throws ApplicationException, DirectoryException;
 
     /**
-     * Updates a user's password in the LDAP directory.
+     * Updates a user's password in the internal user directory.
      *
      * @param user
      * @param ctx
@@ -42,7 +42,7 @@ public interface UserManagementService {
     void updateUserPassword(User user, UserContext ctx) throws ApplicationException, DirectoryException;
 
     /**
-     * Removes a user from the LDAP directory.
+     * Removes a user from the internal user directory.
      *
      * @param user
      * @param ctx
@@ -61,7 +61,7 @@ public interface UserManagementService {
     String createPasswordResetToken(User user) throws DirectoryException, ApplicationException;
 
     /**
-     * Updates a user's password in the LDAP directory.
+     * Updates a user's password in the internal user directory.
      *
      * @param user User to update
      * @param passwordResetToken Token used to validate this update

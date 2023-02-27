@@ -2,29 +2,29 @@ package net.andresbustamante.yafoot.core.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.PlayerManagementService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
+import net.andresbustamante.yafoot.core.web.mappers.PlayerMapper;
 import net.andresbustamante.yafoot.web.dto.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PlayersController.class)
-@Import(PlayersController.class)
+@WebMvcTest(value = {PlayersController.class, ObjectMapper.class},
+        properties = {
+                "api.players.one.path=/players/{0}",
+                "api.config.public.url=http://myurl"
+        },
+        excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class PlayersControllerTest extends AbstractControllerTest {
 
     @Autowired
@@ -39,54 +39,8 @@ class PlayersControllerTest extends AbstractControllerTest {
     @MockBean
     private PlayerSearchService playerSearchService;
 
-    @Test
-    void createNewPlayer() throws Exception {
-        // Given
-        String email = "test@email.com";
-
-        Player player = new Player();
-        player.setFirstName("Test");
-        player.setSurname("User");
-        player.setEmail(email);
-        player.setPhoneNumber("0123456789");
-        player.setPassword("test".getBytes());
-
-        given(playerManagementService.savePlayer(any(net.andresbustamante.yafoot.core.model.Player.class),
-                any(UserContext.class))).willReturn(1);
-
-        // When
-        mvc.perform(post("/players")
-                .content(objectMapper.writeValueAsString(player))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                // Then
-                .andExpect(status().isCreated())
-                .andExpect(header().exists(HttpHeaders.LOCATION));
-    }
-
-    @Test
-    void createNewPlayerWhileDatabaseIsUnavailable() throws Exception {
-        // Given
-        String email = "test@email.com";
-
-        Player player = new Player();
-        player.setFirstName("Test");
-        player.setSurname("User");
-        player.setEmail(email);
-        player.setPhoneNumber("0123456789");
-        player.setPassword("test".getBytes());
-
-        given(playerManagementService.savePlayer(any(net.andresbustamante.yafoot.core.model.Player.class),
-                any(UserContext.class))).willThrow(DatabaseException.class);
-
-        // When
-        mvc.perform(post("/players")
-                .content(objectMapper.writeValueAsString(player))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                // Then
-                .andExpect(status().isInternalServerError());
-    }
+    @MockBean
+    private PlayerMapper playerMapper;
 
     @Test
     void findExistingPlayer() throws Exception {
@@ -103,7 +57,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/players?email={0}", email)
-                .header(AUTHORIZATION, getAuthString(email))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -120,7 +73,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/players?email={0}", email)
-                .header(AUTHORIZATION, getAuthString(email))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -136,7 +88,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(get("/players?email={0}", email)
-                .header(AUTHORIZATION, getAuthString(email))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -165,7 +116,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(put("/players/{0}", 1)
-                .header(HttpHeaders.AUTHORIZATION, getAuthString(email))
                 .content(objectMapper.writeValueAsString(player))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -195,7 +145,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(put("/players/{0}", 1)
-                .header(HttpHeaders.AUTHORIZATION, getAuthString(email))
                 .content(objectMapper.writeValueAsString(player))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -225,7 +174,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(put("/players/{0}", 1)
-                .header(HttpHeaders.AUTHORIZATION, getAuthString(email))
                 .content(objectMapper.writeValueAsString(player))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -248,7 +196,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/players/{0}", 1)
-                .header(HttpHeaders.AUTHORIZATION, getAuthString(email))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -262,7 +209,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/players/{0}", 1)
-                .header(HttpHeaders.AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -276,7 +222,6 @@ class PlayersControllerTest extends AbstractControllerTest {
 
         // When
         mvc.perform(delete("/players/{0}", 1)
-                .header(HttpHeaders.AUTHORIZATION, getAuthString(VALID_EMAIL))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then

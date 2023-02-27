@@ -9,9 +9,9 @@ friends, classmates and so on.
 
 Some frameworks and libraries used in this application:
 
-* Spring Boot 2.6
+* Spring Boot 2.7
 * Spring Framework 5.3
-* Spring Security 5.6
+* Spring Security 5.8
 * OpenAPI 3.0
 * MyBatis 3.5
 * JUnit 5.8
@@ -37,15 +37,15 @@ This is the global deployment diagram showing the main components of this projec
 
 * JRE 14
 * PostgreSQL 13+
-* OpenLDAP 3
+* OpenLDAP 3 or an external active directory with OAuth 2.0 support such as Keycloak
 
-### LDAP directory structure
+### Keycloak directory structure
 
-Scripts to execute
+Realm structure to import on Keycloak:
 
-    misc/ldap/01_create_structure.ldif
+    misc/keycloak/realm-export.json
     
 ## Application deployment
 
 In order to deploy `y-a-foot`, you must deploy `y-a-foot-core-web` (core module) as a Spring Boot JAR application as
-well as `y-a-foot-users-admin-web` (users management module) and `y-a-foot-users-auth-web` (users authentication module)
+well as `y-a-foot-users-admin-web` (users management module)

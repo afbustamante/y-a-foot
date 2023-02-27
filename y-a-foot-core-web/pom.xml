@@ -15,12 +15,17 @@
   <dependencies>
     <dependency>
       <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-commons-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
       <artifactId>y-a-foot-commons-web</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>net.andresbustamante</groupId>
-      <artifactId>y-a-foot-commons-security</artifactId>
+      <artifactId>y-a-foot-users-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -31,6 +36,11 @@
     <dependency>
       <groupId>net.andresbustamante</groupId>
       <artifactId>y-a-foot-core-db</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.andresbustamante</groupId>
+      <artifactId>y-a-foot-core-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -70,8 +80,56 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
+    </dependency>
+
+    <!-- Spring -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Spring Security -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-jose</artifactId>
+    </dependency>
+
+    <!-- Apache Commons -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
     </dependency>
 
     <!-- MyBatis -->
@@ -81,6 +139,10 @@
     </dependency>
 
     <!-- Other libraries -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
@@ -150,12 +212,12 @@
             </configuration>
           </execution>
           <execution>
-            <id>generate-auth-api</id>
+            <id>generate-users-api</id>
             <goals>
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/../y-a-foot-users-auth-web/src/main/resources/y-a-foot-users-api.yml</inputSpec>
+              <inputSpec>${project.basedir}/../y-a-foot-users-admin-web/src/main/resources/y-a-foot-users-api.yml</inputSpec>
               <language>spring</language>
               <modelPackage>net.andresbustamante.yafoot.users.dto</modelPackage>
               <apiPackage>net.andresbustamante.yafoot.users.controllers</apiPackage>

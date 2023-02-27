@@ -43,10 +43,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Integer savePlayer(Player player, UserContext userContext) throws DirectoryException, ApplicationException {
+    public Integer savePlayer(Player player, UserContext userContext) throws ApplicationException {
         if (!playerDAO.isPlayerAlreadySignedUp(player.getEmail())) {
-            // Create the player in LDAP directory
-            userManagementAdapter.createUser(player, userContext);
             // Create the player in database
             playerDAO.savePlayer(player);
             log.info("New player registered with the address {}", player.getEmail());

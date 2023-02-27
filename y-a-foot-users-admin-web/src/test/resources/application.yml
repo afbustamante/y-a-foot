@@ -4,22 +4,9 @@ spring:
     active: "test"
   security:
     user:
-      name: test-user
-      password: test-password
-
-# Security config
-jwt:
-  token:
-    secret: "test"
-    active:
-      minutes: 5
-
-app:
-  security:
-    jwt:
-      token:
-        active:
-          minutes: 5
+      name: admin@email.com
+      password: admin@email.com
+      roles: ADMINISTRATOR
 
 api:
   config:

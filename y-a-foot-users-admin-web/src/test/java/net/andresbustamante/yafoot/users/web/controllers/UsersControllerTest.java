@@ -3,32 +3,29 @@ package net.andresbustamante.yafoot.users.web.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.users.model.User;
+import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.users.services.UserManagementService;
 import net.andresbustamante.yafoot.users.services.UserSearchService;
-import net.andresbustamante.yafoot.users.web.config.MappingTestConfig;
-import net.andresbustamante.yafoot.users.web.config.WebSecurityTestConfig;
 import net.andresbustamante.yafoot.users.web.dto.Role;
+import net.andresbustamante.yafoot.users.web.mappers.RoleMapper;
+import net.andresbustamante.yafoot.users.web.mappers.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UsersController.class)
-@Import(UsersController.class)
-@ContextConfiguration(classes = {WebSecurityTestConfig.class, MappingTestConfig.class})
+@WebMvcTest(value = {UsersController.class, ObjectMapper.class},
+        excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class UsersControllerTest extends AbstractControllerTest {
 
     private static final String VALID_EMAIL = "john.doe@email.com";
@@ -44,6 +41,12 @@ class UsersControllerTest extends AbstractControllerTest {
 
     @MockBean
     private UserSearchService userSearchService;
+
+    @MockBean
+    private UserMapper userMapper;
+
+    @MockBean
+    private RoleMapper roleMapper;
 
     @Test
     void createValidUser() throws Exception {
@@ -74,6 +77,8 @@ class UsersControllerTest extends AbstractControllerTest {
         user.setMainRole(Role.PLAYER);
         user.setPassword("passwd".getBytes());
 
+        given(userMapper.map(any(net.andresbustamante.yafoot.users.web.dto.User.class))).willReturn(new User());
+        given(roleMapper.map(any(net.andresbustamante.yafoot.users.web.dto.Role.class))).willReturn(RolesEnum.PLAYER);
         doThrow(new DirectoryException("")).when(userManagementService).createUser(
                 any(User.class), any(RolesEnum.class), any(UserContext.class));
 
