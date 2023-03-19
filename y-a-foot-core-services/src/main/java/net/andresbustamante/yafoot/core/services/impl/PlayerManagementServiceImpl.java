@@ -60,24 +60,18 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     @Override
     public void updatePlayer(Player player, UserContext userContext) throws DirectoryException, ApplicationException {
         Player existingPlayer = playerDAO.findPlayerByEmail(player.getEmail());
-        boolean needsDirectoryUpdate = false;
 
         if (existingPlayer != null) {
             if (player.getFirstName() != null) {
                 existingPlayer.setFirstName(player.getFirstName());
-                needsDirectoryUpdate = true;
             }
             if (player.getSurname() != null) {
                 existingPlayer.setSurname(player.getSurname());
-                needsDirectoryUpdate = true;
             }
             if (player.getPhoneNumber() != null) {
                 existingPlayer.setPhoneNumber(player.getPhoneNumber());
             }
 
-            if (needsDirectoryUpdate) {
-                userManagementAdapter.updateUser(player, userContext);
-            }
             playerDAO.updatePlayer(existingPlayer);
             log.info("Player {} updated", player.getEmail());
         } else {

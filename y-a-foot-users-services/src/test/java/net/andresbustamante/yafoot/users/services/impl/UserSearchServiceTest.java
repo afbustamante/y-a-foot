@@ -38,18 +38,4 @@ class UserSearchServiceTest extends AbstractServiceUnitTest {
 
         verify(userRepository).findUserByEmail(anyString());
     }
-
-    @Test
-    void findUserByToken() throws Exception {
-        // When
-        when(userRepository.findUserByToken(anyString())).thenReturn(USR_TEST);
-
-        User user = userSearchService.findUserByToken("TOKEN");
-
-        // Then
-        assertNotNull(user);
-        assertEquals(USR_TEST, user);
-
-        verify(userRepository).findUserByToken(anyString());
-    }
 }

@@ -14,33 +14,6 @@ tags:
     description: Users management API. It allows to create, update and delete users
 
 paths:
-  /users:
-    post:
-      operationId: createUser
-      summary: Creates a new user
-      tags:
-        - users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        201:
-          description: User successfully created
-        400:
-          description: Invalid user data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        500:
-          description: Ldap server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
   /users/{email}:
     parameters:
       - in: path
@@ -50,75 +23,6 @@ paths:
           type: string
           format: email
         description: Email address identifying the user
-    get:
-      operationId: loadUser
-      summary: Loads the details for given a user
-      tags:
-        - users
-      responses:
-        200: # OK
-          description: User details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        403: # Forbidden
-          description: User not allowed to perform this operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        404: # Not found
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        500: # Internal server error
-          description: An error occurred while looking for user details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-    put:
-      operationId: updateUserDetails
-      summary: Updates basic details for given a user
-      tags:
-        - users
-      requestBody:
-        description: User details to update
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        202: # Accepted
-          description: User credentials updated
-        400: # Bad request
-          description: Invalid password
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        403: # Forbidden
-          description: User not allowed to perform this operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        404: # Not found
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        500: # Internal server error
-          description: An error occurred while looking for user details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deleteUser
       summary: Deletes a given a user
@@ -156,26 +60,12 @@ components:
         email:
           type: string
           format: email
-        password:
-          type: string
-          format: byte
-        token:
-          type: string
-          pattern: ^[A-Z0-9]{8,16}$
         firstName:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
         surname:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
-        mainRole:
-          $ref: '#/components/schemas/Role'
-
-    Role:
-      type: string
-      enum:
-        - administrator
-        - player
 
     ErrorResponse:
       type: object

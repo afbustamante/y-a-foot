@@ -17,20 +17,6 @@ public interface UserRepository {
     void saveUser(User usr, RolesEnum role);
 
     /**
-     * Update user's personal details in LDAP directory.
-     *
-     * @param usr
-     */
-    void updateUser(User usr);
-
-    /**
-     * Update a user's password.
-     *
-     * @param usr User to update
-     */
-    void updatePassword(User usr);
-
-    /**
      * Deletes a user from LDAP directory.
      *
      * @param usr User to delete
@@ -44,36 +30,4 @@ public interface UserRepository {
      * @return User found using this email. Null if no user is found.
      */
     User findUserByEmail(String email);
-
-    /**
-     * Authenticate user by using his email address and his password.
-     *
-     * @param uid User's ID (email address)
-     * @param password User's password
-     * @return Returns user's details only if the authentication information is valid
-     */
-    User authenticateUser(String uid, String password);
-
-    /**
-     * Find a user by the token generated to reset his password.
-     *
-     * @param token Token to search
-     * @return The user found for this token or null if nobody is found
-     */
-    User findUserByToken(String token);
-
-    /**
-     * Sets a token for password change to the user.
-     *
-     * @param token Token to set
-     * @param user User to modify
-     */
-    void saveTokenForUser(String token, User user);
-
-    /**
-     * Removes the token for password change given to a user.
-     *
-     * @param user User to update
-     */
-    void removeTokenForUser(User user);
 }

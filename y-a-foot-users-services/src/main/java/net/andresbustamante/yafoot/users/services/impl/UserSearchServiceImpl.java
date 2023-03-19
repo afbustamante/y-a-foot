@@ -25,10 +25,4 @@ public class UserSearchServiceImpl implements UserSearchService {
     public User findUserByEmail(String email) throws DirectoryException {
         return userRepository.findUserByEmail(email);
     }
-
-    @Override
-    @Transactional(readOnly = true, propagation = REQUIRES_NEW)
-    public User findUserByToken(String token) {
-        return userRepository.findUserByToken(token);
-    }
 }

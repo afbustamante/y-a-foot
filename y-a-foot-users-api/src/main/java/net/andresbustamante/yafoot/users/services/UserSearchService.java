@@ -13,12 +13,4 @@ public interface UserSearchService {
      * @throws DirectoryException
      */
     User findUserByEmail(String email) throws DirectoryException;
-
-    /**
-     * Find a user by the token created for reset his authentication password.
-     *
-     * @param token Token to search
-     * @return User found for this token
-     */
-    User findUserByToken(String token) throws DirectoryException;
 }

@@ -5,7 +5,6 @@ import net.andresbustamante.yafoot.users.model.enums.RolesEnum;
 import net.andresbustamante.yafoot.users.repository.UserRepository;
 import net.andresbustamante.yafoot.users.util.LdapPasswordEncoder;
 import net.andresbustamante.yafoot.users.util.LdapUserMapper;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.NameNotFoundException;
@@ -51,18 +50,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUser(User usr) {
-        User oldUser = ldapTemplate.lookup(getUid(usr).toString(), ldapUserMapper);
-        usr.setPassword(oldUser.getPassword());
-        ldapTemplate.rebind(getUid(usr), null, ldapUserMapper.mapToAttributes(usr));
-    }
-
-    @Override
-    public void updatePassword(User usr) {
-        modifyPassword(usr);
-    }
-
-    @Override
     public void deleteUser(User usr) {
         List<RolesEnum> userRoles = Collections.singletonList(RolesEnum.PLAYER);
         removeRolesForUser(usr, userRoles);
@@ -73,36 +60,6 @@ public class UserRepositoryImpl implements UserRepository {
     public User findUserByEmail(String email) {
         User user = new User(email);
         return findUserByUid(getUid(user).toString());
-    }
-
-    @Override
-    public User authenticateUser(String uid, String password) {
-        User user = new User(uid);
-        user = findUserByUid(getUid(user).toString());
-
-        return (user != null && user.getPassword() != null && passwordEncoder.matches(password, user.getPassword()))
-                ? user : null;
-    }
-
-    @Override
-    public User findUserByToken(String token) {
-        List<User> userList = ldapTemplate.search(usersDn, "(description=" + token + ")", ldapUserMapper);
-        return (CollectionUtils.isNotEmpty(userList)) ? userList.iterator().next() : null;
-    }
-
-    @Override
-    public void saveTokenForUser(String token, User user) {
-        Attribute attribute = new BasicAttribute(TOKEN);
-        attribute.add(token);
-        ModificationItem item = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attribute);
-        ldapTemplate.modifyAttributes(getUid(user), new ModificationItem[]{item});
-    }
-
-    @Override
-    public void removeTokenForUser(User user) {
-        Attribute attribute = new BasicAttribute(TOKEN);
-        ModificationItem item = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attribute);
-        ldapTemplate.modifyAttributes(getUid(user), new ModificationItem[]{item});
     }
 
     private User findUserByUid(String uid) {

@@ -1,7 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.adapters.UserManagementAdapter;
@@ -88,7 +87,6 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
 
         // Then
         verify(playerDAO).findPlayerByEmail(any());
-        verify(userManagementAdapter).updateUser(any(User.class), any(UserContext.class));
         verify(playerDAO).updatePlayer(any());
     }
 
@@ -107,7 +105,6 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
 
         // Then
         verify(playerDAO).findPlayerByEmail(any());
-        verify(userManagementAdapter, never()).updateUser(any(User.class), any(UserContext.class));
         verify(playerDAO, never()).updatePlayer(any());
     }
 
