@@ -55,12 +55,12 @@ components:
     User:
       type: object
       required:
-        - email
+        - first_name
       properties:
         email:
           type: string
           format: email
-        firstName:
+        first_name:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
         surname:

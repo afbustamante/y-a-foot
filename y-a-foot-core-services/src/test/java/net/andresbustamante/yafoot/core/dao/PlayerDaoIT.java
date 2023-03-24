@@ -84,7 +84,7 @@ class PlayerDaoIT extends AbstractDaoIntegrationTest {
         player.setPhoneNumber(PHONE_NUMBER);
         player.setSurname(SURNAME);
         player.setFirstName(FIRST_NAME);
-        assertNull(player.getLastUpdateDate());
+        assertNull(player.getModificationDate());
 
         int numPlayers = playerDAO.updatePlayer(player);
 

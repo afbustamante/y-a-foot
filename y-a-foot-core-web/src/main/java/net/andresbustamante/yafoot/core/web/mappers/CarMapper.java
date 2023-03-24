@@ -17,9 +17,12 @@ public interface CarMapper {
      * @param car DTO to map
      * @return Resulting car bean
      */
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "numPassengers", ignore = true)
+    @Mapping(target = "driver", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
-    @Mapping(target = "lastUpdateDate", ignore = true)
-    Car map(net.andresbustamante.yafoot.web.dto.Car car);
+    @Mapping(target = "modificationDate", ignore = true)
+    Car map(net.andresbustamante.yafoot.web.dto.CarForm car);
 
     /**
      * Maps a car bean into a DTO.

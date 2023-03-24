@@ -27,7 +27,7 @@ public final class Player extends User implements Serializable, Identifiable<Int
     private String phoneNumber;
     private boolean active;
     private OffsetDateTime creationDate;
-    private OffsetDateTime lastUpdateDate;
+    private OffsetDateTime modificationDate;
 
     /**
      * List of cars registered by this player.

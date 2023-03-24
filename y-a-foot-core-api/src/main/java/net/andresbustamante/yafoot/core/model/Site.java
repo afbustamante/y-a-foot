@@ -26,10 +26,13 @@ public final class Site implements Locatable, Identifiable<Integer>, Auditable, 
     private Integer id;
     private String name;
     private String address;
+    private String postCode;
+    private String city;
+    private String country;
     private String phoneNumber;
     private GpsCoordinates location;
     private OffsetDateTime creationDate;
-    private OffsetDateTime lastUpdateDate;
+    private OffsetDateTime modificationDate;
 
     /**
      * Constructor for testing purposes only.

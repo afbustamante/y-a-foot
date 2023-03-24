@@ -7,6 +7,9 @@
           sit.sit_id           AS id,
           sit.sit_name         AS name,
           sit.sit_address      AS address,
+          sit.sit_post_code    AS postCode,
+          sit.sit_city         AS city,
+          sit.sit_country      AS country,
           sit.sit_phone_number AS phoneNumber
         FROM t_site sit
             JOIN t_match mat ON sit.sit_id = mat.mat_site_id
@@ -17,6 +20,9 @@
           sit.sit_id           AS id,
           sit.sit_name         AS name,
           sit.sit_address      AS address,
+          sit.sit_post_code    AS postCode,
+          sit.sit_city         AS city,
+          sit.sit_country      AS country,
           sit.sit_phone_number AS phoneNumber
         FROM t_site sit
         WHERE sit.sit_creator_id = #{player.id}
@@ -27,7 +33,10 @@
             sit.sit_id           AS id,
             sit.sit_name         AS name,
             sit.sit_address      AS address,
-            sit.sit_phone_number AS phoneNumber
+            sit.sit_phone_number AS phoneNumber,
+            sit.sit_post_code    AS postCode,
+            sit.sit_city         AS city,
+            sit.sit_country      AS country
         FROM t_site sit
         WHERE sit.sit_id = #{id}
     </select>
@@ -37,7 +46,7 @@
             SELECT NEXTVAL('s_site') AS id;
         </selectKey>
 
-        INSERT INTO t_site (sit_id, sit_name, sit_address, sit_phone_number, sit_creator_id, sit_created_at)
-        VALUES (#{site.id}, #{site.name}, #{site.address}, #{site.phoneNumber}, #{player.id}, CURRENT_TIMESTAMP)
+        INSERT INTO t_site (sit_id, sit_name, sit_address, sit_phone_number, sit_post_code, sit_city, sit_country, sit_creator_id, sit_created_at)
+        VALUES (#{site.id}, #{site.name}, #{site.address}, #{site.phoneNumber}, #{site.postCode}, #{site.city}, #{site.country}, #{player.id}, CURRENT_TIMESTAMP)
     </insert>
 </mapper>

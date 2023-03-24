@@ -10,6 +10,7 @@ import net.andresbustamante.yafoot.core.services.PlayerManagementService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.core.web.mappers.PlayerMapper;
+import net.andresbustamante.yafoot.web.dto.PlayerForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -50,12 +51,12 @@ public class PlayersController extends AbstractController implements PlayersApi 
     }
 
     @Override
-    public ResponseEntity<Player> loadPlayer(@Min(1) Integer playerId) {
+    public ResponseEntity<Player> loadPlayer(@Min(1) Integer id) {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
     }
 
     @Override
-    public ResponseEntity<Void> updatePlayer(Integer id, Player player) {
+    public ResponseEntity<Void> updatePlayer(Integer id, PlayerForm player) {
         try {
             UserContext userContext = getUserContext();
 

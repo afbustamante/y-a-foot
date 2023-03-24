@@ -101,13 +101,13 @@ class SitesControllerTest extends AbstractControllerTest {
     @Test
     void addNewSite() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
+        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
         site.setName("Site name");
         site.setAddress("123 Fake Address");
         site.setPhoneNumber("01234567890");
         Integer id = 1;
 
-        given(siteMapper.map(any(net.andresbustamante.yafoot.web.dto.Site.class))).willReturn(new Site());
+        given(siteMapper.map(any(net.andresbustamante.yafoot.web.dto.SiteForm.class))).willReturn(new Site());
         given(siteManagementService.saveSite(any(Site.class), any(UserContext.class))).willReturn(id);
 
         // When
@@ -124,12 +124,12 @@ class SitesControllerTest extends AbstractControllerTest {
     @Test
     void addNewSiteWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
+        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
         site.setName("Site name");
         site.setAddress("123 Fake Address");
         site.setPhoneNumber("01234567890");
 
-        given(siteMapper.map(any(net.andresbustamante.yafoot.web.dto.Site.class))).willReturn(new Site());
+        given(siteMapper.map(any(net.andresbustamante.yafoot.web.dto.SiteForm.class))).willReturn(new Site());
         given(siteManagementService.saveSite(any(Site.class), any(UserContext.class)))
                 .willThrow(DatabaseException.class);
 
@@ -145,8 +145,7 @@ class SitesControllerTest extends AbstractControllerTest {
     @Test
     void addNewInvalidSite() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
-        site.setId(1);
+        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
 
         // When
         mvc.perform(post("/sites")

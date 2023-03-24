@@ -11,15 +11,20 @@ import java.util.List;
 @Mapper(config = SpringMapperConfig.class, uses = {StringMapper.class})
 public interface PlayerMapper {
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
-    @Mapping(target = "lastUpdateDate", ignore = true)
+    @Mapping(target = "modificationDate", ignore = true)
     @Mapping(target = "cars", ignore = true)
-    @Mapping(target = "preferredLanguage", ignore = true)
-    Player map(net.andresbustamante.yafoot.web.dto.Player player);
-
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "token", ignore = true)
+    Player map(net.andresbustamante.yafoot.web.dto.PlayerForm player);
+
+    /**
+     * DTO mapping for a player bean.
+     *
+     * @param player Bean to map
+     * @return Resulting DTO
+     */
     net.andresbustamante.yafoot.web.dto.Player map(Player player);
 
     /**

@@ -10,6 +10,7 @@ import net.andresbustamante.yafoot.core.services.SiteManagementService;
 import net.andresbustamante.yafoot.core.services.SiteSearchService;
 import net.andresbustamante.yafoot.web.dto.Site;
 import net.andresbustamante.yafoot.core.web.mappers.SiteMapper;
+import net.andresbustamante.yafoot.web.dto.SiteForm;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,7 +75,7 @@ public class SitesController extends AbstractController implements SitesApi {
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> addNewSite(Site site) {
+    public ResponseEntity<Void> addNewSite(SiteForm site) {
         try {
             UserContext userContext = getUserContext();
             long id = siteManagementService.saveSite(siteMapper.map(site), userContext);

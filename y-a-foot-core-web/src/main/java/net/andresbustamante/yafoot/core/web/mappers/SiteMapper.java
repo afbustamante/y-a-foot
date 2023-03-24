@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(config = SpringMapperConfig.class)
+@Mapper(config = SpringMapperConfig.class, uses = GpsCoordinatesMapper.class)
 public interface SiteMapper {
 
     /**
@@ -16,9 +16,10 @@ public interface SiteMapper {
      * @param site Site form data to map
      * @return Site bean
      */
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
-    @Mapping(target = "lastUpdateDate", ignore = true)
-    Site map(net.andresbustamante.yafoot.web.dto.Site site);
+    @Mapping(target = "modificationDate", ignore = true)
+    Site map(net.andresbustamante.yafoot.web.dto.SiteForm site);
 
     /**
      * Bean to DTO mapping for a site.

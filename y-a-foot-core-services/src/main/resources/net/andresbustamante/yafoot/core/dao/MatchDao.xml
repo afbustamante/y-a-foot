@@ -21,10 +21,13 @@
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
           mat.mat_code_sharing_enabled   AS codeSharingEnabled,
           mat.mat_created_at             AS creationDate,
-          mat.mat_updated_at             AS lastUpdateDate,
+          mat.mat_updated_at             AS modificationDate,
           sit.sit_id                     AS siteId,
           sit.sit_name                   AS siteName,
           sit.sit_address                AS siteAddress,
+          sit.sit_post_code              AS sitePostCode,
+          sit.sit_city                   AS siteCity,
+          sit.sit_country                AS siteCountry,
           sit.sit_phone_number           AS sitePhoneNumber,
           sit.sit_latitude               AS siteLatitude,
           sit.sit_longitude              AS siteLongitude,
@@ -62,10 +65,13 @@
                mat.mat_carpooling_enabled   AS carpoolingEnabled,
                mat.mat_code_sharing_enabled AS codeSharingEnabled,
                mat.mat_created_at           AS creationDate,
-               mat.mat_updated_at           AS lastUpdateDate,
+               mat.mat_updated_at           AS modificationDate,
                sit.sit_id                   AS siteId,
                sit.sit_name                 AS siteName,
                sit.sit_address              AS siteAddress,
+               sit.sit_post_code            AS sitePostCode,
+               sit.sit_city                 AS siteCity,
+               sit.sit_country              AS siteCountry,
                sit.sit_phone_number         AS sitePhoneNumber,
                sit.sit_latitude             AS siteLatitude,
                sit.sit_longitude            AS siteLongitude,
@@ -124,7 +130,7 @@
           mat.mat_carpooling_enabled     AS carpoolingEnabled,
           mat.mat_code_sharing_enabled   AS codeSharingEnabled,
           mat.mat_created_at             AS creationDate,
-          mat.mat_updated_at             AS lastUpdateDate,
+          mat.mat_updated_at             AS modificationDate,
           cre.ply_id                     AS creatorId,
           cre.ply_surname                AS creatorSurname,
           cre.ply_first_name             AS creatorFirstName,
@@ -132,6 +138,9 @@
           sit.sit_id                     AS siteId,
           sit.sit_name                   AS siteName,
           sit.sit_address                AS siteAddress,
+          sit.sit_post_code              AS sitePostCode,
+          sit.sit_city                   AS siteCity,
+          sit.sit_country                AS siteCountry,
           sit.sit_phone_number           AS sitePhoneNumber,
           sit.sit_latitude               AS siteLatitude,
           sit.sit_longitude              AS siteLongitude
@@ -274,11 +283,14 @@
         <result property="carpoolingEnabled" column="carpoolingEnabled"/>
         <result property="codeSharingEnabled" column="codeSharingEnabled"/>
         <result property="creationDate" column="creationDate"/>
-        <result property="lastUpdateDate" column="lastUpdateDate"/>
+        <result property="modificationDate" column="modificationDate"/>
         <association property="site" javaType="net.andresbustamante.yafoot.core.model.Site">
             <id column="siteId" property="id"/>
             <result column="siteName" property="name"/>
             <result column="siteAddress" property="address"/>
+            <result column="sitePostCode" property="postCode"/>
+            <result column="siteCity" property="city"/>
+            <result column="siteCountry" property="country"/>
             <result column="sitePhoneNumber" property="phoneNumber"/>
             <association property="location" javaType="net.andresbustamante.yafoot.commons.model.GpsCoordinates">
                 <result column="siteLatitude" property="latitude"/>

@@ -184,7 +184,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .willReturn(List.of(match1, match2));
 
         // When
-        mvc.perform(get("/matches?endDate={0}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
+        mvc.perform(get("/matches?end_date={0}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -209,7 +209,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .willReturn(List.of(match1, match2));
 
         // When
-        mvc.perform(get("/matches?startDate={0}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
+        mvc.perform(get("/matches?start_date={0}", today.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -236,7 +236,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .willReturn(List.of(match1, match2));
 
         // When
-        mvc.perform(get("/matches?startDate={0}&sport={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
+        mvc.perform(get("/matches?start_date={0}&sport={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 SportEnum.BASKETBALL.name())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -310,7 +310,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate tomorrow = today.plusDays(1);
 
         // When
-        mvc.perform(get("/matches?startDate={0}&endDate={1}",
+        mvc.perform(get("/matches?start_date={0}&end_date={1}",
                 tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE), today.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -331,7 +331,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .willReturn(null);
 
         // When
-        mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
+        mvc.perform(get("/matches?start_date={0}&end_date={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -354,7 +354,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .willThrow(DatabaseException.class);
 
         // When
-        mvc.perform(get("/matches?startDate={0}&endDate={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
+        mvc.perform(get("/matches?start_date={0}&end_date={1}", today.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 tomorrow.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -365,19 +365,19 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void createMatch() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.Match match = new net.andresbustamante.yafoot.web.dto.Match();
+        net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
         match.setDate(OffsetDateTime.now().plusDays(3));
         match.setSport(RUGBY);
         match.setNumPlayersMin(8);
 
-        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
+        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
         site.setName("My site");
         site.setAddress("123 Fake Address");
         match.setSite(site);
 
         Integer id = 1;
 
-        given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.Match.class))).willReturn(new Match());
+        given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.MatchForm.class))).willReturn(new Match());
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class))).willReturn(id);
 
         // When
@@ -393,11 +393,11 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void createMatchInThePast() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.Match match = new net.andresbustamante.yafoot.web.dto.Match();
+        net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
         match.setDate(OffsetDateTime.now().minusDays(3));
         match.setNumPlayersMin(8);
 
-        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
+        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
         site.setName("My site");
         site.setAddress("123 Fake Address");
         match.setSite(site);
@@ -417,17 +417,17 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void createMatchWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.Match match = new net.andresbustamante.yafoot.web.dto.Match();
+        net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
         match.setDate(OffsetDateTime.now().plusDays(3));
         match.setSport(BASKETBALL);
         match.setNumPlayersMin(8);
 
-        net.andresbustamante.yafoot.web.dto.Site site = new net.andresbustamante.yafoot.web.dto.Site();
+        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
         site.setName("My site");
         site.setAddress("123 Fake Address");
         match.setSite(site);
 
-        given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.Match.class))).willReturn(new Match());
+        given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.MatchForm.class))).willReturn(new Match());
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class)))
                 .willThrow(DatabaseException.class);
 
@@ -510,19 +510,12 @@ class MatchesControllerTest extends AbstractControllerTest {
         match.setNumPlayersMin(8);
 
         Player player = new Player(2, "DOE", "John", email, null);
-        net.andresbustamante.yafoot.web.dto.Player playerDto = new net.andresbustamante.yafoot.web.dto.Player();
-        playerDto.setId(2);
-        playerDto.setEmail(email);
 
-        net.andresbustamante.yafoot.web.dto.Registration registration =
-                new net.andresbustamante.yafoot.web.dto.Registration();
-        registration.setPlayer(playerDto);
+        net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
+                new net.andresbustamante.yafoot.web.dto.RegistrationForm();
+        registration.setPlayerId(2);
         registration.setCarConfirmed(false);
 
-        Registration reg = new Registration();
-        reg.setPlayer(new Player(2));
-
-        given(registrationMapper.map(any(net.andresbustamante.yafoot.web.dto.Registration.class))).willReturn(reg);
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(player);
 
@@ -541,23 +534,15 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void registerPlayerToUnknownMatch() throws Exception {
         // Given
-        String email = VALID_EMAIL;
         String matchCode = "ABCDEFGHIJ";
 
-        Player player = new Player(2, "DOE", "John", email, null);
-        net.andresbustamante.yafoot.web.dto.Player playerDto = new net.andresbustamante.yafoot.web.dto.Player();
-        playerDto.setId(2);
-        playerDto.setEmail(email);
+        Player player = new Player(2, "DOE", "John", VALID_EMAIL, null);
 
-        net.andresbustamante.yafoot.web.dto.Registration registration =
-                new net.andresbustamante.yafoot.web.dto.Registration();
-        registration.setPlayer(playerDto);
+        net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
+                new net.andresbustamante.yafoot.web.dto.RegistrationForm();
+        registration.setPlayerId(2);
         registration.setCarConfirmed(false);
 
-        Registration reg = new Registration();
-        reg.setPlayer(new Player());
-
-        given(registrationMapper.map(any(net.andresbustamante.yafoot.web.dto.Registration.class))).willReturn(reg);
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
         given(playerSearchService.findPlayerByEmail(anyString())).willReturn(player);
 
@@ -573,26 +558,17 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void registerUnknownPlayerToExistingMatch() throws Exception {
         // Given
-        String email = "doe.john@email.com";
         String matchCode = "ABCDEFGHIJ";
         Match match = new Match(1);
         match.setCode(matchCode);
         match.setDate(OffsetDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
-        net.andresbustamante.yafoot.web.dto.Player playerDto = new net.andresbustamante.yafoot.web.dto.Player();
-        playerDto.setId(2);
-        playerDto.setEmail(email);
-
-        net.andresbustamante.yafoot.web.dto.Registration registration =
-                new net.andresbustamante.yafoot.web.dto.Registration();
-        registration.setPlayer(playerDto);
+        net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
+                new net.andresbustamante.yafoot.web.dto.RegistrationForm();
+        registration.setPlayerId(2);
         registration.setCarConfirmed(false);
 
-        Registration reg = new Registration();
-        reg.setPlayer(new Player());
-
-        given(registrationMapper.map(any(net.andresbustamante.yafoot.web.dto.Registration.class))).willReturn(reg);
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerByEmail(anyString())).willReturn(null);
 
@@ -616,17 +592,12 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
 
-        net.andresbustamante.yafoot.web.dto.Car car = new net.andresbustamante.yafoot.web.dto.Car()
-                .id(3)
-                .numSeats(2)
-                .name("Car 3");
-
         Registration registration = new Registration(new RegistrationId(match.getId(), player.getId()));
         registration.setPlayer(player);
         registration.setCarConfirmed(false);
         match.setRegistrations(List.of(registration));
 
-        CarConfirmation confirmation = new CarConfirmation().car(car).confirmed(true);
+        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(player);
@@ -647,12 +618,7 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
 
-        net.andresbustamante.yafoot.web.dto.Car car = new net.andresbustamante.yafoot.web.dto.Car()
-                .id(3)
-                .numSeats(2)
-                .name("Car 3");
-
-        CarConfirmation confirmation = new CarConfirmation().car(car).confirmed(true);
+        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(player);
@@ -678,12 +644,7 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
 
-        net.andresbustamante.yafoot.web.dto.Car car = new net.andresbustamante.yafoot.web.dto.Car()
-                .id(3)
-                .numSeats(2)
-                .name("Car 3");
-
-        CarConfirmation confirmation = new CarConfirmation().car(car).confirmed(true);
+        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(player);
@@ -706,12 +667,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         match.setDate(OffsetDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
-        net.andresbustamante.yafoot.web.dto.Car car = new net.andresbustamante.yafoot.web.dto.Car()
-                .id(3)
-                .numSeats(2)
-                .name("Car 3");
-
-        CarConfirmation confirmation = new CarConfirmation().car(car).confirmed(true);
+        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(null);
@@ -730,12 +686,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         // Given
         String matchCode = "ABCDEFGHIJ";
 
-        net.andresbustamante.yafoot.web.dto.Car car = new net.andresbustamante.yafoot.web.dto.Car()
-                .id(3)
-                .numSeats(2)
-                .name("Car 3");
-
-        CarConfirmation confirmation = new CarConfirmation().car(car).confirmed(true);
+        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willThrow(DatabaseException.class);
         given(playerSearchService.findPlayerById(anyInt())).willThrow(DatabaseException.class);

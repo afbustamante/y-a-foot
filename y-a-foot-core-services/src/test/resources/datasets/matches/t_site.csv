@@ -1,3 +1,3 @@
-sit_id,sit_name,sit_address,sit_phone_number,sit_creator_id,sit_created_at
-101,Foot-à-5 de la ville,9 Rue du sport,1234567890,101,[now]
-102,Foot-à-5 de l'autre ville,5 Rue des fous,1434567890,null,[now]
+sit_id,sit_name,sit_address,sit_phone_number,sit_creator_id,sit_created_at,sit_post_code,sit_city,sit_country
+101,Foot-à-5 de la ville,9 Rue du sport,1234567890,101,[now],69006,Lyon,France
+102,Foot-à-5 de l'autre ville,5 Rue des fous,1434567890,null,[now],69100,Villeurbanne,France

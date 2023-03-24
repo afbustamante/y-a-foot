@@ -68,10 +68,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /players/{playerId}:
+  /players/{id}:
     parameters:
     - in: path
-      name: playerId
+      name: id
       required: true
       schema:
         type: integer
@@ -123,7 +123,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Player'
+              $ref: '#/components/schemas/PlayerForm'
       responses:
         202: # Accepted
           description: Player successfully updated
@@ -168,14 +168,14 @@ paths:
       - matches
       parameters:
       - in: query
-        name: startDate
+        name: start_date
         required: false
         schema:
           type: string
           format: date
         description: Start date for the research
       - in: query
-        name: endDate
+        name: end_date
         required: false
         schema:
           type: string
@@ -225,7 +225,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Match'
+              $ref: '#/components/schemas/MatchForm'
       responses:
         201: # Created
           description: Match successfully created. Match code returned in Location header
@@ -241,10 +241,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /matches/{matchCode}:
+
+  /matches/{code}:
     parameters:
     - in: path
-      name: matchCode
+      name: code
       required: true
       schema:
         type: string
@@ -296,10 +297,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /matches/{matchCode}/registrations:
+
+  /matches/{code}/registrations:
     parameters:
     - in: path
-      name: matchCode
+      name: code
       required: true
       schema:
         type: string
@@ -348,7 +350,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Registration'
+              $ref: '#/components/schemas/RegistrationForm'
       responses:
         201: # Created
           description: Registration saved
@@ -370,17 +372,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /matches/{matchCode}/registrations/{playerId}:
+
+  /matches/{code}/registrations/{pid}:
     parameters:
     - in: path
-      name: matchCode
+      name: code
       required: true
       schema:
         type: string
         pattern: ^[A-Z]{10}$
       description: Unique match code
     - in: path
-      name: playerId
+      name: pid
       required: true
       schema:
         type: integer
@@ -449,10 +452,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /matches/{matchCode}/cars:
+
+  /matches/{code}/cars:
     parameters:
     - in: path
-      name: matchCode
+      name: code
       required: true
       schema:
         type: string
@@ -489,6 +493,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
   /sites:
     get:
       operationId: loadSites
@@ -527,7 +532,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Site'
+              $ref: '#/components/schemas/SiteForm'
       responses:
         201: # Created
           description: Site successfully saved. Site's ID is returned in Location header
@@ -543,6 +548,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
   /cars:
     get:
       operationId: loadCars
@@ -581,7 +587,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Car'
+              $ref: '#/components/schemas/CarForm'
       responses:
         201: # Created
           description: Car successfully saved. Car's ID is returned in Location header
@@ -597,6 +603,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
   /cars/{id}:
     parameters:
     - in: path
@@ -642,6 +649,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
   /sports:
     get:
       operationId: loadSports
@@ -663,33 +671,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
 components:
   schemas:
     Player:
       type: object
-      required:
-        - email
       properties:
         id:
           type: integer
         email:
           type: string
           format: email
-        password:
-          type: string
-          format: byte
-        token:
-          type: string
-          pattern: ^[A-Z0-9]{8,16}$
-        firstName:
+        first_name:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
         surname:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
-        phoneNumber:
+        phone_number:
           type: string
           pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+        preferred_language:
+          type: string
+          pattern: ^[A-Za-z_]{2,5}$
+          example: es_CO
+
+    PlayerForm:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        surname:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        phone_number:
+          type: string
+          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+        preferred_language:
+          type: string
+          pattern: ^[A-Za-z_]{2,5}$
+          example: es_CO
+      required:
+        - email
+        - first_name
 
     Site:
       type: object
@@ -704,7 +732,37 @@ components:
         address:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\r\n\t\#\- ]{1,255}$
-        phoneNumber:
+        post_code:
+          type: string
+          pattern: ^[0-9\-]{0,10}$
+        phone_number:
+          type: string
+          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+        location:
+          $ref: '#/components/schemas/GpsCoordinates'
+
+    SiteForm:
+      type: object
+      required:
+        - name
+        - address
+      properties:
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\& ]{1,255}$
+        address:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\r\n\t\#\- ]{1,255}$
+        post_code:
+          type: string
+          pattern: ^[0-9\-]{0,10}$
+        city:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\r\n\t\#\- ]{1,255}$
+        country:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\r\n\t\#\- ]{1,255}$
+        phone_number:
           type: string
           pattern: ^[+]?[0-9\-\(\) ]{6,15}$
         location:
@@ -721,22 +779,34 @@ components:
         name:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\& ]{1,255}$
-        numSeats:
+        num_seats:
           type: integer
           minimum: 0
-        numPassengers:
+        num_passengers:
           type: integer
           minimum: 0
         driver:
           $ref: '#/components/schemas/Player'
+
+    CarForm:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\& ]{1,255}$
+        num_seats:
+          type: integer
+          minimum: 0
 
     CarConfirmation:
       type: object
       required:
       - car
       properties:
-        car:
-          $ref: '#/components/schemas/Car'
+        car_id:
+          type: integer
         confirmed:
           type: boolean
 
@@ -749,7 +819,19 @@ components:
           $ref: '#/components/schemas/Player'
         car:
           $ref: '#/components/schemas/Car'
-        carConfirmed:
+        car_confirmed:
+          type: boolean
+
+    RegistrationForm:
+      type: object
+      required:
+        - player_id
+      properties:
+        player_id:
+          type: integer
+        car_id:
+          type: integer
+        car_confirmed:
           type: boolean
 
     Sport:
@@ -785,13 +867,13 @@ components:
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\, ]{1,1024}$
         status:
           $ref: '#/components/schemas/MatchStatus'
-        numPlayersMin:
+        num_players_min:
           type: integer
           minimum: 0
-        numPlayersMax:
+        num_players_max:
           type: integer
           minimum: 2
-        numRegisteredPlayers:
+        num_registered_players:
           type: integer
           minimum: 0
         sport:
@@ -800,9 +882,40 @@ components:
           $ref: '#/components/schemas/Site'
         creator:
           $ref: '#/components/schemas/Player'
-        carpoolingEnabled:
+        carpooling_enabled:
           type: boolean
-        codeSharingEnabled:
+        code_sharing_enabled:
+          type: boolean
+
+    MatchForm:
+      type: object
+      required:
+      - date
+      - sport
+      - carpooling_enabled
+      - code_sharing_enabled
+      properties:
+        date:
+          type: string
+          format: date-time
+        description:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\, ]{1,1024}$
+        num_players_min:
+          type: integer
+          minimum: 0
+        num_players_max:
+          type: integer
+          minimum: 2
+        sport:
+          $ref: '#/components/schemas/SportCode'
+        site_id:
+          type: integer
+        site:
+          $ref: '#/components/schemas/SiteForm'
+        carpooling_enabled:
+          type: boolean
+        code_sharing_enabled:
           type: boolean
 
     MatchStatus:
@@ -812,6 +925,7 @@ components:
         - created
         - played
         - cancelled
+
     SportCode:
       type: string
       enum:
@@ -830,6 +944,7 @@ components:
         - swimming
         - table-tennis
         - other
+
     GpsCoordinates:
       type: object
       required:
@@ -842,6 +957,7 @@ components:
         longitude:
           type: number
           format: double
+
     ErrorResponse:
       type: object
       required:

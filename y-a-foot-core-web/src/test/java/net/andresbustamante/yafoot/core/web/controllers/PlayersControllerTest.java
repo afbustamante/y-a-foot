@@ -6,6 +6,7 @@ import net.andresbustamante.yafoot.core.services.PlayerManagementService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.core.web.mappers.PlayerMapper;
 import net.andresbustamante.yafoot.web.dto.Player;
+import net.andresbustamante.yafoot.web.dto.PlayerForm;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -99,8 +100,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         // Given
         String email = VALID_EMAIL;
 
-        Player player = new Player();
-        player.setId(1);
+        PlayerForm player = new PlayerForm();
         player.setFirstName("Test");
         player.setSurname("User");
         player.setEmail(email);
@@ -128,8 +128,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         // Given
         String email = VALID_EMAIL;
 
-        Player player = new Player();
-        player.setId(1);
+        PlayerForm player = new PlayerForm();
         player.setFirstName("Test");
         player.setSurname("User");
         player.setEmail(email);
@@ -184,11 +183,9 @@ class PlayersControllerTest extends AbstractControllerTest {
     @Test
     void deactivateExistingPlayer() throws Exception {
         // Given
-        String email = VALID_EMAIL;
-
         net.andresbustamante.yafoot.core.model.Player storedPlayer =
                 new net.andresbustamante.yafoot.core.model.Player(1);
-        storedPlayer.setEmail(email);
+        storedPlayer.setEmail(VALID_EMAIL);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
 

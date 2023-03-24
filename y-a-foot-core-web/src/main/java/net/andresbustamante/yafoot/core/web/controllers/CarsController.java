@@ -11,6 +11,7 @@ import net.andresbustamante.yafoot.core.services.CarSearchService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.core.web.mappers.CarMapper;
+import net.andresbustamante.yafoot.web.dto.CarForm;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -90,7 +91,7 @@ public class CarsController extends AbstractController implements CarsApi {
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> addNewCar(@Valid Car car) {
+    public ResponseEntity<Void> addNewCar(@Valid CarForm car) {
         try {
             int carId = carManagementService.saveCar(carMapper.map(car), getUserContext());
 

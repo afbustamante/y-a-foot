@@ -40,7 +40,7 @@ public final class Match implements Serializable, Identifiable<Integer>, Auditab
     private boolean carpoolingEnabled;
     private boolean codeSharingEnabled;
     private OffsetDateTime creationDate;
-    private OffsetDateTime lastUpdateDate;
+    private OffsetDateTime modificationDate;
 
     /**
      * Main constructor.

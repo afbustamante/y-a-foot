@@ -19,5 +19,5 @@ public interface Auditable {
      *
      * @return Date and time of the last update
      */
-    OffsetDateTime getLastUpdateDate();
+    OffsetDateTime getModificationDate();
 }

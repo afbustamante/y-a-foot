@@ -27,13 +27,6 @@ public class User implements Serializable {
     private String surname;
     private String firstName;
     /**
-     * Authentication token.
-     *
-     * @deprecated No token needed since an external OAuth 2.0 resource server handles authentication
-     */
-    @Deprecated(since = "v2.0")
-    private String token;
-    /**
      * User's preferred language code. Example: "en" for English or "fr" for French.
      */
     private String preferredLanguage;

@@ -14,10 +14,14 @@ import java.util.List;
 })
 public interface MatchMapper {
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "code", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "creator", ignore = true)
     @Mapping(target = "registrations", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
-    @Mapping(target = "lastUpdateDate", ignore = true)
-    Match map(net.andresbustamante.yafoot.web.dto.Match match);
+    @Mapping(target = "modificationDate", ignore = true)
+    Match map(net.andresbustamante.yafoot.web.dto.MatchForm match);
 
     /**
      * Bean to DTO mapping for a match object.

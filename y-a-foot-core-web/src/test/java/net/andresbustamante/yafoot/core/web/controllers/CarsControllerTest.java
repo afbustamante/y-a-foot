@@ -169,13 +169,13 @@ class CarsControllerTest extends AbstractControllerTest {
     @Test
     void addNewCar() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.Car car = new net.andresbustamante.yafoot.web.dto.Car();
+        net.andresbustamante.yafoot.web.dto.CarForm car = new net.andresbustamante.yafoot.web.dto.CarForm();
         car.setName("Car 1");
         car.setNumSeats(4);
 
         Integer id = 1;
 
-        given(carMapper.map(any(net.andresbustamante.yafoot.web.dto.Car.class))).willReturn(new Car());
+        given(carMapper.map(any(net.andresbustamante.yafoot.web.dto.CarForm.class))).willReturn(new Car());
         given(carManagementService.saveCar(any(Car.class), any(UserContext.class))).willReturn(id);
 
         // When
@@ -196,7 +196,7 @@ class CarsControllerTest extends AbstractControllerTest {
         car.setName("Car 1");
         car.setNumSeats(4);
 
-        given(carMapper.map(any(net.andresbustamante.yafoot.web.dto.Car.class))).willReturn(new Car());
+        given(carMapper.map(any(net.andresbustamante.yafoot.web.dto.CarForm.class))).willReturn(new Car());
         given(carManagementService.saveCar(any(Car.class), any(UserContext.class))).willThrow(DatabaseException.class);
 
         // When

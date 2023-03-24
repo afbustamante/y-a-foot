@@ -50,7 +50,7 @@ public final class Registration implements Identifiable<RegistrationId>, Seriali
     /**
      * Date and time of the last update for the registration.
      */
-    private OffsetDateTime lastUpdateDate;
+    private OffsetDateTime modificationDate;
 
     /**
      * Constructor for testing purposes only.

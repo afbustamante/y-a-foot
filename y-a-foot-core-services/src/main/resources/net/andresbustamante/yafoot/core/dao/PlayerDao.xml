@@ -16,7 +16,7 @@
             p.ply_email             AS email,
             p.ply_phone_number      AS phoneNumber,
             p.ply_created_at        AS creationDate,
-            p.ply_updated_at        AS lastUpdateDate,
+            p.ply_updated_at        AS modificationDate,
             p.ply_active            AS active
         FROM t_player p
         WHERE p.ply_id = #{id}
@@ -30,7 +30,7 @@
             p.ply_email             AS email,
             p.ply_phone_number      AS phoneNumber,
             p.ply_created_at        AS creationDate,
-            p.ply_updated_at        AS lastUpdateDate,
+            p.ply_updated_at        AS modificationDate,
             p.ply_active            AS active
         FROM t_player p
         WHERE p.ply_email = #{email}

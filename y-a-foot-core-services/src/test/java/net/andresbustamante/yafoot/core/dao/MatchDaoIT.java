@@ -82,6 +82,11 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
         assertEquals(CREATED, match.getStatus());
         assertNotNull(match.getCreationDate());
         assertEquals(LocalDate.of(2019, 1, 2), match.getCreationDate().toLocalDate());
+        assertNotNull(match.getSite());
+        assertEquals("5 Rue des fous", match.getSite().getAddress());
+        assertEquals("69100", match.getSite().getPostCode());
+        assertEquals("Villeurbanne", match.getSite().getCity());
+        assertEquals("France", match.getSite().getCountry());
     }
 
     @Test
@@ -386,7 +391,7 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
         assertNotNull(updatedMatch);
         assertNotNull(updatedMatch.getStatus());
         assertEquals(match.getStatus(), updatedMatch.getStatus());
-        assertTrue(updatedMatch.getLastUpdateDate().isAfter(match.getLastUpdateDate()));
+        assertTrue(updatedMatch.getModificationDate().isAfter(match.getModificationDate()));
     }
 
 }
