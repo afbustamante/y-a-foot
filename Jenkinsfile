@@ -20,12 +20,14 @@ pipeline {
                 echo 'Pulling branch ' + env.GIT_BRANCH
             }
         }
+
         stage('Build') {
             steps {
                 // Run the maven build without tests
-                sh 'mvn clean compile -P jenkins'
+                sh 'mvn clean package -P jenkins -DskipTests=true'
             }
         }
+
         stage('Test') {
             steps {
                 // Run the maven build with tests
@@ -41,6 +43,7 @@ pipeline {
                 }
             }
         }
+
         stage('Analyze') {
             steps {
                 script {
@@ -57,6 +60,7 @@ pipeline {
                 }
             }
         }
+
         stage('Publish') {
             steps {
                 script {
