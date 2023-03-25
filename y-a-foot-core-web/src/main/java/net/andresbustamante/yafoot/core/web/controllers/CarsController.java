@@ -54,7 +54,7 @@ public class CarsController extends AbstractController implements CarsApi {
     public ResponseEntity<List<Car>> loadCars() {
         try {
             UserContext ctx = getUserContext();
-            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
+            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername(), ctx);
             List<net.andresbustamante.yafoot.core.model.Car> cars = carSearchService.findCarsByPlayer(player);
 
             List<Car> result = new ArrayList<>();
@@ -63,6 +63,8 @@ public class CarsController extends AbstractController implements CarsApi {
                 result.addAll(carMapper.map(cars));
             }
             return ResponseEntity.ok(result);
+        } catch (ApplicationException e) {
+            throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
         }

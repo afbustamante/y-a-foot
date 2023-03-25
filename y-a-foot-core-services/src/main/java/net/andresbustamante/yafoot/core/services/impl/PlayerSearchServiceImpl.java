@@ -1,5 +1,7 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
@@ -23,7 +25,11 @@ public class PlayerSearchServiceImpl implements PlayerSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Player findPlayerByEmail(String email) throws DatabaseException {
+    public Player findPlayerByEmail(String email, UserContext context) throws ApplicationException {
+        if (context != null && !context.getUsername().equals(email)) {
+            throw new ApplicationException("unauthorised.user.error", "User not allowed to search a different email");
+        }
+
         return playerDAO.findPlayerByEmail(email);
     }
 

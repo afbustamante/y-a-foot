@@ -75,13 +75,17 @@ public class PlayersController extends AbstractController implements PlayersApi 
     @Override
     public ResponseEntity<List<Player>> findPlayers(String email) {
         try {
-            net.andresbustamante.yafoot.core.model.Player player = playerSearchService.findPlayerByEmail(email);
+            UserContext ctx = getUserContext();
+
+            net.andresbustamante.yafoot.core.model.Player player = playerSearchService.findPlayerByEmail(email, ctx);
 
             if (player != null) {
                 return ResponseEntity.ok(playerMapper.map(List.of(player)));
             } else {
                 return ResponseEntity.ok(Collections.emptyList());
             }
+        } catch (ApplicationException e) {
+            throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }

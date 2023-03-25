@@ -89,7 +89,8 @@ class CarsControllerTest extends AbstractControllerTest {
     void loadCarsWhileDatabaseIsUnavailable() throws Exception {
         // Given
         given(carSearchService.findCarsByPlayer(any(Player.class))).willThrow(DatabaseException.class);
-        given(playerSearchService.findPlayerByEmail(anyString())).willThrow(DatabaseException.class);
+        given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class)))
+                .willThrow(DatabaseException.class);
 
         // When
         mvc.perform(get("/cars")

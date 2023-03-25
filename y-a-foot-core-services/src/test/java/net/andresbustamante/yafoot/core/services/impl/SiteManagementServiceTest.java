@@ -1,12 +1,11 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.dao.SiteDao;
-import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +22,7 @@ class SiteManagementServiceTest extends AbstractServiceUnitTest {
     private SiteDao siteDAO;
 
     @Mock
-    private PlayerSearchService playerSearchService;
+    private PlayerDao playerDao;
 
     private UserContext userContext;
 
@@ -34,7 +33,7 @@ class SiteManagementServiceTest extends AbstractServiceUnitTest {
     }
 
     @Test
-    void saveSite() throws DatabaseException {
+    void saveSite() throws Exception {
         // Given
         Site site = new Site(1);
         site.setName("Test name");
@@ -42,7 +41,7 @@ class SiteManagementServiceTest extends AbstractServiceUnitTest {
         Player player = new Player(1);
 
         // When
-        when(playerSearchService.findPlayerByEmail(anyString())).thenReturn(player);
+        when(playerDao.findPlayerByEmail(anyString())).thenReturn(player);
         siteManagementService.saveSite(site, userContext);
 
         // Then

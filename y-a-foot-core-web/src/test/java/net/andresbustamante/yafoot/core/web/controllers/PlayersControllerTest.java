@@ -2,6 +2,7 @@ package net.andresbustamante.yafoot.core.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.PlayerManagementService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.core.web.mappers.PlayerMapper;
@@ -53,7 +54,7 @@ class PlayersControllerTest extends AbstractControllerTest {
         player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
-        given(playerSearchService.findPlayerByEmail(anyString())).willReturn(player);
+        given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class))).willReturn(player);
 
         // When
         mvc.perform(get("/players?email={0}", email)
@@ -67,12 +68,10 @@ class PlayersControllerTest extends AbstractControllerTest {
     @Test
     void findUnknownPlayer() throws Exception {
         // Given
-        String email = VALID_EMAIL;
-
-        given(playerSearchService.findPlayerByEmail(anyString())).willReturn(null);
+        given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class))).willReturn(null);
 
         // When
-        mvc.perform(get("/players?email={0}", email)
+        mvc.perform(get("/players?email={0}", VALID_EMAIL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
@@ -82,12 +81,11 @@ class PlayersControllerTest extends AbstractControllerTest {
     @Test
     void findPlayerWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        String email = VALID_EMAIL;
-
-        given(playerSearchService.findPlayerByEmail(anyString())).willThrow(DatabaseException.class);
+        given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class)))
+                .willThrow(DatabaseException.class);
 
         // When
-        mvc.perform(get("/players?email={0}", email)
+        mvc.perform(get("/players?email={0}", VALID_EMAIL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then

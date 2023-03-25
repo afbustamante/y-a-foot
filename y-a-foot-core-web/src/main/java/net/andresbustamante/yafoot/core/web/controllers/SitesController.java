@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.core.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
@@ -58,7 +60,7 @@ public class SitesController extends AbstractController implements SitesApi {
     public ResponseEntity<List<Site>> loadSites() {
         try {
             UserContext ctx = getUserContext();
-            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername());
+            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername(), ctx);
             List<net.andresbustamante.yafoot.core.model.Site> sites = siteSearchService.findSitesByPlayer(player);
 
             List<Site> result = new ArrayList<>();
@@ -67,6 +69,8 @@ public class SitesController extends AbstractController implements SitesApi {
                 result.addAll(siteMapper.map(sites));
             }
             return ResponseEntity.ok(result);
+        } catch (ApplicationException e) {
+            throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }

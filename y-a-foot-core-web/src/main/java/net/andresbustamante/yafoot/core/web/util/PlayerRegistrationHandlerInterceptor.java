@@ -61,7 +61,7 @@ public class PlayerRegistrationHandlerInterceptor implements HandlerInterceptor 
                     Jwt credentials = (Jwt) authentication.getCredentials();
                     String username = credentials.getClaimAsString("email");
 
-                    Player player = playerSearchService.findPlayerByEmail(username);
+                    Player player = playerSearchService.findPlayerByEmail(username, null);
 
                     if (player == null) {
                         log.info("User does not exist as a player: {}", username);

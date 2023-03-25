@@ -191,7 +191,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(playerSearchService).findPlayerByEmail(anyString());
+        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -216,7 +216,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(playerSearchService).findPlayerByEmail(anyString());
+        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -244,7 +244,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(playerSearchService).findPlayerByEmail(anyString());
+        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -271,7 +271,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(playerSearchService).findPlayerByEmail(anyString());
+        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -300,7 +300,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(playerSearchService).findPlayerByEmail(anyString());
+        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -317,7 +317,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isBadRequest());
 
-        verify(playerSearchService, never()).findPlayerByEmail(anyString());
+        verify(playerSearchService, never()).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -339,7 +339,7 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(playerSearchService).findPlayerByEmail(anyString());
+        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -348,7 +348,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
 
-        given(playerSearchService.findPlayerByEmail(anyString())).willThrow(DatabaseException.class);
+        given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class)))
+                .willThrow(DatabaseException.class);
         given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class),
                 any(LocalDate.class)))
                 .willThrow(DatabaseException.class);
@@ -532,7 +533,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         registration.setCarConfirmed(false);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
-        given(playerSearchService.findPlayerByEmail(anyString())).willReturn(player);
+        given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class))).willReturn(player);
 
         // When
         mvc.perform(post("/matches/{0}/registrations", matchCode)
@@ -558,7 +559,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         registration.setCarConfirmed(false);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
-        given(playerSearchService.findPlayerByEmail(anyString())).willReturn(null);
+        given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class))).willReturn(null);
 
         // When
         mvc.perform(post("/matches/{0}/registrations", matchCode)
