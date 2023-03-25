@@ -29,7 +29,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Run the maven build with tests
-                sh 'mvn clean install -P jenkins --batch-mode --errors --fail-at-end'
+                sh 'mvn test verify -P jenkins --batch-mode --errors --fail-at-end'
             }
             post {
                 always {
