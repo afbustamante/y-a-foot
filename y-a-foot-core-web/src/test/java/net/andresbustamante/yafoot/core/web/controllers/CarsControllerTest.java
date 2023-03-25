@@ -19,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -186,7 +185,7 @@ class CarsControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.LOCATION, MessageFormat.format("http://myurl/cars/{0}", id)));
+                .andExpect(header().string(HttpHeaders.LOCATION, String.format("http://myurl/cars/%d", id)));
     }
 
     @Test

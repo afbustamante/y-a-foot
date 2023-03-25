@@ -48,8 +48,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = {MatchesController.class, ObjectMapper.class}, properties = {
         "api.config.public.url=http://myurl",
         "api.matches.root.path=/matches",
-        "api.matches.one.path=/matches/{0}",
-        "api.matches.one.registrations.one.path=/matches/{0}/registrations/{1}"
+        "api.matches.one.path=/matches/%s",
+        "api.matches.one.registrations.one.path=/matches/%s/registrations/%d"
 }, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class MatchesControllerTest extends AbstractControllerTest {
 

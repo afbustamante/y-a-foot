@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(value = {PlayersController.class, ObjectMapper.class},
         properties = {
-                "api.players.one.path=/players/{0}",
                 "api.config.public.url=http://myurl"
         },
         excludeAutoConfiguration = SecurityAutoConfiguration.class)

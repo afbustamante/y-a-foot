@@ -2,14 +2,14 @@ package net.andresbustamante.yafoot.core.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
 import net.andresbustamante.yafoot.core.model.Player;
-import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.core.services.SiteManagementService;
 import net.andresbustamante.yafoot.core.services.SiteSearchService;
-import net.andresbustamante.yafoot.web.dto.Site;
 import net.andresbustamante.yafoot.core.web.mappers.SiteMapper;
+import net.andresbustamante.yafoot.web.dto.Site;
 import net.andresbustamante.yafoot.web.dto.SiteForm;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +79,7 @@ public class SitesController extends AbstractController implements SitesApi {
             UserContext userContext = getUserContext();
             long id = siteManagementService.saveSite(siteMapper.map(site), userContext);
 
-            String location = MessageFormat.format(siteApiPath, id);
+            String location = String.format(siteApiPath, id);
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));

@@ -18,7 +18,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(value = {SitesController.class, ObjectMapper.class}, properties = {
         "api.config.public.url=http://myurl",
-        "api.sites.one.path=/sites/{0}"
+        "api.sites.one.path=/sites/%d"
 }, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class SitesControllerTest extends AbstractControllerTest {
 
@@ -118,7 +117,7 @@ class SitesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.LOCATION, MessageFormat.format("http://myurl/sites/{0}", id)));
+                .andExpect(header().string(HttpHeaders.LOCATION, String.format("http://myurl/sites/%d", id)));
     }
 
     @Test

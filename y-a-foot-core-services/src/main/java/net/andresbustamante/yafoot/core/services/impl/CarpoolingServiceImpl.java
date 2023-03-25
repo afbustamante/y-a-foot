@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
@@ -100,7 +99,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
     public void processCarSeatRequest(Match match, Player player, Car car, UserContext ctx)
             throws DatabaseException, ApplicationException {
         String template = "carpooling-request-email_" + car.getDriver().getPreferredLanguage() + ".ftl";
-        String link = MessageFormat.format(carpoolingManagementUrl, match.getCode());
+        String link = String.format(carpoolingManagementUrl, match.getCode());
         Locale locale = new Locale(car.getDriver().getPreferredLanguage());
         String matchDate = match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", locale));
 
@@ -151,7 +150,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
         String subject = isCarSeatConfirmed ? "carpool.confirmation.email.subject"
                 : "carpool.rejection.email.subject";
 
-        String link = MessageFormat.format(matchManagementUrl, match.getCode());
+        String link = String.format(matchManagementUrl, match.getCode());
         Locale locale = new Locale(player.getPreferredLanguage());
         String matchDate = match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", locale));
 

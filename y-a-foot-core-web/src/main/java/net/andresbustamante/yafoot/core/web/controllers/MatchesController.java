@@ -37,7 +37,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -178,7 +177,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
             net.andresbustamante.yafoot.core.model.Match m = matchMapper.map(match);
             matchManagementService.saveMatch(m, userContext);
 
-            String location = MessageFormat.format(matchApiPath, m.getCode());
+            String location = String.format(matchApiPath, m.getCode());
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
@@ -230,7 +229,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
             matchManagementService.registerPlayer(player, match, car, userContext);
 
-            String location = MessageFormat.format(matchRegistrationApiPath, match.getCode(),
+            String location = String.format(matchRegistrationApiPath, match.getCode(),
                     registration.getPlayerId());
             return ResponseEntity.created(getLocationURI(location)).build();
         } catch (DatabaseException e) {

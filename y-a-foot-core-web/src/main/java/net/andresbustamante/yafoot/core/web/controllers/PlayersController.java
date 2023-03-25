@@ -12,7 +12,6 @@ import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.core.web.mappers.PlayerMapper;
 import net.andresbustamante.yafoot.web.dto.PlayerForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,9 +35,6 @@ public class PlayersController extends AbstractController implements PlayersApi 
     private final PlayerManagementService playerManagementService;
     private final PlayerSearchService playerSearchService;
     private final PlayerMapper playerMapper;
-
-    @Value("${api.players.one.path}")
-    private String playerApiPath;
 
     @Autowired
     public PlayersController(PlayerManagementService playerManagementService, PlayerSearchService playerSearchService,
