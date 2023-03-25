@@ -1,12 +1,9 @@
 package net.andresbustamante.yafoot.core.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
-import net.andresbustamante.yafoot.core.model.Player;
-import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.core.services.SiteManagementService;
 import net.andresbustamante.yafoot.core.services.SiteSearchService;
 import net.andresbustamante.yafoot.core.web.mappers.SiteMapper;
@@ -26,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
@@ -39,7 +35,6 @@ public class SitesController extends AbstractController implements SitesApi {
 
     private final SiteSearchService siteSearchService;
     private final SiteManagementService siteManagementService;
-    private final PlayerSearchService playerSearchService;
     private final SiteMapper siteMapper;
 
     @Value("${api.sites.one.path}")
@@ -47,12 +42,11 @@ public class SitesController extends AbstractController implements SitesApi {
 
     @Autowired
     public SitesController(SiteSearchService siteSearchService, SiteManagementService siteManagementService,
-                           PlayerSearchService playerSearchService, SiteMapper siteMapper, HttpServletRequest request,
+                           SiteMapper siteMapper, HttpServletRequest request,
                            ObjectMapper objectMapper, ApplicationContext applicationContext) {
         super(request, objectMapper, applicationContext);
         this.siteSearchService = siteSearchService;
         this.siteManagementService = siteManagementService;
-        this.playerSearchService = playerSearchService;
         this.siteMapper = siteMapper;
     }
 
@@ -60,8 +54,7 @@ public class SitesController extends AbstractController implements SitesApi {
     public ResponseEntity<List<Site>> loadSites() {
         try {
             UserContext ctx = getUserContext();
-            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername(), ctx);
-            List<net.andresbustamante.yafoot.core.model.Site> sites = siteSearchService.findSitesByPlayer(player);
+            List<net.andresbustamante.yafoot.core.model.Site> sites = siteSearchService.findSites(ctx);
 
             List<Site> result = new ArrayList<>();
 
@@ -69,8 +62,6 @@ public class SitesController extends AbstractController implements SitesApi {
                 result.addAll(siteMapper.map(sites));
             }
             return ResponseEntity.ok(result);
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }

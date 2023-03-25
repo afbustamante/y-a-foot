@@ -179,8 +179,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         Match match2 = new Match(2);
         match2.setDate(today.minusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), eq(null),
-                any(LocalDate.class)))
+        given(matchSearchService.findMatches(eq(null), eq(null), eq(null),
+                any(LocalDate.class), any(UserContext.class)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -190,8 +190,6 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -204,8 +202,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         Match match2 = new Match(2);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null),
-                any(LocalDate.class), eq(null)))
+        given(matchSearchService.findMatches(eq(null), eq(null),
+                any(LocalDate.class), eq(null), any(UserContext.class)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -215,8 +213,6 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -231,8 +227,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         match2.setSport(SportEnum.BASKETBALL);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(SportEnum.BASKETBALL),
-                any(LocalDate.class), eq(null)))
+        given(matchSearchService.findMatches(eq(null), eq(SportEnum.BASKETBALL),
+                any(LocalDate.class), eq(null), any(UserContext.class)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -243,8 +239,6 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -259,8 +253,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         match2.setSport(SportEnum.FOOTBALL);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(SportEnum.FOOTBALL),
-                eq(null), eq(null)))
+        given(matchSearchService.findMatches(eq(null), eq(SportEnum.FOOTBALL),
+                eq(null), eq(null), any(UserContext.class)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -270,8 +264,6 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -288,8 +280,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         match2.setStatus(MatchStatusEnum.CANCELLED);
         match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(MatchStatusEnum.CANCELLED), eq(null),
-                eq(null), eq(null)))
+        given(matchSearchService.findMatches(eq(MatchStatusEnum.CANCELLED), eq(null),
+                eq(null), eq(null), any(UserContext.class)))
                 .willReturn(List.of(match1, match2));
 
         // When
@@ -299,8 +291,6 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -326,8 +316,8 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
 
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null),
-                any(LocalDate.class), any(LocalDate.class)))
+        given(matchSearchService.findMatches(eq(null), eq(null),
+                any(LocalDate.class), any(LocalDate.class), any(UserContext.class)))
                 .willReturn(null);
 
         // When
@@ -338,8 +328,6 @@ class MatchesControllerTest extends AbstractControllerTest {
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(playerSearchService).findPlayerByEmail(anyString(), any(UserContext.class));
     }
 
     @Test
@@ -350,8 +338,8 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class)))
                 .willThrow(DatabaseException.class);
-        given(matchSearchService.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(LocalDate.class),
-                any(LocalDate.class)))
+        given(matchSearchService.findMatches(eq(null), eq(null), any(LocalDate.class),
+                any(LocalDate.class), any(UserContext.class)))
                 .willThrow(DatabaseException.class);
 
         // When

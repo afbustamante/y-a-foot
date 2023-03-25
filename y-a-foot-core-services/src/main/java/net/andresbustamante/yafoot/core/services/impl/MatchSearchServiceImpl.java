@@ -1,7 +1,9 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.dao.MatchDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
@@ -18,16 +20,20 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Match search service implementation.
+ *
  * @author andresbustamante
  */
 @Service
 public class MatchSearchServiceImpl implements MatchSearchService {
 
     private final MatchDao matchDAO;
+    private final PlayerDao playerDao;
 
     @Autowired
-    public MatchSearchServiceImpl(MatchDao matchDAO) {
+    public MatchSearchServiceImpl(MatchDao matchDAO, PlayerDao playerDao) {
         this.matchDAO = matchDAO;
+        this.playerDao = playerDao;
     }
 
     @Transactional(readOnly = true)
@@ -42,8 +48,10 @@ public class MatchSearchServiceImpl implements MatchSearchService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Match> findMatchesByPlayer(Player player, MatchStatusEnum status, SportEnum sport, LocalDate startDate,
-                                           LocalDate endDate) {
+    public List<Match> findMatches(MatchStatusEnum status, SportEnum sport, LocalDate startDate,
+                                   LocalDate endDate, UserContext ctx) {
+        Player player = playerDao.findPlayerByEmail(ctx.getUsername());
+
         if (player != null && player.getId() > 0) {
             OffsetDateTime startDateTime = (startDate != null)
                     ? startDate.atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime() : null;

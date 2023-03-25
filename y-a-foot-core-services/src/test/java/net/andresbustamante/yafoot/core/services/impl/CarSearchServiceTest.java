@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
@@ -24,21 +25,41 @@ class CarSearchServiceTest extends AbstractServiceUnitTest {
     @Mock
     private CarDao carDAO;
 
+    @Mock
+    private PlayerDao playerDao;
+
     @Test
     void findCarsByPlayer() throws Exception {
         // Given
         Player player = new Player(1);
         List<Car> cars = Arrays.asList(new Car(1), new Car(2));
+        when(playerDao.findPlayerByEmail(anyString())).thenReturn(player);
         when(carDAO.findCarsByPlayer(any(Player.class))).thenReturn(cars);
 
         // When
-        List<Car> carsFound = carSearchService.findCarsByPlayer(player);
+        List<Car> carsFound = carSearchService.findCars(new UserContext("player1@email.com"));
 
         // Then
         assertNotNull(carsFound);
         assertEquals(cars, carsFound);
 
         verify(carDAO).findCarsByPlayer(any(Player.class));
+    }
+
+    @Test
+    void findCarsByUnregisteredPlayer() throws Exception {
+        // Given
+        when(playerDao.findPlayerByEmail(anyString())).thenReturn(null);
+
+        // When
+        List<Car> carsFound = carSearchService.findCars(new UserContext("player1@email.com"));
+
+        // Then
+        assertNotNull(carsFound);
+        assertTrue(carsFound.isEmpty());
+
+        verify(playerDao).findPlayerByEmail(anyString());
+        verify(carDAO, never()).findCarsByPlayer(any(Player.class));
     }
 
     @Test

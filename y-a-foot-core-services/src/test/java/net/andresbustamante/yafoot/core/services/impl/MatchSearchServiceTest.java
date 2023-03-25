@@ -3,6 +3,7 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.MatchDao;
+import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,9 @@ class MatchSearchServiceTest extends AbstractServiceUnitTest {
 
     @Mock
     private MatchDao matchDAO;
+
+    @Mock
+    private PlayerDao playerDao;
 
     @Test
     void findExistingMatchByCode() throws Exception {
@@ -73,13 +77,14 @@ class MatchSearchServiceTest extends AbstractServiceUnitTest {
         Match match1 = new Match(1);
         Match match2 = new Match(2);
         Player player1 = new Player(1);
-        UserContext ctx = new UserContext();
+        UserContext ctx = new UserContext("test@email.com");
         ctx.setTimezone(ZoneId.of("UTC"));
 
         // When
+        when(playerDao.findPlayerByEmail(anyString())).thenReturn(player1);
         when(matchDAO.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(), any()))
                 .thenReturn(Arrays.asList(match1, match2));
-        List<Match> matches = matchSearchService.findMatchesByPlayer(player1, null, null, null, LocalDate.now());
+        List<Match> matches = matchSearchService.findMatches(null, null, null, LocalDate.now(), ctx);
 
         // Then
         assertNotNull(matches);
@@ -94,7 +99,7 @@ class MatchSearchServiceTest extends AbstractServiceUnitTest {
         ctx.setTimezone(ZoneId.systemDefault());
 
         // When
-        List<Match> matches = matchSearchService.findMatchesByPlayer(null, null, null, null, null);
+        List<Match> matches = matchSearchService.findMatches(null, null, null, null, ctx);
 
         // Then
         assertNotNull(matches);

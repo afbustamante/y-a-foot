@@ -5,10 +5,8 @@ import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Car;
-import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarSearchService;
-import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.core.web.mappers.CarMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +41,6 @@ class CarsControllerTest extends AbstractControllerTest {
     private CarSearchService carSearchService;
 
     @MockBean
-    private PlayerSearchService playerSearchService;
-
-    @MockBean
     private CarManagementService carManagementService;
 
     @MockBean
@@ -59,7 +54,7 @@ class CarsControllerTest extends AbstractControllerTest {
         Car car2 = new Car(2);
         car2.setName("Car 2");
 
-        given(carSearchService.findCarsByPlayer(any(Player.class))).willReturn(List.of(car1, car2));
+        given(carSearchService.findCars(any(UserContext.class))).willReturn(List.of(car1, car2));
 
         // When
         mvc.perform(get("/cars")
@@ -73,7 +68,7 @@ class CarsControllerTest extends AbstractControllerTest {
     @Test
     void loadEmptyCarsList() throws Exception {
         // Given
-        given(carSearchService.findCarsByPlayer(any(Player.class))).willReturn(Collections.emptyList());
+        given(carSearchService.findCars(any(UserContext.class))).willReturn(Collections.emptyList());
 
         // When
         mvc.perform(get("/cars")
@@ -88,9 +83,7 @@ class CarsControllerTest extends AbstractControllerTest {
     @Test
     void loadCarsWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        given(carSearchService.findCarsByPlayer(any(Player.class))).willThrow(DatabaseException.class);
-        given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class)))
-                .willThrow(DatabaseException.class);
+        given(carSearchService.findCars(any(UserContext.class))).willThrow(DatabaseException.class);
 
         // When
         mvc.perform(get("/cars")

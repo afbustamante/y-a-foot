@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.core.services;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Car;
-import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 
 import java.util.List;
@@ -16,11 +15,11 @@ public interface CarSearchService {
     /**
      * Load the list of cars saved by a user.
      *
-     * @param player Player to filter by
+     * @param ctx User context
      * @return List of cars
      * @throws DatabaseException
      */
-    List<Car> findCarsByPlayer(Player player) throws DatabaseException;
+    List<Car> findCars(UserContext ctx) throws DatabaseException;
 
     /**
      * Loads the details of a car from its unique identifier.

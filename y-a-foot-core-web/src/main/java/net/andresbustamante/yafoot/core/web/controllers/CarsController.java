@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
-import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarSearchService;
-import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.core.web.mappers.CarMapper;
 import net.andresbustamante.yafoot.web.dto.CarForm;
@@ -34,18 +32,16 @@ public class CarsController extends AbstractController implements CarsApi {
     private static final String CAR_NOT_FOUND_ERROR = "car.not.found.error";
 
     private final CarSearchService carSearchService;
-    private final PlayerSearchService playerSearchService;
     private final CarManagementService carManagementService;
     private final CarMapper carMapper;
 
     @Autowired
-    public CarsController(CarSearchService carSearchService, PlayerSearchService playerSearchService,
+    public CarsController(CarSearchService carSearchService,
                           CarManagementService carManagementService,
                           CarMapper carMapper, HttpServletRequest request, ObjectMapper objectMapper,
                           ApplicationContext applicationContext) {
         super(request, objectMapper, applicationContext);
         this.carSearchService = carSearchService;
-        this.playerSearchService = playerSearchService;
         this.carManagementService = carManagementService;
         this.carMapper = carMapper;
     }
@@ -54,8 +50,7 @@ public class CarsController extends AbstractController implements CarsApi {
     public ResponseEntity<List<Car>> loadCars() {
         try {
             UserContext ctx = getUserContext();
-            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername(), ctx);
-            List<net.andresbustamante.yafoot.core.model.Car> cars = carSearchService.findCarsByPlayer(player);
+            List<net.andresbustamante.yafoot.core.model.Car> cars = carSearchService.findCars(ctx);
 
             List<Car> result = new ArrayList<>();
 
@@ -63,8 +58,6 @@ public class CarsController extends AbstractController implements CarsApi {
                 result.addAll(carMapper.map(cars));
             }
             return ResponseEntity.ok(result);
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
         }

@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.core.web.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
-import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import net.andresbustamante.yafoot.core.services.SiteManagementService;
@@ -58,7 +57,7 @@ class SitesControllerTest extends AbstractControllerTest {
         Site site2 = new Site(2);
         site2.setName("Site 2");
 
-        given(siteSearchService.findSitesByPlayer(any(Player.class))).willReturn(List.of(site1, site2));
+        given(siteSearchService.findSites(any(UserContext.class))).willReturn(List.of(site1, site2));
 
         // When
         mvc.perform(get("/sites")
@@ -72,7 +71,7 @@ class SitesControllerTest extends AbstractControllerTest {
     @Test
     void loadEmptySitesList() throws Exception {
         // Given
-        given(siteSearchService.findSitesByPlayer(any(Player.class))).willReturn(Collections.emptyList());
+        given(siteSearchService.findSites(any(UserContext.class))).willReturn(Collections.emptyList());
 
         // When
         mvc.perform(get("/sites")
@@ -86,7 +85,7 @@ class SitesControllerTest extends AbstractControllerTest {
     @Test
     void loadSitesWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        given(siteSearchService.findSitesByPlayer(any(Player.class))).willThrow(DatabaseException.class);
+        given(siteSearchService.findSites(any(UserContext.class))).willThrow(DatabaseException.class);
         given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class)))
                 .willThrow(DatabaseException.class);
 

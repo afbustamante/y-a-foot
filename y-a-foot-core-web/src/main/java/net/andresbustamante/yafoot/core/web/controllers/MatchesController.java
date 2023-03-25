@@ -131,12 +131,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
         try {
             UserContext ctx = getUserContext();
 
-            Player player = playerSearchService.findPlayerByEmail(ctx.getUsername(), ctx);
-
-            List<net.andresbustamante.yafoot.core.model.Match> matches = matchSearchService.findMatchesByPlayer(player,
+            List<net.andresbustamante.yafoot.core.model.Match> matches = matchSearchService.findMatches(
                     (status != null) ? MatchStatusEnum.valueOf(status.name()) : null,
                     (sport != null) ? SportEnum.valueOf(sport.name()) : null,
-                    startDate, endDate);
+                    startDate, endDate, ctx);
 
             if (CollectionUtils.isNotEmpty(matches)) {
                 List<Match> result = matchMapper.map(matches);
@@ -144,8 +142,6 @@ public class MatchesController extends AbstractController implements MatchesApi 
             } else {
                 return ResponseEntity.ok(Collections.emptyList());
             }
-        } catch (ApplicationException e) {
-            throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }
@@ -213,7 +209,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(code);
             Player player = registration.getPlayerId() != null
-                    ? playerSearchService.findPlayerById(registration.getPlayerId())    // A given player
+                    ? playerSearchService.findPlayerById(registration.getPlayerId()) // A given player
                     : playerSearchService.findPlayerByEmail(ctx.getUsername(), ctx); // The player himself/herself
 
             if (match == null) {
