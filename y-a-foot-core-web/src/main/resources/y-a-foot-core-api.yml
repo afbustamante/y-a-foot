@@ -735,6 +735,10 @@ components:
         post_code:
           type: string
           pattern: ^[0-9\-]{0,10}$
+        city:
+          type: string
+        country:
+          type: string
         phone_number:
           type: string
           pattern: ^[+]?[0-9\-\(\) ]{6,15}$
@@ -824,8 +828,6 @@ components:
 
     RegistrationForm:
       type: object
-      required:
-        - player_id
       properties:
         player_id:
           type: integer
@@ -891,6 +893,7 @@ components:
       type: object
       required:
       - date
+      - site_id
       - sport
       - carpooling_enabled
       - code_sharing_enabled
@@ -911,8 +914,7 @@ components:
           $ref: '#/components/schemas/SportCode'
         site_id:
           type: integer
-        site:
-          $ref: '#/components/schemas/SiteForm'
+          minimum: 1
         carpooling_enabled:
           type: boolean
         code_sharing_enabled:

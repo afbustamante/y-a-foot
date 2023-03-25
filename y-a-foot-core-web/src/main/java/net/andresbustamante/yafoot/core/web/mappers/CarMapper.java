@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(config = SpringMapperConfig.class, uses = {PlayerMapper.class, StringMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {BasicPlayerMapper.class, StringMapper.class})
 public interface CarMapper {
 
     /**

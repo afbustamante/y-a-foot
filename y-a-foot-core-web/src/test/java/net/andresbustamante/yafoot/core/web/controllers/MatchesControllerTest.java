@@ -369,11 +369,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         match.setDate(OffsetDateTime.now().plusDays(3));
         match.setSport(RUGBY);
         match.setNumPlayersMin(8);
-
-        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
-        site.setName("My site");
-        site.setAddress("123 Fake Address");
-        match.setSite(site);
+        match.setSiteId(1);
 
         Integer id = 1;
 
@@ -396,11 +392,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
         match.setDate(OffsetDateTime.now().minusDays(3));
         match.setNumPlayersMin(8);
-
-        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
-        site.setName("My site");
-        site.setAddress("123 Fake Address");
-        match.setSite(site);
+        match.setSiteId(1);
 
         ApplicationException exception = new ApplicationException("match.past.new.date.error", "message");
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class))).willThrow(exception);
@@ -421,11 +413,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         match.setDate(OffsetDateTime.now().plusDays(3));
         match.setSport(BASKETBALL);
         match.setNumPlayersMin(8);
-
-        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
-        site.setName("My site");
-        site.setAddress("123 Fake Address");
-        match.setSite(site);
+        match.setSiteId(1);
 
         given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.MatchForm.class))).willReturn(new Match());
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class)))

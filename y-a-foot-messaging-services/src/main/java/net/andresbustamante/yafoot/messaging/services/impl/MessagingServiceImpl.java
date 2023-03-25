@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -51,6 +52,7 @@ public class MessagingServiceImpl implements MessagingService {
     }
 
     @Override
+    @Async
     public void sendEmail(String destinationEmail, String subject, String content) throws ApplicationException {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -71,6 +73,7 @@ public class MessagingServiceImpl implements MessagingService {
     }
 
     @Override
+    @Async
     public void sendEmail(String destinationEmail, String subjectCode, String[] subjectParameters,
                           String contentTemplate, Object contentModel, Locale locale) throws ApplicationException {
         try {

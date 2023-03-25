@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(config = SpringMapperConfig.class, uses = {PlayerMapper.class, CarMapper.class})
+@Mapper(config = SpringMapperConfig.class, uses = {BasicPlayerMapper.class, CarMapper.class})
 public interface RegistrationMapper {
 
     /**

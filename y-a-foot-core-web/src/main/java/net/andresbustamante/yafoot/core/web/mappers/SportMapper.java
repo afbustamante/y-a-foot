@@ -1,18 +1,22 @@
 package net.andresbustamante.yafoot.core.web.mappers;
 
-import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import net.andresbustamante.yafoot.commons.web.config.SpringMapperConfig;
+import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import net.andresbustamante.yafoot.web.dto.Sport;
 import net.andresbustamante.yafoot.web.dto.SportCode;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 
 @Mapper(config = SpringMapperConfig.class)
 public interface SportMapper {
 
-    @Mapping(target = "code", source = "code", qualifiedByName = "mapSportCode")
+    /**
+     * DTO mapping.
+     *
+     * @param sport Sport to map
+     * @return Resulting DTO
+     */
     Sport map(net.andresbustamante.yafoot.core.model.Sport sport);
 
     /**

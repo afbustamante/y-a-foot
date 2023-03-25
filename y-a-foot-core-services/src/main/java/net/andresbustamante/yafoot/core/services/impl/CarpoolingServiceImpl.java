@@ -80,7 +80,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
                 if (actualPlayerRegistration != null && actualPlayerRegistration.isCarConfirmed() != isCarConfirmed) {
                     // Send notification for this update
-                    processCarSeatUpdate(match, player, car, isCarConfirmed);
+                    processCarSeatUpdate(match, player, storedCar, isCarConfirmed);
                 }
 
                 log.info("Carpool update for match #{}: Player #{} confirmation modified for car #{}", match.getId(),

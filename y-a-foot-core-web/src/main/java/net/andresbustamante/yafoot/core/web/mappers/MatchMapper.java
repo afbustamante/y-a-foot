@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.core.web.mappers;
 
-import net.andresbustamante.yafoot.commons.web.mappers.StringMapper;
 import net.andresbustamante.yafoot.commons.web.config.SpringMapperConfig;
+import net.andresbustamante.yafoot.commons.web.mappers.StringMapper;
 import net.andresbustamante.yafoot.core.model.Match;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,14 +9,15 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(config = SpringMapperConfig.class, uses = {
-        CarMapper.class, PlayerMapper.class, SiteMapper.class, StringMapper.class,
-        SportMapper.class, RegistrationMapper.class
+        BasicPlayerMapper.class, SiteMapper.class, StringMapper.class, SportMapper.class
 })
 public interface MatchMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "code", ignore = true)
     @Mapping(target = "status", ignore = true)
+    @Mapping(target = "site", ignore = true)
+    @Mapping(target = "site.id", source = "siteId")
     @Mapping(target = "creator", ignore = true)
     @Mapping(target = "registrations", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
