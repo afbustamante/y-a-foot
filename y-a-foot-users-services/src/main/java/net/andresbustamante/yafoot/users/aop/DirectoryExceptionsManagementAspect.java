@@ -5,21 +5,22 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.ldap.NamingException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.text.MessageFormat;
 
 /**
- * Aspect in charge of transforming any exception thrown when contacting the LDAP tree into a
+ * Aspect in charge of transforming any exception thrown when contacting the user directory into a
  * {@link DirectoryException}.
  */
 @Aspect
 @Component
-public class LdapExceptionsManagementAspect {
+public class DirectoryExceptionsManagementAspect {
 
     /**
-     * Pointcut for services implementation using the LDAP tree.
+     * Pointcut for services implementation using the active directory.
      */
     @Pointcut("execution(* net.andresbustamante.yafoot.users.services.impl.*ServiceImpl.*(..))")
     public void filterServicesMethods() {
@@ -39,9 +40,8 @@ public class LdapExceptionsManagementAspect {
 
         try {
             returnedObject = pjp.proceed();
-        } catch (NamingException e) {
-            // LDAP directory exceptions
-            String message = MessageFormat.format("LDAP directory error when processing the request for {0}",
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            String message = MessageFormat.format("User directory error when processing the request for {0}",
                     pjp.getSignature().toShortString());
             throw new DirectoryException(message + System.lineSeparator() + e.getMessage());
         }

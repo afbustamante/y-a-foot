@@ -15,8 +15,6 @@ public interface PlayerMapper {
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)
-    @Mapping(target = "cars", ignore = true)
-    @Mapping(target = "password", ignore = true)
     Player map(net.andresbustamante.yafoot.web.dto.PlayerForm player);
 
     /**

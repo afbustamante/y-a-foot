@@ -20,10 +20,6 @@ spring:
       name: ${security.api.username}
       password: ${security.api.password}
       roles: ADMINISTRATOR
-  ldap:
-    urls: ${ldap.url}
-    username: ${ldap.dn}
-    password: ${ldap.password}
   mail:
     host: ${mail.host}
     port: ${mail.port}
@@ -39,12 +35,6 @@ spring:
 
 # Application configuration
 app:
-  ldap:
-    config:
-      users:
-        dn: ${ldap.users.dn}
-      roles:
-        dn: ${ldap.roles.dn}
   mail:
     sender:
       address: ${mail.sender.address}

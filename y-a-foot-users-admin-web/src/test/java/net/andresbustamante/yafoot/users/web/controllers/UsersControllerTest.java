@@ -65,7 +65,7 @@ class UsersControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void deleteUserWhenLdapDirectoryIsUnavailable() throws Exception {
+    void deleteUserWhenActiveDirectoryIsUnavailable() throws Exception {
         // Given
         given(userSearchService.findUserByEmail(anyString())).willThrow(new DirectoryException(""));
 

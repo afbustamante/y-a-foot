@@ -4,6 +4,7 @@ import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class PlayerSearchServiceImpl implements PlayerSearchService {
     @Transactional(readOnly = true)
     public Player findPlayerByEmail(String email, UserContext context) throws ApplicationException {
         if (context != null && !context.getUsername().equals(email)) {
-            throw new ApplicationException("unauthorised.user.error", "User not allowed to search a different email");
+            throw new UnauthorisedUserException("User not allowed to search a different email");
         }
 
         return playerDAO.findPlayerByEmail(email);

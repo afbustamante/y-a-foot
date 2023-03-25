@@ -11,7 +11,6 @@ import net.andresbustamante.yafoot.users.model.User;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /**
  * A match player.
@@ -28,11 +27,6 @@ public final class Player extends User implements Serializable, Identifiable<Int
     private boolean active;
     private OffsetDateTime creationDate;
     private OffsetDateTime modificationDate;
-
-    /**
-     * List of cars registered by this player.
-     */
-    private List<Car> cars;
 
     /**
      * Constructor for testing purposes only.
@@ -53,7 +47,7 @@ public final class Player extends User implements Serializable, Identifiable<Int
      * @param phoneNumber Player's phone number
      */
     public Player(Integer id, String surname, String firstName, String email, String phoneNumber) {
-        super(email, null, surname, firstName);
+        super(email, surname, firstName);
         this.id = id;
         this.phoneNumber = phoneNumber;
     }

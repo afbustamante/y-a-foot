@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
  */
 class UserSearchServiceTest extends AbstractServiceUnitTest {
 
-    private static final User USR_TEST = new User("test@email.com", "password", "TEST",
+    private static final User USR_TEST = new User("test@email.com", "TEST",
             "User");
 
     @InjectMocks

@@ -20,10 +20,8 @@ public class User implements Serializable {
      */
     private String email;
     /**
-     * @deprecated No password needed since an external OAuth 2.0 resource server handles authentication
+     * Surname (or last name for americans :-) ).
      */
-    @Deprecated(since = "v2.0")
-    private String password;
     private String surname;
     private String firstName;
     /**
@@ -52,13 +50,11 @@ public class User implements Serializable {
      * Constructor for testing purposes.
      *
      * @param email User's email
-     * @param password User's password
      * @param surname User's surname/last name
      * @param firstName User's first name
      */
-    public User(String email, String password, String surname, String firstName) {
+    public User(String email, String surname, String firstName) {
         this.email = email;
-        this.password = password;
         this.surname = surname;
         this.firstName = firstName;
         this.preferredLanguage = LocaleUtils.DEFAULT_LOCALE.getLanguage();
