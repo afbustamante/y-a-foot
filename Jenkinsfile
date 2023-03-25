@@ -23,7 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Run the maven build without tests
-                sh 'mvn clean install -P jenkins -DskipTests=true'
+                sh 'mvn clean compile -P jenkins'
             }
         }
         stage('Test') {
@@ -61,6 +61,7 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'develop') {
+                        sh 'mvn install'
                         // Generate the updated site for the project
                         sh 'mvn site:site site:deploy -P jenkins -pl !y-a-foot-commons-tools'
                     } else {
