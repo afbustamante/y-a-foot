@@ -99,7 +99,7 @@
     <!-- Other libraries -->
     <lombok.version>1.18.24</lombok.version>
     <mapstruct.version>1.5.3.Final</mapstruct.version>
-    <swagger-annotations.version>2.1.5</swagger-annotations.version>
+    <swagger-annotations.version>2.2.8</swagger-annotations.version>
     <aspectjweaver.version>1.9.19</aspectjweaver.version>
     <jackson-databind.version>2.13.5</jackson-databind.version>
     <jackson-datatype.version>2.13.5</jackson-datatype.version>
