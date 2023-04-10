@@ -32,6 +32,7 @@ public final class Car implements Serializable, Identifiable<Integer>, Auditable
      */
     private Integer numPassengers;
     private Player driver;
+    private boolean active;
     private OffsetDateTime creationDate;
     private OffsetDateTime modificationDate;
 

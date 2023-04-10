@@ -85,7 +85,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     public void deactivatePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException {
         // Delete all data from player
         matchManagementService.unregisterPlayerFromAllMatches(player, userContext);
-        carManagementService.deleteCarsByPlayer(player, userContext);
+        carManagementService.deactivateCarsByPlayer(player, userContext);
 
         int numPlayers = playerDAO.deactivatePlayer(player);
         log.info("Players deactivated: {}", numPlayers);

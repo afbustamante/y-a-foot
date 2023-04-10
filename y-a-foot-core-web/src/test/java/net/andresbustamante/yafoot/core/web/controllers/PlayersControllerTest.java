@@ -95,17 +95,14 @@ class PlayersControllerTest extends AbstractControllerTest {
     @Test
     void updateExistingPlayer() throws Exception {
         // Given
-        String email = VALID_EMAIL;
-
         PlayerForm player = new PlayerForm();
         player.setFirstName("Test");
         player.setSurname("User");
-        player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
         net.andresbustamante.yafoot.core.model.Player storedPlayer =
                 new net.andresbustamante.yafoot.core.model.Player(1);
-        storedPlayer.setEmail(email);
+        storedPlayer.setEmail(VALID_EMAIL);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
 
@@ -123,17 +120,14 @@ class PlayersControllerTest extends AbstractControllerTest {
     @Test
     void updateUnknownPlayer() throws Exception {
         // Given
-        String email = VALID_EMAIL;
-
         PlayerForm player = new PlayerForm();
         player.setFirstName("Test");
         player.setSurname("User");
-        player.setEmail(email);
         player.setPhoneNumber("0123456789");
 
         net.andresbustamante.yafoot.core.model.Player storedPlayer =
                 new net.andresbustamante.yafoot.core.model.Player(1);
-        storedPlayer.setEmail(email);
+        storedPlayer.setEmail(VALID_EMAIL);
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
 

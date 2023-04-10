@@ -12,6 +12,7 @@ import java.util.List;
 public interface PlayerMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "email", ignore = true)
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)

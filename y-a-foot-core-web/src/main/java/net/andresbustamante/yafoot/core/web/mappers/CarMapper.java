@@ -20,6 +20,7 @@ public interface CarMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "numPassengers", ignore = true)
     @Mapping(target = "driver", ignore = true)
+    @Mapping(target = "active", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)
     Car map(net.andresbustamante.yafoot.web.dto.CarForm car);

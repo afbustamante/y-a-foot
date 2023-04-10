@@ -115,6 +115,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
     put:
       operationId: updatePlayer
+      summary: Updates basic player data
       tags:
       - players
       requestBody:
@@ -649,6 +650,77 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    put:
+      operationId: updateCar
+      summary: Updates a car registered by the active player
+      tags:
+      - cars
+      requestBody:
+        description: Car details to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarForm'
+      responses:
+        202: # Accepted
+          description: Car successfully updated
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403: # Forbidden
+          description: Current user is not allowed to update the details of a car from another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No car found for the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: A database error occurred when loading/updating the car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      operationId: deactivateCar
+      summary: Deactivates a car registered by the active player
+      tags:
+      - cars
+      responses:
+        204: # No content
+          description: Car successfully deactivated. It will not be proposed again for further matches.
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403: # Forbidden
+          description: Current user is not allowed to deactivate a car from another user or a car used in an active match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No car found for the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: A database error occurred when loading/updating the car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /sports:
     get:
@@ -672,7 +744,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+security:
+  - oidc: []
+
 components:
+  securitySchemes:
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: https://sso.footero.net/realms/footero/.well-known/openid-configuration
+
   schemas:
     Player:
       type: object
@@ -699,9 +779,6 @@ components:
     PlayerForm:
       type: object
       properties:
-        email:
-          type: string
-          format: email
         first_name:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
@@ -716,8 +793,12 @@ components:
           pattern: ^[A-Za-z_]{2,5}$
           example: es_CO
       required:
-        - email
         - first_name
+      example:
+        first_name: Andrès
+        surname: Bustamante
+        phone_number: '+33612345678'
+        preferred_language: 'fr_FR'
 
     Site:
       type: object
@@ -771,6 +852,13 @@ components:
           pattern: ^[+]?[0-9\-\(\) ]{6,15}$
         location:
           $ref: '#/components/schemas/GpsCoordinates'
+      example:
+        name: 'Mon foot à 5'
+        address: '123 Avenue des Sports'
+        post_code: '12345'
+        city: 'Lyon'
+        country: 'France'
+        phone_number: '+33 123456789'
 
     Car:
       type: object
@@ -803,6 +891,9 @@ components:
         num_seats:
           type: integer
           minimum: 0
+      example:
+        name: 'Peugeot 208'
+        num_seats: 3
 
     CarConfirmation:
       type: object

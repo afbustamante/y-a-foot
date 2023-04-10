@@ -21,9 +21,6 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Value("${api.players.root.path}")
-    private String playersApiPath;
-
     @Value("${app.web.public.url}")
     private String webPublicUrl;
 
@@ -39,7 +36,6 @@ public class WebSecurityConfig {
         http.cors().and().csrf().disable();
         http.oauth2Login().and()
                 .authorizeHttpRequests(authz -> authz
-                .requestMatchers(HttpMethod.POST, playersApiPath).permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated());
         http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);

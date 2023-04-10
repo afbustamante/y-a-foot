@@ -1,2 +1,2 @@
-car_id,car_name,car_num_seats,car_driver_id,car_created_at
-101,Peugeot 207,4,101,[now]
+car_id,car_name,car_num_seats,car_driver_id,car_created_at,car_active
+101,Peugeot 207,4,101,[now],true

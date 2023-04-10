@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.core.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
@@ -8,6 +9,7 @@ import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarSearchService;
 import net.andresbustamante.yafoot.core.web.mappers.CarMapper;
+import net.andresbustamante.yafoot.web.dto.CarForm;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -21,8 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(value = {CarsController.class, ObjectMapper.class}, properties = {
@@ -162,13 +163,13 @@ class CarsControllerTest extends AbstractControllerTest {
     @Test
     void addNewCar() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.CarForm car = new net.andresbustamante.yafoot.web.dto.CarForm();
+        CarForm car = new CarForm();
         car.setName("Car 1");
         car.setNumSeats(4);
 
         Integer id = 1;
 
-        given(carMapper.map(any(net.andresbustamante.yafoot.web.dto.CarForm.class))).willReturn(new Car());
+        given(carMapper.map(any(CarForm.class))).willReturn(new Car());
         given(carManagementService.saveCar(any(Car.class), any(UserContext.class))).willReturn(id);
 
         // When
@@ -189,7 +190,7 @@ class CarsControllerTest extends AbstractControllerTest {
         car.setName("Car 1");
         car.setNumSeats(4);
 
-        given(carMapper.map(any(net.andresbustamante.yafoot.web.dto.CarForm.class))).willReturn(new Car());
+        given(carMapper.map(any(CarForm.class))).willReturn(new Car());
         given(carManagementService.saveCar(any(Car.class), any(UserContext.class))).willThrow(DatabaseException.class);
 
         // When
@@ -199,5 +200,160 @@ class CarsControllerTest extends AbstractControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void updateExistingCar() throws Exception {
+        // Given
+        int carId = 101;
+        Car car = new Car(carId);
+        car.setNumSeats(2);
+        car.setName("my car");
+
+        CarForm updatedCar = new CarForm().name("updated name").numSeats(2);
+
+        given(carSearchService.loadCar(anyInt(), any(UserContext.class))).willReturn(car);
+        given(carMapper.map(any(CarForm.class))).willReturn(new Car(carId));
+
+        // When
+        mvc.perform(put("/cars/{0}", carId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedCar))
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isAccepted());
+
+        // Then
+        verify(carManagementService).updateCar(eq(carId), any(Car.class), any(UserContext.class));
+    }
+
+    @Test
+    void updateUnknownCar() throws Exception {
+        // Given
+        int carId = 101;
+        CarForm updatedCar = new CarForm().name("updated name").numSeats(2);
+
+        given(carSearchService.loadCar(anyInt(), any(UserContext.class))).willReturn(null);
+
+        // When
+        mvc.perform(put("/cars/{0}", carId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedCar))
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isNotFound());
+
+        // Then
+        verify(carManagementService, never()).updateCar(eq(carId), any(Car.class), any(UserContext.class));
+    }
+
+    @Test
+    void updateSomeoneElseCar() throws Exception {
+        // Given
+        int carId = 101;
+        Car car = new Car(carId);
+        car.setNumSeats(2);
+        car.setName("my car");
+
+        CarForm updatedCar = new CarForm().name("updated name").numSeats(2);
+
+        given(carSearchService.loadCar(anyInt(), any(UserContext.class))).willReturn(car);
+        given(carMapper.map(any(CarForm.class))).willReturn(new Car(carId));
+        ApplicationException exception = new ApplicationException("unauthorised.user.error", "test");
+        doThrow(exception).when(carManagementService).updateCar(anyInt(), any(Car.class), any(UserContext.class));
+
+        // When
+        mvc.perform(put("/cars/{0}", carId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedCar))
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isForbidden());
+
+        // Then
+        verify(carManagementService).updateCar(eq(carId), any(Car.class), any(UserContext.class));
+    }
+
+    @Test
+    void deactivateExistingCar() throws Exception {
+        // Given
+        int carId = 101;
+        Car car = new Car(carId);
+        car.setNumSeats(2);
+        car.setName("my car");
+
+        given(carSearchService.loadCar(anyInt(), any(UserContext.class))).willReturn(car);
+
+        // When
+        mvc.perform(delete("/cars/{0}", carId)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isNoContent());
+
+        // Then
+        verify(carManagementService).deactivateCar(any(Car.class), any(UserContext.class));
+    }
+
+    @Test
+    void deactivateSomeoneElseCar() throws Exception {
+        // Given
+        int carId = 101;
+
+        Car car = new Car(carId);
+        car.setNumSeats(2);
+        car.setName("my car");
+
+        given(carSearchService.loadCar(anyInt(), any(UserContext.class))).willReturn(car);
+        ApplicationException exception = new ApplicationException("unauthorised.user.error", "test");
+        doThrow(exception).when(carManagementService).deactivateCar(any(Car.class), any(UserContext.class));
+
+        // When
+        mvc.perform(delete("/cars/{0}", carId)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isForbidden());
+
+        // Then
+        verify(carManagementService).deactivateCar(any(Car.class), any(UserContext.class));
+    }
+
+    @Test
+    void deactivateCarWhenStillRegisteredForMatch() throws Exception {
+        // Given
+        int carId = 101;
+
+        Car car = new Car(carId);
+        car.setNumSeats(2);
+        car.setName("my car");
+
+        given(carSearchService.loadCar(anyInt(), any(UserContext.class))).willReturn(car);
+        ApplicationException exception = new ApplicationException("car.registered.coming.match.error", "test");
+        doThrow(exception).when(carManagementService).deactivateCar(any(Car.class), any(UserContext.class));
+
+        // When
+        mvc.perform(delete("/cars/{0}", carId)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isForbidden());
+
+        // Then
+        verify(carManagementService).deactivateCar(any(Car.class), any(UserContext.class));
+    }
+
+    @Test
+    void deactivateUnknownCar() throws Exception {
+        // Given
+        int carId = 101;
+
+        given(carSearchService.loadCar(anyInt(), any(UserContext.class))).willReturn(null);
+
+        // When
+        mvc.perform(delete("/cars/{0}", carId)
+                .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isNotFound());
+
+        // Then
+        verify(carManagementService, never()).deactivateCar(any(Car.class), any(UserContext.class));
     }
 }

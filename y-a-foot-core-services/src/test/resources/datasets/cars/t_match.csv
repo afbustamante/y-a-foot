@@ -1,2 +1,3 @@
 mat_id,mat_date,mat_code,mat_description,mat_num_players_min,mat_site_id,mat_creator_id,mat_created_at,mat_status,mat_carpooling_enabled,mat_code_sharing_enabled
 101,2020-01-02 18:30:00,AZERTY-1234,Mon match dans le passé,9,101,101,2019-01-02 18:30:00,CREATED,true,true
+102,[now+1d],SJDFUTUE,A coming match,5,101,101,[now],CREATED,true,true

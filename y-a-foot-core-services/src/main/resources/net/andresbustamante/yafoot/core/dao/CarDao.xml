@@ -2,15 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.andresbustamante.yafoot.core.dao.CarDao">
+  <update id="updateCar">
+    UPDATE t_car
+    SET car_name = #{car.name}, car_num_seats = #{car.numSeats}, car_updated_at = CURRENT_TIMESTAMP
+    WHERE car_id = #{car.id}
+  </update>
 
   <select id="findCarById" resultMap="carDetails">
     SELECT
-      car.car_id        AS id,
-      car.car_name      AS name,
-      car.car_num_seats AS numSeats,
-      p.ply_id          AS driverId,
-      p.ply_first_name  AS driverFirstName,
-      p.ply_email       AS driverEmail
+      car.car_id         AS id,
+      car.car_name       AS name,
+      car.car_num_seats  AS numSeats,
+      car.car_active     AS active,
+      car.car_created_at AS creationDate,
+      car.car_updated_at AS modificationDate,
+      p.ply_id           AS driverId,
+      p.ply_first_name   AS driverFirstName
     FROM t_car car
       JOIN t_player p on car.car_driver_id = p.ply_id
     WHERE car.car_id = #{id}
@@ -21,22 +28,27 @@
       SELECT NEXTVAL('s_car') AS id;
     </selectKey>
 
-    INSERT INTO t_car (car_id, car_name, car_num_seats, car_driver_id, car_created_at)
-    VALUES (#{car.id}, #{car.name}, #{car.numSeats}, #{car.driver.id}, CURRENT_TIMESTAMP)
+    INSERT INTO t_car (car_id, car_name, car_num_seats, car_driver_id, car_active, car_created_at)
+    VALUES (#{car.id}, #{car.name}, #{car.numSeats}, #{car.driver.id}, true, CURRENT_TIMESTAMP)
   </insert>
 
-  <delete id="deleteCarsByPlayer">
-    DELETE FROM t_car
+  <update id="deactivateCarsByPlayer">
+    UPDATE t_car SET car_active = false, car_updated_at = CURRENT_TIMESTAMP
     WHERE car_driver_id = #{player.id}
-  </delete>
+  </update>
+
+  <update id="deactivateCar">
+    UPDATE t_car SET car_active = false, car_updated_at = CURRENT_TIMESTAMP
+    WHERE car_id = #{car.id}
+  </update>
 
   <select id="findCarsByPlayer" resultType="net.andresbustamante.yafoot.core.model.Car">
     SELECT
       car_id        AS id,
       car_name      AS name,
-      car_num_seats AS numSeats
+      car_num_seats AS numSeats,
     FROM t_car
-    WHERE car_driver_id = #{player.id}
+    WHERE car_driver_id = #{player.id} AND car_active = true
   </select>
 
   <select id="findCarsByMatch" resultMap="carDetails">
@@ -50,8 +62,18 @@
     FROM t_car c
            JOIN t_player_match pm on c.car_id = pm.pma_car_id
            JOIN t_player d on c.car_driver_id = d.ply_id
-    WHERE pm.pma_match_id = #{match.id}
+    WHERE pm.pma_match_id = #{match.id} AND c.car_active = true
     GROUP BY c.car_id, d.ply_id
+  </select>
+
+  <select id="isCarUsedForComingMatches" resultType="java.lang.Boolean">
+    SELECT coalesce(
+     (SELECT true
+      FROM t_player_match r
+               JOIN t_match m ON m.mat_id = r.pma_match_id
+      WHERE r.pma_car_id = #{car.id}
+        AND m.mat_date > CURRENT_TIMESTAMP
+        AND mat_status = 'CREATED'), false);
   </select>
 
   <resultMap id="carDetails" type="net.andresbustamante.yafoot.core.model.Car">
@@ -59,10 +81,12 @@
     <result property="name" column="name" />
     <result property="numSeats" column="numSeats" />
     <result property="numPassengers" column="numPassengers" />
+    <result property="active" column="active" />
+    <result property="creationDate" column="creationDate" />
+    <result property="modificationDate" column="modificationDate" />
     <association property="driver" javaType="net.andresbustamante.yafoot.core.model.Player">
       <id property="id" column="driverId" />
       <result property="firstName" column="driverFirstName" />
-      <result property="email" column="driverEmail" />
     </association>
   </resultMap>
 </mapper>

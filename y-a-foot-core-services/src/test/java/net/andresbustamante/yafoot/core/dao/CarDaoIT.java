@@ -47,9 +47,7 @@ class CarDaoIT extends AbstractDaoIntegrationTest {
         assertEquals(4, car1.getNumSeats().intValue());
         assertNotNull(car1.getDriver());
         assertNotNull(car1.getDriver().getId());
-        assertNotNull(car1.getDriver().getEmail());
         assertEquals(player.getId(), car1.getDriver().getId());
-        assertEquals(player.getEmail(), car1.getDriver().getEmail());
     }
 
     @Test
@@ -106,5 +104,63 @@ class CarDaoIT extends AbstractDaoIntegrationTest {
             assertNotNull(car.getDriver());
             assertNotNull(car.getDriver().getFirstName());
         });
+    }
+
+    @Test
+    void testCarUsedForFutureMatch() throws Exception {
+        // Given
+        Car car = new Car(1001);
+
+        // When
+        var result = carDAO.isCarUsedForComingMatches(car);
+
+        // Then
+        assertTrue(result);
+    }
+
+    @Test
+    void testCarUnusedForFutureMatch() throws Exception {
+        // Given
+        Car car = new Car(1002);
+
+        // When
+        var result = carDAO.isCarUsedForComingMatches(car);
+
+        // Then
+        assertFalse(result);
+    }
+
+    @Test
+    void testUpdateCar() {
+        // Given
+        int carId = 1002;
+        Car car = new Car(carId);
+        car.setName("my new car");
+        car.setNumSeats(1);
+
+        // When
+        var result = carDAO.updateCar(car);
+        var storedCar = carDAO.findCarById(carId);
+
+        // Then
+        assertEquals(1, result);
+        assertEquals("my new car", storedCar.getName());
+        assertEquals(1, storedCar.getNumSeats());
+        assertTrue(storedCar.getCreationDate().isBefore(storedCar.getModificationDate()));
+    }
+
+    @Test
+    void testDeactivateCar() {
+        // Given
+        int carId = 1002;
+        Car car = new Car(carId);
+
+        // When
+        var result = carDAO.deactivateCar(car);
+        var storedCar = carDAO.findCarById(carId);
+
+        // Then
+        assertEquals(1, result);
+        assertFalse(storedCar.isActive());
     }
 }

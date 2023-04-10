@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,53 @@ public class CarsController extends AbstractController implements CarsApi {
             int carId = carManagementService.saveCar(carMapper.map(car), getUserContext());
 
             return ResponseEntity.created(getLocationURI("/cars/" + carId)).build();
+        } catch (DatabaseException e) {
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> updateCar(@Min(1) Integer id, @Valid CarForm carForm) {
+        try {
+            UserContext userContext = getUserContext();
+            net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, userContext);
+
+            if (car != null) {
+                carManagementService.updateCar(id, carMapper.map(carForm), userContext);
+                return ResponseEntity.accepted().build();
+            } else {
+                throw new ResponseStatusException(NOT_FOUND, translate(CAR_NOT_FOUND_ERROR, null));
+            }
+        } catch (ApplicationException e) {
+            if (e.getCode() != null && e.getCode().equals(UNAUTHORISED_USER_ERROR)) {
+                throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
+            } else {
+                throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
+            }
+        } catch (DatabaseException e) {
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<Void> deactivateCar(@Min(1) Integer id) {
+        try {
+            UserContext userContext = getUserContext();
+            net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, userContext);
+
+            if (car != null) {
+                carManagementService.deactivateCar(car, userContext);
+                return ResponseEntity.noContent().build();
+            } else {
+                throw new ResponseStatusException(NOT_FOUND, translate(CAR_NOT_FOUND_ERROR, null));
+            }
+        } catch (ApplicationException e) {
+            if (e.getCode() != null && (e.getCode().equals(UNAUTHORISED_USER_ERROR)
+                    || e.getCode().equals("car.registered.coming.match.error"))) {
+                throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
+            } else {
+                throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
+            }
         } catch (DatabaseException e) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         }

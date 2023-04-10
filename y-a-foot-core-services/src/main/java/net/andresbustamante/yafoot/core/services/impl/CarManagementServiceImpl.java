@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
@@ -37,10 +38,51 @@ public class CarManagementServiceImpl implements CarManagementService {
         return car.getId();
     }
 
+    @Override
+    @Transactional
+    public void updateCar(Integer carId, Car updatedCar, UserContext ctx)
+            throws DatabaseException, ApplicationException {
+        Player player = playerDAO.findPlayerByEmail(ctx.getUsername());
+        Car storedCar = carDAO.findCarById(carId);
+
+        if (storedCar != null) {
+            if (player != null && !storedCar.getDriver().getId().equals(player.getId())) {
+                throw new ApplicationException("unauthorised.user.error", "This car can only be updated by its owner");
+            }
+
+            storedCar.setName(updatedCar.getName());
+            storedCar.setNumSeats(updatedCar.getNumSeats());
+
+            carDAO.updateCar(storedCar);
+
+            log.info("Car {} successfully updated", carId);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deactivateCar(Car car, UserContext ctx) throws ApplicationException, DatabaseException {
+        Player player = playerDAO.findPlayerByEmail(ctx.getUsername());
+
+        if (player != null && !car.getDriver().getId().equals(player.getId())) {
+            throw new ApplicationException("unauthorised.user.error", "This car can only be deactivated by its"
+                    + " owner");
+        }
+
+        if (carDAO.isCarUsedForComingMatches(car)) {
+            throw new ApplicationException("car.registered.coming.match.error",
+                    "This car cannot be deactivated because it is still registered for a coming match");
+        }
+
+        carDAO.deactivateCar(car);
+
+        log.info("Car {} successfully deactivated", car.getId());
+    }
+
     @Transactional
     @Override
-    public void deleteCarsByPlayer(Player player, UserContext ctx) throws DatabaseException {
-        int numCars = carDAO.deleteCarsByPlayer(player);
+    public void deactivateCarsByPlayer(Player player, UserContext ctx) throws DatabaseException {
+        int numCars = carDAO.deactivateCarsByPlayer(player);
         log.info("{} cars removed for player", numCars);
     }
 }

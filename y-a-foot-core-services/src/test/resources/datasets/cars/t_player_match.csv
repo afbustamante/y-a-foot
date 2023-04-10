@@ -2,3 +2,4 @@ pma_match_id,pma_player_id,pma_car_id,pma_car_confirmation,pma_created_at
 101,101,1001,true,2019-01-02 18:06:04
 101,102,1003,true,2019-11-02 18:06:04
 101,103,1003,false,2019-11-03 18:06:04
+102,101,1001,true,[now]

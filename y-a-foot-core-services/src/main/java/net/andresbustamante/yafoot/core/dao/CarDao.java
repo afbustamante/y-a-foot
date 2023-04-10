@@ -33,12 +33,28 @@ public interface CarDao {
     int saveCar(@Param(CAR) Car car);
 
     /**
-     * Deletes all the cars registered by a player.
+     * Updates a given car.
      *
-     * @param player
+     * @param car Car to update
+     * @return Number of updated cars. It should be 0 or 1
+     */
+    int updateCar(@Param(CAR) Car car);
+
+    /**
+     * Deactivates a given car.
+     *
+     * @param car Car to deactivate
+     * @return Number of deactivated cars. It should be 0 or 1
+     */
+    int deactivateCar(@Param(CAR) Car car);
+
+    /**
+     * Deactivates all the cars registered by a player.
+     *
+     * @param player Player to search
      * @return Number of deleted cars
      */
-    int deleteCarsByPlayer(@Param(PLAYER) Player player);
+    int deactivateCarsByPlayer(@Param(PLAYER) Player player);
 
     /**
      * Loads the list of cars that a player has registered in database.
@@ -55,4 +71,12 @@ public interface CarDao {
      * @return List of cars found for the match
      */
     List<Car> findCarsByMatch(@Param(MATCH) Match match);
+
+    /**
+     * Finds whether a car is being used for a coming match.
+     *
+     * @param car Car to search
+     * @return True if the given car is still used for a coming match
+     */
+    boolean isCarUsedForComingMatches(@Param(CAR) Car car);
 }

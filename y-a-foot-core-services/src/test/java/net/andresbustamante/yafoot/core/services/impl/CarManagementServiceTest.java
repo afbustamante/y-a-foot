@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CarManagementServiceTest extends AbstractServiceUnitTest {
@@ -53,11 +54,107 @@ class CarManagementServiceTest extends AbstractServiceUnitTest {
     }
 
     @Test
-    void deleteCarsByPlayer() throws Exception {
+    void updateCar() throws Exception {
+        // Given
+        int carId = 1000;
+        Car storedCar = new Car(carId);
+        storedCar.setDriver(player);
+        storedCar.setNumSeats(3);
+        storedCar.setName("Test car");
+
+        Car updatedCar = new Car(carId);
+        updatedCar.setNumSeats(2);
+        updatedCar.setName("My car");
+
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
+        when(carDAO.findCarById(anyInt())).thenReturn(storedCar);
+
         // When
-        carManagementService.deleteCarsByPlayer(player, userContext);
+        assertDoesNotThrow(() -> carManagementService.updateCar(carId, updatedCar, userContext));
 
         // Then
-        verify(carDAO).deleteCarsByPlayer(any(Player.class));
+        verify(carDAO).updateCar(any(Car.class));
+    }
+
+    @Test
+    void updateCarFromAnotherUser() throws Exception {
+        // Given
+        int carId = 1000;
+        Car storedCar = new Car(carId);
+        storedCar.setDriver(new Player(2));
+        storedCar.setNumSeats(3);
+        storedCar.setName("Test car");
+
+        Car updatedCar = new Car(carId);
+        updatedCar.setNumSeats(2);
+        updatedCar.setName("My car");
+
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
+        when(carDAO.findCarById(anyInt())).thenReturn(storedCar);
+
+        // When
+        assertThrows(ApplicationException.class, () -> carManagementService.updateCar(carId, updatedCar, userContext));
+
+        // Then
+        verify(carDAO, never()).updateCar(any(Car.class));
+    }
+
+    @Test
+    void deactivateCar() throws Exception {
+        // Given
+        int carId = 1000;
+        Car car = new Car(carId);
+        car.setDriver(player);
+
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
+        when(carDAO.isCarUsedForComingMatches(any(Car.class))).thenReturn(false);
+
+        // When
+        assertDoesNotThrow(() -> carManagementService.deactivateCar(car, userContext));
+
+        // Then
+        verify(carDAO).deactivateCar(any(Car.class));
+    }
+
+    @Test
+    void deactivateCarFromAnotherUser() throws Exception {
+        // Given
+        int carId = 1000;
+        Car car = new Car(carId);
+        car.setDriver(new Player(2));
+
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
+
+        // When
+        assertThrows(ApplicationException.class, () -> carManagementService.deactivateCar(car, userContext));
+
+        // Then
+        verify(carDAO, never()).deactivateCar(any(Car.class));
+    }
+
+    @Test
+    void deactivateCarForFutureMatch() throws Exception {
+        // Given
+        int carId = 1000;
+        Car car = new Car(carId);
+        car.setDriver(player);
+
+        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(player);
+        when(carDAO.isCarUsedForComingMatches(any(Car.class))).thenReturn(true);
+
+        // When
+        assertThrows(ApplicationException.class, () -> carManagementService.deactivateCar(car, userContext));
+
+        // Then
+        verify(carDAO, never()).deactivateCar(any(Car.class));
+    }
+
+    @Test
+    void deactivateCarsByPlayer() throws Exception {
+        // When
+        carManagementService.deactivateCarsByPlayer(player, userContext);
+
+        // Then
+        verify(carDAO).deactivateCarsByPlayer(any(Player.class));
     }
 }
