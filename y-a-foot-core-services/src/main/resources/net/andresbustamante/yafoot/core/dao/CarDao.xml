@@ -46,7 +46,7 @@
     SELECT
       car_id        AS id,
       car_name      AS name,
-      car_num_seats AS numSeats,
+      car_num_seats AS numSeats
     FROM t_car
     WHERE car_driver_id = #{player.id} AND car_active = true
   </select>
