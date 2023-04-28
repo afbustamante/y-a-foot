@@ -30,8 +30,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
-import java.time.OffsetTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -175,9 +176,9 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate today = LocalDate.now();
 
         Match match1 = new Match(1);
-        match1.setDate(today.minusDays(3).atTime(OffsetTime.now()));
+        match1.setDate(today.minusDays(3).atTime(LocalTime.now()));
         Match match2 = new Match(2);
-        match2.setDate(today.minusDays(4).atTime(OffsetTime.now()));
+        match2.setDate(today.minusDays(4).atTime(LocalTime.now()));
 
         given(matchSearchService.findMatches(eq(null), eq(null), eq(null),
                 any(LocalDate.class), any(UserContext.class)))
@@ -198,9 +199,9 @@ class MatchesControllerTest extends AbstractControllerTest {
         LocalDate today = LocalDate.now();
 
         Match match1 = new Match(1);
-        match1.setDate(today.plusDays(3).atTime(OffsetTime.now()));
+        match1.setDate(today.plusDays(3).atTime(LocalTime.now()));
         Match match2 = new Match(2);
-        match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
+        match2.setDate(today.plusDays(4).atTime(LocalTime.now()));
 
         given(matchSearchService.findMatches(eq(null), eq(null),
                 any(LocalDate.class), eq(null), any(UserContext.class)))
@@ -222,10 +223,10 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         Match match1 = new Match(1);
         match1.setSport(SportEnum.BASKETBALL);
-        match1.setDate(today.plusDays(3).atTime(OffsetTime.now()));
+        match1.setDate(today.plusDays(3).atTime(LocalTime.now()));
         Match match2 = new Match(2);
         match2.setSport(SportEnum.BASKETBALL);
-        match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
+        match2.setDate(today.plusDays(4).atTime(LocalTime.now()));
 
         given(matchSearchService.findMatches(eq(null), eq(SportEnum.BASKETBALL),
                 any(LocalDate.class), eq(null), any(UserContext.class)))
@@ -248,10 +249,10 @@ class MatchesControllerTest extends AbstractControllerTest {
 
         Match match1 = new Match(1);
         match1.setSport(SportEnum.FOOTBALL);
-        match1.setDate(today.plusDays(3).atTime(OffsetTime.now()));
+        match1.setDate(today.plusDays(3).atTime(LocalTime.now()));
         Match match2 = new Match(2);
         match2.setSport(SportEnum.FOOTBALL);
-        match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
+        match2.setDate(today.plusDays(4).atTime(LocalTime.now()));
 
         given(matchSearchService.findMatches(eq(null), eq(SportEnum.FOOTBALL),
                 eq(null), eq(null), any(UserContext.class)))
@@ -274,11 +275,11 @@ class MatchesControllerTest extends AbstractControllerTest {
         Match match1 = new Match(1);
         match1.setSport(SportEnum.FOOTBALL);
         match1.setStatus(MatchStatusEnum.CANCELLED);
-        match1.setDate(today.plusDays(3).atTime(OffsetTime.now()));
+        match1.setDate(today.plusDays(3).atTime(LocalTime.now()));
         Match match2 = new Match(2);
         match2.setSport(SportEnum.FOOTBALL);
         match2.setStatus(MatchStatusEnum.CANCELLED);
-        match2.setDate(today.plusDays(4).atTime(OffsetTime.now()));
+        match2.setDate(today.plusDays(4).atTime(LocalTime.now()));
 
         given(matchSearchService.findMatches(eq(MatchStatusEnum.CANCELLED), eq(null),
                 eq(null), eq(null), any(UserContext.class)))
@@ -483,7 +484,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         String matchCode = "ABCDEFGHIJ";
         Match match = new Match(1);
         match.setCode(matchCode);
-        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
         Player player = new Player(2, "DOE", "John", email, null);
@@ -538,7 +539,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         String matchCode = "ABCDEFGHIJ";
         Match match = new Match(1);
         match.setCode(matchCode);
-        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
         net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
@@ -564,7 +565,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         String matchCode = "ABCDEFGHIJ";
         Match match = new Match(1);
         match.setCode(matchCode);
-        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
         Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
@@ -615,7 +616,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         String matchCode = "ABCDEFGHIJ";
         Match match = new Match(1);
         match.setCode(matchCode);
-        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
         match.setRegistrations(new ArrayList<>());
 
@@ -641,7 +642,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         String matchCode = "ABCDEFGHIJ";
         Match match = new Match(1);
         match.setCode(matchCode);
-        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
         CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
@@ -683,7 +684,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         String matchCode = "ABCDEFGHIJ";
         Match match = new Match(1);
         match.setCode(matchCode);
-        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
         Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
@@ -732,7 +733,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         String matchCode = "ABCDEFGHIJ";
         Match match = new Match(1);
         match.setCode(matchCode);
-        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
@@ -769,7 +770,7 @@ class MatchesControllerTest extends AbstractControllerTest {
         Match match = new Match(1);
         match.setCode(matchCode);
         match.setStatus(CREATED);
-        match.setDate(OffsetDateTime.now().plusDays(3));
+        match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);

@@ -10,7 +10,8 @@ import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
 import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
@@ -27,7 +28,7 @@ public final class Match implements Serializable, Identifiable<Integer>, Auditab
 
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private OffsetDateTime date;
+    private LocalDateTime date;
     private String code;
     private String description;
     private MatchStatusEnum status;
@@ -39,8 +40,8 @@ public final class Match implements Serializable, Identifiable<Integer>, Auditab
     private Player creator;
     private boolean carpoolingEnabled;
     private boolean codeSharingEnabled;
-    private OffsetDateTime creationDate;
-    private OffsetDateTime modificationDate;
+    private Instant creationDate;
+    private Instant modificationDate;
 
     /**
      * Main constructor.
@@ -79,7 +80,7 @@ public final class Match implements Serializable, Identifiable<Integer>, Auditab
      * @return True if the match is still accepting registrations
      */
     public boolean isAcceptingRegistrations() {
-        if (status.isActiveStatus() && OffsetDateTime.now().isBefore(date)) {
+        if (status.isActiveStatus() && LocalDateTime.now().isBefore(date)) {
             return numPlayersMax == null || numPlayersMax > getNumRegisteredPlayers();
         } else {
             return false;

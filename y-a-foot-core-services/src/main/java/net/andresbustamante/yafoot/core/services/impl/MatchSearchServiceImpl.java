@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,10 +52,9 @@ public class MatchSearchServiceImpl implements MatchSearchService {
         Player player = playerDao.findPlayerByEmail(ctx.getUsername());
 
         if (player != null && player.getId() > 0) {
-            OffsetDateTime startDateTime = (startDate != null)
-                    ? startDate.atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime() : null;
-            OffsetDateTime endDateTime = (endDate != null)
-                    ? endDate.plusDays(1L).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1L).toOffsetDateTime()
+            LocalDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay() : null;
+            LocalDateTime endDateTime = (endDate != null)
+                    ? endDate.plusDays(1L).atStartOfDay().minusSeconds(1L)
                     : null;
             return matchDAO.findMatchesByPlayer(player, sport, status, startDateTime, endDateTime);
         } else {

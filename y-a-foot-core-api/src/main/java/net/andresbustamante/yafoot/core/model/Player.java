@@ -10,7 +10,7 @@ import net.andresbustamante.yafoot.commons.model.Identifiable;
 import net.andresbustamante.yafoot.users.model.User;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * A match player.
@@ -25,8 +25,8 @@ public final class Player extends User implements Serializable, Identifiable<Int
     private Integer id;
     private String phoneNumber;
     private boolean active;
-    private OffsetDateTime creationDate;
-    private OffsetDateTime modificationDate;
+    private Instant creationDate;
+    private Instant modificationDate;
 
     /**
      * Constructor for testing purposes only.

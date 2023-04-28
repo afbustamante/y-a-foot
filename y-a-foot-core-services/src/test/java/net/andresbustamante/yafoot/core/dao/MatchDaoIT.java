@@ -17,9 +17,8 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.github.springtestdbunit.annotation.DatabaseOperation.DELETE_ALL;
@@ -64,7 +63,7 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
     void findMatchByCode() throws Exception {
         // Given
         String code = "QWERTY-1234";
-        ZonedDateTime date = ZonedDateTime.of(2019, 10, 2, 19, 10, 0, 0, ZoneId.systemDefault()); // 2019-10-02 19:10
+        LocalDateTime date = LocalDateTime.of(2019, 10, 2, 19, 10, 0, 0); // 2019-10-02 19:10
 
         // When
         Match match = matchDAO.findMatchByCode(code);
@@ -72,8 +71,7 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
         // Then
         assertNotNull(match);
         assertEquals(102, match.getId().intValue());
-        assertEquals(date.toOffsetDateTime().atZoneSameInstant(ZoneId.of("UTC")),
-                match.getDate().atZoneSameInstant(ZoneId.of("UTC")));
+        assertEquals(date, match.getDate());
         assertEquals(8, match.getNumPlayersMin().intValue());
         assertEquals(12, match.getNumPlayersMax().intValue());
         assertNotNull(match.getCreator());
@@ -81,7 +79,7 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
         assertEquals("Messi", match.getCreator().getSurname());
         assertEquals(CREATED, match.getStatus());
         assertNotNull(match.getCreationDate());
-        assertEquals(LocalDate.of(2019, 1, 2), match.getCreationDate().toLocalDate());
+        assertEquals(LocalDate.of(2019, 1, 2), LocalDate.ofInstant(match.getCreationDate(), ZoneId.systemDefault()));
         assertNotNull(match.getSite());
         assertEquals("5 Rue des fous", match.getSite().getAddress());
         assertEquals("69100", match.getSite().getPostCode());
@@ -126,7 +124,7 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
     void findMatchesByPlayerAndStartDate() throws Exception {
         // Given
         Player player1 = new Player(101);
-        OffsetDateTime startDate = LocalDate.of(2018, 10, 2).atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime();
+        LocalDateTime startDate = LocalDate.of(2018, 10, 2).atStartOfDay();
 
         // When
         List<Match> matchs = matchDAO.findMatchesByPlayer(player1, null, null, startDate, null);
@@ -191,7 +189,7 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
     void findMatchesByPlayerAndEndDate() throws Exception {
         // Given
         Player player2 = new Player(102);
-        OffsetDateTime endDate = LocalDate.of(2018, 10, 3).atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime();
+        LocalDateTime endDate = LocalDate.of(2018, 10, 3).atStartOfDay();
 
         // When
         List<Match> matchs = matchDAO.findMatchesByPlayer(player2, null, null, null, endDate);
@@ -228,13 +226,12 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
     @Test
     void saveMatch() throws Exception {
         // Given
-        OffsetDateTime now = OffsetDateTime.now();
         Player player = playerDAO.findPlayerById(101);
         Site site = siteDAO.findSiteById(101);
 
         Match match = new Match();
         match.setCode("C-" + (Instant.now().toEpochMilli() / 1000));
-        match.setDate(now);
+        match.setDate(LocalDateTime.now());
         match.setSport(FOOTBALL);
         match.setNumPlayersMin(10);
         match.setNumPlayersMax(12);
@@ -362,7 +359,7 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
         Player player = playerDAO.findPlayerById(101);
-        OffsetDateTime startDate = OffsetDateTime.now().minusYears(5L); // 5 years ago
+        LocalDateTime startDate = LocalDateTime.now().minusYears(5L); // 5 years ago
 
         // When
         int numLines = matchDAO.unregisterPlayerFromAllMatches(player);

@@ -8,7 +8,7 @@ import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
 import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import org.apache.ibatis.annotations.Param;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static net.andresbustamante.yafoot.core.util.DaoConstants.*;
@@ -49,8 +49,8 @@ public interface MatchDao {
     List<Match> findMatchesByPlayer(@Param(PLAYER) Player player,
                                     @Param(SPORT) SportEnum sport,
                                     @Param(STATUS) MatchStatusEnum status,
-                                    @Param(START_DATE) OffsetDateTime startDate,
-                                    @Param(END_DATE) OffsetDateTime endDate);
+                                    @Param(START_DATE) LocalDateTime startDate,
+                                    @Param(END_DATE) LocalDateTime endDate);
 
     /**
      * Loads a match and its details by using its unique numeric identifier.

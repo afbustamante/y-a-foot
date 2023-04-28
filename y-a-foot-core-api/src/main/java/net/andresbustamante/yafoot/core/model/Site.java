@@ -11,7 +11,7 @@ import net.andresbustamante.yafoot.commons.model.Identifiable;
 import net.andresbustamante.yafoot.commons.model.Locatable;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * A site where a match can be played.
@@ -31,8 +31,8 @@ public final class Site implements Locatable, Identifiable<Integer>, Auditable, 
     private String country;
     private String phoneNumber;
     private GpsCoordinates location;
-    private OffsetDateTime creationDate;
-    private OffsetDateTime modificationDate;
+    private Instant creationDate;
+    private Instant modificationDate;
 
     /**
      * Constructor for testing purposes only.

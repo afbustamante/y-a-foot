@@ -9,7 +9,7 @@ import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * A car used to go to a match.
@@ -33,8 +33,8 @@ public final class Car implements Serializable, Identifiable<Integer>, Auditable
     private Integer numPassengers;
     private Player driver;
     private boolean active;
-    private OffsetDateTime creationDate;
-    private OffsetDateTime modificationDate;
+    private Instant creationDate;
+    private Instant modificationDate;
 
     /**
      * Constructor for testing purposes only.

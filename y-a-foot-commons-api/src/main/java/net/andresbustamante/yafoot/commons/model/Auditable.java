@@ -1,6 +1,6 @@
 package net.andresbustamante.yafoot.commons.model;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Interface to be implemented by any object needing to be audited.
@@ -12,12 +12,12 @@ public interface Auditable {
      *
      * @return Creation date and time for this object
      */
-    OffsetDateTime getCreationDate();
+    Instant getCreationDate();
 
     /**
      * Gets the date and time of the last update for this object.
      *
      * @return Date and time of the last update
      */
-    OffsetDateTime getModificationDate();
+    Instant getModificationDate();
 }

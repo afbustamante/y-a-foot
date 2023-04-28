@@ -19,7 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -71,7 +71,7 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     void confirmCarForAnotherPlayerRegistration() throws Exception {
         // Given
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now());
+        match.setDate(LocalDateTime.now());
         Player player = new Player(1);
         player.setEmail("test@email.com");
         Car car = new Car(1);
@@ -162,7 +162,7 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     void processCarSeatRequest() throws Exception {
         // Given
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now());
+        match.setDate(LocalDateTime.now());
         Player player = new Player(1);
         player.setFirstName("First-Name");
         Player driver = new Player(2);

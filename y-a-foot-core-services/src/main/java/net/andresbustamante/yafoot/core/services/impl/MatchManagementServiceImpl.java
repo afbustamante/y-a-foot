@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     public Integer saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
         String matchCode;
 
-        if (match.getDate().isBefore(OffsetDateTime.now())) {
+        if (match.getDate().isBefore(LocalDateTime.now())) {
             throw new ApplicationException("match.past.new.date.error", "A match cannot be planned in the past");
         }
 
@@ -227,7 +227,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     @Transactional
     @Override
     public void cancelMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
-        if (match.getDate().isBefore(OffsetDateTime.now())) {
+        if (match.getDate().isBefore(LocalDateTime.now())) {
             throw new PastMatchException("It is not possible to cancel a match in the past");
         } else if (match.getCreator() == null || !match.getCreator().getEmail().equals(userContext.getUsername())) {
             throw new UnauthorisedUserException("This match can only be cancelled by its creator");

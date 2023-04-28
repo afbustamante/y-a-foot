@@ -2,7 +2,7 @@ package net.andresbustamante.yafoot.core.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,7 +75,7 @@ class MatchTest {
 
         Match match1 = new Match(1);
         match1.setNumPlayersMax(5);
-        match1.setDate(OffsetDateTime.now().plusDays(1));
+        match1.setDate(LocalDateTime.now().plusDays(1));
 
         Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
         reg1.setPlayer(player1);
@@ -99,7 +99,7 @@ class MatchTest {
 
         Match match1 = new Match(1);
         match1.setNumPlayersMax(2);
-        match1.setDate(OffsetDateTime.now().plusDays(1));
+        match1.setDate(LocalDateTime.now().plusDays(1));
 
         Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
         reg1.setPlayer(player1);
@@ -123,7 +123,7 @@ class MatchTest {
 
         Match match1 = new Match(1);
         match1.setNumPlayersMax(5);
-        match1.setDate(OffsetDateTime.now().minusHours(1));
+        match1.setDate(LocalDateTime.now().minusHours(1));
 
         Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
         reg1.setPlayer(player1);

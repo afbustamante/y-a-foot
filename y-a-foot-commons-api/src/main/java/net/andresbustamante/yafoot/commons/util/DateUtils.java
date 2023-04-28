@@ -1,6 +1,8 @@
 package net.andresbustamante.yafoot.commons.util;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,5 +31,25 @@ public final class DateUtils {
         Calendar calendar = Calendar.getInstance();
 
         return LocalDateTime.ofInstant(date.toInstant(), calendar.getTimeZone().toZoneId());
+    }
+
+    /**
+     * Transforms a date-time from OffsetDateTime to LocalDateTime.
+     *
+     * @param dateTime Date-time to transform
+     * @return Resulting LocalDateTime
+     */
+    public static LocalDateTime toLocalDateTime(OffsetDateTime dateTime) {
+        return dateTime != null ? dateTime.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime() : null;
+    }
+
+    /**
+     * Transforms a date-time from LocalDateTime to OffsetDateTime using the default timezone configured for Spring.
+     *
+     * @param dateTime Date-time to transform
+     * @return Resulting OffsetDateTime
+     */
+    public static OffsetDateTime toOffsetDateTime(LocalDateTime dateTime) {
+        return dateTime != null ? dateTime.atZone(ZoneId.systemDefault()).toOffsetDateTime() : null;
     }
 }

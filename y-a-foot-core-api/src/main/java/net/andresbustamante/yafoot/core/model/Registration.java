@@ -9,7 +9,7 @@ import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Registration from a player to a match.
@@ -45,12 +45,12 @@ public final class Registration implements Identifiable<RegistrationId>, Seriali
     /**
      * First date and time of the registration.
      */
-    private OffsetDateTime creationDate;
+    private Instant creationDate;
 
     /**
      * Date and time of the last update for the registration.
      */
-    private OffsetDateTime modificationDate;
+    private Instant modificationDate;
 
     /**
      * Constructor for testing purposes only.

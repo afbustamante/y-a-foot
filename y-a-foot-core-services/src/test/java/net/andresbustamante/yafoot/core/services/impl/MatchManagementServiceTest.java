@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +70,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         Player player = new Player(1);
         Site site = new Site(1);
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -97,7 +97,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         Player player = new Player(1);
         Site site = new Site();
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1));
+        match.setDate(LocalDateTime.now().plusDays(1));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -123,7 +123,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         Player player = new Player(1);
         Site site = new Site(100);
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1));
+        match.setDate(LocalDateTime.now().plusDays(1));
         match.setSite(site);
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -146,7 +146,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -165,7 +165,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
         Car car = new Car(1);
         UserContext ctx = new UserContext();
@@ -186,7 +186,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
         Car car = new Car(100);
         UserContext ctx = new UserContext();
@@ -210,7 +210,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         Player player2 = new Player(2);
         player2.setEmail("another@email.com");
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         match.setCarpoolingEnabled(true);
         match.setRegistrations(Collections.emptyList());
         Car car = new Car(100);
@@ -235,7 +235,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
         Car car = new Car();
         UserContext ctx = new UserContext();
@@ -256,7 +256,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         Player player1 = new Player(1);
         player1.setEmail("player@email.com");
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
         registration1.setPlayer(player1);
         match.setRegistrations(Collections.singletonList(registration1));
@@ -282,7 +282,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         car1.setDriver(player1);
         Match match = new Match(1);
         match.setCarpoolingEnabled(true);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
         registration1.setPlayer(player1);
         registration1.setCar(car1);
@@ -312,7 +312,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         // Given
         Player player = new Player(1);
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1L));
+        match.setDate(LocalDateTime.now().plusDays(1L));
         match.setNumPlayersMax(2);
         Registration registration1 = new Registration();
         registration1.setPlayer(new Player(2, "Two", "Player", "player.two@email.com", ""));
@@ -378,7 +378,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         Match match = new Match(1);
         match.setCreator(player);
         match.setNumPlayersMin(1);
-        match.setDate(OffsetDateTime.now().plusDays(7));
+        match.setDate(LocalDateTime.now().plusDays(7));
 
         Registration registration = new Registration(new RegistrationId(1, 1));
         registration.setPlayer(player);
@@ -457,7 +457,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         player.setEmail("user@email.com");
 
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1));
+        match.setDate(LocalDateTime.now().plusDays(1));
         match.setStatus(CREATED);
         match.setCreator(player);
 
@@ -478,7 +478,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         player.setEmail("user@email.com");
 
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().minusDays(1));
+        match.setDate(LocalDateTime.now().minusDays(1));
         match.setStatus(PLAYED);
         match.setCreator(player);
 
@@ -499,7 +499,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         player.setEmail("user@email.com");
 
         Match match = new Match(1);
-        match.setDate(OffsetDateTime.now().plusDays(1));
+        match.setDate(LocalDateTime.now().plusDays(1));
         match.setStatus(CREATED);
         match.setCreator(player);
 
