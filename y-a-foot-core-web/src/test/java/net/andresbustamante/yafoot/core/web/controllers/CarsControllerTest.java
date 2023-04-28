@@ -334,7 +334,7 @@ class CarsControllerTest extends AbstractControllerTest {
         mvc.perform(delete("/cars/{0}", carId)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
-                .andExpect(status().isForbidden());
+                .andExpect(status().isConflict());
 
         // Then
         verify(carManagementService).deactivateCar(any(Car.class), any(UserContext.class));

@@ -17,7 +17,8 @@
       car.car_created_at AS creationDate,
       car.car_updated_at AS modificationDate,
       p.ply_id           AS driverId,
-      p.ply_first_name   AS driverFirstName
+      p.ply_first_name   AS driverFirstName,
+      p.ply_email        AS driverEmail
     FROM t_car car
       JOIN t_player p on car.car_driver_id = p.ply_id
     WHERE car.car_id = #{id}
@@ -87,6 +88,7 @@
     <association property="driver" javaType="net.andresbustamante.yafoot.core.model.Player">
       <id property="id" column="driverId" />
       <result property="firstName" column="driverFirstName" />
+      <result property="email" column="driverEmail" />
     </association>
   </resultMap>
 </mapper>

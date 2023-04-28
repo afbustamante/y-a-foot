@@ -75,7 +75,7 @@ public class CarsController extends AbstractController implements CarsApi {
                 throw new ResponseStatusException(NOT_FOUND, translate(CAR_NOT_FOUND_ERROR, null));
             }
         } catch (ApplicationException e) {
-            if (e.getCode() != null && e.getCode().equals(UNAUTHORISED_USER_ERROR)) {
+            if (UNAUTHORISED_USER_ERROR.equals(e.getCode())) {
                 throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
             } else {
                 throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
@@ -110,7 +110,7 @@ public class CarsController extends AbstractController implements CarsApi {
                 throw new ResponseStatusException(NOT_FOUND, translate(CAR_NOT_FOUND_ERROR, null));
             }
         } catch (ApplicationException e) {
-            if (e.getCode() != null && e.getCode().equals(UNAUTHORISED_USER_ERROR)) {
+            if (UNAUTHORISED_USER_ERROR.equals(e.getCode())) {
                 throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
             } else {
                 throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
@@ -133,9 +133,10 @@ public class CarsController extends AbstractController implements CarsApi {
                 throw new ResponseStatusException(NOT_FOUND, translate(CAR_NOT_FOUND_ERROR, null));
             }
         } catch (ApplicationException e) {
-            if (e.getCode() != null && (e.getCode().equals(UNAUTHORISED_USER_ERROR)
-                    || e.getCode().equals("car.registered.coming.match.error"))) {
+            if (UNAUTHORISED_USER_ERROR.equals(e.getCode())) {
                 throw new ResponseStatusException(FORBIDDEN, translate(e.getCode(), null));
+            } else if ("car.registered.coming.match.error".equals(e.getCode())) {
+                throw new ResponseStatusException(CONFLICT, translate(e.getCode(), null));
             } else {
                 throw new ResponseStatusException(BAD_REQUEST, translate(e.getCode(), null));
             }
