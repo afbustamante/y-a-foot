@@ -855,7 +855,6 @@
                 <exclude>**/*Aspect.*</exclude>
                 <exclude>**/*Interceptor.*</exclude>
                 <exclude>**/*Config.*</exclude>
-                <exclude>**/*Test.*</exclude>
                 <exclude>**/*Exception.*</exclude>
                 <exclude>**/yafoot/**/model/**</exclude>
                 <exclude>**/yafoot/**/dto/**</exclude>
@@ -879,12 +878,9 @@
                     <exclude>*Aspect</exclude>
                     <exclude>*Interceptor</exclude>
                     <exclude>*Config</exclude>
-                    <exclude>*Test</exclude>
                     <exclude>*Exception</exclude>
-                    <exclude>*Mapper</exclude>
                     <exclude>*MapperImpl</exclude>
                     <exclude>*Api</exclude>
-                    <exclude>*AuthenticationEntryPoint</exclude>
                   </excludes>
                   <limits>
                     <limit>
