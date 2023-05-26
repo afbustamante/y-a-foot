@@ -57,7 +57,7 @@
     <dependency-check-maven-plugin.version>8.0.1</dependency-check-maven-plugin.version>
 
     <!-- Spring Framework -->
-    <spring-boot.version>2.7.11</spring-boot.version>
+    <spring-boot.version>2.7.12</spring-boot.version>
     <spring.version>5.3.27</spring.version>
     <spring-security.version>5.8.1</spring-security.version>
 
