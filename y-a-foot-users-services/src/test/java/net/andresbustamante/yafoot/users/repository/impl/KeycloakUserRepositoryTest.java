@@ -76,7 +76,7 @@ class KeycloakUserRepositoryTest {
         updatedUser.setSurname("User");
 
         UserResource userResource = Mockito.mock(UserResource.class);
-        when(usersResource.get(eq("id"))).thenReturn(userResource);
+        when(usersResource.get("id")).thenReturn(userResource);
 
         // When - Then
         assertDoesNotThrow(() -> keycloakUserRepository.updateUser(updatedUser));
@@ -89,7 +89,7 @@ class KeycloakUserRepositoryTest {
         User user = new User(email);
 
         UserResource userResource = Mockito.mock(UserResource.class);
-        when(usersResource.get(eq("id"))).thenReturn(userResource);
+        when(usersResource.get("id")).thenReturn(userResource);
 
         // When-Then
         assertDoesNotThrow(() -> keycloakUserRepository.deleteUser(user));
