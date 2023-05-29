@@ -40,6 +40,36 @@ class InternalUserManagementAdapterTest {
     private ObjectMapper objectMapper;
 
     @Test
+    void updateUser() {
+        // Given
+        User user = new User();
+        String email = "test@email.com";
+        user.setEmail(email);
+        user.setFirstName("Test");
+        user.setSurname("Test");
+
+        server.expect(requestTo(serverUrl + "/" + email)).andRespond(withSuccess());
+
+        // When-Then
+        assertDoesNotThrow(() -> userManagementAdapter.updateUser(user, null));
+    }
+
+    @Test
+    void updateUserWithServerError() {
+        // Given
+        User user = new User();
+        String email = "test@email.com";
+        user.setEmail(email);
+        user.setFirstName("Test");
+        user.setSurname("Test");
+
+        server.expect(requestTo(serverUrl + "/" + email)).andRespond(withServerError());
+
+        // When-Then
+        assertThrows(DirectoryException.class, () -> userManagementAdapter.updateUser(user, null));
+    }
+
+    @Test
     void deleteUser() {
         // Given
         User user = new User();

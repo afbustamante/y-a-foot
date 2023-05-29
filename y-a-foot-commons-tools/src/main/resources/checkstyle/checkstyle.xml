@@ -97,7 +97,8 @@
     -->
     <module name="JavadocStyle"/>
     <module name="MissingJavadocMethod">
-      <property name="allowedAnnotations" value="Override, Autowired, Mapping" />
+      <property name="allowedAnnotations" value="Override, Autowired, Mapping, Bean" />
+      <property name="tokens" value="METHOD_DEF, ANNOTATION_FIELD_DEF" />
     </module>
 
     <!-- Checks for Naming Conventions.                  -->

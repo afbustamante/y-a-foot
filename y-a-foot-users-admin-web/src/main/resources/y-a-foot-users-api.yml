@@ -23,6 +23,45 @@ paths:
           type: string
           format: email
         description: Email address identifying the user
+    put:
+      operationId: updateUserDetails
+      summary: Updates basic details for given a user
+      tags:
+        - users
+      requestBody:
+        description: User details to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserForm'
+      responses:
+        202: # Accepted
+          description: User credentials updated
+        400: # Bad request
+          description: Invalid password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403: # Forbidden
+          description: User not allowed to perform this operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal server error
+          description: An error occurred while looking for user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deleteUser
       summary: Deletes a given a user
@@ -54,8 +93,6 @@ components:
   schemas:
     User:
       type: object
-      required:
-        - first_name
       properties:
         email:
           type: string
@@ -66,6 +103,18 @@ components:
         surname:
           type: string
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+
+    UserForm:
+      type: object
+      properties:
+        first_name:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        surname:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+      required:
+        - first_name
 
     ErrorResponse:
       type: object

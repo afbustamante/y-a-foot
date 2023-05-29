@@ -1,6 +1,5 @@
 package net.andresbustamante.yafoot.core.web.mappers;
 
-import net.andresbustamante.yafoot.commons.web.mappers.StringMapper;
 import net.andresbustamante.yafoot.commons.web.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.core.model.Player;
 import org.mapstruct.Mapper;
@@ -8,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(config = SpringMapperConfig.class, uses = {StringMapper.class})
+@Mapper(config = SpringMapperConfig.class)
 public interface PlayerMapper {
 
     @Mapping(target = "id", ignore = true)

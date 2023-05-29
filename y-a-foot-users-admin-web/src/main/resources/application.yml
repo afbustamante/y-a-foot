@@ -44,6 +44,15 @@ app:
       url: ${web.app.public.url}
       password-reset:
         url: dummy
+  keycloak:
+    server:
+      url: ${keycloak.server.url}
+      realm: ${keycloak.server.realm}
+    client:
+      id: ${keycloak.client.id}
+      secret: ${keycloak.client.secret}
+      username: ${keycloak.client.username}
+      password: ${keycloak.client.password}
   security:
     jwt:
       token:

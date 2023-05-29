@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 
 /**
@@ -22,12 +23,24 @@ class UserManagementServiceTest extends AbstractServiceUnitTest {
     private UserRepository userRepository;
 
     @Test
+    void updateUser() throws Exception {
+        // Given
+        User user = new User("test@email.com");
+
+        // When
+        assertDoesNotThrow(() -> userManagementService.updateUser(user, new UserContext()));
+
+        // Then
+        verify(userRepository).updateUser(any(User.class));
+    }
+
+    @Test
     void deleteUser() throws Exception {
         // Given
         User user = new User("test@email.com");
 
         // When
-        userManagementService.deleteUser(user, new UserContext());
+        assertDoesNotThrow(() -> userManagementService.deleteUser(user, new UserContext()));
 
         // Then
         verify(userRepository).deleteUser(any(User.class));

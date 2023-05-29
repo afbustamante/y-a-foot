@@ -2,7 +2,6 @@ package net.andresbustamante.yafoot.core.web.mappers;
 
 import net.andresbustamante.yafoot.commons.web.config.SpringMapperConfig;
 import net.andresbustamante.yafoot.commons.web.mappers.DateMapper;
-import net.andresbustamante.yafoot.commons.web.mappers.StringMapper;
 import net.andresbustamante.yafoot.core.model.Match;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,7 +9,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(config = SpringMapperConfig.class, uses = {
-        DateMapper.class, BasicPlayerMapper.class, SiteMapper.class, StringMapper.class, SportMapper.class
+        DateMapper.class, BasicPlayerMapper.class, SiteMapper.class, SportMapper.class
 })
 public interface MatchMapper {
 

@@ -10,6 +10,15 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 public interface UserManagementAdapter {
 
     /**
+     * Updates an existing user.
+     *
+     * @param user User to update
+     * @param context User context
+     * @throws DirectoryException When a problem comes from the storage layer
+     */
+    void updateUser(User user, UserContext context) throws DirectoryException;
+
+    /**
      * Deletes an existing user.
      *
      * @param user User to delete.

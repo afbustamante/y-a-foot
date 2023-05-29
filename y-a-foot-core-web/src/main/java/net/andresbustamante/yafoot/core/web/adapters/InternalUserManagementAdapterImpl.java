@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.core.web.adapters;
 
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
+import net.andresbustamante.yafoot.core.web.mappers.UserMapper;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.adapters.UserManagementAdapter;
@@ -24,12 +25,31 @@ public class InternalUserManagementAdapterImpl implements UserManagementAdapter 
     @Value("${api.users.server.url}")
     private String usersApiUrl;
 
+    private final UserMapper userMapper;
+
     private final RestTemplate restTemplate;
 
     @Autowired
-    public InternalUserManagementAdapterImpl(@Qualifier("usersRestTemplate") RestTemplate restTemplate) {
+    public InternalUserManagementAdapterImpl(
+            UserMapper userMapper, @Qualifier("usersRestTemplate") RestTemplate restTemplate) {
+        this.userMapper = userMapper;
         this.restTemplate = restTemplate;
     }
+
+    @Override
+    public void updateUser(User user, UserContext context) throws DirectoryException {
+        UriComponentsBuilder uriBuilder = getUriBuilder();
+        uriBuilder.path("/").path(user.getEmail());
+
+        HttpEntity<net.andresbustamante.yafoot.users.web.dto.UserForm> body = new HttpEntity<>(userMapper.map(user));
+
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, body, Void.class);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            throw new DirectoryException(e.getMessage());
+        }
+    }
+
 
     @Override
     public void deleteUser(User user, UserContext context) throws DirectoryException {

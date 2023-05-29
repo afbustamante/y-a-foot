@@ -73,6 +73,9 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
             }
 
             playerDAO.updatePlayer(existingPlayer);
+
+            userManagementAdapter.updateUser(player, userContext);
+
             log.info("Player {} updated", player.getEmail());
         } else {
             log.info("No user registered with the address {}", player.getEmail());

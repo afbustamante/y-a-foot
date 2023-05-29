@@ -26,6 +26,13 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
+    public void updateUser(User user, UserContext ctx) throws DirectoryException {
+        userRepository.updateUser(user);
+        log.info("Details successfully updated for user {}", user);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
     public void deleteUser(User user, UserContext ctx) throws DirectoryException {
         userRepository.deleteUser(user);
         log.info("User {} successfully deleted", user.getEmail());

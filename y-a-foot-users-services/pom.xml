@@ -73,6 +73,12 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Java EE / javax -->
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+    </dependency>
+
     <!-- Apache Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -85,6 +91,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
+    </dependency>
+
+    <!-- Keycloak -->
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-admin-client</artifactId>
     </dependency>
 
     <!-- Other libs -->

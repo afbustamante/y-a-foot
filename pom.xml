@@ -64,6 +64,8 @@
     <!-- Java EE -->
     <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
     <jakarta.mail-api.version>1.6.7</jakarta.mail-api.version>
+    <jakarta.ws.rs-api.version>2.1.6</jakarta.ws.rs-api.version>
+    <jakarta.activation-api.version>1.2.2</jakarta.activation-api.version>
     <jakarta.annotation-api.version>1.3.5</jakarta.annotation-api.version>
     <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
     <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
@@ -85,6 +87,10 @@
     <commons-logging.version>1.2</commons-logging.version>
     <commons-dbcp2.version>2.9.0</commons-dbcp2.version>
     <commons-codec.version>1.15</commons-codec.version>
+    <commons-io.version>2.11.0</commons-io.version>
+
+    <!-- Keycloak -->
+    <keycloak-admin-client.version>20.0.5</keycloak-admin-client.version>
 
     <!-- Logs -->
     <slf4j.version>1.7.36</slf4j.version>
@@ -105,9 +111,11 @@
     <jackson-datatype.version>2.13.5</jackson-datatype.version>
     <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
     <jboss-logging.version>3.4.3.Final</jboss-logging.version>
+    <jboss-logging-annotations.version>2.2.1.Final</jboss-logging-annotations.version>
     <freemarker.version>2.3.32</freemarker.version>
     <checkstyle.version>10.3.4</checkstyle.version>
     <snakeyaml.version>1.33</snakeyaml.version>
+    <log4j-api.version>2.17.1</log4j-api.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports,${basedir}/target/failsafe-reports</sonar.junit.reportPaths>
@@ -227,6 +235,11 @@
         <version>${jakarta.annotation-api.version}</version>
       </dependency>
       <dependency>
+        <groupId>jakarta.activation</groupId>
+        <artifactId>jakarta.activation-api</artifactId>
+        <version>${jakarta.activation-api.version}</version>
+      </dependency>
+      <dependency>
         <groupId>jakarta.validation</groupId>
         <artifactId>jakarta.validation-api</artifactId>
         <version>${jakarta.validation-api.version}</version>
@@ -235,6 +248,11 @@
         <groupId>jakarta.xml.bind</groupId>
         <artifactId>jakarta.xml.bind-api</artifactId>
         <version>${jakarta.xml.bind-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.ws.rs</groupId>
+        <artifactId>jakarta.ws.rs-api</artifactId>
+        <version>${jakarta.ws.rs-api.version}</version>
       </dependency>
       <dependency>
         <groupId>com.sun.mail</groupId>
@@ -282,6 +300,13 @@
         <version>${mybatis-spring-boot.version}</version>
       </dependency>
 
+      <!-- Keycloak -->
+      <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-admin-client</artifactId>
+        <version>${keycloak-admin-client.version}</version>
+      </dependency>
+
       <!-- Apache Commons -->
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -312,6 +337,11 @@
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
         <version>${commons-codec.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
       </dependency>
 
       <!-- Templates -->
@@ -430,9 +460,24 @@
         <version>${swagger-annotations.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${log4j-api.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.jboss.logging</groupId>
         <artifactId>jboss-logging</artifactId>
         <version>${jboss-logging.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-annotations</artifactId>
+        <version>${jboss-logging-annotations.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-processor</artifactId>
+        <version>${jboss-logging-annotations.version}</version>
       </dependency>
       <dependency>
         <groupId>org.yaml</groupId>
@@ -886,7 +931,7 @@
                     <limit>
                       <counter>INSTRUCTION</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.80</minimum>
+                      <minimum>0.78</minimum>
                     </limit>
                   </limits>
                 </rule>

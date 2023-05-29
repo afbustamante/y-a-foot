@@ -5,6 +5,7 @@ import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.users.services.UserManagementService;
 import net.andresbustamante.yafoot.users.services.UserSearchService;
+import net.andresbustamante.yafoot.users.web.mappers.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -34,6 +35,68 @@ class UsersControllerTest extends AbstractControllerTest {
 
     @MockBean
     private UserSearchService userSearchService;
+
+    @MockBean
+    private UserMapper userMapper;
+
+    @Test
+    void updateValidUser() throws Exception {
+        // Given
+        net.andresbustamante.yafoot.users.web.dto.User user = new net.andresbustamante.yafoot.users.web.dto.User();
+        user.setEmail(VALID_EMAIL);
+        user.setFirstName("Roger");
+        user.setSurname("Federer");
+
+        User storedUser = new User();
+        storedUser.setFirstName("Roger");
+        storedUser.setSurname("Fdrr");
+        storedUser.setEmail(VALID_EMAIL);
+
+        given(userSearchService.findUserByEmail(anyString())).willReturn(storedUser);
+
+        // When
+        mvc.perform(put("/users/" + VALID_EMAIL)
+                .content(objectMapper.writeValueAsString(user))
+                .contentType(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isAccepted());
+    }
+
+    @Test
+    void updateInvalidUser() throws Exception {
+        // Given
+        net.andresbustamante.yafoot.users.web.dto.User user = new net.andresbustamante.yafoot.users.web.dto.User();
+        user.setEmail(VALID_EMAIL);
+        user.setFirstName("Roger");
+        user.setSurname("Federer");
+
+        given(userSearchService.findUserByEmail(anyString())).willReturn(null);
+
+        // When
+        mvc.perform(put("/users/" + VALID_EMAIL)
+                .content(objectMapper.writeValueAsString(user))
+                .contentType(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateUserWhenLdapDirectoryIsUnavailable() throws Exception {
+        // Given
+        net.andresbustamante.yafoot.users.web.dto.User user = new net.andresbustamante.yafoot.users.web.dto.User();
+        user.setEmail(VALID_EMAIL);
+        user.setFirstName("Roger");
+        user.setSurname("Federer");
+
+        given(userSearchService.findUserByEmail(anyString())).willThrow(new DirectoryException(""));
+
+        // When
+        mvc.perform(put("/users/" + VALID_EMAIL)
+                .content(objectMapper.writeValueAsString(user))
+                .contentType(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isInternalServerError());
+    }
 
     @Test
     void deleteValidUser() throws Exception {

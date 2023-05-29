@@ -88,6 +88,7 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
         // Then
         verify(playerDAO).findPlayerByEmail(any());
         verify(playerDAO).updatePlayer(any());
+        verify(userManagementAdapter).updateUser(any(), any(UserContext.class));
     }
 
     @Test
@@ -106,6 +107,7 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
         // Then
         verify(playerDAO).findPlayerByEmail(any());
         verify(playerDAO, never()).updatePlayer(any());
+        verify(userManagementAdapter, never()).updateUser(any(), any(UserContext.class));
     }
 
     @Test
