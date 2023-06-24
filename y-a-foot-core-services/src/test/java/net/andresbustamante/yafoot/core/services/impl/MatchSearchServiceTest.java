@@ -12,7 +12,6 @@ import org.mockito.Mock;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -83,7 +82,7 @@ class MatchSearchServiceTest extends AbstractServiceUnitTest {
         // When
         when(playerDao.findPlayerByEmail(anyString())).thenReturn(player1);
         when(matchDAO.findMatchesByPlayer(any(Player.class), eq(null), eq(null), any(), any()))
-                .thenReturn(Arrays.asList(match1, match2));
+                .thenReturn(List.of(match1, match2));
         List<Match> matches = matchSearchService.findMatches(null, null, null, LocalDate.now(), ctx);
 
         // Then

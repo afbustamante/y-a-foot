@@ -26,7 +26,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -259,7 +258,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         match.setDate(LocalDateTime.now().plusDays(1L));
         Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
         registration1.setPlayer(player1);
-        match.setRegistrations(Collections.singletonList(registration1));
+        match.setRegistrations(List.of(registration1));
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
@@ -318,7 +317,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         registration1.setPlayer(new Player(2, "Two", "Player", "player.two@email.com", ""));
         Registration registration2 = new Registration();
         registration2.setPlayer(new Player(3, "Three", "Player", "player.three@email.com", ""));
-        match.setRegistrations(Arrays.asList(registration1, registration2));
+        match.setRegistrations(List.of(registration1, registration2));
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
@@ -338,7 +337,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         match.setCreator(player);
         Registration registration = new Registration(new RegistrationId(1, 1));
         registration.setPlayer(player);
-        match.setRegistrations(Collections.singletonList(registration));
+        match.setRegistrations(List.of(registration));
         match.setCode("code");
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
@@ -382,7 +381,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
 
         Registration registration = new Registration(new RegistrationId(1, 1));
         registration.setPlayer(player);
-        match.setRegistrations(Collections.singletonList(registration));
+        match.setRegistrations(List.of(registration));
         match.setCode("code");
         UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");

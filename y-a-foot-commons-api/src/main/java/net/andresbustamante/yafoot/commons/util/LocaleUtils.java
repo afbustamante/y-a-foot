@@ -1,7 +1,7 @@
 package net.andresbustamante.yafoot.commons.util;
 
-import java.util.Arrays;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Locale and i18n utilities.
@@ -35,6 +35,6 @@ public final class LocaleUtils {
      * @return True if a locale is supported
      */
     public static boolean isSupportedLocale(Locale locale) {
-        return Arrays.asList(SUPPORTED_LOCALES).contains(locale);
+        return Set.of(SUPPORTED_LOCALES).contains(locale);
     }
 }

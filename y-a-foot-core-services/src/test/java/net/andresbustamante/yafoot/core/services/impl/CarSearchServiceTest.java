@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +31,7 @@ class CarSearchServiceTest extends AbstractServiceUnitTest {
     void findCarsByPlayer() throws Exception {
         // Given
         Player player = new Player(1);
-        List<Car> cars = Arrays.asList(new Car(1), new Car(2));
+        List<Car> cars = List.of(new Car(1), new Car(2));
         when(playerDao.findPlayerByEmail(anyString())).thenReturn(player);
         when(carDAO.findCarsByPlayer(any(Player.class))).thenReturn(cars);
 

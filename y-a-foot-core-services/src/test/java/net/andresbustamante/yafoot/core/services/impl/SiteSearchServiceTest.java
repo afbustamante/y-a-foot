@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +36,7 @@ class SiteSearchServiceTest extends AbstractServiceUnitTest {
 
         // When
         when(playerDao.findPlayerByEmail(anyString())).thenReturn(player1);
-        when(siteDAO.findSitesByPlayer(any(Player.class))).thenReturn(Arrays.asList(site1, site2));
+        when(siteDAO.findSitesByPlayer(any(Player.class))).thenReturn(List.of(site1, site2));
         List<Site> sites = rechercheSitesService.findSites(new UserContext("player1@email.com"));
 
         // Then
