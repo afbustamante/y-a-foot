@@ -1,25 +1,21 @@
 package net.andresbustamante.yafoot.core.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
-import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
 import net.andresbustamante.yafoot.commons.model.UserContext;
+import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarSearchService;
-import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.core.web.mappers.CarMapper;
+import net.andresbustamante.yafoot.web.dto.Car;
 import net.andresbustamante.yafoot.web.dto.CarForm;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
@@ -36,12 +32,8 @@ public class CarsController extends AbstractController implements CarsApi {
     private final CarManagementService carManagementService;
     private final CarMapper carMapper;
 
-    @Autowired
-    public CarsController(CarSearchService carSearchService,
-                          CarManagementService carManagementService,
-                          CarMapper carMapper, HttpServletRequest request, ObjectMapper objectMapper,
-                          ApplicationContext applicationContext) {
-        super(request, objectMapper, applicationContext);
+    public CarsController(
+            CarSearchService carSearchService, CarManagementService carManagementService, CarMapper carMapper) {
         this.carSearchService = carSearchService;
         this.carManagementService = carManagementService;
         this.carMapper = carMapper;

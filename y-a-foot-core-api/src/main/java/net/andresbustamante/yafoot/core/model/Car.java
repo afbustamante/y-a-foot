@@ -8,6 +8,7 @@ import lombok.ToString;
 import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -20,7 +21,9 @@ import java.time.Instant;
 @EqualsAndHashCode(of = {"id"}) @ToString(of = {"id"})
 public final class Car implements Serializable, Identifiable<Integer>, Auditable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 576782149779266905L;
+
     private Integer id;
     private String name;
     /**

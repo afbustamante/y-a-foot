@@ -9,6 +9,7 @@ import net.andresbustamante.yafoot.commons.model.Identifiable;
 import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
 import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -26,7 +27,9 @@ import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.DRAFT
 @EqualsAndHashCode(of = {"id", "code"}) @ToString(of = {"id", "code"})
 public final class Match implements Serializable, Identifiable<Integer>, Auditable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = -483060416138264717L;
+
     private Integer id;
     private LocalDateTime date;
     private String code;

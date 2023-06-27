@@ -1,12 +1,11 @@
 package net.andresbustamante.yafoot.core.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Player;
-import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
 import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
@@ -25,9 +24,7 @@ import net.andresbustamante.yafoot.web.dto.Registration;
 import net.andresbustamante.yafoot.web.dto.RegistrationForm;
 import net.andresbustamante.yafoot.web.dto.SportCode;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +32,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -72,14 +68,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Value("${api.matches.one.registrations.one.path}")
     private String matchRegistrationApiPath;
 
-    @Autowired
     public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
                              CarpoolingService carpoolingService,
                              MatchManagementService matchManagementService,
-                             MatchMapper matchMapper, RegistrationMapper registrationMapper, CarMapper carMapper,
-                             HttpServletRequest request, ObjectMapper objectMapper,
-                             ApplicationContext applicationContext) {
-        super(request, objectMapper, applicationContext);
+                             MatchMapper matchMapper, RegistrationMapper registrationMapper, CarMapper carMapper) {
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
         this.playerSearchService = playerSearchService;

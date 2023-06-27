@@ -1,9 +1,10 @@
 package net.andresbustamante.yafoot.commons.web.controllers;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.util.LocaleUtils;
+import net.andresbustamante.yafoot.commons.web.dto.ErrorResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
@@ -16,12 +17,11 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Optional;
@@ -48,17 +48,20 @@ public abstract class AbstractController {
     /**
      * Injected request (constructors only).
      */
-    private final HttpServletRequest request;
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * Injected application context (constructors only).
      */
-    private final ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     /**
      * Default object mapper.
      */
-    private final ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * Public URL to access a controller from this app.
@@ -67,30 +70,21 @@ public abstract class AbstractController {
     private String apiPublicUrl;
 
     /**
-     * Default constructor.
-     *
-     * @param request HTTP servlet request
-     * @param objectMapper Object mapper to use
-     * @param applicationContext Application context
-     */
-    protected AbstractController(HttpServletRequest request, ObjectMapper objectMapper,
-                                 ApplicationContext applicationContext) {
-        this.request = request;
-        this.applicationContext = applicationContext;
-        this.objectMapper = objectMapper;
-        this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
-
-    /**
      * Transforms a ConstraintViolationException into a 400 error code.
      *
      * @param e Exception to check
      * @return ResponseEntity with a "Bad request" code and message
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ResponseEntity<Void> handleConstraintViolationException(ConstraintViolationException e) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    protected ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+        ErrorResponse response = new ErrorResponse();
+        response.setTimestamp(OffsetDateTime.now());
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setError("Constraint violation");
+        response.setPath(request.getContextPath());
+        response.setMessage(e.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     /**

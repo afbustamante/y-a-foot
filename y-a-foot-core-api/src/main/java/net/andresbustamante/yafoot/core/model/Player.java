@@ -9,6 +9,7 @@ import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 import net.andresbustamante.yafoot.users.model.User;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -21,7 +22,9 @@ import java.time.Instant;
 @EqualsAndHashCode(callSuper = true, of = {"id"}) @ToString(of = {"id"})
 public final class Player extends User implements Serializable, Identifiable<Integer>, Auditable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = -835073717353039623L;
+
     private Integer id;
     private String phoneNumber;
     private boolean active;

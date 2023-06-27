@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -15,6 +16,9 @@ import java.io.Serializable;
 @Getter @Setter @NoArgsConstructor
 @EqualsAndHashCode(of = {"id"}) @ToString(of = "id")
 public final class Sport implements Serializable, Identifiable<Short> {
+
+    @Serial
+    private static final long serialVersionUID = -1482022215011838737L;
 
     private Short id;
     private String code;

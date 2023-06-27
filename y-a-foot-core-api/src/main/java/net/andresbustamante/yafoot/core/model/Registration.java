@@ -8,6 +8,7 @@ import lombok.ToString;
 import net.andresbustamante.yafoot.commons.model.Auditable;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -20,7 +21,8 @@ import java.time.Instant;
 @EqualsAndHashCode(of = {"id"}) @ToString(of = {"id"})
 public final class Registration implements Identifiable<RegistrationId>, Serializable, Auditable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 2403452369516241329L;
 
     /**
      * Registration ID between the match and the player.

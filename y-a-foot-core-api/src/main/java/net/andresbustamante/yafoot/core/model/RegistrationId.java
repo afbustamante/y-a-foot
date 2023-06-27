@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -17,6 +18,9 @@ import java.io.Serializable;
 @EqualsAndHashCode(of = {"matchId", "playerId"})
 @ToString(of = {"matchId", "playerId"})
 public final class RegistrationId implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -8700388360563478154L;
 
     /**
      * Match ID for this registration.

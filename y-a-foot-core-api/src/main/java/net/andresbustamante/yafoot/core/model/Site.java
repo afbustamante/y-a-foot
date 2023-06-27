@@ -10,6 +10,7 @@ import net.andresbustamante.yafoot.commons.model.GpsCoordinates;
 import net.andresbustamante.yafoot.commons.model.Identifiable;
 import net.andresbustamante.yafoot.commons.model.Locatable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -22,7 +23,9 @@ import java.time.Instant;
 @EqualsAndHashCode(of = {"id"}) @ToString(of = "id")
 public final class Site implements Locatable, Identifiable<Integer>, Auditable, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 6333496998921053606L;
+
     private Integer id;
     private String name;
     private String address;

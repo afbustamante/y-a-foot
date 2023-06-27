@@ -9,7 +9,6 @@
 
   <logger name="net.andresbustamante.yafoot" level="INFO"/>
   <logger name="org.springframework" level="INFO"/>
-  <logger name="org.springframework.test" level="WARN"/>
 
   <root level="info">
     <appender-ref ref="STDOUT" />

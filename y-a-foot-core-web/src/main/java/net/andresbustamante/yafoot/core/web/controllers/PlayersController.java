@@ -1,6 +1,5 @@
 package net.andresbustamante.yafoot.core.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
@@ -8,16 +7,13 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
 import net.andresbustamante.yafoot.core.services.PlayerManagementService;
 import net.andresbustamante.yafoot.core.services.PlayerSearchService;
-import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.core.web.mappers.PlayerMapper;
+import net.andresbustamante.yafoot.web.dto.Player;
 import net.andresbustamante.yafoot.web.dto.PlayerForm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
 import java.util.Collections;
 import java.util.List;
@@ -36,11 +32,9 @@ public class PlayersController extends AbstractController implements PlayersApi 
     private final PlayerSearchService playerSearchService;
     private final PlayerMapper playerMapper;
 
-    @Autowired
-    public PlayersController(PlayerManagementService playerManagementService, PlayerSearchService playerSearchService,
-                             PlayerMapper playerMapper, HttpServletRequest request, ObjectMapper objectMapper,
-                             ApplicationContext applicationContext) {
-        super(request, objectMapper, applicationContext);
+    public PlayersController(
+            PlayerManagementService playerManagementService, PlayerSearchService playerSearchService,
+            PlayerMapper playerMapper) {
         this.playerManagementService = playerManagementService;
         this.playerSearchService = playerSearchService;
         this.playerMapper = playerMapper;

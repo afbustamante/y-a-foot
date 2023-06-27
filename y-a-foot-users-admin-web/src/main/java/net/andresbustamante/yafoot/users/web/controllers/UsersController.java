@@ -1,6 +1,5 @@
 package net.andresbustamante.yafoot.users.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
@@ -9,12 +8,10 @@ import net.andresbustamante.yafoot.users.services.UserSearchService;
 import net.andresbustamante.yafoot.users.web.dto.UserForm;
 import net.andresbustamante.yafoot.users.web.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -31,10 +28,7 @@ public class UsersController extends AbstractController implements UsersApi {
 
     @Autowired
     public UsersController(
-            UserManagementService userManagementService, UserSearchService userSearchService,
-            HttpServletRequest request, ObjectMapper objectMapper, ApplicationContext applicationContext,
-            UserMapper userMapper) {
-        super(request, objectMapper, applicationContext);
+            UserManagementService userManagementService, UserSearchService userSearchService, UserMapper userMapper) {
         this.userManagementService = userManagementService;
         this.userSearchService = userSearchService;
         this.userMapper = userMapper;

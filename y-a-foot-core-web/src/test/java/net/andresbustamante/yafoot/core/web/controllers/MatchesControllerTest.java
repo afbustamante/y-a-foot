@@ -39,8 +39,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CREATED;
-import static net.andresbustamante.yafoot.web.dto.SportCode.BASKETBALL;
-import static net.andresbustamante.yafoot.web.dto.SportCode.RUGBY;
+import static net.andresbustamante.yafoot.web.dto.SportCode.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -115,6 +114,19 @@ class MatchesControllerTest extends AbstractControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
                 .andExpect(status().isNotFound());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"21223", "this is a code", "invalid.code"})
+    void loadMatchByInvalidCode(String matchCode) throws Exception {
+        // Given
+        // When
+        mvc.perform(get("/matches/{0}", matchCode)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -383,8 +395,10 @@ class MatchesControllerTest extends AbstractControllerTest {
         match.setDate(OffsetDateTime.now().minusDays(3));
         match.setNumPlayersMin(8);
         match.setSiteId(1);
+        match.setSport(CRICKET);
 
         ApplicationException exception = new ApplicationException("match.past.new.date.error", "message");
+        given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.MatchForm.class))).willReturn(new Match());
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class))).willThrow(exception);
 
         // When

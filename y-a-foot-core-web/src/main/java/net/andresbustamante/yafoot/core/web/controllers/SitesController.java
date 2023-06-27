@@ -1,6 +1,5 @@
 package net.andresbustamante.yafoot.core.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.web.controllers.AbstractController;
@@ -10,16 +9,13 @@ import net.andresbustamante.yafoot.core.web.mappers.SiteMapper;
 import net.andresbustamante.yafoot.web.dto.Site;
 import net.andresbustamante.yafoot.web.dto.SiteForm;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +36,8 @@ public class SitesController extends AbstractController implements SitesApi {
     @Value("${api.sites.one.path}")
     private String siteApiPath;
 
-    @Autowired
-    public SitesController(SiteSearchService siteSearchService, SiteManagementService siteManagementService,
-                           SiteMapper siteMapper, HttpServletRequest request,
-                           ObjectMapper objectMapper, ApplicationContext applicationContext) {
-        super(request, objectMapper, applicationContext);
+    public SitesController(
+            SiteSearchService siteSearchService, SiteManagementService siteManagementService, SiteMapper siteMapper) {
         this.siteSearchService = siteSearchService;
         this.siteManagementService = siteManagementService;
         this.siteMapper = siteMapper;
