@@ -144,11 +144,9 @@ class SitesControllerTest extends AbstractControllerTest {
     @Test
     void addNewInvalidSite() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.SiteForm site = new net.andresbustamante.yafoot.web.dto.SiteForm();
-
         // When
         mvc.perform(post("/sites")
-                .content(objectMapper.writeValueAsString(site))
+                .content("{ \"abcd\": null }")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 // Then
