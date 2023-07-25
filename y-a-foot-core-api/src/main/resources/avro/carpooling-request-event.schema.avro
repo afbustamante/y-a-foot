@@ -1,0 +1,13 @@
+{
+  "type" : "record",
+  "namespace" : "net.andresbustamante.yafoot.core.events",
+  "name" : "CarpoolingRequestEvent",
+  "fields" : [
+    { "name" : "playerId" , "type" : "int" },
+    { "name" : "playerFirstName" , "type" : "string" },
+    { "name" : "matchId" , "type" : "int" },
+    { "name" : "matchCode" , "type" : "string" },
+    { "name" : "carId" , "type" : "int" },
+    { "name" : "carName" , "type" : "string" }
+  ]
+}

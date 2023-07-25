@@ -1,0 +1,11 @@
+{
+  "type" : "record",
+  "namespace" : "net.andresbustamante.yafoot.core.events",
+  "name" : "MatchPlayerRegistrationEvent",
+  "fields" : [
+    { "name" : "playerId" , "type" : "int" },
+    { "name" : "playerFirstName" , "type" : "string" },
+    { "name" : "matchId" , "type" : "int" },
+    { "name" : "matchCode" , "type" : "string" }
+  ]
+}

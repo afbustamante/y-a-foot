@@ -1,6 +1,4 @@
-package net.andresbustamante.yafoot.messaging.exceptions;
-
-import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+package net.andresbustamante.yafoot.commons.exceptions;
 
 /**
  * When an email template is not valid for sending.

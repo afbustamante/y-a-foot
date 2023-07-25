@@ -36,11 +36,6 @@
       <artifactId>y-a-foot-users-api</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>net.andresbustamante</groupId>
-      <artifactId>y-a-foot-messaging-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
 
     <!-- Spring -->
     <dependency>

@@ -41,12 +41,6 @@
       <artifactId>y-a-foot-users-services</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>net.andresbustamante</groupId>
-      <artifactId>y-a-foot-messaging-services</artifactId>
-      <version>${project.version}</version>
-      <scope>runtime</scope>
-    </dependency>
 
     <!-- Spring Boot -->
     <dependency>
@@ -67,7 +61,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-mail</artifactId>
+      <artifactId>spring-boot-starter-amqp</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

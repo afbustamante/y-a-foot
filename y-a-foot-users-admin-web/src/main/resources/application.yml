@@ -20,25 +20,9 @@ spring:
       name: ${security.api.username}
       password: ${security.api.password}
       roles: ADMINISTRATOR
-  mail:
-    host: ${mail.host}
-    port: ${mail.port}
-    username: ${mail.username}
-    password: ${mail.password}
-    properties:
-      mail:
-        smtp:
-          auth: ${mail.smtp.auth}
-          starttls:
-            enable: ${mail.smtp.starttls.enable}
-            required: ${mail.smtp.starttls.required}
 
 # Application configuration
 app:
-  mail:
-    sender:
-      address: ${mail.sender.address}
-      name: ${mail.sender.name}
   web:
     public:
       url: ${web.app.public.url}

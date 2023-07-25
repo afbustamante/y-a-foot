@@ -8,11 +8,11 @@ import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.MatchDao;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.dao.SiteDao;
+import net.andresbustamante.yafoot.core.events.MatchPlayerUnsubscriptionEvent;
 import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Match;
-import net.andresbustamante.yafoot.core.model.MatchAlert;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Registration;
 import net.andresbustamante.yafoot.core.model.RegistrationId;
@@ -20,10 +20,11 @@ import net.andresbustamante.yafoot.core.model.Site;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
 import net.andresbustamante.yafoot.core.services.SiteManagementService;
-import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -61,7 +62,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     private CarpoolingService carpoolingService;
 
     @Mock
-    private MessagingService messagingService;
+    private RabbitTemplate rabbitTemplate;
 
     @Test
     void saveMatchUsingExistingSite() throws Exception {
@@ -370,8 +371,12 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void unregisterPlayerWithAlert() throws Exception {
         // Given
+        ReflectionTestUtils.setField(matchManagementService, "matchPlayerUnregistrationsQueue",
+                "test-queue");
+
         Player player = new Player(1);
         player.setEmail("test@email.com");
+        player.setFirstName("Luck");
         player.setPreferredLanguage(Locale.CHINESE.getLanguage());
 
         Match match = new Match(1);
@@ -391,8 +396,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
 
         // When
         verify(matchDAO).unregisterPlayer(any(), any());
-        verify(messagingService).sendEmail(anyString(), anyString(), any(String[].class), anyString(),
-                any(MatchAlert.class), any(Locale.class));
+        verify(rabbitTemplate).convertAndSend(anyString(), any(MatchPlayerUnsubscriptionEvent.class));
     }
 
     @Test

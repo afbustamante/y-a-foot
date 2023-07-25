@@ -5,48 +5,48 @@ import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.MatchDao;
+import net.andresbustamante.yafoot.core.events.CarpoolingRequestEvent;
+import net.andresbustamante.yafoot.core.events.CarpoolingUpdateEvent;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Car;
-import net.andresbustamante.yafoot.core.model.CarpoolingRequest;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Registration;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
-import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class CarpoolingServiceImpl implements CarpoolingService {
 
     private final CarDao carDAO;
     private final MatchDao matchDAO;
-    private final MessagingService messagingService;
 
-    @Value("${app.web.public.carpooling-management.url}")
-    private String carpoolingManagementUrl;
+    private final RabbitTemplate rabbitTemplate;
 
-    @Value("${app.web.public.match-management.url}")
-    private String matchManagementUrl;
+    @Value("${app.messaging.queues.carpooling.requests.name}")
+    private String carpoolingRequestsQueue;
+
+    @Value("${app.messaging.queues.carpooling.updates.name}")
+    private String carpoolingUpdatesQueue;
 
     private final Logger log = LoggerFactory.getLogger(CarpoolingServiceImpl.class);
 
     @Autowired
-    public CarpoolingServiceImpl(CarDao carDAO, MatchDao matchDAO, MessagingService messagingService) {
+    public CarpoolingServiceImpl(CarDao carDAO, MatchDao matchDAO, RabbitTemplate rabbitTemplate) {
         this.carDAO = carDAO;
         this.matchDAO = matchDAO;
-        this.messagingService = messagingService;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Transactional(readOnly = true)
@@ -96,21 +96,16 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void processCarSeatRequest(Match match, Player player, Car car, UserContext ctx)
-            throws DatabaseException, ApplicationException {
-        String template = "carpooling-request-email_" + car.getDriver().getPreferredLanguage() + ".ftl";
-        String link = String.format(carpoolingManagementUrl, match.getCode());
-        Locale locale = new Locale(car.getDriver().getPreferredLanguage());
-        String matchDate = match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", locale));
+    public void processCarSeatRequest(Match match, Player player, Car car, UserContext ctx) {
+        CarpoolingRequestEvent event = new CarpoolingRequestEvent();
+        event.setPlayerId(player.getId());
+        event.setPlayerFirstName(player.getFirstName());
+        event.setMatchId(match.getId());
+        event.setMatchCode(match.getCode());
+        event.setCarId(car.getId());
+        event.setCarName(car.getName());
 
-        CarpoolingRequest request = new CarpoolingRequest();
-        request.setRequesterFirstName(player.getFirstName());
-        request.setDriverFirstName(car.getDriver().getFirstName());
-        request.setLink(link);
-        request.setMatchDate(matchDate);
-
-        messagingService.sendEmail(car.getDriver().getEmail(), "carpool.request.email.subject",
-                new String[]{player.getFirstName()}, template, request, locale);
+        rabbitTemplate.convertAndSend(carpoolingRequestsQueue, event);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -142,24 +137,25 @@ public class CarpoolingServiceImpl implements CarpoolingService {
         }
     }
 
-    private void processCarSeatUpdate(Match match, Player player, Car car, boolean isCarSeatConfirmed)
-            throws ApplicationException {
-        String confirmationTemplate = "carpooling-confirmation-email_" + player.getPreferredLanguage() + ".ftl";
-        String rejectionTemplate = "carpooling-rejection-email_" + player.getPreferredLanguage() + ".ftl";
-        String template = isCarSeatConfirmed ? confirmationTemplate : rejectionTemplate;
-        String subject = isCarSeatConfirmed ? "carpool.confirmation.email.subject"
-                : "carpool.rejection.email.subject";
+    /**
+     * Sends a notification concerning an update on the carpooling request made by a player for a given car to go to a
+     * given match.
+     *
+     * @param match Match to go to
+     * @param player Player asking for a seat in carpooling
+     * @param car Selected car
+     * @param isCarSeatConfirmed Confirmation / refusal from the driver of the given car
+     */
+    private void processCarSeatUpdate(Match match, Player player, Car car, boolean isCarSeatConfirmed) {
+        CarpoolingUpdateEvent event = new CarpoolingUpdateEvent();
+        event.setCarId(car.getId());
+        event.setCarName(car.getName());
+        event.setMatchId(match.getId());
+        event.setMatchCode(match.getCode());
+        event.setPlayerId(player.getId());
+        event.setPlayerFirstName(player.getFirstName());
+        event.setCarSeatConfirmed(isCarSeatConfirmed ? 1 : 0);
 
-        String link = String.format(matchManagementUrl, match.getCode());
-        Locale locale = new Locale(player.getPreferredLanguage());
-        String matchDate = match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", locale));
-
-        CarpoolingRequest request = new CarpoolingRequest();
-        request.setRequesterFirstName(player.getFirstName());
-        request.setDriverFirstName(car.getDriver().getFirstName());
-        request.setLink(link);
-        request.setMatchDate(matchDate);
-
-        messagingService.sendEmail(car.getDriver().getEmail(), subject, null, template, request, locale);
+        rabbitTemplate.convertAndSend(carpoolingUpdatesQueue, event);
     }
 }

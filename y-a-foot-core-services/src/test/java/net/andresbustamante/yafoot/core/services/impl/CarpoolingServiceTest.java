@@ -5,23 +5,23 @@ import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.services.AbstractServiceUnitTest;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.MatchDao;
+import net.andresbustamante.yafoot.core.events.CarpoolingRequestEvent;
+import net.andresbustamante.yafoot.core.events.CarpoolingUpdateEvent;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Car;
-import net.andresbustamante.yafoot.core.model.CarpoolingRequest;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Registration;
 import net.andresbustamante.yafoot.core.model.RegistrationId;
-import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -38,14 +38,14 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     private CarDao carDAO;
 
     @Mock
-    private MessagingService messagingService;
+    private RabbitTemplate rabbitTemplate;
 
     @BeforeEach
     void setUp() throws Exception {
-        ReflectionTestUtils.setField(carpoolingService, "carpoolingManagementUrl",
-                "http://localhost/api/test/{0}");
-        ReflectionTestUtils.setField(carpoolingService, "matchManagementUrl",
-                "http://localhost/api/test/{0}");
+        ReflectionTestUtils.setField(carpoolingService, "carpoolingRequestsQueue",
+                "http://localhost/test/requests");
+        ReflectionTestUtils.setField(carpoolingService, "carpoolingUpdatesQueue",
+                "http://localhost/test/updates");
     }
 
     @Test
@@ -93,8 +93,7 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
         verify(carDAO).findCarById(anyInt());
         verify(matchDAO).loadRegistration(any(Match.class), any(Player.class));
         verify(matchDAO).updateCarForRegistration(any(Match.class), any(Player.class), any(Car.class), eq(true));
-        verify(messagingService).sendEmail(anyString(), anyString(), eq(null), anyString(),
-                any(CarpoolingRequest.class), any(Locale.class));
+        verify(rabbitTemplate).convertAndSend(anyString(), any(CarpoolingUpdateEvent.class));
     }
 
     @Test
@@ -172,11 +171,10 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
         car.setDriver(driver);
 
         // When
-        carpoolingService.processCarSeatRequest(match, player, car, new UserContext());
+        assertDoesNotThrow(() -> carpoolingService.processCarSeatRequest(match, player, car, new UserContext()));
 
         // Then
-        verify(messagingService).sendEmail(anyString(), anyString(), any(), anyString(), any(CarpoolingRequest.class),
-                any(Locale.class));
+        verify(rabbitTemplate).convertAndSend(anyString(), any(CarpoolingRequestEvent.class));
     }
 
     @Test

@@ -1,21 +1,14 @@
 package net.andresbustamante.yafoot.messaging.services.impl;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateNotFoundException;
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.messaging.exceptions.InvalidTemplateException;
 import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -23,17 +16,13 @@ import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.Locale;
 
 @Service
 public class MessagingServiceImpl implements MessagingService {
 
     private final JavaMailSender mailSender;
-    private final Configuration freemarkerConfiguration;
-    private final ApplicationContext applicationContext;
 
     @Value("${app.mail.sender.address}")
     private String mailSenderAddress;
@@ -44,11 +33,8 @@ public class MessagingServiceImpl implements MessagingService {
     private final Logger log = LoggerFactory.getLogger(MessagingServiceImpl.class);
 
     @Autowired
-    public MessagingServiceImpl(JavaMailSender mailSender, Configuration freemarkerConfiguration,
-                                ApplicationContext applicationContext) {
+    public MessagingServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-        this.freemarkerConfiguration = freemarkerConfiguration;
-        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -69,25 +55,6 @@ public class MessagingServiceImpl implements MessagingService {
             log.info("Message sent to '{}' with the subject '{}'", destinationEmail, subject);
         } catch (UnsupportedEncodingException | MessagingException e) {
             throw new ApplicationException("An error occurred while sending an email", e);
-        }
-    }
-
-    @Override
-    @Async
-    public void sendEmail(String destinationEmail, String subjectCode, String[] subjectParameters,
-                          String contentTemplate, Object contentModel, Locale locale) throws ApplicationException {
-        try {
-            Template t = freemarkerConfiguration.getTemplate(contentTemplate);
-            String messageContent = FreeMarkerTemplateUtils.processTemplateIntoString(t, contentModel);
-            String subject = applicationContext.getMessage(subjectCode, subjectParameters, locale);
-
-            sendEmail(destinationEmail, subject, messageContent);
-        } catch (TemplateException e) {
-            throw new InvalidTemplateException("Invalid template", e);
-        } catch (TemplateNotFoundException e) {
-            throw new InvalidTemplateException("Unknown template", e);
-        } catch (IOException e) {
-            throw new InvalidTemplateException("Unable to load template", e);
         }
     }
 }

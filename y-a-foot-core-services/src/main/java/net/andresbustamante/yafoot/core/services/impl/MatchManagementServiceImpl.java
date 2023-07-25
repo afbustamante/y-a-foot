@@ -7,11 +7,13 @@ import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.MatchDao;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.dao.SiteDao;
+import net.andresbustamante.yafoot.core.events.CarpoolingRequestEvent;
+import net.andresbustamante.yafoot.core.events.MatchPlayerRegistrationEvent;
+import net.andresbustamante.yafoot.core.events.MatchPlayerUnsubscriptionEvent;
 import net.andresbustamante.yafoot.core.exceptions.PastMatchException;
 import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Match;
-import net.andresbustamante.yafoot.core.model.MatchAlert;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Registration;
 import net.andresbustamante.yafoot.core.model.Site;
@@ -19,20 +21,19 @@ import net.andresbustamante.yafoot.core.services.CarManagementService;
 import net.andresbustamante.yafoot.core.services.CarpoolingService;
 import net.andresbustamante.yafoot.core.services.MatchManagementService;
 import net.andresbustamante.yafoot.core.services.SiteManagementService;
-import net.andresbustamante.yafoot.messaging.services.MessagingService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import static net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum.CANCELLED;
@@ -58,20 +59,30 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     private final CarManagementService carManagementService;
     private final CarpoolingService carpoolingService;
     private final PlayerDao playerDAO;
-    private final MessagingService messagingService;
+    private final RabbitTemplate rabbitTemplate;
+
+    @Value("${app.messaging.queues.matches.registrations.name}")
+    private String matchPlayerRegistrationsQueue;
+
+    @Value("${app.messaging.queues.matches.unsubscriptions.name}")
+    private String matchPlayerUnregistrationsQueue;
+
+    @Value("${app.messaging.queues.carpooling.requests.name}")
+    private String carpoolingRequestsQueue;
 
     @Autowired
-    public MatchManagementServiceImpl(MatchDao matchDAO, SiteDao siteDAO, CarDao carDAO, PlayerDao playerDAO,
-                                      SiteManagementService siteManagementService, MessagingService messagingService,
-                                      CarManagementService carManagementService, CarpoolingService carpoolingService) {
+    public MatchManagementServiceImpl(
+            MatchDao matchDAO, SiteDao siteDAO, CarDao carDAO, PlayerDao playerDAO,
+            SiteManagementService siteManagementService, CarManagementService carManagementService,
+            CarpoolingService carpoolingService, RabbitTemplate rabbitTemplate) {
         this.matchDAO = matchDAO;
         this.siteDAO = siteDAO;
         this.siteManagementService = siteManagementService;
-        this.messagingService = messagingService;
         this.carDAO = carDAO;
         this.carManagementService = carManagementService;
         this.carpoolingService = carpoolingService;
         this.playerDAO = playerDAO;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Transactional
@@ -121,9 +132,13 @@ public class MatchManagementServiceImpl implements MatchManagementService {
             boolean isCarConfirmed = processCarToJoinMatch(car, userContext);
             matchDAO.registerPlayer(player, match, car, isCarConfirmed);
 
+            notifyRegisteredPlayer(player, match);
+
             if (match.isCarpoolingEnabled() && !isCarConfirmed) {
                 // A confirmation is needed from the driver of the car selected for this operation
                 carpoolingService.processCarSeatRequest(match, player, car, userContext);
+
+                notifyCarpoolRequest(player, match, car);
             }
         } else {
             matchDAO.registerPlayer(player, match, null, null);
@@ -163,8 +178,6 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         // Two players are authorised to unregister a player: himself/herself or the player who created the match
         boolean isUserAuthorised = ctx.getUsername().equals(match.getCreator().getEmail()) || ctx.getUsername().equals(
                 player.getEmail());
-        // A match is impacted when the last player before arriving to the lowest number of players expected quits
-        boolean isMatchImpacted = match.getNumRegisteredPlayers().equals(match.getNumPlayersMin());
 
         if (isUserAuthorised &&  match.isPlayerRegistered(player)) {
             if (match.isCarpoolingEnabled()) {
@@ -173,10 +186,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
             matchDAO.unregisterPlayer(player, match);
             log.info("Player #{} was unregistered from match #{}", player.getId(), match.getId());
 
-            if (isMatchImpacted) {
-                // Send an alert as the match has a number of players below the minimum expected now
-                sendAlertMessage(match);
-            }
+            notifyUnregisteredPlayer(player, match);
         } else {
             throw new ApplicationException("unknown.player.registration.error", "Player not registered in this match");
         }
@@ -304,24 +314,53 @@ public class MatchManagementServiceImpl implements MatchManagementService {
     }
 
     /**
-     * Sends an alert message to the player who created the match to prevent him from an action leading a match to an
-     * imminent danger of being cancelled.
+     * Sends a notification to the message broker after for this action.
      *
-     * @param match The match concerned by the alert
-     * @throws ApplicationException If a problem comes when sending the alert
+     * @param player Player that joined the match
+     * @param match The match to update
      */
-    private void sendAlertMessage(Match match) throws ApplicationException {
-        String[] parameters = {match.getCode()};
-        String language = match.getCreator().getPreferredLanguage();
-        Locale locale = new Locale(language);
-        String template = "match-cancel-risk-alert-email_" + language + ".ftl";
+    private void notifyRegisteredPlayer(Player player, Match match) {
+        MatchPlayerRegistrationEvent event = new MatchPlayerRegistrationEvent();
+        event.setPlayerFirstName(player.getFirstName());
+        event.setPlayerId(player.getId());
+        event.setMatchId(match.getId());
+        event.setMatchCode(match.getCode());
 
-        MatchAlert alert = new MatchAlert();
-        alert.setCreatorFirstName(match.getCreator().getFirstName());
-        alert.setMatchDate(match.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd", locale)));
-        alert.setNumMinPlayers(match.getNumPlayersMin());
+        rabbitTemplate.convertAndSend(matchPlayerRegistrationsQueue, event);
+    }
 
-        messagingService.sendEmail(match.getCreator().getEmail(), "match.cancel.risk.alert.subject", parameters,
-                template, alert, locale);
+    /**
+     * Sends a notification to the message broker after for this action.
+     *
+     * @param player Player that left the match
+     * @param match The match to update
+     */
+    private void notifyUnregisteredPlayer(Player player, Match match) {
+        MatchPlayerUnsubscriptionEvent event = new MatchPlayerUnsubscriptionEvent();
+        event.setPlayerFirstName(player.getFirstName());
+        event.setPlayerId(player.getId());
+        event.setMatchId(match.getId());
+        event.setMatchCode(match.getCode());
+
+        rabbitTemplate.convertAndSend(matchPlayerUnregistrationsQueue, event);
+    }
+
+    /**
+     * Sends a notification of carpooling from a player for a given match in a given car.
+     *
+     * @param player Player asking for carpooling
+     * @param match Match to ask for
+     * @param car Selected car for the request
+     */
+    private void notifyCarpoolRequest(Player player, Match match, Car car) {
+        CarpoolingRequestEvent event = new CarpoolingRequestEvent();
+        event.setMatchId(match.getId());
+        event.setMatchCode(match.getCode());
+        event.setPlayerId(player.getId());
+        event.setPlayerFirstName(player.getFirstName());
+        event.setCarId(car.getId());
+        event.setCarName(car.getName());
+
+        rabbitTemplate.convertAndSend(carpoolingRequestsQueue, event);
     }
 }
