@@ -90,7 +90,7 @@
     <commons-io.version>2.11.0</commons-io.version>
 
     <!-- Keycloak -->
-    <keycloak-admin-client.version>20.0.5</keycloak-admin-client.version>
+    <keycloak-admin-client.version>21.1.2</keycloak-admin-client.version>
 
     <!-- Logs -->
     <slf4j.version>1.7.36</slf4j.version>
