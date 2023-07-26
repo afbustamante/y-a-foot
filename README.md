@@ -15,6 +15,7 @@ Some frameworks and libraries used in this application:
 * OpenAPI 3.0
 * MyBatis 3.5
 * JUnit 5.8
+* RabbitMQ 3.12
 
 ## Deployment
 
@@ -22,7 +23,7 @@ This is the global deployment diagram showing the main components of this projec
 
 ![Deployment diagram](./misc/server/deployment_diagram.png)
 
-## Database model
+## Database model
 
 ![Database model](./misc/db/entity_relationship_diagram.png)
 
@@ -38,6 +39,7 @@ This is the global deployment diagram showing the main components of this projec
 * JRE 14
 * PostgreSQL 13+
 * OpenLDAP 3 or an external active directory with OAuth 2.0 support such as Keycloak
+* RabbitMQ for handling internal events
 
 ### Keycloak directory structure
 

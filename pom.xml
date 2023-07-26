@@ -60,6 +60,7 @@
     <spring-boot.version>2.7.12</spring-boot.version>
     <spring.version>5.3.27</spring.version>
     <spring-security.version>5.8.1</spring-security.version>
+    <spring-amqp.version>2.4.13</spring-amqp.version>
 
     <!-- Java EE -->
     <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
@@ -76,8 +77,8 @@
     <flyway.version>8.5.13</flyway.version>
 
     <!-- MyBatis -->
-    <mybatis.version>3.5.11</mybatis.version>
-    <mybatis-spring.version>2.0.7</mybatis-spring.version>
+    <mybatis.version>3.5.13</mybatis.version>
+    <mybatis-spring.version>2.1.1</mybatis-spring.version>
     <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
 
     <!-- Apache Commons -->
@@ -116,6 +117,7 @@
     <checkstyle.version>10.3.4</checkstyle.version>
     <snakeyaml.version>1.33</snakeyaml.version>
     <log4j-api.version>2.17.1</log4j-api.version>
+    <avro.version>1.11.2</avro.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports,${basedir}/target/failsafe-reports</sonar.junit.reportPaths>
@@ -163,6 +165,16 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.springframework.amqp</groupId>
+        <artifactId>spring-amqp</artifactId>
+        <version>${spring-amqp.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.amqp</groupId>
+        <artifactId>spring-rabbit</artifactId>
+        <version>${spring-amqp.version}</version>
+      </dependency>
 
       <!-- Spring Boot -->
       <dependency>
@@ -199,6 +211,11 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-mail</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-amqp</artifactId>
         <version>${spring-boot.version}</version>
       </dependency>
       <dependency>
@@ -318,6 +335,12 @@
         <groupId>org.mybatis</groupId>
         <artifactId>mybatis-spring</artifactId>
         <version>${mybatis-spring.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-infrastructure</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.mybatis.spring.boot</groupId>
@@ -482,6 +505,10 @@
             <groupId>org.jboss.logmanager</groupId>
             <artifactId>jboss-logmanager</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -518,6 +545,21 @@
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjweaver</artifactId>
         <version>${aspectjweaver.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro</artifactId>
+        <version>${avro.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-compiler</artifactId>
+        <version>${avro.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-ipc</artifactId>
+        <version>${avro.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -713,6 +755,12 @@
           <groupId>org.owasp</groupId>
           <artifactId>dependency-check-maven</artifactId>
           <version>${dependency-check-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.avro</groupId>
+          <artifactId>avro-maven-plugin</artifactId>
+          <version>${avro.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
