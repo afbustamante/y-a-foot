@@ -82,7 +82,7 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
         UserContext ctx = new UserContext();
 
         // When
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(existingPlayer);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(existingPlayer);
         playerManagementService.updatePlayer(updatedPlayer, ctx);
 
         // Then
