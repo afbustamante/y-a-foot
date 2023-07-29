@@ -106,7 +106,14 @@ class PlayersControllerTest extends AbstractControllerTest {
         storedPlayer.setFirstName("John");
         storedPlayer.setSurname("Doe");
 
+        net.andresbustamante.yafoot.core.model.Player updatedPlayer =
+                new net.andresbustamante.yafoot.core.model.Player();
+        updatedPlayer.setFirstName("Test");
+        updatedPlayer.setSurname("User");
+        updatedPlayer.setPhoneNumber("0123456789");
+
         given(playerSearchService.findPlayerById(anyInt())).willReturn(storedPlayer);
+        given(playerMapper.map(any(PlayerForm.class))).willReturn(updatedPlayer);
 
         // When
         mvc.perform(put("/players/{0}", 1)

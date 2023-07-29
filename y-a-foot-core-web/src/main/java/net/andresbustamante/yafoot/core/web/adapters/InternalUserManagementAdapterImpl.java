@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -37,6 +38,7 @@ public class InternalUserManagementAdapterImpl implements UserManagementAdapter 
     }
 
     @Override
+    @Async
     public void updateUser(User user, UserContext context) throws DirectoryException {
         UriComponentsBuilder uriBuilder = getUriBuilder();
         uriBuilder.path("/").path(user.getEmail());

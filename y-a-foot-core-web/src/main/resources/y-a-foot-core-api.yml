@@ -770,7 +770,7 @@ components:
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
         phone_number:
           type: string
-          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+          pattern: ^[+]?[0-9\-\(\) ]{6,16}$
         preferred_language:
           type: string
           pattern: ^[A-Za-z_]{2,5}$
@@ -787,7 +787,7 @@ components:
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
         phone_number:
           type: string
-          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+          pattern: ^[+]?[0-9\-\(\) ]{6,16}$
         preferred_language:
           type: string
           pattern: ^[A-Za-z_]{2,5}$
@@ -822,7 +822,7 @@ components:
           type: string
         phone_number:
           type: string
-          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+          pattern: ^[+]?[0-9\-\(\) ]{6,16}$
         location:
           $ref: '#/components/schemas/GpsCoordinates'
 
@@ -849,7 +849,7 @@ components:
           pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\.\,\r\n\t\#\- ]{1,255}$
         phone_number:
           type: string
-          pattern: ^[+]?[0-9\-\(\) ]{6,15}$
+          pattern: ^[+]?[0-9\-\(\) ]{6,16}$
         location:
           $ref: '#/components/schemas/GpsCoordinates'
       example:

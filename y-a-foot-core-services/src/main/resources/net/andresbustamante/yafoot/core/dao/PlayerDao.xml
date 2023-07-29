@@ -59,7 +59,7 @@
             ply_phone_number = #{player.phoneNumber},
         </if>
         ply_updated_at = CURRENT_TIMESTAMP
-        WHERE ply_email = #{player.email}
+        WHERE ply_id = #{player.id}
     </update>
 
     <delete id="deletePlayer">

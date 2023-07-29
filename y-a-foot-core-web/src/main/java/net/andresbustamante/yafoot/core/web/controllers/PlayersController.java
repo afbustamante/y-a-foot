@@ -53,7 +53,10 @@ public class PlayersController extends AbstractController implements PlayersApi 
             net.andresbustamante.yafoot.core.model.Player p = playerSearchService.findPlayerById(id);
 
             if (p != null) {
-                playerManagementService.updatePlayer(playerMapper.map(player), userContext);
+                net.andresbustamante.yafoot.core.model.Player mappedPlayer = playerMapper.map(player);
+                mappedPlayer.setId(id);
+
+                playerManagementService.updatePlayer(mappedPlayer, userContext);
                 return ResponseEntity.accepted().build();
             } else {
                 return ResponseEntity.notFound().build();
@@ -62,6 +65,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
             log.error("An error occurred while updating a player", e);
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
+            log.error("Unable to update player after an application exception", e);
             return ResponseEntity.notFound().build();
         }
     }

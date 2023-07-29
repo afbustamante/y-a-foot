@@ -86,7 +86,6 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
         playerManagementService.updatePlayer(updatedPlayer, ctx);
 
         // Then
-        verify(playerDAO).findPlayerByEmail(any());
         verify(playerDAO).updatePlayer(any());
         verify(userManagementAdapter).updateUser(any(), any(UserContext.class));
     }
@@ -101,11 +100,10 @@ class PlayerManagementServiceTest extends AbstractServiceUnitTest {
         UserContext ctx = new UserContext();
 
         // When
-        when(playerDAO.findPlayerByEmail(anyString())).thenReturn(null);
+        when(playerDAO.findPlayerById(anyInt())).thenReturn(null);
         assertThrows(PlayerNotFoundException.class, () -> playerManagementService.updatePlayer(updatedPlayer, ctx));
 
         // Then
-        verify(playerDAO).findPlayerByEmail(any());
         verify(playerDAO, never()).updatePlayer(any());
         verify(userManagementAdapter, never()).updateUser(any(), any(UserContext.class));
     }

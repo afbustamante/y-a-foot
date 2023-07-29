@@ -59,7 +59,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     @Transactional
     @Override
     public void updatePlayer(Player player, UserContext userContext) throws DirectoryException, ApplicationException {
-        Player existingPlayer = playerDAO.findPlayerByEmail(player.getEmail());
+        Player existingPlayer = playerDAO.findPlayerById(player.getId());
 
         if (existingPlayer != null) {
             if (player.getFirstName() != null) {
