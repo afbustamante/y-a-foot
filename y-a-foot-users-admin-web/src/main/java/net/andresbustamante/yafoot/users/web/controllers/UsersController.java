@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
-
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -35,7 +33,7 @@ public class UsersController extends AbstractController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateUserDetails(String email, @Valid UserForm userDto) {
+    public ResponseEntity<Void> updateUserDetails(String email, UserForm userDto) {
         try {
             net.andresbustamante.yafoot.users.model.User user = userSearchService.findUserByEmail(email);
 

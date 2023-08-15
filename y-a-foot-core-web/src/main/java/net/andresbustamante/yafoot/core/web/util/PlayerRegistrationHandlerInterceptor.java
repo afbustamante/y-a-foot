@@ -16,13 +16,13 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.Set;
 
 /**
- * Intercepts every http call to check if the player is already registered. Otherwise, it will created the player
+ * Intercepts every http call to check if the player is already registered. Otherwise, it will create the player
  * using the authenticated principal data.
  */
 public class PlayerRegistrationHandlerInterceptor implements HandlerInterceptor {
@@ -50,7 +50,7 @@ public class PlayerRegistrationHandlerInterceptor implements HandlerInterceptor 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        if (METHODS_TO_INTERCEPT.contains(HttpMethod.resolve(request.getMethod()))) {
+        if (METHODS_TO_INTERCEPT.contains(HttpMethod.valueOf(request.getMethod()))) {
             String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
             if (authHeader != null) {
