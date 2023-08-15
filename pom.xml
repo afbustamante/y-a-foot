@@ -57,10 +57,10 @@
     <dependency-check-maven-plugin.version>8.0.1</dependency-check-maven-plugin.version>
 
     <!-- Spring Framework -->
-    <spring-boot.version>2.7.12</spring-boot.version>
-    <spring.version>5.3.27</spring.version>
+    <spring-boot.version>2.7.14</spring-boot.version>
+    <spring.version>5.3.29</spring.version>
     <spring-security.version>5.8.1</spring-security.version>
-    <spring-amqp.version>2.4.13</spring-amqp.version>
+    <spring-amqp.version>2.4.14</spring-amqp.version>
 
     <!-- Java EE -->
     <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
@@ -104,7 +104,7 @@
     <dbunit.version>2.7.3</dbunit.version>
 
     <!-- Other libraries -->
-    <lombok.version>1.18.26</lombok.version>
+    <lombok.version>1.18.28</lombok.version>
     <mapstruct.version>1.5.5.Final</mapstruct.version>
     <swagger-annotations.version>2.2.9</swagger-annotations.version>
     <aspectjweaver.version>1.9.19</aspectjweaver.version>
@@ -116,7 +116,7 @@
     <freemarker.version>2.3.32</freemarker.version>
     <checkstyle.version>10.3.4</checkstyle.version>
     <snakeyaml.version>1.33</snakeyaml.version>
-    <log4j-api.version>2.17.1</log4j-api.version>
+    <log4j-api.version>2.17.2</log4j-api.version>
     <avro.version>1.11.2</avro.version>
 
     <!-- JaCoCo + Sonar -->
