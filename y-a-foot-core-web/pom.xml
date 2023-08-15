@@ -264,7 +264,9 @@
               <generateApiDocumentation>true</generateApiDocumentation>
               <generateApiTests>false</generateApiTests>
               <configOptions>
-                <java8>true</java8>
+                <java11>true</java11>
+                <jakarta>true</jakarta>
+                <dateLibrary>java8</dateLibrary>
                 <interfaceOnly>true</interfaceOnly>
                 <defaultInterfaces>false</defaultInterfaces>
               </configOptions>
@@ -288,13 +290,42 @@
               <generateApiDocumentation>false</generateApiDocumentation>
               <generateApiTests>false</generateApiTests>
               <configOptions>
-                <java8>true</java8>
+                <java11>true</java11>
+                <jakarta>true</jakarta>
+                <dateLibrary>java8</dateLibrary>
                 <interfaceOnly>true</interfaceOnly>
                 <defaultInterfaces>false</defaultInterfaces>
               </configOptions>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- Workaround for swagger-codegen-maven-plugin generating imports from javax.servlet instead of jakarta.servlet -->
+      <plugin>
+        <groupId>com.google.code.maven-replacer-plugin</groupId>
+        <artifactId>replacer</artifactId>
+        <executions>
+          <execution>
+            <id>replace-javax-imports</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <basedir>${project.build.directory}/generated-sources/swagger/src/main/java/</basedir>
+          <includes>
+            <include>**/*.java</include>
+          </includes>
+          <replacements>
+            <replacement>
+              <token>import javax.servlet</token>
+              <value>import jakarta.servlet</value>
+            </replacement>
+          </replacements>
+        </configuration>
       </plugin>
 
       <plugin>

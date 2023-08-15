@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -161,7 +160,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> createMatch(@Valid MatchForm match) {
+    public ResponseEntity<Void> createMatch(MatchForm match) {
         try {
             UserContext userContext = getUserContext();
             net.andresbustamante.yafoot.core.model.Match m = matchMapper.map(match);

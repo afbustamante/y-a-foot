@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +77,7 @@ public class CarsController extends AbstractController implements CarsApi {
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> addNewCar(@Valid CarForm car) {
+    public ResponseEntity<Void> addNewCar(CarForm car) {
         try {
             int carId = carManagementService.saveCar(carMapper.map(car), getUserContext());
 
@@ -90,7 +88,7 @@ public class CarsController extends AbstractController implements CarsApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateCar(@Min(1) Integer id, @Valid CarForm carForm) {
+    public ResponseEntity<Void> updateCar(Integer id, CarForm carForm) {
         try {
             UserContext userContext = getUserContext();
             net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, userContext);
@@ -113,7 +111,7 @@ public class CarsController extends AbstractController implements CarsApi {
     }
 
     @Override
-    public ResponseEntity<Void> deactivateCar(@Min(1) Integer id) {
+    public ResponseEntity<Void> deactivateCar(Integer id) {
         try {
             UserContext userContext = getUserContext();
             net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, userContext);

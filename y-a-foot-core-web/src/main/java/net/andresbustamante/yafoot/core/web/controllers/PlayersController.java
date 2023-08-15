@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.constraints.Min;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
     }
 
     @Override
-    public ResponseEntity<Player> loadPlayer(@Min(1) Integer id) {
+    public ResponseEntity<Player> loadPlayer(Integer id) {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
     }
 

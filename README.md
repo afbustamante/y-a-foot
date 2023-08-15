@@ -9,12 +9,12 @@ friends, classmates and so on.
 
 Some frameworks and libraries used in this application:
 
-* Spring Boot 2.7
-* Spring Framework 5.3
-* Spring Security 5.8
+* Spring Boot 3.0
+* Spring Framework 6.0
+* Spring Security 6.0
 * OpenAPI 3.0
 * MyBatis 3.5
-* JUnit 5.8
+* JUnit 5.9
 * RabbitMQ 3.12
 
 ## Deployment
@@ -31,14 +31,14 @@ This is the global deployment diagram showing the main components of this projec
 
 ### Minimum requirements for building
 
-* JDK 14
-* Maven 3.6
+* JDK 17
+* Maven 3.9
 
 ### Minimum requirements for deployment
 
-* JRE 14
+* JRE 17
 * PostgreSQL 13+
-* OpenLDAP 3 or an external active directory with OAuth 2.0 support such as Keycloak
+* An external active directory with OAuth 2.0 support such as Keycloak
 * RabbitMQ for handling internal events
 
 ### Keycloak directory structure
