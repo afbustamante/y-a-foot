@@ -751,7 +751,7 @@ components:
   securitySchemes:
     oidc:
       type: openIdConnect
-      openIdConnectUrl: https://sso.footero.net/realms/footero/.well-known/openid-configuration
+      openIdConnectUrl: ${security.api.server}/realms/footero/.well-known/openid-configuration
 
   schemas:
     Player:
