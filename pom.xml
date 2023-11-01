@@ -58,10 +58,10 @@
     <replacer-plugin.version>1.5.3</replacer-plugin.version>
 
     <!-- Spring Framework -->
-    <spring-boot.version>3.0.9</spring-boot.version>
-    <spring.version>6.0.11</spring.version>
-    <spring-security.version>6.0.5</spring-security.version>
-    <spring-amqp.version>3.0.6</spring-amqp.version>
+    <spring-boot.version>3.1.5</spring-boot.version>
+    <spring.version>6.0.13</spring.version>
+    <spring-security.version>6.1.5</spring-security.version>
+    <spring-amqp.version>3.0.10</spring-amqp.version>
 
     <!-- Jakarta EE -->
     <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
@@ -70,15 +70,15 @@
     <jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
     <jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
     <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
-    <jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
+    <jakarta.xml.bind-api.version>4.0.1</jakarta.xml.bind-api.version>
 
     <!-- Jakarta EE providers -->
     <angus-core.version>2.0.1</angus-core.version>
 
     <!-- Database -->
-    <postgresql.version>42.5.4</postgresql.version>
-    <h2.version>2.2.220</h2.version>
-    <flyway.version>9.5.1</flyway.version>
+    <postgresql.version>42.6.0</postgresql.version>
+    <h2.version>2.2.224</h2.version>
+    <flyway.version>9.16.3</flyway.version>
 
     <!-- MyBatis -->
     <mybatis.version>3.5.13</mybatis.version>
@@ -86,42 +86,42 @@
     <mybatis-spring-boot.version>3.0.2</mybatis-spring-boot.version>
 
     <!-- Apache Commons -->
-    <commons-text.version>1.10.0</commons-text.version>
-    <commons-lang3.version>3.12.0</commons-lang3.version>
+    <commons-text.version>1.11.0</commons-text.version>
+    <commons-lang3.version>3.13.0</commons-lang3.version>
     <commons-collections4.version>4.4</commons-collections4.version>
     <commons-logging.version>1.2</commons-logging.version>
-    <commons-dbcp2.version>2.9.0</commons-dbcp2.version>
-    <commons-codec.version>1.15</commons-codec.version>
-    <commons-io.version>2.11.0</commons-io.version>
+    <commons-dbcp2.version>2.11.0</commons-dbcp2.version>
+    <commons-codec.version>1.16.0</commons-codec.version>
+    <commons-io.version>2.15.0</commons-io.version>
 
     <!-- Keycloak -->
     <keycloak.version>21.1.2</keycloak.version>
     <osgi-core.version>6.0.0</osgi-core.version>
 
     <!-- Logs -->
-    <slf4j.version>2.0.7</slf4j.version>
-    <logback.version>1.4.8</logback.version>
+    <slf4j.version>2.0.9</slf4j.version>
+    <logback.version>1.4.11</logback.version>
 
     <!-- Tests -->
     <junit.jupiter.version>5.9.3</junit.jupiter.version>
-    <mockito.version>4.8.1</mockito.version>
+    <mockito.version>5.3.1</mockito.version>
     <spring-test-dbunit.version>1.3.0</spring-test-dbunit.version>
     <dbunit.version>2.7.3</dbunit.version>
 
     <!-- Other libraries -->
-    <lombok.version>1.18.28</lombok.version>
+    <lombok.version>1.18.30</lombok.version>
     <mapstruct.version>1.5.5.Final</mapstruct.version>
-    <swagger-annotations.version>2.2.15</swagger-annotations.version>
-    <aspectjweaver.version>1.9.19</aspectjweaver.version>
-    <jackson-core.version>2.14.3</jackson-core.version>
+    <swagger-annotations.version>2.2.18</swagger-annotations.version>
+    <aspectjweaver.version>1.9.20.1</aspectjweaver.version>
+    <jackson-core.version>2.15.3</jackson-core.version>
     <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
     <jboss-logging.version>3.5.3.Final</jboss-logging.version>
     <jboss-logging-annotations.version>2.2.1.Final</jboss-logging-annotations.version>
     <freemarker.version>2.3.32</freemarker.version>
-    <checkstyle.version>10.3.4</checkstyle.version>
-    <snakeyaml.version>2.0</snakeyaml.version>
-    <log4j-api.version>2.19.0</log4j-api.version>
-    <avro.version>1.11.2</avro.version>
+    <checkstyle.version>10.12.4</checkstyle.version>
+    <snakeyaml.version>2.2</snakeyaml.version>
+    <log4j-api.version>2.20.0</log4j-api.version>
+    <avro.version>1.11.3</avro.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports,${basedir}/target/failsafe-reports</sonar.junit.reportPaths>
@@ -409,6 +409,16 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-dbcp2</artifactId>
         <version>${commons-dbcp2.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>commons-codec</groupId>

@@ -9,7 +9,7 @@ friends, classmates and so on.
 
 Some frameworks and libraries used in this application:
 
-* Spring Boot 3.0
+* Spring Boot 3.1
 * Spring Framework 6.0
 * Spring Security 6.0
 * OpenAPI 3.0
@@ -38,8 +38,9 @@ This is the global deployment diagram showing the main components of this projec
 
 * JRE 17
 * PostgreSQL 13+
-* An external active directory with OAuth 2.0 support such as Keycloak
-* RabbitMQ for handling internal events
+* Keycloak : An external active directory with OAuth 2.0 support
+* RabbitMQ : AMQP broker needed for handling internal events
+* SMTP server : needed to send emails to players
 
 ### Keycloak directory structure
 
