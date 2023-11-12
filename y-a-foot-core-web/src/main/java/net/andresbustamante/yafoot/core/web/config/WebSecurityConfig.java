@@ -23,7 +23,7 @@ import java.util.List;
 public class WebSecurityConfig {
 
     @Value("${app.web.public.url}")
-    private String webPublicUrl;
+    private String[] webPublicUrl;
 
     /**
      * Security configuration on URL.

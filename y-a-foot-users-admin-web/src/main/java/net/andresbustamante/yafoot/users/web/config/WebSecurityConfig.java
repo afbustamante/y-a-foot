@@ -24,7 +24,7 @@ import java.util.List;
 public class WebSecurityConfig {
 
     @Value("${api.config.rest.allowed-origin}")
-    private String allowedOrigin;
+    private String[] allowedOrigins;
 
     /**
      * Security configuration on URL.
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(allowedOrigin));
+        configuration.setAllowedOrigins(List.of(allowedOrigins));
         configuration.setAllowedMethods(List.of("HEAD", "OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of("Authorization", "Accept", "Cache-Control", "Content-Type", "Origin",
