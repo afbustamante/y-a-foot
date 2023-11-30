@@ -58,7 +58,7 @@
     <replacer-plugin.version>1.5.3</replacer-plugin.version>
 
     <!-- Spring Framework -->
-    <spring-boot.version>3.1.5</spring-boot.version>
+    <spring-boot.version>3.1.6</spring-boot.version>
     <spring.version>6.0.13</spring.version>
     <spring-security.version>6.1.5</spring-security.version>
     <spring-amqp.version>3.0.10</spring-amqp.version>
