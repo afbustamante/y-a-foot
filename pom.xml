@@ -59,7 +59,7 @@
 
     <!-- Spring Framework -->
     <spring-boot.version>3.1.6</spring-boot.version>
-    <spring.version>6.0.13</spring.version>
+    <spring.version>6.0.14</spring.version>
     <spring-security.version>6.1.5</spring-security.version>
     <spring-amqp.version>3.0.10</spring-amqp.version>
 
@@ -81,9 +81,9 @@
     <flyway.version>9.16.3</flyway.version>
 
     <!-- MyBatis -->
-    <mybatis.version>3.5.13</mybatis.version>
-    <mybatis-spring.version>3.0.2</mybatis-spring.version>
-    <mybatis-spring-boot.version>3.0.2</mybatis-spring-boot.version>
+    <mybatis.version>3.5.14</mybatis.version>
+    <mybatis-spring.version>3.0.3</mybatis-spring.version>
+    <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
 
     <!-- Apache Commons -->
     <commons-text.version>1.11.0</commons-text.version>
@@ -122,6 +122,7 @@
     <snakeyaml.version>2.2</snakeyaml.version>
     <log4j-api.version>2.20.0</log4j-api.version>
     <avro.version>1.11.3</avro.version>
+    <micrometer.version>1.11.6</micrometer.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports,${basedir}/target/failsafe-reports</sonar.junit.reportPaths>
@@ -572,6 +573,11 @@
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-ipc</artifactId>
         <version>${avro.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-observation</artifactId>
+        <version>${micrometer.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
