@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.commons.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolation;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.commons.util.LocaleUtils;
 import net.andresbustamante.yafoot.commons.web.dto.ErrorResponse;
@@ -24,7 +25,9 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Abstract controller for common RESTful controllers operations.
@@ -76,13 +79,14 @@ public abstract class AbstractController {
      * @return ResponseEntity with a "Bad request" code and message
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    protected ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+    protected ResponseEntity<ErrorResponse> handleConstraintViolationException(final ConstraintViolationException e) {
         ErrorResponse response = new ErrorResponse();
         response.setTimestamp(OffsetDateTime.now());
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         response.setError("Constraint violation");
         response.setPath(request.getContextPath());
-        response.setMessage(e.getMessage());
+        response.setMessage("Violations: " + e.getConstraintViolations()
+                .stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", ")));
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -93,7 +97,7 @@ public abstract class AbstractController {
      * @param location Relative location
      * @return URI with absolute location
      */
-    protected URI getLocationURI(String location) {
+    protected URI getLocationURI(final String location) {
         return URI.create(apiPublicUrl + location);
     }
 
@@ -126,7 +130,7 @@ public abstract class AbstractController {
      * @param parameters Parameters to replace on the translated message
      * @return Translated message
      */
-    protected String translate(String messageCode, String[] parameters) {
+    protected String translate(final String messageCode, final String[] parameters) {
         return applicationContext.getMessage(messageCode, parameters, getUserLocale());
     }
 
@@ -141,23 +145,25 @@ public abstract class AbstractController {
         if (acceptedLanguages != null) {
             // Example: es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3
             String[] headerParts = acceptedLanguages.split("([,;])");
+            Locale locale = null;
 
             for (String part : headerParts) {
                 // Return the first supported locale found in the list
                 if (part.matches("[a-z]{2}-[a-zA-Z]{2}")) {
-                    Locale locale = Locale.forLanguageTag(part);
+                    locale = Locale.forLanguageTag(part);
 
                     if (LocaleUtils.isSupportedLocale(locale)) {
-                        return locale;
+                        break;
                     }
                 } else if (part.matches("[a-z]{2}")) {
-                    Locale locale = new Locale(part);
+                    locale = new Locale(part);
 
                     if (LocaleUtils.isSupportedLocale(locale)) {
-                        return locale;
+                        break;
                     }
                 }
             }
+            return Objects.requireNonNullElse(locale, LocaleUtils.DEFAULT_LOCALE);
         }
         return LocaleUtils.DEFAULT_LOCALE;
     }

@@ -16,13 +16,13 @@ public class CarpoolingRequestListener implements MessagingEventListener<Carpool
 
     private final CarpoolingNotificationsService carpoolingNotificationsService;
 
-    public CarpoolingRequestListener(CarpoolingNotificationsService carpoolingNotificationsService) {
+    public CarpoolingRequestListener(final CarpoolingNotificationsService carpoolingNotificationsService) {
         this.carpoolingNotificationsService = carpoolingNotificationsService;
     }
 
     @Override
     @RabbitListener(queues = "${app.messaging.queues.carpooling.requests.name}")
-    public void onMessage(CarpoolingRequestEvent event) {
+    public void onMessage(final CarpoolingRequestEvent event) {
         log.info("Processing new car request event on match {}", event.getMatchCode());
 
         try {

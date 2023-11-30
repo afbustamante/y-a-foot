@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.users.aop;
 
+import jakarta.ws.rs.WebApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -35,12 +36,12 @@ public class DirectoryExceptionsManagementAspect {
      * @throws Throwable Exception from service method
      */
     @Around("filterServicesMethods()")
-    public Object transformException(ProceedingJoinPoint pjp) throws Throwable {
+    public Object transformException(final ProceedingJoinPoint pjp) throws Throwable {
         Object returnedObject;
 
         try {
             returnedObject = pjp.proceed();
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
+        } catch (HttpClientErrorException | HttpServerErrorException | WebApplicationException e) {
             String message = MessageFormat.format("User directory error when processing the request for {0}",
                     pjp.getSignature().toShortString());
             throw new DirectoryException(message + System.lineSeparator() + e.getMessage());

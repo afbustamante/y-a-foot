@@ -12,7 +12,7 @@ public class DatabaseException extends Exception {
      *
      * @param message Message to log
      */
-    public DatabaseException(String message) {
+    public DatabaseException(final String message) {
         super(message);
     }
 }

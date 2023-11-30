@@ -25,15 +25,15 @@ public class UsersController extends AbstractController implements UsersApi {
     private final UserMapper userMapper;
 
     @Autowired
-    public UsersController(
-            UserManagementService userManagementService, UserSearchService userSearchService, UserMapper userMapper) {
+    public UsersController(final UserManagementService userManagementService, final UserSearchService userSearchService,
+            final UserMapper userMapper) {
         this.userManagementService = userManagementService;
         this.userSearchService = userSearchService;
         this.userMapper = userMapper;
     }
 
     @Override
-    public ResponseEntity<Void> updateUserDetails(String email, UserForm userDto) {
+    public ResponseEntity<Void> updateUserDetails(final String email, final UserForm userDto) {
         try {
             net.andresbustamante.yafoot.users.model.User user = userSearchService.findUserByEmail(email);
 
@@ -52,7 +52,7 @@ public class UsersController extends AbstractController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteUser(String email) {
+    public ResponseEntity<Void> deleteUser(final String email) {
         try {
             net.andresbustamante.yafoot.users.model.User user = userSearchService.findUserByEmail(email);
 

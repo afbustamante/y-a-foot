@@ -30,7 +30,7 @@ public final class Sport implements Serializable, Identifiable<Short> {
      * @param id Sport ID
      * @param code Sport code
      */
-    public Sport(Short id, String code) {
+    public Sport(final Short id, final String code) {
         this.id = id;
         this.code = code;
     }

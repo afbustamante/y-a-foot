@@ -20,20 +20,20 @@ public class UserManagementServiceImpl implements UserManagementService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserManagementServiceImpl(UserRepository userRepository) {
+    public UserManagementServiceImpl(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void updateUser(User user, UserContext ctx) throws DirectoryException {
+    public void updateUser(final User user, final UserContext ctx) throws DirectoryException {
         userRepository.updateUser(user);
         log.info("Details successfully updated for user {}", user);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void deleteUser(User user, UserContext ctx) throws DirectoryException {
+    public void deleteUser(final User user, final UserContext ctx) throws DirectoryException {
         userRepository.deleteUser(user);
         log.info("User {} successfully deleted", user.getEmail());
     }

@@ -27,8 +27,8 @@ public class MatchAlertingServiceImpl implements MatchAlertingService {
     private final MessagingService messagingService;
 
     public MatchAlertingServiceImpl(
-            MatchDao matchDao, MessageSource messageSource, TemplateUtils templateUtils,
-            MessagingService messagingService) {
+            final MatchDao matchDao, final MessageSource messageSource, final TemplateUtils templateUtils,
+            final MessagingService messagingService) {
         this.matchDao = matchDao;
         this.messageSource = messageSource;
         this.templateUtils = templateUtils;
@@ -37,7 +37,7 @@ public class MatchAlertingServiceImpl implements MatchAlertingService {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-    public void checkForAlertsAfterPlayerRemovedFromMatch(Integer matchId, Integer playerId)
+    public void checkForAlertsAfterPlayerRemovedFromMatch(final Integer matchId, final Integer playerId)
             throws ApplicationException {
         Match match = matchDao.findMatchById(matchId);
 
@@ -60,7 +60,7 @@ public class MatchAlertingServiceImpl implements MatchAlertingService {
      *
      * @param match The match concerned by the alert
      */
-    private void sendAlertMessage(Match match) throws TemplateException, IOException {
+    private void sendAlertMessage(final Match match) throws TemplateException, IOException {
         Player creator = match.getCreator();
         String language = creator.getPreferredLanguage();
         Locale locale = new Locale(language);

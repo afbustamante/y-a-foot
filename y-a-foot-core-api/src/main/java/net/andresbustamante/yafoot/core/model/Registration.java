@@ -59,7 +59,7 @@ public final class Registration implements Identifiable<RegistrationId>, Seriali
      *
      * @param id Registration ID
      */
-    public Registration(RegistrationId id) {
+    public Registration(final RegistrationId id) {
         this.id = id;
     }
 
@@ -69,7 +69,7 @@ public final class Registration implements Identifiable<RegistrationId>, Seriali
      * @param matchId Match ID
      * @param playerId Player ID
      */
-    public Registration(int matchId, int playerId) {
+    public Registration(final int matchId, final int playerId) {
         this.id = new RegistrationId(matchId, playerId);
     }
 }

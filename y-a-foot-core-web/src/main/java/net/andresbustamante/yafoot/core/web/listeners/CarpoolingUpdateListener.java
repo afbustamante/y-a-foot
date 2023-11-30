@@ -16,13 +16,13 @@ public class CarpoolingUpdateListener implements MessagingEventListener<Carpooli
 
     private final CarpoolingNotificationsService carpoolingNotificationsService;
 
-    public CarpoolingUpdateListener(CarpoolingNotificationsService carpoolingNotificationsService) {
+    public CarpoolingUpdateListener(final CarpoolingNotificationsService carpoolingNotificationsService) {
         this.carpoolingNotificationsService = carpoolingNotificationsService;
     }
 
     @Override
     @RabbitListener(queues = "${app.messaging.queues.carpooling.updates.name}")
-    public void onMessage(CarpoolingUpdateEvent event) {
+    public void onMessage(final CarpoolingUpdateEvent event) {
         log.info("Processing new carpooling update event on match {}", event.getMatchCode());
 
         boolean isCarSeatConfirmed = event.getCarSeatConfirmed() == 1;

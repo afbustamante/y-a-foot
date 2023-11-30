@@ -61,9 +61,9 @@ class CarpoolingNotificationsServiceTest extends AbstractServiceUnitTest {
     @Test
     void testNotifyCarpoolingRequest() throws Exception {
         // Given
-        int playerId = 1;
-        int matchId = 2;
-        int carId = 3;
+        final int playerId = 1;
+        final int matchId = 2;
+        final int carId = 3;
 
         Player player = new Player(playerId);
         player.setFirstName("player");
@@ -99,9 +99,9 @@ class CarpoolingNotificationsServiceTest extends AbstractServiceUnitTest {
     @Test
     void testNotifyCarpoolingUpdate() throws Exception {
         // Given
-        int playerId = 1;
-        int matchId = 2;
-        int carId = 3;
+        final int playerId = 1;
+        final int matchId = 2;
+        final int carId = 3;
 
         Player player = new Player(playerId);
         player.setFirstName("player");

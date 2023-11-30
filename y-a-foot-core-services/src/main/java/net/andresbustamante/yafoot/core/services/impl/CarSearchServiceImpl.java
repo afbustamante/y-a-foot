@@ -1,7 +1,6 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.dao.CarDao;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
@@ -23,21 +22,21 @@ public class CarSearchServiceImpl implements CarSearchService {
     private final PlayerDao playerDao;
 
     @Autowired
-    public CarSearchServiceImpl(CarDao carDAO, PlayerDao playerDao) {
+    public CarSearchServiceImpl(final CarDao carDAO, final PlayerDao playerDao) {
         this.carDAO = carDAO;
         this.playerDao = playerDao;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Car> findCars(UserContext ctx) throws DatabaseException {
+    public List<Car> findCars(final UserContext ctx) {
         Player player = playerDao.findPlayerByEmail(ctx.getUsername());
         return player != null ? carDAO.findCarsByPlayer(player) : Collections.emptyList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Car loadCar(Integer id, UserContext ctx) throws DatabaseException, ApplicationException {
+    public Car loadCar(final Integer id, final UserContext ctx) throws ApplicationException {
         Car car = carDAO.findCarById(id);
 
         if (car != null) {

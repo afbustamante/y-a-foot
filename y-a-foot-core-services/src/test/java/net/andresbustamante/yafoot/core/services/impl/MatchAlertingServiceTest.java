@@ -44,8 +44,8 @@ class MatchAlertingServiceTest extends AbstractServiceUnitTest {
     @Test
     void testCheckForAlertsAfterPlayerRemovedFromMatchThenNoMessageSent() throws Exception {
         // Given
-        int matchId = 1;
-        int playerId = 2;
+        final int matchId = 1;
+        final int playerId = 2;
 
         Match match = new Match(matchId);
         match.setCode("code");
@@ -63,8 +63,8 @@ class MatchAlertingServiceTest extends AbstractServiceUnitTest {
     @Test
     void testCheckForAlertsAfterPlayerRemovedFromMatchThenMessageSent() throws Exception {
         // Given
-        int matchId = 1;
-        int playerId = 2;
+        final int matchId = 1;
+        final int playerId = 2;
 
         Player matchCreator = new Player(5);
         matchCreator.setPreferredLanguage("fr");

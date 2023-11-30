@@ -34,7 +34,7 @@ public class LoggingAspect {
      * @param joinPoint Join point for the called method
      */
     @Before("filterServicesMethods()")
-    public void logServicesMethods(JoinPoint joinPoint) {
+    public void logServicesMethods(final JoinPoint joinPoint) {
         if (joinPoint != null && joinPoint.getSignature() != null && log.isDebugEnabled()) {
             log.debug("Active backend service : {}", joinPoint.getSignature().toShortString());
         }

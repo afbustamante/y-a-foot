@@ -33,7 +33,7 @@ public class WebSecurityConfig {
      * @throws Exception
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable);
         http.oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(authz -> authz

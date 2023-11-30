@@ -72,9 +72,9 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Autowired
     public MatchManagementServiceImpl(
-            MatchDao matchDAO, SiteDao siteDAO, CarDao carDAO, PlayerDao playerDAO,
-            SiteManagementService siteManagementService, CarManagementService carManagementService,
-            CarpoolingService carpoolingService, RabbitTemplate rabbitTemplate) {
+            final MatchDao matchDAO, final SiteDao siteDAO, final CarDao carDAO, final PlayerDao playerDAO,
+            final SiteManagementService siteManagementService, final CarManagementService carManagementService,
+            final CarpoolingService carpoolingService, final RabbitTemplate rabbitTemplate) {
         this.matchDAO = matchDAO;
         this.siteDAO = siteDAO;
         this.siteManagementService = siteManagementService;
@@ -87,7 +87,8 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public Integer saveMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
+    public Integer saveMatch(final Match match, final UserContext userContext)
+            throws DatabaseException, ApplicationException {
         String matchCode;
 
         if (match.getDate().isBefore(LocalDateTime.now())) {
@@ -104,7 +105,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         match.setStatus(CREATED);
         match.setRegistrations(new ArrayList<>());
 
-        Player creator = processCreatorToCreateMatch(match, userContext);
+        final Player creator = processCreatorToCreateMatch(match, userContext);
 
         processSiteToCreateMatch(match, userContext);
 
@@ -117,7 +118,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional(rollbackFor = {ApplicationException.class, DatabaseException.class})
     @Override
-    public void registerPlayer(Player player, Match match, Car car, UserContext userContext)
+    public void registerPlayer(final Player player, final Match match, final Car car, final UserContext userContext)
             throws ApplicationException, DatabaseException {
         if (!match.isAcceptingRegistrations()) {
             throw new ApplicationException("max.players.match.error", "This match is not accepting more registrations");
@@ -157,7 +158,8 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      * @param userContext Context of the user making the registration
      * @throws ApplicationException
      */
-    private void processCarpoolingImpacts(Player player, Match match, Car car, UserContext userContext)
+    private void processCarpoolingImpacts(final Player player, final Match match, final Car car,
+                                          final UserContext userContext)
             throws ApplicationException {
         if (match.isCarpoolingEnabled()) {
             // Check if an update of carpooling must be made when a driver changes of transportation option
@@ -173,7 +175,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public void unregisterPlayer(Player player, Match match, UserContext ctx)
+    public void unregisterPlayer(final Player player, final Match match, final UserContext ctx)
             throws DatabaseException, ApplicationException {
         // Two players are authorised to unregister a player: himself/herself or the player who created the match
         boolean isUserAuthorised = ctx.getUsername().equals(match.getCreator().getEmail()) || ctx.getUsername().equals(
@@ -201,7 +203,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      * @param match Match being abandoned by the player
      * @param ctx User context
      */
-    private void processCarpoolingImpactsAfterAbandon(Player player, Match match, UserContext ctx)
+    private void processCarpoolingImpactsAfterAbandon(final Player player, final Match match, final UserContext ctx)
             throws DatabaseException, ApplicationException {
         List<Car> registeredCars = carpoolingService.findAvailableCarsByMatch(match);
 
@@ -229,14 +231,14 @@ public class MatchManagementServiceImpl implements MatchManagementService {
 
     @Transactional
     @Override
-    public void unregisterPlayerFromAllMatches(Player player, UserContext userContext) throws DatabaseException {
+    public void unregisterPlayerFromAllMatches(final Player player, final UserContext userContext) {
         int numMatches = matchDAO.unregisterPlayerFromAllMatches(player);
         log.info("Player #{} unregistered from {} matches", player.getId(), numMatches);
     }
 
     @Transactional
     @Override
-    public void cancelMatch(Match match, UserContext userContext) throws DatabaseException, ApplicationException {
+    public void cancelMatch(final Match match, final UserContext userContext) throws ApplicationException {
         if (match.getDate().isBefore(LocalDateTime.now())) {
             throw new PastMatchException("It is not possible to cancel a match in the past");
         } else if (match.getCreator() == null || !match.getCreator().getEmail().equals(userContext.getUsername())) {
@@ -248,7 +250,8 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         log.info("Match {} with code {} successfully cancelled", match.getId(), match.getCode());
     }
 
-    private Player processCreatorToCreateMatch(Match match, UserContext userContext) throws DatabaseException {
+    private Player processCreatorToCreateMatch(final Match match, final UserContext userContext)
+            throws DatabaseException {
         Player creator = playerDAO.findPlayerByEmail(userContext.getUsername());
 
         if (creator != null) {
@@ -259,7 +262,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
         return creator;
     }
 
-    private void processSiteToCreateMatch(Match match, UserContext userContext) throws DatabaseException {
+    private void processSiteToCreateMatch(final Match match, final UserContext userContext) throws DatabaseException {
         if (match.getSite().getId() != null) {
             Site storedSite = siteDAO.findSiteById(match.getSite().getId());
 
@@ -281,7 +284,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      * @return Indicates if the car is confirmed for the current player after processing the car
      * @throws DatabaseException
      */
-    private boolean processCarToJoinMatch(Car car, UserContext userContext) throws DatabaseException {
+    private boolean processCarToJoinMatch(final Car car, final UserContext userContext) throws DatabaseException {
         if (car.getId() != null) {
             // Look for the car in DB
             Car storedCar = carDAO.findCarById(car.getId());
@@ -319,7 +322,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      * @param player Player that joined the match
      * @param match The match to update
      */
-    private void notifyRegisteredPlayer(Player player, Match match) {
+    private void notifyRegisteredPlayer(final Player player, final Match match) {
         MatchPlayerRegistrationEvent event = new MatchPlayerRegistrationEvent();
         event.setPlayerFirstName(player.getFirstName());
         event.setPlayerId(player.getId());
@@ -335,7 +338,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      * @param player Player that left the match
      * @param match The match to update
      */
-    private void notifyUnregisteredPlayer(Player player, Match match) {
+    private void notifyUnregisteredPlayer(final Player player, final Match match) {
         MatchPlayerUnsubscriptionEvent event = new MatchPlayerUnsubscriptionEvent();
         event.setPlayerFirstName(player.getFirstName());
         event.setPlayerId(player.getId());
@@ -352,7 +355,7 @@ public class MatchManagementServiceImpl implements MatchManagementService {
      * @param match Match to ask for
      * @param car Selected car for the request
      */
-    private void notifyCarpoolRequest(Player player, Match match, Car car) {
+    private void notifyCarpoolRequest(final Player player, final Match match, final Car car) {
         CarpoolingRequestEvent event = new CarpoolingRequestEvent();
         event.setMatchId(match.getId());
         event.setMatchCode(match.getCode());

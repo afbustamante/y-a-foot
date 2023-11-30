@@ -41,7 +41,7 @@ public class User implements Serializable {
      *
      * @param email User's email
      */
-    public User(String email) {
+    public User(final String email) {
         this.preferredLanguage = LocaleUtils.DEFAULT_LOCALE.getLanguage();
         this.email = email;
     }
@@ -53,7 +53,7 @@ public class User implements Serializable {
      * @param surname User's surname/last name
      * @param firstName User's first name
      */
-    public User(String email, String surname, String firstName) {
+    public User(final String email, final String surname, final String firstName) {
         this.email = email;
         this.surname = surname;
         this.firstName = firstName;

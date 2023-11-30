@@ -10,7 +10,7 @@ public class DirectoryException extends Exception {
      *
      * @param message Message to log
      */
-    public DirectoryException(String message) {
+    public DirectoryException(final String message) {
         super(message);
     }
 }

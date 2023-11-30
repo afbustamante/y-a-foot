@@ -67,12 +67,12 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void saveMatchUsingExistingSite() throws Exception {
         // Given
-        Player player = new Player(1);
-        Site site = new Site(1);
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Site site = new Site(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1L));
         match.setSite(site);
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -94,12 +94,12 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void saveMatchUsingNewSite() throws Exception {
         // Given
-        Player player = new Player(1);
-        Site site = new Site();
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Site site = new Site();
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1));
         match.setSite(site);
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -120,12 +120,12 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void saveMatchUsingUnknownSite() throws Exception {
         // Given
-        Player player = new Player(1);
-        Site site = new Site(100);
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Site site = new Site(100);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1));
         match.setSite(site);
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -144,11 +144,11 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void registerPlayerWithNoCar() throws Exception {
         // Given
-        Player player = new Player(1);
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -163,12 +163,12 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void registerPlayerWithExistingCar() throws Exception {
         // Given
-        Player player = new Player(1);
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
-        Car car = new Car(1);
-        UserContext ctx = new UserContext();
+        final Car car = new Car(1);
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -184,12 +184,12 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void registerPlayerWithUnknownCar() throws Exception {
         // Given
-        Player player = new Player(1);
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
-        Car car = new Car(100);
-        UserContext ctx = new UserContext();
+        final Car car = new Car(100);
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -205,17 +205,17 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void registerPlayerWithSomebodyElsesCar() throws Exception {
         // Given
-        Player player1 = new Player(1);
+        final Player player1 = new Player(1);
         player1.setEmail("test@email.com");
-        Player player2 = new Player(2);
+        final Player player2 = new Player(2);
         player2.setEmail("another@email.com");
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1L));
         match.setCarpoolingEnabled(true);
         match.setRegistrations(Collections.emptyList());
-        Car car = new Car(100);
+        final Car car = new Car(100);
         car.setDriver(player2);
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -233,12 +233,12 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void registerPlayerWithNewCar() throws Exception {
         // Given
-        Player player = new Player(1);
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1L));
         match.setRegistrations(Collections.emptyList());
-        Car car = new Car();
-        UserContext ctx = new UserContext();
+        final Car car = new Car();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -253,14 +253,14 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void registerPlayerWhenAlreadyRegistered() {
         // Given
-        Player player1 = new Player(1);
+        final Player player1 = new Player(1);
         player1.setEmail("player@email.com");
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1L));
-        Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
+        final Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
         registration1.setPlayer(player1);
         match.setRegistrations(List.of(registration1));
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -274,25 +274,25 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void registerPlayerWhenAlreadyRegisteredWithPassengers() throws Exception {
         // Given
-        Player player1 = new Player(1);
+        final Player player1 = new Player(1);
         player1.setEmail("player@email.com");
-        Player player2 = new Player(2);
+        final Player player2 = new Player(2);
         player2.setEmail("player2@email.com");
-        Car car1 = new Car(1);
+        final Car car1 = new Car(1);
         car1.setDriver(player1);
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setCarpoolingEnabled(true);
         match.setDate(LocalDateTime.now().plusDays(1L));
-        Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
+        final Registration registration1 = new Registration(new RegistrationId(match.getId(), player1.getId()));
         registration1.setPlayer(player1);
         registration1.setCar(car1);
         registration1.setCarConfirmed(true);
-        Registration registration2 = new Registration(new RegistrationId(match.getId(), player2.getId()));
+        final Registration registration2 = new Registration(new RegistrationId(match.getId(), player2.getId()));
         registration2.setPlayer(player2);
         registration2.setCar(car1);
         registration2.setCarConfirmed(true);
         match.setRegistrations(List.of(registration1, registration2));
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("player@email.com");
 
         // When
@@ -310,16 +310,16 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void registerPlayerWhenFullMatch() {
         // Given
-        Player player = new Player(1);
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1L));
         match.setNumPlayersMax(2);
-        Registration registration1 = new Registration();
+        final Registration registration1 = new Registration();
         registration1.setPlayer(new Player(2, "Two", "Player", "player.two@email.com", ""));
-        Registration registration2 = new Registration();
+        final Registration registration2 = new Registration();
         registration2.setPlayer(new Player(3, "Three", "Player", "player.three@email.com", ""));
         match.setRegistrations(List.of(registration1, registration2));
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -332,15 +332,15 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void unregisterPlayer() throws Exception {
         // Given
-        Player player = new Player(1);
+        final Player player = new Player(1);
         player.setEmail("test@email.com");
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setCreator(player);
-        Registration registration = new Registration(new RegistrationId(1, 1));
+        final Registration registration = new Registration(new RegistrationId(1, 1));
         registration.setPlayer(player);
         match.setRegistrations(List.of(registration));
         match.setCode("code");
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // Then
@@ -353,12 +353,12 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void unregisterPlayerWhenNotRegistered() {
         // Given
-        Player player = new Player(1);
-        Match match = new Match(1);
+        final Player player = new Player(1);
+        final Match match = new Match(1);
         match.setCreator(new Player(2));
         match.setRegistrations(Collections.emptyList());
         match.setCode("code");
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // When
@@ -374,21 +374,21 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
         ReflectionTestUtils.setField(matchManagementService, "matchPlayerUnregistrationsQueue",
                 "test-queue");
 
-        Player player = new Player(1);
+        final Player player = new Player(1);
         player.setEmail("test@email.com");
         player.setFirstName("Luck");
         player.setPreferredLanguage(Locale.CHINESE.getLanguage());
 
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setCreator(player);
         match.setNumPlayersMin(1);
         match.setDate(LocalDateTime.now().plusDays(7));
 
-        Registration registration = new Registration(new RegistrationId(1, 1));
+        final Registration registration = new Registration(new RegistrationId(1, 1));
         registration.setPlayer(player);
         match.setRegistrations(List.of(registration));
         match.setCode("code");
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // Then
@@ -402,29 +402,29 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void unregisterPlayerWithCarpoolRequests() throws Exception {
         // Given
-        Player player = new Player(1);
+        final Player player = new Player(1);
         player.setEmail("test@email.com");
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setCode("code");
         match.setCreator(player);
         match.setCarpoolingEnabled(true);
-        Car car = new Car(1);
+        final Car car = new Car(1);
         car.setDriver(player);
-        Registration registration1 = new Registration(new RegistrationId(match.getId(), player.getId()));
+        final Registration registration1 = new Registration(new RegistrationId(match.getId(), player.getId()));
         registration1.setPlayer(player);
         registration1.setCar(car);
         registration1.setCarConfirmed(true);
 
-        Player anotherPlayer = new Player(2);
+        final Player anotherPlayer = new Player(2);
         anotherPlayer.setEmail("another.player@email.com");
-        Registration registration2 = new Registration(new RegistrationId(match.getId(), anotherPlayer.getId()));
+        final Registration registration2 = new Registration(new RegistrationId(match.getId(), anotherPlayer.getId()));
         registration2.setPlayer(anotherPlayer);
         registration2.setCar(car);
         registration2.setCarConfirmed(true);
 
         match.setRegistrations(List.of(registration1, registration2));
 
-        UserContext ctx = new UserContext();
+        final UserContext ctx = new UserContext();
         ctx.setUsername("test@email.com");
 
         // Then
@@ -444,7 +444,7 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void unregisterPlayerFromAllMatches() throws Exception {
         // Given
-        Player player = new Player(1);
+        final Player player = new Player(1);
 
         // When
         matchManagementService.unregisterPlayerFromAllMatches(player, new UserContext());
@@ -456,15 +456,15 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void cancelValidMatch() throws Exception {
         // Given
-        Player player = new Player(1);
+        final Player player = new Player(1);
         player.setEmail("user@email.com");
 
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1));
         match.setStatus(CREATED);
         match.setCreator(player);
 
-        UserContext userContext = new UserContext("user@email.com");
+        final UserContext userContext = new UserContext("user@email.com");
 
         // When
         matchManagementService.cancelMatch(match, userContext);
@@ -477,15 +477,15 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void cancelPastMatch() throws Exception {
         // Given
-        Player player = new Player(1);
+        final Player player = new Player(1);
         player.setEmail("user@email.com");
 
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().minusDays(1));
         match.setStatus(PLAYED);
         match.setCreator(player);
 
-        UserContext userContext = new UserContext("user@email.com");
+        final UserContext userContext = new UserContext("user@email.com");
 
         // When
         assertThrows(PastMatchException.class, () ->
@@ -498,10 +498,10 @@ class MatchManagementServiceTest extends AbstractServiceUnitTest {
     @Test
     void cancelMatchInvalidPlayer() throws Exception {
         // Given
-        Player player = new Player(1);
+        final Player player = new Player(1);
         player.setEmail("user@email.com");
 
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now().plusDays(1));
         match.setStatus(CREATED);
         match.setCreator(player);

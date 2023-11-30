@@ -32,7 +32,7 @@ public class CoreExceptionsManagementAspect {
      * @throws Throwable Method exception thrown
      */
     @Around("filterServicesMethods()")
-    public Object transformException(ProceedingJoinPoint pjp) throws Throwable {
+    public Object transformException(final ProceedingJoinPoint pjp) throws Throwable {
         Object returnedObject;
 
         try {

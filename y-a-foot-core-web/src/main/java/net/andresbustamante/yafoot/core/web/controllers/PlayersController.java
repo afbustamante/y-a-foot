@@ -32,20 +32,20 @@ public class PlayersController extends AbstractController implements PlayersApi 
     private final PlayerMapper playerMapper;
 
     public PlayersController(
-            PlayerManagementService playerManagementService, PlayerSearchService playerSearchService,
-            PlayerMapper playerMapper) {
+            final PlayerManagementService playerManagementService, final PlayerSearchService playerSearchService,
+            final PlayerMapper playerMapper) {
         this.playerManagementService = playerManagementService;
         this.playerSearchService = playerSearchService;
         this.playerMapper = playerMapper;
     }
 
     @Override
-    public ResponseEntity<Player> loadPlayer(Integer id) {
+    public ResponseEntity<Player> loadPlayer(final Integer id) {
         return ResponseEntity.status(NOT_IMPLEMENTED).build();
     }
 
     @Override
-    public ResponseEntity<Void> updatePlayer(Integer id, PlayerForm player) {
+    public ResponseEntity<Void> updatePlayer(final Integer id, final PlayerForm player) {
         try {
             UserContext userContext = getUserContext();
 
@@ -65,12 +65,12 @@ public class PlayersController extends AbstractController implements PlayersApi 
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, translate(DATABASE_BASIC_ERROR, null));
         } catch (ApplicationException e) {
             log.error("Unable to update player after an application exception", e);
-            return ResponseEntity.notFound().build();
+            throw new ResponseStatusException(NOT_FOUND);
         }
     }
 
     @Override
-    public ResponseEntity<List<Player>> findPlayers(String email) {
+    public ResponseEntity<List<Player>> findPlayers(final String email) {
         try {
             UserContext ctx = getUserContext();
 
@@ -89,7 +89,7 @@ public class PlayersController extends AbstractController implements PlayersApi 
     }
 
     @Override
-    public ResponseEntity<Void> deactivatePlayer(Integer id) {
+    public ResponseEntity<Void> deactivatePlayer(final Integer id) {
         try {
             UserContext userContext = getUserContext();
 

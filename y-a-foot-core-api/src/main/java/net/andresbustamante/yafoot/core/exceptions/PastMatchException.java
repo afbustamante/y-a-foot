@@ -12,7 +12,7 @@ public class PastMatchException extends ApplicationException {
      *
      * @param message Message to log
      */
-    public PastMatchException(String message) {
+    public PastMatchException(final String message) {
         super("match.past.date.management.error", message);
     }
 }

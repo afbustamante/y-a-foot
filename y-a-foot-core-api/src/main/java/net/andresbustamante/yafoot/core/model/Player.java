@@ -36,7 +36,7 @@ public final class Player extends User implements Serializable, Identifiable<Int
      *
      * @param id Player ID
      */
-    public Player(Integer id) {
+    public Player(final Integer id) {
         this.id = id;
     }
 
@@ -49,7 +49,8 @@ public final class Player extends User implements Serializable, Identifiable<Int
      * @param email Player's email
      * @param phoneNumber Player's phone number
      */
-    public Player(Integer id, String surname, String firstName, String email, String phoneNumber) {
+    public Player(final Integer id, final String surname, final String firstName, final String email,
+            final String phoneNumber) {
         super(email, surname, firstName);
         this.id = id;
         this.phoneNumber = phoneNumber;

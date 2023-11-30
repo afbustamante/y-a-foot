@@ -22,7 +22,7 @@ public class UsersApiClientConfig {
      * @return RestTemplate configured to contact the users API
      */
     @Bean(name = "usersRestTemplate")
-    public RestTemplate usersRestTemplate(RestTemplateBuilder builder) {
+    public RestTemplate usersRestTemplate(final RestTemplateBuilder builder) {
         return builder.basicAuthentication(clientUsername, clientPassword).build();
     }
 }

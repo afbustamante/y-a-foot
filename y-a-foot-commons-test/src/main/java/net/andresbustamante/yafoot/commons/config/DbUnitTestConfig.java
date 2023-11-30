@@ -44,7 +44,7 @@ public class DbUnitTestConfig {
      * @return Connection factory for DBUnit
      */
     @Bean
-    public DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection(DataSource dataSource) {
+    public DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection(final DataSource dataSource) {
         DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnectionFactory =
                 new DatabaseDataSourceConnectionFactoryBean();
         dbUnitDatabaseConnectionFactory.setDatabaseConfig(dbUnitDatabaseConfig());

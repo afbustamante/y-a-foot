@@ -42,7 +42,7 @@ public final class Site implements Locatable, Identifiable<Integer>, Auditable, 
      *
      * @param id Site ID
      */
-    public Site(Integer id) {
+    public Site(final Integer id) {
         this.id = id;
     }
 }

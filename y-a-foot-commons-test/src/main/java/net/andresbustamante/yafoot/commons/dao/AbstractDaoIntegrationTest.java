@@ -10,8 +10,12 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 @ExtendWith(SpringExtension.class)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
-        TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
+@TestExecutionListeners({
+        DependencyInjectionTestExecutionListener.class,
+        DirtiesContextTestExecutionListener.class,
+        TransactionalTestExecutionListener.class,
+        DbUnitTestExecutionListener.class
+})
 @DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
 public abstract class AbstractDaoIntegrationTest {
 }

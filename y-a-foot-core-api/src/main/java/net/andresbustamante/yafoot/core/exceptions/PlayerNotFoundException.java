@@ -9,7 +9,7 @@ public class PlayerNotFoundException extends ApplicationException {
      *
      * @param message Message to log
      */
-    public PlayerNotFoundException(String message) {
+    public PlayerNotFoundException(final String message) {
         super("player.not.found.error", message);
     }
 }

@@ -32,14 +32,14 @@ public class InternalUserManagementAdapterImpl implements UserManagementAdapter 
 
     @Autowired
     public InternalUserManagementAdapterImpl(
-            UserMapper userMapper, @Qualifier("usersRestTemplate") RestTemplate restTemplate) {
+            final UserMapper userMapper, @Qualifier("usersRestTemplate") final RestTemplate restTemplate) {
         this.userMapper = userMapper;
         this.restTemplate = restTemplate;
     }
 
     @Override
     @Async
-    public void updateUser(User user, UserContext context) throws DirectoryException {
+    public void updateUser(final User user, final UserContext context) throws DirectoryException {
         UriComponentsBuilder uriBuilder = getUriBuilder();
         uriBuilder.path("/").path(user.getEmail());
 
@@ -54,7 +54,7 @@ public class InternalUserManagementAdapterImpl implements UserManagementAdapter 
 
 
     @Override
-    public void deleteUser(User user, UserContext context) throws DirectoryException {
+    public void deleteUser(final User user, final UserContext context) throws DirectoryException {
         UriComponentsBuilder uriBuilder = getUriBuilder();
         uriBuilder.path("/").path(user.getEmail());
 

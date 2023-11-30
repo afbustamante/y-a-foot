@@ -5,7 +5,6 @@ import lombok.Getter;
 /**
  * Enum of sports supported by the application.
  */
-@Getter
 public enum SportEnum {
 
     FOOTBALL(1),
@@ -24,9 +23,10 @@ public enum SportEnum {
     TABLE_TENNIS(14),
     OTHER(99);
 
+    @Getter
     private final Integer id;
 
-    SportEnum(Integer id) {
+    SportEnum(final Integer id) {
         this.id = id;
     }
 }

@@ -34,7 +34,7 @@ public class UserContext {
      *
      * @param username Username for the new context object
      */
-    public UserContext(String username) {
+    public UserContext(final String username) {
         this.username = username;
     }
 }

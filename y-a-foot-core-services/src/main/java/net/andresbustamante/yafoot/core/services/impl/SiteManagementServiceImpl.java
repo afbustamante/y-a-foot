@@ -2,7 +2,6 @@ package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.dao.SiteDao;
-import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
 import net.andresbustamante.yafoot.commons.model.UserContext;
@@ -21,14 +20,14 @@ public class SiteManagementServiceImpl implements SiteManagementService {
     private final PlayerDao playerDao;
 
     @Autowired
-    public SiteManagementServiceImpl(SiteDao siteDAO, PlayerDao playerDao) {
+    public SiteManagementServiceImpl(final SiteDao siteDAO, final PlayerDao playerDao) {
         this.siteDAO = siteDAO;
         this.playerDao = playerDao;
     }
 
     @Transactional
     @Override
-    public Integer saveSite(Site site, UserContext userContext) throws DatabaseException {
+    public Integer saveSite(final Site site, final UserContext userContext) {
         Player creator = playerDao.findPlayerByEmail(userContext.getUsername());
 
         siteDAO.saveSite(site, creator);

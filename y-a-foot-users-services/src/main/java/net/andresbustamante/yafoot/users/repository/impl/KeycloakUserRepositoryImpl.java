@@ -1,5 +1,6 @@
 package net.andresbustamante.yafoot.users.repository.impl;
 
+import jakarta.ws.rs.WebApplicationException;
 import net.andresbustamante.yafoot.commons.exceptions.DirectoryException;
 import net.andresbustamante.yafoot.users.model.User;
 import net.andresbustamante.yafoot.users.repository.UserRepository;
@@ -23,12 +24,12 @@ public class KeycloakUserRepositoryImpl implements UserRepository {
     @Value("${app.keycloak.server.realm}")
     private String realm;
 
-    public KeycloakUserRepositoryImpl(Keycloak keycloak) {
+    public KeycloakUserRepositoryImpl(final Keycloak keycloak) {
         this.keycloak = keycloak;
     }
 
     @Override
-    public void updateUser(User user) throws DirectoryException {
+    public void updateUser(final User user) throws DirectoryException {
         try {
             Optional<UserRepresentation> userRepresentationOptional = findUser(user.getEmail());
 
@@ -45,13 +46,13 @@ public class KeycloakUserRepositoryImpl implements UserRepository {
                 UserResource userResource = usersResource.get(userId);
                 userResource.update(userRepresentation);
             }
-        } catch (Exception e) {
+        } catch (WebApplicationException e) {
             throw new DirectoryException(e.getMessage());
         }
     }
 
     @Override
-    public void deleteUser(User user) throws DirectoryException {
+    public void deleteUser(final User user) throws DirectoryException {
         try {
             Optional<UserRepresentation> userRepresentationOptional = findUser(user.getEmail());
 
@@ -66,13 +67,13 @@ public class KeycloakUserRepositoryImpl implements UserRepository {
                 UserResource userResource = usersResource.get(userId);
                 userResource.remove();
             }
-        } catch (Exception e) {
+        } catch (WebApplicationException e) {
             throw new DirectoryException(e.getMessage());
         }
     }
 
     @Override
-    public User findUserByEmail(String email) throws DirectoryException {
+    public User findUserByEmail(final String email) throws DirectoryException {
         try {
             Optional<UserRepresentation> userRepresentationOptional = findUser(email);
 
@@ -82,12 +83,12 @@ public class KeycloakUserRepositoryImpl implements UserRepository {
                 return user;
             }
             return null;
-        } catch (Exception e) {
+        } catch (WebApplicationException e) {
             throw new DirectoryException(e.getMessage());
         }
     }
 
-    private Optional<UserRepresentation> findUser(String email) {
+    private Optional<UserRepresentation> findUser(final String email) {
         RealmResource realmResource = keycloak.realm(realm);
         UsersResource usersResource = realmResource.users();
 
@@ -100,12 +101,12 @@ public class KeycloakUserRepositoryImpl implements UserRepository {
         return Optional.empty();
     }
 
-    private void copyUserData(User source, UserRepresentation destination) {
+    private void copyUserData(final User source, final UserRepresentation destination) {
         destination.setFirstName(source.getFirstName());
         destination.setLastName(source.getSurname());
     }
 
-    private void copyUserData(UserRepresentation source, User destination) {
+    private void copyUserData(final UserRepresentation source, final User destination) {
         destination.setFirstName(source.getFirstName());
         destination.setSurname(source.getLastName());
     }

@@ -13,22 +13,22 @@ class SportMapperTest {
 
     private final SportMapper sportMapper = new SportMapper() {
         @Override
-        public net.andresbustamante.yafoot.web.dto.Sport map(Sport sport) {
+        public net.andresbustamante.yafoot.web.dto.Sport map(final Sport sport) {
             return null;
         }
 
         @Override
-        public List<net.andresbustamante.yafoot.web.dto.Sport> map(List<Sport> sports) {
+        public List<net.andresbustamante.yafoot.web.dto.Sport> map(final List<Sport> sports) {
             return null;
         }
 
         @Override
-        public SportCode map(SportEnum value) {
+        public SportCode map(final SportEnum value) {
             return null;
         }
 
         @Override
-        public SportEnum map(SportCode code) {
+        public SportEnum map(final SportCode code) {
             return null;
         }
     };

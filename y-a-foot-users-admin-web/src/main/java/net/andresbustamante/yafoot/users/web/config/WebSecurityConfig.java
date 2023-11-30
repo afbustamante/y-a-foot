@@ -34,7 +34,7 @@ public class WebSecurityConfig {
      * @throws Exception
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults()).csrf(Customizer.withDefaults());
         http.authorizeHttpRequests(authz -> authz
                 .anyRequest().authenticated()).httpBasic(Customizer.withDefaults());

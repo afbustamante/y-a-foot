@@ -15,12 +15,12 @@ public class YaFootUsersAdminWebApplication extends SpringBootServletInitializer
      *
      * @param args Application parameters
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(YaFootUsersAdminWebApplication.class);
     }
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+    protected SpringApplicationBuilder configure(final SpringApplicationBuilder builder) {
         return builder.sources(YaFootUsersAdminWebApplication.class);
     }
 }

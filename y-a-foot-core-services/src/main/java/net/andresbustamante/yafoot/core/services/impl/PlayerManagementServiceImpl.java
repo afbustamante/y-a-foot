@@ -32,9 +32,9 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
     private final Logger log = LoggerFactory.getLogger(PlayerManagementServiceImpl.class);
 
     @Autowired
-    public PlayerManagementServiceImpl(PlayerDao playerDAO, UserManagementAdapter userManagementAdapter,
-                                       MatchManagementService matchManagementService,
-                                       CarManagementService carManagementService) {
+    public PlayerManagementServiceImpl(final PlayerDao playerDAO, final UserManagementAdapter userManagementAdapter,
+                                       final MatchManagementService matchManagementService,
+                                       final CarManagementService carManagementService) {
         this.playerDAO = playerDAO;
         this.userManagementAdapter = userManagementAdapter;
         this.matchManagementService = matchManagementService;
@@ -43,7 +43,7 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Integer savePlayer(Player player, UserContext userContext) throws ApplicationException {
+    public Integer savePlayer(final Player player, final UserContext userContext) throws ApplicationException {
         if (!playerDAO.isPlayerAlreadySignedUp(player.getEmail())) {
             // Create the player in database
             playerDAO.savePlayer(player);
@@ -58,7 +58,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public void updatePlayer(Player player, UserContext userContext) throws DirectoryException, ApplicationException {
+    public void updatePlayer(final Player player, final UserContext userContext)
+            throws DirectoryException, ApplicationException {
         Player existingPlayer = playerDAO.findPlayerById(player.getId());
 
         if (existingPlayer != null) {
@@ -85,7 +86,8 @@ public class PlayerManagementServiceImpl implements PlayerManagementService {
 
     @Transactional
     @Override
-    public void deactivatePlayer(Player player, UserContext userContext) throws DirectoryException, DatabaseException {
+    public void deactivatePlayer(final Player player, final UserContext userContext)
+            throws DirectoryException, DatabaseException {
         // Delete all data from player
         matchManagementService.unregisterPlayerFromAllMatches(player, userContext);
         carManagementService.deactivateCarsByPlayer(player, userContext);

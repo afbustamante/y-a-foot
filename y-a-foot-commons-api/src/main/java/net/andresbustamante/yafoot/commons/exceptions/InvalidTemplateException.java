@@ -11,7 +11,7 @@ public class InvalidTemplateException extends ApplicationException {
      * @param message Message to log
      * @param cause Cause of the exception
      */
-    public InvalidTemplateException(String message, Throwable cause) {
+    public InvalidTemplateException(final String message, final Throwable cause) {
         super("invalid.template.error", message);
         this.initCause(cause);
     }

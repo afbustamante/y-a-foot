@@ -58,7 +58,7 @@ public final class Match implements Serializable, Identifiable<Integer>, Auditab
      *
      * @param id Identifier to give to the match
      */
-    public Match(Integer id) {
+    public Match(final Integer id) {
         this.id = id;
         this.status = CREATED;
     }
@@ -69,7 +69,7 @@ public final class Match implements Serializable, Identifiable<Integer>, Auditab
      * @param player Player to check
      * @return True if the player is already registered on this match
      */
-    public boolean isPlayerRegistered(Player player) {
+    public boolean isPlayerRegistered(final Player player) {
         if (registrations != null) {
             return registrations.stream().anyMatch(registration -> registration.getPlayer().equals(player));
         }

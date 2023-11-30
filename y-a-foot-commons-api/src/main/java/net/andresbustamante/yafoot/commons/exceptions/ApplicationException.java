@@ -19,7 +19,7 @@ public class ApplicationException extends Exception {
      * @param code Message code to use for translation
      * @param message Message to log
      */
-    public ApplicationException(String code, String message) {
+    public ApplicationException(final String code, final String message) {
         super(message);
         this.code = code;
     }
@@ -30,7 +30,7 @@ public class ApplicationException extends Exception {
      * @param message Message to log
      * @param cause Cause of the exception
      */
-    public ApplicationException(String message, Throwable cause) {
+    public ApplicationException(final String message, final Throwable cause) {
         super(message, cause);
         this.code = null;
     }

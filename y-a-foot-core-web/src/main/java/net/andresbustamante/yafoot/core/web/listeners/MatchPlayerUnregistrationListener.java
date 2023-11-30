@@ -16,13 +16,13 @@ public class MatchPlayerUnregistrationListener implements MessagingEventListener
 
     private final MatchAlertingService matchAlertingService;
 
-    public MatchPlayerUnregistrationListener(MatchAlertingService matchAlertingService) {
+    public MatchPlayerUnregistrationListener(final MatchAlertingService matchAlertingService) {
         this.matchAlertingService = matchAlertingService;
     }
 
     @Override
     @RabbitListener(queues = "${app.messaging.queues.matches.unsubscriptions.name}")
-    public void onMessage(MatchPlayerUnsubscriptionEvent event) {
+    public void onMessage(final MatchPlayerUnsubscriptionEvent event) {
         log.info("Processing new event from a player {} removed from match {}", event.getPlayerFirstName(),
                 event.getMatchCode());
 

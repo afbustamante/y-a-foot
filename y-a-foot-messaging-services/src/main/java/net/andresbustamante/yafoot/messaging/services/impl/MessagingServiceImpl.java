@@ -33,13 +33,14 @@ public class MessagingServiceImpl implements MessagingService {
     private final Logger log = LoggerFactory.getLogger(MessagingServiceImpl.class);
 
     @Autowired
-    public MessagingServiceImpl(JavaMailSender mailSender) {
+    public MessagingServiceImpl(final JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
     @Override
     @Async
-    public void sendEmail(String destinationEmail, String subject, String content) throws ApplicationException {
+    public void sendEmail(final String destinationEmail, final String subject, final String content)
+            throws ApplicationException {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             Address toAddress = new InternetAddress(destinationEmail);

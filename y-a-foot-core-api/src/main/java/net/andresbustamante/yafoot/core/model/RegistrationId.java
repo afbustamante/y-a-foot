@@ -38,7 +38,7 @@ public final class RegistrationId implements Serializable {
      * @param matchId Match ID
      * @param playerId Player ID
      */
-    public RegistrationId(Integer matchId, Integer playerId) {
+    public RegistrationId(final Integer matchId, final Integer playerId) {
         this.matchId = matchId;
         this.playerId = playerId;
     }

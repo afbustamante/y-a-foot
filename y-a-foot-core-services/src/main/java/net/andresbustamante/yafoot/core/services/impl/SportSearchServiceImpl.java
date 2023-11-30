@@ -15,7 +15,7 @@ public class SportSearchServiceImpl implements SportSearchService {
     private final SportDao sportDAO;
 
     @Autowired
-    public SportSearchServiceImpl(SportDao sportDAO) {
+    public SportSearchServiceImpl(final SportDao sportDAO) {
         this.sportDAO = sportDAO;
     }
 

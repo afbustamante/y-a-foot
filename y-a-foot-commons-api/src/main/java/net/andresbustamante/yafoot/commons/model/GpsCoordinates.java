@@ -31,7 +31,7 @@ public class GpsCoordinates implements Serializable {
      * @param latitude GPS latitude
      * @param longitude GPS longitude
      */
-    public GpsCoordinates(BigDecimal latitude, BigDecimal longitude) {
+    public GpsCoordinates(final BigDecimal latitude, final BigDecimal longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

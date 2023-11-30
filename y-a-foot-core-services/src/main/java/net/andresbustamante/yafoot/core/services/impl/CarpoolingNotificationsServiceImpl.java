@@ -38,8 +38,9 @@ public class CarpoolingNotificationsServiceImpl implements CarpoolingNotificatio
     private String carpoolingManagementUrl;
 
     public CarpoolingNotificationsServiceImpl(
-            MatchDao matchDao, PlayerDao playerDao, CarDao carDao,
-            MessageSource messageSource, TemplateUtils templateUtils, MessagingService messagingService) {
+            final MatchDao matchDao, final PlayerDao playerDao, final CarDao carDao,
+            final MessageSource messageSource, final TemplateUtils templateUtils,
+            final MessagingService messagingService) {
         this.matchDao = matchDao;
         this.playerDao = playerDao;
         this.carDao = carDao;
@@ -50,7 +51,8 @@ public class CarpoolingNotificationsServiceImpl implements CarpoolingNotificatio
 
     @Override
     @Transactional
-    public void notifyCarpoolingRequest(Integer playerId, Integer matchId, Integer carId) throws ApplicationException {
+    public void notifyCarpoolingRequest(final Integer playerId, final Integer matchId, final Integer carId)
+            throws ApplicationException {
         Player player = playerDao.findPlayerById(playerId);
         Match match = matchDao.findMatchById(matchId);
         Car car = carDao.findCarById(carId);
@@ -80,7 +82,8 @@ public class CarpoolingNotificationsServiceImpl implements CarpoolingNotificatio
 
     @Override
     @Transactional
-    public void notifyCarpoolingUpdate(Integer playerId, Integer matchId, Integer carId, boolean isCarSeatConfirmed)
+    public void notifyCarpoolingUpdate(final Integer playerId, final Integer matchId, final Integer carId,
+                                       final boolean isCarSeatConfirmed)
             throws ApplicationException {
         Player player = playerDao.findPlayerById(playerId);
         Match match = matchDao.findMatchById(matchId);

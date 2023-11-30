@@ -31,7 +31,8 @@ public class CarsController extends AbstractController implements CarsApi {
     private final CarMapper carMapper;
 
     public CarsController(
-            CarSearchService carSearchService, CarManagementService carManagementService, CarMapper carMapper) {
+            final CarSearchService carSearchService, final CarManagementService carManagementService,
+            final CarMapper carMapper) {
         this.carSearchService = carSearchService;
         this.carManagementService = carManagementService;
         this.carMapper = carMapper;
@@ -55,7 +56,7 @@ public class CarsController extends AbstractController implements CarsApi {
     }
 
     @Override
-    public ResponseEntity<Car> loadCar(Integer id) {
+    public ResponseEntity<Car> loadCar(final Integer id) {
         try {
             net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, getUserContext());
 
@@ -77,7 +78,7 @@ public class CarsController extends AbstractController implements CarsApi {
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> addNewCar(CarForm car) {
+    public ResponseEntity<Void> addNewCar(final CarForm car) {
         try {
             int carId = carManagementService.saveCar(carMapper.map(car), getUserContext());
 
@@ -88,7 +89,7 @@ public class CarsController extends AbstractController implements CarsApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateCar(Integer id, CarForm carForm) {
+    public ResponseEntity<Void> updateCar(final Integer id, final CarForm carForm) {
         try {
             UserContext userContext = getUserContext();
             net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, userContext);
@@ -111,7 +112,7 @@ public class CarsController extends AbstractController implements CarsApi {
     }
 
     @Override
-    public ResponseEntity<Void> deactivateCar(Integer id) {
+    public ResponseEntity<Void> deactivateCar(final Integer id) {
         try {
             UserContext userContext = getUserContext();
             net.andresbustamante.yafoot.core.model.Car car = carSearchService.loadCar(id, userContext);

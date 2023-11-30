@@ -43,7 +43,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
     private final Logger log = LoggerFactory.getLogger(CarpoolingServiceImpl.class);
 
     @Autowired
-    public CarpoolingServiceImpl(CarDao carDAO, MatchDao matchDAO, RabbitTemplate rabbitTemplate) {
+    public CarpoolingServiceImpl(final CarDao carDAO, final MatchDao matchDAO, final RabbitTemplate rabbitTemplate) {
         this.carDAO = carDAO;
         this.matchDAO = matchDAO;
         this.rabbitTemplate = rabbitTemplate;
@@ -51,7 +51,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Car> findAvailableCarsByMatch(Match match) throws DatabaseException {
+    public List<Car> findAvailableCarsByMatch(final Match match) throws DatabaseException {
         if (match.isCarpoolingEnabled()) {
             return carDAO.findCarsByMatch(match);
         } else {
@@ -61,9 +61,9 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
     @Transactional
     @Override
-    public void updateCarpoolingInformation(Match match, Player player, Car car, boolean isCarConfirmed,
-                                            UserContext ctx)
-            throws DatabaseException, ApplicationException {
+    public void updateCarpoolingInformation(final Match match, final Player player, final Car car,
+                                            final boolean isCarConfirmed, final UserContext ctx)
+            throws ApplicationException {
         if (car.getId() != null) {
             Car storedCar = carDAO.findCarById(car.getId());
 
@@ -96,7 +96,7 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void processCarSeatRequest(Match match, Player player, Car car, UserContext ctx) {
+    public void processCarSeatRequest(final Match match, final Player player, final Car car, final UserContext ctx) {
         CarpoolingRequestEvent event = new CarpoolingRequestEvent();
         event.setPlayerId(player.getId());
         event.setPlayerFirstName(player.getFirstName());
@@ -110,7 +110,8 @@ public class CarpoolingServiceImpl implements CarpoolingService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void processTransportationChange(Match match, Car oldCar, Car newCar, UserContext ctx)
+    public void processTransportationChange(final Match match, final Car oldCar, final Car newCar,
+                                            final UserContext ctx)
             throws ApplicationException {
         List<Registration> registrations = matchDAO.findPassengerRegistrationsByCar(match, oldCar);
         Car storedNewCar = (newCar != null && newCar.getId() != null) ? carDAO.findCarById(newCar.getId()) : null;
@@ -146,7 +147,8 @@ public class CarpoolingServiceImpl implements CarpoolingService {
      * @param car Selected car
      * @param isCarSeatConfirmed Confirmation / refusal from the driver of the given car
      */
-    private void processCarSeatUpdate(Match match, Player player, Car car, boolean isCarSeatConfirmed) {
+    private void processCarSeatUpdate(final Match match, final Player player, final Car car,
+                                      final boolean isCarSeatConfirmed) {
         CarpoolingUpdateEvent event = new CarpoolingUpdateEvent();
         event.setCarId(car.getId());
         event.setCarName(car.getName());

@@ -11,7 +11,7 @@ import org.springframework.core.io.Resource;
 public final class CsvDataSetLoader extends AbstractDataSetLoader {
 
     @Override
-    protected IDataSet createDataSet(Resource resource) throws Exception {
+    protected IDataSet createDataSet(final Resource resource) throws Exception {
         return new CsvDataFileLoader().loadDataSet(resource.getURL());
     }
 }

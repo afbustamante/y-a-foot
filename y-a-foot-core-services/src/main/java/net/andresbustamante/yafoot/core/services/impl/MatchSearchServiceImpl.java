@@ -2,7 +2,6 @@ package net.andresbustamante.yafoot.core.services.impl;
 
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.dao.MatchDao;
-import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.model.Match;
 import net.andresbustamante.yafoot.core.model.Player;
@@ -30,14 +29,14 @@ public class MatchSearchServiceImpl implements MatchSearchService {
     private final PlayerDao playerDao;
 
     @Autowired
-    public MatchSearchServiceImpl(MatchDao matchDAO, PlayerDao playerDao) {
+    public MatchSearchServiceImpl(final MatchDao matchDAO, final PlayerDao playerDao) {
         this.matchDAO = matchDAO;
         this.playerDao = playerDao;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Match findMatchByCode(String code) throws DatabaseException {
+    public Match findMatchByCode(final String code) {
         if (code != null) {
             return matchDAO.findMatchByCode(code);
         } else {
@@ -47,8 +46,8 @@ public class MatchSearchServiceImpl implements MatchSearchService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Match> findMatches(MatchStatusEnum status, SportEnum sport, LocalDate startDate,
-                                   LocalDate endDate, UserContext ctx) {
+    public List<Match> findMatches(final MatchStatusEnum status, final SportEnum sport, final LocalDate startDate,
+                                   final LocalDate endDate, final UserContext ctx) {
         Player player = playerDao.findPlayerByEmail(ctx.getUsername());
 
         if (player != null && player.getId() > 0) {

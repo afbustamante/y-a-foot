@@ -9,7 +9,7 @@ public class UnauthorisedUserException extends ApplicationException {
      *
      * @param message Message to log
      */
-    public UnauthorisedUserException(String message) {
+    public UnauthorisedUserException(final String message) {
         super("unauthorised.user.error", message);
     }
 }

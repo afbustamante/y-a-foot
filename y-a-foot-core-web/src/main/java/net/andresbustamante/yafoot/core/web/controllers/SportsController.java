@@ -19,7 +19,7 @@ public class SportsController extends AbstractController implements SportsApi {
     private final SportSearchService sportSearchService;
     private final SportMapper sportMapper;
 
-    public SportsController(SportSearchService sportSearchService, SportMapper sportMapper) {
+    public SportsController(final SportSearchService sportSearchService, final SportMapper sportMapper) {
         this.sportSearchService = sportSearchService;
         this.sportMapper = sportMapper;
     }

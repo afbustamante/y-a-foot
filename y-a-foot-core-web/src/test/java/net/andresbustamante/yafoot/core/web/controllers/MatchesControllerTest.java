@@ -83,9 +83,9 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void loadMatchByExistingCode() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setCode(matchCode);
 
         given(matchMapper.map(any(Match.class))).willReturn(new net.andresbustamante.yafoot.web.dto.Match());
@@ -102,9 +102,9 @@ class MatchesControllerTest extends AbstractControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"/matches/{0}", "/matches/{0}/registrations", "/matches/{0}/cars"})
-    void loadMatchByUnknownCode(String path) throws Exception {
+    void loadMatchByUnknownCode(final String path) throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
 
@@ -118,7 +118,7 @@ class MatchesControllerTest extends AbstractControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"21223", "this is a code", "invalid.code"})
-    void loadMatchByInvalidCode(String matchCode) throws Exception {
+    void loadMatchByInvalidCode(final String matchCode) throws Exception {
         // Given
         // When
         mvc.perform(get("/matches/{0}", matchCode)
@@ -132,7 +132,7 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void loadMatchByCodeWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
         given(matchSearchService.findMatchByCode(anyString())).willThrow(DatabaseException.class);
 
@@ -147,13 +147,13 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void loadExistingMatchRegistrations() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setCode(matchCode);
 
-        Registration registration1 = new Registration(new RegistrationId(1, 1));
-        Registration registration2 = new Registration(new RegistrationId(1, 2));
+        final Registration registration1 = new Registration(new RegistrationId(1, 1));
+        final Registration registration2 = new Registration(new RegistrationId(1, 2));
         match.setRegistrations(List.of(registration1, registration2));
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
@@ -170,7 +170,7 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void loadMatchRegistrationsWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
         given(matchSearchService.findMatchByCode(anyString())).willThrow(DatabaseException.class);
 
@@ -185,11 +185,11 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findPastMatches() throws Exception {
         // Given
-        LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now();
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
         match1.setDate(today.minusDays(3).atTime(LocalTime.now()));
-        Match match2 = new Match(2);
+        final Match match2 = new Match(2);
         match2.setDate(today.minusDays(4).atTime(LocalTime.now()));
 
         given(matchSearchService.findMatches(eq(null), eq(null), eq(null),
@@ -208,11 +208,11 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findFutureMatches() throws Exception {
         // Given
-        LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now();
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
         match1.setDate(today.plusDays(3).atTime(LocalTime.now()));
-        Match match2 = new Match(2);
+        final Match match2 = new Match(2);
         match2.setDate(today.plusDays(4).atTime(LocalTime.now()));
 
         given(matchSearchService.findMatches(eq(null), eq(null),
@@ -231,12 +231,12 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findFutureMatchesBySport() throws Exception {
         // Given
-        LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now();
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
         match1.setSport(SportEnum.BASKETBALL);
         match1.setDate(today.plusDays(3).atTime(LocalTime.now()));
-        Match match2 = new Match(2);
+        final Match match2 = new Match(2);
         match2.setSport(SportEnum.BASKETBALL);
         match2.setDate(today.plusDays(4).atTime(LocalTime.now()));
 
@@ -257,12 +257,12 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findMatchesBySport() throws Exception {
         // Given
-        LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now();
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
         match1.setSport(SportEnum.FOOTBALL);
         match1.setDate(today.plusDays(3).atTime(LocalTime.now()));
-        Match match2 = new Match(2);
+        final Match match2 = new Match(2);
         match2.setSport(SportEnum.FOOTBALL);
         match2.setDate(today.plusDays(4).atTime(LocalTime.now()));
 
@@ -282,13 +282,13 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findMatchesByStatus() throws Exception {
         // Given
-        LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now();
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
         match1.setSport(SportEnum.FOOTBALL);
         match1.setStatus(MatchStatusEnum.CANCELLED);
         match1.setDate(today.plusDays(3).atTime(LocalTime.now()));
-        Match match2 = new Match(2);
+        final Match match2 = new Match(2);
         match2.setSport(SportEnum.FOOTBALL);
         match2.setStatus(MatchStatusEnum.CANCELLED);
         match2.setDate(today.plusDays(4).atTime(LocalTime.now()));
@@ -309,8 +309,8 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findMatchesBetweenInvalidInterval() throws Exception {
         // Given
-        LocalDate today = LocalDate.now();
-        LocalDate tomorrow = today.plusDays(1);
+        final LocalDate today = LocalDate.now();
+        final LocalDate tomorrow = today.plusDays(1);
 
         // When
         mvc.perform(get("/matches?start_date={0}&end_date={1}",
@@ -326,8 +326,8 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findMatchesNoResults() throws Exception {
         // Given
-        LocalDate today = LocalDate.now();
-        LocalDate tomorrow = today.plusDays(1);
+        final LocalDate today = LocalDate.now();
+        final LocalDate tomorrow = today.plusDays(1);
 
         given(matchSearchService.findMatches(eq(null), eq(null),
                 any(LocalDate.class), any(LocalDate.class), any(UserContext.class)))
@@ -346,8 +346,8 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findMatchesWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        LocalDate today = LocalDate.now();
-        LocalDate tomorrow = today.plusDays(1);
+        final LocalDate today = LocalDate.now();
+        final LocalDate tomorrow = today.plusDays(1);
 
         given(playerSearchService.findPlayerByEmail(anyString(), any(UserContext.class)))
                 .willThrow(DatabaseException.class);
@@ -367,13 +367,13 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void createMatch() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
+        final net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
         match.setDate(OffsetDateTime.now().plusDays(3));
         match.setSport(RUGBY);
         match.setNumPlayersMin(8);
         match.setSiteId(1);
 
-        Integer id = 1;
+        final Integer id = 1;
 
         given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.MatchForm.class))).willReturn(new Match());
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class))).willReturn(id);
@@ -391,13 +391,13 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void createMatchInThePast() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
+        final net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
         match.setDate(OffsetDateTime.now().minusDays(3));
         match.setNumPlayersMin(8);
         match.setSiteId(1);
         match.setSport(CRICKET);
 
-        ApplicationException exception = new ApplicationException("match.past.new.date.error", "message");
+        final ApplicationException exception = new ApplicationException("match.past.new.date.error", "message");
         given(matchMapper.map(any(net.andresbustamante.yafoot.web.dto.MatchForm.class))).willReturn(new Match());
         given(matchManagementService.saveMatch(any(Match.class), any(UserContext.class))).willThrow(exception);
 
@@ -413,7 +413,7 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void createMatchWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
+        final net.andresbustamante.yafoot.web.dto.MatchForm match = new net.andresbustamante.yafoot.web.dto.MatchForm();
         match.setDate(OffsetDateTime.now().plusDays(3));
         match.setSport(BASKETBALL);
         match.setNumPlayersMin(8);
@@ -435,13 +435,13 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findCarsForExistingMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setCode(matchCode);
 
-        Car car1 = new Car(1);
-        Car car2 = new Car(2);
+        final Car car1 = new Car(1);
+        final Car car2 = new Car(2);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(carpoolingService.findAvailableCarsByMatch(any(Match.class))).willReturn(List.of(car1, car2));
@@ -458,9 +458,9 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findCarsForExistingMatchEmptyResult() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setCode(matchCode);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
@@ -478,7 +478,7 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void findCarsWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
         given(matchSearchService.findMatchByCode(anyString())).willThrow(DatabaseException.class);
         given(carpoolingService.findAvailableCarsByMatch(any(Match.class))).willThrow(DatabaseException.class);
@@ -494,14 +494,14 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void registerPlayerToExistingMatch() throws Exception {
         // Given
-        String email = VALID_EMAIL;
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String email = VALID_EMAIL;
+        final String matchCode = "ABCDEFGHIJ";
+        final Match match = new Match(1);
         match.setCode(matchCode);
         match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
-        Player player = new Player(2, "DOE", "John", email, null);
+        final Player player = new Player(2, "DOE", "John", email, null);
 
         net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
                 new net.andresbustamante.yafoot.web.dto.RegistrationForm();
@@ -526,11 +526,11 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void registerPlayerToUnknownMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
-        Player player = new Player(2, "DOE", "John", VALID_EMAIL, null);
+        final Player player = new Player(2, "DOE", "John", VALID_EMAIL, null);
 
-        net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
+        final net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
                 new net.andresbustamante.yafoot.web.dto.RegistrationForm();
         registration.setPlayerId(2);
         registration.setCarConfirmed(false);
@@ -550,13 +550,13 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void registerUnknownPlayerToExistingMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String matchCode = "ABCDEFGHIJ";
+        final Match match = new Match(1);
         match.setCode(matchCode);
         match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
-        net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
+        final net.andresbustamante.yafoot.web.dto.RegistrationForm registration =
                 new net.andresbustamante.yafoot.web.dto.RegistrationForm();
         registration.setPlayerId(2);
         registration.setCarConfirmed(false);
@@ -576,20 +576,20 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void updateCarForExistingRegistration() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String matchCode = "ABCDEFGHIJ";
+        final Match match = new Match(1);
         match.setCode(matchCode);
         match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
-        Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
+        final Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
 
-        Registration registration = new Registration(new RegistrationId(match.getId(), player.getId()));
+        final Registration registration = new Registration(new RegistrationId(match.getId(), player.getId()));
         registration.setPlayer(player);
         registration.setCarConfirmed(false);
         match.setRegistrations(List.of(registration));
 
-        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
+        final CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(player);
@@ -606,11 +606,11 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void updateCarForUnknownMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
-        Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
+        final Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
 
-        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
+        final CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(player);
@@ -627,16 +627,16 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void updateCarForUnknownRegistration() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String matchCode = "ABCDEFGHIJ";
+        final Match match = new Match(1);
         match.setCode(matchCode);
         match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
         match.setRegistrations(new ArrayList<>());
 
-        Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
+        final Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
 
-        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
+        final CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(player);
@@ -653,13 +653,13 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void updateCarForUnknownPlayer() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String matchCode = "ABCDEFGHIJ";
+        final Match match = new Match(1);
         match.setCode(matchCode);
         match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
-        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
+        final CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(match);
         given(playerSearchService.findPlayerById(anyInt())).willReturn(null);
@@ -676,9 +676,9 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void updateCarForRegistrationWhileDatabaseIsUnavailable() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
-        CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
+        final CarConfirmation confirmation = new CarConfirmation().carId(3).confirmed(true);
 
         given(matchSearchService.findMatchByCode(anyString())).willThrow(DatabaseException.class);
         given(playerSearchService.findPlayerById(anyInt())).willThrow(DatabaseException.class);
@@ -695,15 +695,15 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void unregisterPlayerFromExistingMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String matchCode = "ABCDEFGHIJ";
+        final Match match = new Match(1);
         match.setCode(matchCode);
         match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
 
-        Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
+        final Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
 
-        Registration registration = new Registration(new RegistrationId(match.getId(), player.getId()));
+        final Registration registration = new Registration(new RegistrationId(match.getId(), player.getId()));
         registration.setPlayer(player);
         registration.setCarConfirmed(false);
         match.setRegistrations(List.of(registration));
@@ -722,14 +722,9 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void unregisterPlayerFromUnknownMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String matchCode = "ABCDEFGHIJ";
 
-        Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
-
-        Registration registration = new Registration(new RegistrationId(match.getId(), player.getId()));
-        registration.setPlayer(player);
-        registration.setCarConfirmed(false);
+        final Player player = new Player(2, VALID_EMAIL, "DOE", "John", null);
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
 
@@ -744,8 +739,8 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void unregisterUnknownPlayerFromMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String matchCode = "ABCDEFGHIJ";
+        final Match match = new Match(1);
         match.setCode(matchCode);
         match.setDate(LocalDateTime.now().plusDays(3));
         match.setNumPlayersMin(8);
@@ -780,8 +775,8 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void cancelValidMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
-        Match match = new Match(1);
+        final String matchCode = "ABCDEFGHIJ";
+        final Match match = new Match(1);
         match.setCode(matchCode);
         match.setStatus(CREATED);
         match.setDate(LocalDateTime.now().plusDays(3));
@@ -800,7 +795,7 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void cancelUnknownMatch() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
         given(matchSearchService.findMatchByCode(anyString())).willReturn(null);
 
@@ -815,7 +810,7 @@ class MatchesControllerTest extends AbstractControllerTest {
     @Test
     void cancelMatchWhenDatabaseIsUnavailable() throws Exception {
         // Given
-        String matchCode = "ABCDEFGHIJ";
+        final String matchCode = "ABCDEFGHIJ";
 
         given(matchSearchService.findMatchByCode(anyString())).willThrow(DatabaseException.class);
 

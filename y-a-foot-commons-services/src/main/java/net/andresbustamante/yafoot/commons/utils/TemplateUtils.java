@@ -13,7 +13,7 @@ public class TemplateUtils {
 
     private final Configuration freemarkerConfiguration;
 
-    public TemplateUtils(Configuration freemarkerConfiguration) {
+    public TemplateUtils(final Configuration freemarkerConfiguration) {
         this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
@@ -26,7 +26,8 @@ public class TemplateUtils {
      * @throws IOException When the template cannot be loaded from the FS
      * @throws TemplateException When the template has errors
      */
-    public String getContent(String contentTemplate, Object contentModel) throws IOException, TemplateException {
+    public String getContent(final String contentTemplate, final Object contentModel)
+            throws IOException, TemplateException {
         Template t = freemarkerConfiguration.getTemplate(contentTemplate);
         return FreeMarkerTemplateUtils.processTemplateIntoString(t, contentModel);
     }

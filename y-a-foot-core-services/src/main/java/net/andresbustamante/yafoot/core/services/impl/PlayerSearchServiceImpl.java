@@ -20,13 +20,13 @@ public class PlayerSearchServiceImpl implements PlayerSearchService {
     private final PlayerDao playerDAO;
 
     @Autowired
-    public PlayerSearchServiceImpl(PlayerDao playerDAO) {
+    public PlayerSearchServiceImpl(final PlayerDao playerDAO) {
         this.playerDAO = playerDAO;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Player findPlayerByEmail(String email, UserContext context) throws ApplicationException {
+    public Player findPlayerByEmail(final String email, final UserContext context) throws ApplicationException {
         if (context != null && !context.getUsername().equals(email)) {
             throw new UnauthorisedUserException("User not allowed to search a different email");
         }
@@ -36,7 +36,7 @@ public class PlayerSearchServiceImpl implements PlayerSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Player findPlayerById(Integer id) throws DatabaseException {
+    public Player findPlayerById(final Integer id) throws DatabaseException {
         return playerDAO.findPlayerById(id);
     }
 }

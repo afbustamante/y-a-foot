@@ -323,8 +323,8 @@ class MatchDaoIT extends AbstractDaoIntegrationTest {
         Match match = matchDAO.findMatchById(101);
 
         // When
-        Registration registration1 = matchDAO.loadRegistration(match, playerWithCar);
-        Registration registration2 = matchDAO.loadRegistration(match, playerWithoutCar);
+        final Registration registration1 = matchDAO.loadRegistration(match, playerWithCar);
+        final Registration registration2 = matchDAO.loadRegistration(match, playerWithoutCar);
 
         // Then
         assertNotNull(registration1);

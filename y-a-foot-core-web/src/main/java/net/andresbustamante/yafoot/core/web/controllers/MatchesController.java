@@ -67,10 +67,10 @@ public class MatchesController extends AbstractController implements MatchesApi 
     @Value("${api.matches.one.registrations.one.path}")
     private String matchRegistrationApiPath;
 
-    public MatchesController(MatchSearchService matchSearchService, PlayerSearchService playerSearchService,
-                             CarpoolingService carpoolingService,
-                             MatchManagementService matchManagementService,
-                             MatchMapper matchMapper, RegistrationMapper registrationMapper, CarMapper carMapper) {
+    public MatchesController(
+            final MatchSearchService matchSearchService, final PlayerSearchService playerSearchService,
+            final CarpoolingService carpoolingService, final MatchManagementService matchManagementService,
+            final MatchMapper matchMapper, final RegistrationMapper registrationMapper, final CarMapper carMapper) {
         this.matchSearchService = matchSearchService;
         this.matchManagementService = matchManagementService;
         this.playerSearchService = playerSearchService;
@@ -81,7 +81,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Match> loadMatchByCode(String code) {
+    public ResponseEntity<Match> loadMatchByCode(final String code) {
         try {
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(code);
 
@@ -96,7 +96,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<List<Registration>> loadMatchRegistrations(String code) {
+    public ResponseEntity<List<Registration>> loadMatchRegistrations(final String code) {
         try {
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(code);
 
@@ -111,12 +111,12 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<List<Match>> findMatches(@DateTimeFormat(iso = DATE) LocalDate startDate,
-                                                   @DateTimeFormat(iso = DATE) LocalDate endDate,
-                                                   SportCode sport,
-                                                   MatchStatus status) {
+    public ResponseEntity<List<Match>> findMatches(
+            @DateTimeFormat(iso = DATE) final LocalDate startDate,
+            @DateTimeFormat(iso = DATE) final LocalDate endDate,
+            final SportCode sport, final MatchStatus status) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(BAD_REQUEST);
         }
 
         try {
@@ -139,7 +139,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Void> cancelMatch(String code) {
+    public ResponseEntity<Void> cancelMatch(final String code) {
         try {
             UserContext userContext = getUserContext();
 
@@ -160,7 +160,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> createMatch(MatchForm match) {
+    public ResponseEntity<Void> createMatch(final MatchForm match) {
         try {
             UserContext userContext = getUserContext();
             net.andresbustamante.yafoot.core.model.Match m = matchMapper.map(match);
@@ -176,7 +176,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<List<Car>> findCarsForMatch(String code) {
+    public ResponseEntity<List<Car>> findCarsForMatch(final String code) {
         try {
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(code);
 
@@ -194,7 +194,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> registerPlayerToMatch(String code, RegistrationForm registration) {
+    public ResponseEntity<Void> registerPlayerToMatch(final String code, final RegistrationForm registration) {
         try {
             UserContext ctx = getUserContext();
 
@@ -229,8 +229,8 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Void> updateCarForRegistration(String code, Integer pid,
-                                                         CarConfirmation carConfirmation) {
+    public ResponseEntity<Void> updateCarForRegistration(
+            final String code, final Integer pid, final CarConfirmation carConfirmation) {
         try {
             net.andresbustamante.yafoot.core.model.Match match = matchSearchService.findMatchByCode(code);
 
@@ -269,7 +269,7 @@ public class MatchesController extends AbstractController implements MatchesApi 
     }
 
     @Override
-    public ResponseEntity<Void> unregisterPlayerFromMatch(String code, Integer pid) {
+    public ResponseEntity<Void> unregisterPlayerFromMatch(final String code, final Integer pid) {
         try {
             UserContext userContext = getUserContext();
 

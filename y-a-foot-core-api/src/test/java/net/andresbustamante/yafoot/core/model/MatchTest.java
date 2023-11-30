@@ -34,15 +34,15 @@ class MatchTest {
     @Test
     void isPlayerNotRegistered() {
         // Given
-        Player player1 = new Player(1);
-        Player player2 = new Player(2);
-        Player player3 = new Player(3);
+        final Player player1 = new Player(1);
+        final Player player2 = new Player(2);
+        final Player player3 = new Player(3);
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
 
-        Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
+        final Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
         reg1.setPlayer(player1);
-        Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
+        final Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
         reg2.setPlayer(player2);
 
         match1.setRegistrations(List.of(reg1, reg2));
@@ -57,8 +57,8 @@ class MatchTest {
     @Test
     void isPlayerNotRegisteredNewMatch() {
         // Given
-        Player player1 = new Player(1);
-        Match match1 = new Match(1);
+        final Player player1 = new Player(1);
+        final Match match1 = new Match(1);
 
         // When
         var result = match1.isPlayerRegistered(player1);
@@ -70,16 +70,16 @@ class MatchTest {
     @Test
     void isAcceptingRegistrations() {
         // Given
-        Player player1 = new Player(1);
-        Player player2 = new Player(2);
+        final Player player1 = new Player(1);
+        final Player player2 = new Player(2);
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
         match1.setNumPlayersMax(5);
         match1.setDate(LocalDateTime.now().plusDays(1));
 
-        Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
+        final Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
         reg1.setPlayer(player1);
-        Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
+        final Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
         reg2.setPlayer(player2);
 
         match1.setRegistrations(List.of(reg1, reg2));
@@ -94,16 +94,16 @@ class MatchTest {
     @Test
     void isNotAcceptingRegistrationsForFullMatch() {
         // Given
-        Player player1 = new Player(1);
-        Player player2 = new Player(2);
+        final Player player1 = new Player(1);
+        final Player player2 = new Player(2);
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
         match1.setNumPlayersMax(2);
         match1.setDate(LocalDateTime.now().plusDays(1));
 
-        Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
+        final Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
         reg1.setPlayer(player1);
-        Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
+        final Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
         reg2.setPlayer(player2);
 
         match1.setRegistrations(List.of(reg1, reg2));
@@ -118,16 +118,16 @@ class MatchTest {
     @Test
     void isNotAcceptingRegistrationsForPastMatch() {
         // Given
-        Player player1 = new Player(1);
-        Player player2 = new Player(2);
+        final Player player1 = new Player(1);
+        final Player player2 = new Player(2);
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
         match1.setNumPlayersMax(5);
         match1.setDate(LocalDateTime.now().minusHours(1));
 
-        Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
+        final Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
         reg1.setPlayer(player1);
-        Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
+        final Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
         reg2.setPlayer(player2);
 
         match1.setRegistrations(List.of(reg1, reg2));
@@ -142,14 +142,14 @@ class MatchTest {
     @Test
     void getNumRegisteredPlayers() {
         // Given
-        Player player1 = new Player(1);
-        Player player2 = new Player(2);
+        final Player player1 = new Player(1);
+        final Player player2 = new Player(2);
 
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
 
-        Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
+        final Registration reg1 = new Registration(new RegistrationId(match1.getId(), player1.getId()));
         reg1.setPlayer(player1);
-        Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
+        final Registration reg2 = new Registration(new RegistrationId(match1.getId(), player2.getId()));
         reg2.setPlayer(player2);
 
         match1.setRegistrations(List.of(reg1, reg2));
@@ -164,7 +164,7 @@ class MatchTest {
     @Test
     void getNumRegisteredPlayersNewMatch() {
         // Given
-        Match match1 = new Match(1);
+        final Match match1 = new Match(1);
 
         // When
         var result = match1.getNumRegisteredPlayers();

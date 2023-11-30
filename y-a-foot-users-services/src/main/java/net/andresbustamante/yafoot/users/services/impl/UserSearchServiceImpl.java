@@ -16,13 +16,13 @@ public class UserSearchServiceImpl implements UserSearchService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserSearchServiceImpl(UserRepository userRepository) {
+    public UserSearchServiceImpl(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     @Transactional(readOnly = true, propagation = REQUIRES_NEW)
-    public User findUserByEmail(String email) throws DirectoryException {
+    public User findUserByEmail(final String email) throws DirectoryException {
         return userRepository.findUserByEmail(email);
     }
 }

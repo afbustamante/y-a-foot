@@ -87,9 +87,9 @@ class CarDaoIT extends AbstractDaoIntegrationTest {
     @Test
     void findCarsByMatch() throws Exception {
         // Given
-        Match match = new Match(101);
-        Car car1 = new Car(1001);
-        Car car3 = new Car(1003);
+        final Match match = new Match(101);
+        final Car car1 = new Car(1001);
+        final Car car3 = new Car(1003);
 
         // When
         List<Car> cars = carDAO.findCarsByMatch(match);

@@ -37,7 +37,8 @@ public class SitesController extends AbstractController implements SitesApi {
     private String siteApiPath;
 
     public SitesController(
-            SiteSearchService siteSearchService, SiteManagementService siteManagementService, SiteMapper siteMapper) {
+            final SiteSearchService siteSearchService, final SiteManagementService siteManagementService,
+            final SiteMapper siteMapper) {
         this.siteSearchService = siteSearchService;
         this.siteManagementService = siteManagementService;
         this.siteMapper = siteMapper;
@@ -62,7 +63,7 @@ public class SitesController extends AbstractController implements SitesApi {
 
     @CrossOrigin(exposedHeaders = {HttpHeaders.LOCATION})
     @Override
-    public ResponseEntity<Void> addNewSite(SiteForm site) {
+    public ResponseEntity<Void> addNewSite(final SiteForm site) {
         try {
             UserContext userContext = getUserContext();
             long id = siteManagementService.saveSite(siteMapper.map(site), userContext);

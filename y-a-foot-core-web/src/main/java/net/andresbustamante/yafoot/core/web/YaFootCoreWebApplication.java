@@ -17,12 +17,12 @@ public class YaFootCoreWebApplication extends SpringBootServletInitializer {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(YaFootCoreWebApplication.class);
     }
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+    protected SpringApplicationBuilder configure(final SpringApplicationBuilder builder) {
         return builder.sources(YaFootCoreWebApplication.class);
     }
 }

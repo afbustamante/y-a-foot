@@ -44,7 +44,7 @@ public final class Car implements Serializable, Identifiable<Integer>, Auditable
      *
      * @param id Car ID
      */
-    public Car(Integer id) {
+    public Car(final Integer id) {
         this.id = id;
     }
 }

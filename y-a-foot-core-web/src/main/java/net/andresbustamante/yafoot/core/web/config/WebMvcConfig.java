@@ -24,13 +24,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * @param playerManagementService
      * @param playerSearchService
      */
-    public WebMvcConfig(PlayerManagementService playerManagementService, PlayerSearchService playerSearchService) {
+    public WebMvcConfig(final PlayerManagementService playerManagementService,
+                        final PlayerSearchService playerSearchService) {
         this.playerManagementService = playerManagementService;
         this.playerSearchService = playerSearchService;
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(new PlayerRegistrationHandlerInterceptor(playerManagementService, playerSearchService));
     }
 }

@@ -23,7 +23,7 @@ public final class DateUtils {
      * @param date Date to transform
      * @return LocalDateTime equivalent date
      */
-    public static LocalDateTime toLocalDateTime(Date date) {
+    public static LocalDateTime toLocalDateTime(final Date date) {
         if (date == null) {
             return null;
         }
@@ -39,7 +39,7 @@ public final class DateUtils {
      * @param dateTime Date-time to transform
      * @return Resulting LocalDateTime
      */
-    public static LocalDateTime toLocalDateTime(OffsetDateTime dateTime) {
+    public static LocalDateTime toLocalDateTime(final OffsetDateTime dateTime) {
         return dateTime != null ? dateTime.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime() : null;
     }
 
@@ -49,7 +49,7 @@ public final class DateUtils {
      * @param dateTime Date-time to transform
      * @return Resulting OffsetDateTime
      */
-    public static OffsetDateTime toOffsetDateTime(LocalDateTime dateTime) {
+    public static OffsetDateTime toOffsetDateTime(final LocalDateTime dateTime) {
         return dateTime != null ? dateTime.atZone(ZoneId.systemDefault()).toOffsetDateTime() : null;
     }
 }

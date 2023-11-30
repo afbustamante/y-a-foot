@@ -34,7 +34,7 @@ public final class LocaleUtils {
      * @param locale Locale to check
      * @return True if a locale is supported
      */
-    public static boolean isSupportedLocale(Locale locale) {
+    public static boolean isSupportedLocale(final Locale locale) {
         return Set.of(SUPPORTED_LOCALES).contains(locale);
     }
 }

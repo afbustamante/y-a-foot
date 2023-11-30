@@ -3,7 +3,6 @@ package net.andresbustamante.yafoot.core.services.impl;
 import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.dao.SiteDao;
-import net.andresbustamante.yafoot.commons.exceptions.DatabaseException;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
 import net.andresbustamante.yafoot.core.services.SiteSearchService;
@@ -24,14 +23,14 @@ public class SiteSearchServiceImpl implements SiteSearchService {
     private final PlayerDao playerDao;
 
     @Autowired
-    public SiteSearchServiceImpl(SiteDao siteDAO, PlayerDao playerDao) {
+    public SiteSearchServiceImpl(final SiteDao siteDAO, final PlayerDao playerDao) {
         this.siteDAO = siteDAO;
         this.playerDao = playerDao;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Site> findSites(UserContext ctx) throws DatabaseException {
+    public List<Site> findSites(final UserContext ctx) {
         Player player = playerDao.findPlayerByEmail(ctx.getUsername());
         return player != null ? siteDAO.findSitesByPlayer(player) : Collections.emptyList();
     }

@@ -51,12 +51,12 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void confirmCarForSelfRegistration() throws Exception {
         // Given
-        Match match = new Match(1);
-        Player player = new Player(1);
+        final Match match = new Match(1);
+        final Player player = new Player(1);
         player.setEmail("test@email.com");
-        Car car = new Car(1);
+        final Car car = new Car(1);
         car.setDriver(player);
-        UserContext context = new UserContext("test@email.com");
+        final UserContext context = new UserContext("test@email.com");
 
         // When
         when(carDAO.findCarById(anyInt())).thenReturn(car);
@@ -70,16 +70,16 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void confirmCarForAnotherPlayerRegistration() throws Exception {
         // Given
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now());
-        Player player = new Player(1);
+        final Player player = new Player(1);
         player.setEmail("test@email.com");
-        Car car = new Car(1);
+        final Car car = new Car(1);
         car.setDriver(player);
-        UserContext context = new UserContext("test@email.com");
-        Player anotherPlayer = new Player(2);
+        final UserContext context = new UserContext("test@email.com");
+        final Player anotherPlayer = new Player(2);
         anotherPlayer.setEmail("anotherplayer@email.com");
-        Registration registration = new Registration();
+        final Registration registration = new Registration();
         registration.setCar(car);
         registration.setPlayer(anotherPlayer);
         registration.setCarConfirmed(false);
@@ -99,12 +99,12 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void confirmCarForRegistrationUnauthorisedUser() {
         // Given
-        Match match = new Match(1);
-        Player player = new Player(1);
+        final Match match = new Match(1);
+        final Player player = new Player(1);
         player.setEmail("test@email.com");
-        Car car = new Car(1);
+        final Car car = new Car(1);
         car.setDriver(player);
-        UserContext context = new UserContext("anotheruser@email.com");
+        final UserContext context = new UserContext("anotheruser@email.com");
 
         // When
         when(carDAO.findCarById(anyInt())).thenReturn(car);
@@ -116,16 +116,16 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void disproveCarForRegistration() throws Exception {
         // Given
-        Match match = new Match(1);
-        Player player = new Player(1);
+        final Match match = new Match(1);
+        final Player player = new Player(1);
         player.setEmail("test@email.com");
-        Car car = new Car(1);
+        final Car car = new Car(1);
         car.setDriver(player);
-        Registration registration = new Registration();
+        final Registration registration = new Registration();
         registration.setId(new RegistrationId(1, 1));
         registration.setPlayer(player);
         registration.setCar(car);
-        UserContext context = new UserContext("test@email.com");
+        final UserContext context = new UserContext("test@email.com");
 
         // When
         when(carDAO.findCarById(anyInt())).thenReturn(car);
@@ -138,16 +138,16 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void disproveCarForRegistrationUnauthorisedUser() {
         // Given
-        Match match = new Match(1);
-        Player player = new Player(1);
+        final Match match = new Match(1);
+        final Player player = new Player(1);
         player.setEmail("test@email.com");
-        Car car = new Car(1);
+        final Car car = new Car(1);
         car.setDriver(player);
-        Registration registration = new Registration();
+        final Registration registration = new Registration();
         registration.setId(new RegistrationId(1, 1));
         registration.setPlayer(player);
         registration.setCar(car);
-        UserContext context = new UserContext("anotheruser@email.com");
+        final UserContext context = new UserContext("anotheruser@email.com");
 
         // When
         when(carDAO.findCarById(anyInt())).thenReturn(car);
@@ -160,14 +160,14 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void processCarSeatRequest() throws Exception {
         // Given
-        Match match = new Match(1);
+        final Match match = new Match(1);
         match.setDate(LocalDateTime.now());
-        Player player = new Player(1);
+        final Player player = new Player(1);
         player.setFirstName("First-Name");
-        Player driver = new Player(2);
+        final Player driver = new Player(2);
         driver.setFirstName("Driver");
         driver.setEmail("driver@email.com");
-        Car car = new Car(1);
+        final Car car = new Car(1);
         car.setDriver(driver);
 
         // When
@@ -180,33 +180,33 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void processTransportationChangeCarpoolingEnabledDriver2cars() throws Exception {
         // Given
-        String username = "test@email.com";
-        Match match = new Match(1);
+        final String username = "test@email.com";
+        final Match match = new Match(1);
         match.setCarpoolingEnabled(true);
-        Player driver = new Player(1, "test", "test", username, "test");
-        Car car1 = new Car(1);
+        final Player driver = new Player(1, "test", "test", username, "test");
+        final Car car1 = new Car(1);
         car1.setNumSeats(3);
         car1.setDriver(driver);
-        Car car2 = new Car(2);
+        final Car car2 = new Car(2);
         car2.setNumSeats(3);
         car2.setDriver(driver);
-        UserContext ctx = new UserContext(username);
+        final UserContext ctx = new UserContext(username);
 
-        Player player2 = new Player(2);
+        final Player player2 = new Player(2);
         Registration registrationPlayer2 = new Registration();
         registrationPlayer2.setId(new RegistrationId(match.getId(), player2.getId()));
         registrationPlayer2.setPlayer(player2);
         registrationPlayer2.setCar(car1);
         registrationPlayer2.setCarConfirmed(true);
 
-        Player player3 = new Player(3);
+        final Player player3 = new Player(3);
         Registration registrationPlayer3 = new Registration();
         registrationPlayer3.setId(new RegistrationId(match.getId(), player3.getId()));
         registrationPlayer3.setPlayer(player3);
         registrationPlayer3.setCar(car1);
         registrationPlayer3.setCarConfirmed(true);
 
-        List<Registration> registrations = List.of(registrationPlayer2, registrationPlayer3);
+        final List<Registration> registrations = List.of(registrationPlayer2, registrationPlayer3);
 
         // When
         when(matchDAO.findPassengerRegistrationsByCar(any(Match.class), any(Car.class))).thenReturn(registrations);
@@ -223,33 +223,33 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void processTransportationChangeCarpoolingEnabledDriverSmallerCar() throws Exception {
         // Given
-        String username = "test@email.com";
-        Match match = new Match(1);
+        final String username = "test@email.com";
+        final Match match = new Match(1);
         match.setCarpoolingEnabled(true);
-        Player driver = new Player(1, "test", "test", username, "test");
-        Car car1 = new Car(1);
+        final Player driver = new Player(1, "test", "test", username, "test");
+        final Car car1 = new Car(1);
         car1.setNumSeats(3);
         car1.setDriver(driver);
-        Car car2 = new Car(2);
+        final Car car2 = new Car(2);
         car2.setNumSeats(1);
         car2.setDriver(driver);
-        UserContext ctx = new UserContext(username);
+        final UserContext ctx = new UserContext(username);
 
-        Player player2 = new Player(2);
+        final Player player2 = new Player(2);
         Registration registrationPlayer2 = new Registration();
         registrationPlayer2.setId(new RegistrationId(match.getId(), player2.getId()));
         registrationPlayer2.setPlayer(player2);
         registrationPlayer2.setCar(car1);
         registrationPlayer2.setCarConfirmed(true);
 
-        Player player3 = new Player(3);
+        final Player player3 = new Player(3);
         Registration registrationPlayer3 = new Registration();
         registrationPlayer3.setId(new RegistrationId(match.getId(), player3.getId()));
         registrationPlayer3.setPlayer(player3);
         registrationPlayer3.setCar(car1);
         registrationPlayer3.setCarConfirmed(true);
 
-        List<Registration> registrations = List.of(registrationPlayer2, registrationPlayer3);
+        final List<Registration> registrations = List.of(registrationPlayer2, registrationPlayer3);
 
         // When
         when(matchDAO.findPassengerRegistrationsByCar(any(Match.class), any(Car.class))).thenReturn(registrations);
@@ -274,33 +274,33 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void processTransportationChangeCarpoolingEnabledDriverUnregisteredCar() throws Exception {
         // Given
-        String username = "test@email.com";
-        Match match = new Match(1);
+        final String username = "test@email.com";
+        final Match match = new Match(1);
         match.setCarpoolingEnabled(true);
-        Player driver = new Player(1, "test", "test", username, "test");
-        Car car1 = new Car(1);
+        final Player driver = new Player(1, "test", "test", username, "test");
+        final Car car1 = new Car(1);
         car1.setNumSeats(3);
         car1.setDriver(driver);
-        Car car2 = new Car(2);
+        final Car car2 = new Car(2);
         car2.setNumSeats(3);
         car2.setDriver(driver);
-        UserContext ctx = new UserContext(username);
+        final UserContext ctx = new UserContext(username);
 
-        Player player2 = new Player(2);
+        final Player player2 = new Player(2);
         Registration registrationPlayer2 = new Registration();
         registrationPlayer2.setId(new RegistrationId(match.getId(), player2.getId()));
         registrationPlayer2.setPlayer(player2);
         registrationPlayer2.setCar(car1);
         registrationPlayer2.setCarConfirmed(true);
 
-        Player player3 = new Player(3);
+        final Player player3 = new Player(3);
         Registration registrationPlayer3 = new Registration();
         registrationPlayer3.setId(new RegistrationId(match.getId(), player3.getId()));
         registrationPlayer3.setPlayer(player3);
         registrationPlayer3.setCar(car1);
         registrationPlayer3.setCarConfirmed(true);
 
-        List<Registration> registrations = List.of(registrationPlayer2, registrationPlayer3);
+        final List<Registration> registrations = List.of(registrationPlayer2, registrationPlayer3);
 
         // When
         when(matchDAO.findPassengerRegistrationsByCar(any(Match.class), any(Car.class))).thenReturn(registrations);
@@ -324,34 +324,34 @@ class CarpoolingServiceTest extends AbstractServiceUnitTest {
     @Test
     void processTransportationChangeCarpoolingEnabledDriverOldCar() throws Exception {
         // Given
-        String username = "test@email.com";
-        Match match = new Match(1);
+        final String username = "test@email.com";
+        final Match match = new Match(1);
         match.setCarpoolingEnabled(true);
-        Player driver1 = new Player(1, "test", "test", username, "test");
-        Player driver10 = new Player(10, "test", "test", "another@email.com", "test");
-        Car car1 = new Car(1);
+        final Player driver1 = new Player(1, "test", "test", username, "test");
+        final Player driver10 = new Player(10, "test", "test", "another@email.com", "test");
+        final Car car1 = new Car(1);
         car1.setNumSeats(3);
         car1.setDriver(driver1);
-        Car car2 = new Car(2);
+        final Car car2 = new Car(2);
         car2.setNumSeats(3);
         car2.setDriver(driver10);
-        UserContext ctx = new UserContext(username);
+        final UserContext ctx = new UserContext(username);
 
-        Player player2 = new Player(2);
-        Registration registrationPlayer2 = new Registration();
+        final Player player2 = new Player(2);
+        final Registration registrationPlayer2 = new Registration();
         registrationPlayer2.setId(new RegistrationId(match.getId(), player2.getId()));
         registrationPlayer2.setPlayer(player2);
         registrationPlayer2.setCar(car1);
         registrationPlayer2.setCarConfirmed(true);
 
-        Player player3 = new Player(3);
-        Registration registrationPlayer3 = new Registration();
+        final Player player3 = new Player(3);
+        final Registration registrationPlayer3 = new Registration();
         registrationPlayer3.setId(new RegistrationId(match.getId(), player3.getId()));
         registrationPlayer3.setPlayer(player3);
         registrationPlayer3.setCar(car1);
         registrationPlayer3.setCarConfirmed(true);
 
-        List<Registration> registrations = List.of(registrationPlayer2, registrationPlayer3);
+        final List<Registration> registrations = List.of(registrationPlayer2, registrationPlayer3);
 
         // When
         when(matchDAO.findPassengerRegistrationsByCar(any(Match.class), any(Car.class))).thenReturn(registrations);

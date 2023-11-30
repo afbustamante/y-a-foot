@@ -42,13 +42,13 @@ public class PlayerRegistrationHandlerInterceptor implements HandlerInterceptor 
      * @param playerSearchService
      */
     public PlayerRegistrationHandlerInterceptor(
-            PlayerManagementService playerManagementService, PlayerSearchService playerSearchService) {
+            final PlayerManagementService playerManagementService, final PlayerSearchService playerSearchService) {
         this.playerManagementService = playerManagementService;
         this.playerSearchService = playerSearchService;
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
             throws Exception {
         if (METHODS_TO_INTERCEPT.contains(HttpMethod.valueOf(request.getMethod()))) {
             String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -80,7 +80,7 @@ public class PlayerRegistrationHandlerInterceptor implements HandlerInterceptor 
         return true;
     }
 
-    private void createPlayerFromCredentials(Jwt credentials) throws DatabaseException, ApplicationException {
+    private void createPlayerFromCredentials(final Jwt credentials) throws DatabaseException, ApplicationException {
         String username = credentials.getClaimAsString("email");
 
         Player newPlayer = new Player();
