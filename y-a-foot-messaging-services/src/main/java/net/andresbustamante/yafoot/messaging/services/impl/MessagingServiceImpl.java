@@ -1,21 +1,20 @@
 package net.andresbustamante.yafoot.messaging.services.impl;
 
-import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
-import net.andresbustamante.yafoot.messaging.services.MessagingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import jakarta.mail.Address;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import net.andresbustamante.yafoot.commons.exceptions.ApplicationException;
+import net.andresbustamante.yafoot.messaging.services.MessagingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
@@ -32,7 +31,6 @@ public class MessagingServiceImpl implements MessagingService {
 
     private final Logger log = LoggerFactory.getLogger(MessagingServiceImpl.class);
 
-    @Autowired
     public MessagingServiceImpl(final JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }

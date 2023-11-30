@@ -6,7 +6,6 @@ import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
 import net.andresbustamante.yafoot.core.services.SiteSearchService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,6 @@ public class SiteSearchServiceImpl implements SiteSearchService {
     private final SiteDao siteDAO;
     private final PlayerDao playerDao;
 
-    @Autowired
     public SiteSearchServiceImpl(final SiteDao siteDAO, final PlayerDao playerDao) {
         this.siteDAO = siteDAO;
         this.playerDao = playerDao;

@@ -29,7 +29,7 @@ public class MatchPlayerUnregistrationListener implements MessagingEventListener
         try {
             matchAlertingService.checkForAlertsAfterPlayerRemovedFromMatch(event.getMatchId(), event.getPlayerId());
         } catch (ApplicationException e) {
-            throw new RuntimeException(e);
+            log.error("An error occurred while checking for alerts after a player leaving a match", e);
         }
     }
 }

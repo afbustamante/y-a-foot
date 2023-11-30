@@ -29,7 +29,7 @@ public class CarpoolingRequestListener implements MessagingEventListener<Carpool
             carpoolingNotificationsService.notifyCarpoolingRequest(event.getPlayerId(), event.getMatchId(),
                     event.getCarId());
         } catch (ApplicationException e) {
-            throw new RuntimeException(e);
+            log.error("An error occurred while notifying a carpooling request", e);
         }
     }
 }

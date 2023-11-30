@@ -1,12 +1,11 @@
 package net.andresbustamante.yafoot.core.services.impl;
 
+import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.dao.PlayerDao;
 import net.andresbustamante.yafoot.core.dao.SiteDao;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.Site;
-import net.andresbustamante.yafoot.commons.model.UserContext;
 import net.andresbustamante.yafoot.core.services.SiteManagementService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,6 @@ public class SiteManagementServiceImpl implements SiteManagementService {
     private final SiteDao siteDAO;
     private final PlayerDao playerDao;
 
-    @Autowired
     public SiteManagementServiceImpl(final SiteDao siteDAO, final PlayerDao playerDao) {
         this.siteDAO = siteDAO;
         this.playerDao = playerDao;

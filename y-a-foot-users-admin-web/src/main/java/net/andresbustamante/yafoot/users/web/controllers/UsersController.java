@@ -7,7 +7,6 @@ import net.andresbustamante.yafoot.users.services.UserManagementService;
 import net.andresbustamante.yafoot.users.services.UserSearchService;
 import net.andresbustamante.yafoot.users.web.dto.UserForm;
 import net.andresbustamante.yafoot.users.web.mappers.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,7 +23,6 @@ public class UsersController extends AbstractController implements UsersApi {
     private final UserManagementService userManagementService;
     private final UserMapper userMapper;
 
-    @Autowired
     public UsersController(final UserManagementService userManagementService, final UserSearchService userSearchService,
             final UserMapper userMapper) {
         this.userManagementService = userManagementService;

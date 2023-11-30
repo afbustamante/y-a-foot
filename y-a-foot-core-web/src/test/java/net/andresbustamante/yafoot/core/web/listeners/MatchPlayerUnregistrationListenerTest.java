@@ -33,6 +33,6 @@ class MatchPlayerUnregistrationListenerTest {
         assertDoesNotThrow(() -> matchPlayerUnregistrationListener.onMessage(event));
 
         // Then
-        verify(matchAlertingService).checkForAlertsAfterPlayerRemovedFromMatch(eq(1), eq(2));
+        verify(matchAlertingService).checkForAlertsAfterPlayerRemovedFromMatch(1, 2);
     }
 }

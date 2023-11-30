@@ -31,7 +31,7 @@ public class CarpoolingUpdateListener implements MessagingEventListener<Carpooli
             carpoolingNotificationsService.notifyCarpoolingUpdate(event.getPlayerId(), event.getMatchId(),
                     event.getCarId(), isCarSeatConfirmed);
         } catch (ApplicationException e) {
-            throw new RuntimeException(e);
+            log.error("An error occurred while notifying a carpooling update", e);
         }
     }
 }

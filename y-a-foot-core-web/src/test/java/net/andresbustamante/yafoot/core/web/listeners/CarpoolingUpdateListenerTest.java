@@ -36,7 +36,7 @@ class CarpoolingUpdateListenerTest {
         assertDoesNotThrow(() -> carpoolingUpdateListener.onMessage(event));
 
         // Then
-        verify(carpoolingNotificationsService).notifyCarpoolingUpdate(eq(2), eq(1), eq(3), eq(true));
+        verify(carpoolingNotificationsService).notifyCarpoolingUpdate(2, 1, 3, true);
     }
 
     @Test
@@ -55,6 +55,6 @@ class CarpoolingUpdateListenerTest {
         assertDoesNotThrow(() -> carpoolingUpdateListener.onMessage(event));
 
         // Then
-        verify(carpoolingNotificationsService).notifyCarpoolingUpdate(eq(2), eq(1), eq(3), eq(false));
+        verify(carpoolingNotificationsService).notifyCarpoolingUpdate(2, 1, 3, false);
     }
 }

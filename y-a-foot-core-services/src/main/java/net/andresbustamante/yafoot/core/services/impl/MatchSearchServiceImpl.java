@@ -8,7 +8,6 @@ import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.model.enums.MatchStatusEnum;
 import net.andresbustamante.yafoot.core.model.enums.SportEnum;
 import net.andresbustamante.yafoot.core.services.MatchSearchService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +27,6 @@ public class MatchSearchServiceImpl implements MatchSearchService {
     private final MatchDao matchDAO;
     private final PlayerDao playerDao;
 
-    @Autowired
     public MatchSearchServiceImpl(final MatchDao matchDAO, final PlayerDao playerDao) {
         this.matchDAO = matchDAO;
         this.playerDao = playerDao;

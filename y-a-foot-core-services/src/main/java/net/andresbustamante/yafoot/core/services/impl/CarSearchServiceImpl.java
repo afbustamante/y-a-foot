@@ -8,7 +8,6 @@ import net.andresbustamante.yafoot.core.exceptions.UnauthorisedUserException;
 import net.andresbustamante.yafoot.core.model.Car;
 import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.CarSearchService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +20,6 @@ public class CarSearchServiceImpl implements CarSearchService {
     private final CarDao carDAO;
     private final PlayerDao playerDao;
 
-    @Autowired
     public CarSearchServiceImpl(final CarDao carDAO, final PlayerDao playerDao) {
         this.carDAO = carDAO;
         this.playerDao = playerDao;

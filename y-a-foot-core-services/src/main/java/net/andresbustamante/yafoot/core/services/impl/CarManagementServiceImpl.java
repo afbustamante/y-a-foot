@@ -9,7 +9,6 @@ import net.andresbustamante.yafoot.core.model.Player;
 import net.andresbustamante.yafoot.core.services.CarManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +20,6 @@ public class CarManagementServiceImpl implements CarManagementService {
     private final CarDao carDAO;
     private final PlayerDao playerDAO;
 
-    @Autowired
     public CarManagementServiceImpl(final CarDao carDAO, final PlayerDao playerDAO) {
         this.carDAO = carDAO;
         this.playerDAO = playerDAO;

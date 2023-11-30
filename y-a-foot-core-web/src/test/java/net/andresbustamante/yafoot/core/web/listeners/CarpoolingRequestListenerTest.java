@@ -35,6 +35,6 @@ class CarpoolingRequestListenerTest {
         assertDoesNotThrow(() -> carpoolingRequestListener.onMessage(event));
 
         // Then
-        verify(carpoolingNotificationsService).notifyCarpoolingRequest(eq(2), eq(1), eq(3));
+        verify(carpoolingNotificationsService).notifyCarpoolingRequest(2, 1, 3);
     }
 }
