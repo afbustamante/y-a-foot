@@ -26,6 +26,7 @@
     <module>y-a-foot-core-db</module>
     <module>y-a-foot-core-services</module>
     <module>y-a-foot-core-web</module>
+    <module>y-a-foot-core-events</module>
   </modules>
 
   <properties>
