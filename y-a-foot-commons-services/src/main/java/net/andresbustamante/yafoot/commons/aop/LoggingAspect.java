@@ -1,6 +1,7 @@
 package net.andresbustamante.yafoot.commons.aop;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -34,9 +35,21 @@ public class LoggingAspect {
      * @param joinPoint Join point for the called method
      */
     @Before("filterServicesMethods()")
-    public void logServicesMethods(final JoinPoint joinPoint) {
+    public void logServicesMethodsStart(final JoinPoint joinPoint) {
         if (joinPoint != null && joinPoint.getSignature() != null && log.isDebugEnabled()) {
-            log.debug("Active backend service : {}", joinPoint.getSignature().toShortString());
+            log.debug("Starting backend service process : {}", joinPoint.getSignature().toShortString());
+        }
+    }
+
+    /**
+     * Adds a log for every call on a service public method.
+     *
+     * @param joinPoint Join point for the called method
+     */
+    @After("filterServicesMethods()")
+    public void logServicesMethodsEnd(final JoinPoint joinPoint) {
+        if (joinPoint != null && joinPoint.getSignature() != null && log.isDebugEnabled()) {
+            log.debug("Ended backend service process : {}", joinPoint.getSignature().toShortString());
         }
     }
 }
