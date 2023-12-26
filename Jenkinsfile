@@ -39,27 +39,25 @@ pipeline {
         stage('Test') {
             steps {
                 // Run the maven build with tests
-                sh 'mvn test -P jenkins --batch-mode --errors --fail-at-end'
+                sh 'mvn test -P jenkins'
+                sh 'mvn verify -P jenkins'
             }
             post {
                 always {
-                    withChecks('Unit Tests') {
-                        junit '**/target/surefire-reports/TEST-*.xml'
-                    }
+                    '**/target/*-reports/TEST-*.xml'
                 }
             }
         }
 
-        stage('Verify') {
+        stage('Report') {
             steps {
-                // Run the maven build with tests
-                sh 'mvn verify -P jenkins --batch-mode --errors --fail-at-end'
+                script {
+                    sh 'mvn site -P jenkins -pl !y-a-foot-commons-tools'
+                }
             }
             post {
                 always {
-                    withChecks('Integration Tests') {
-                        junit '**/target/failsafe-reports/TEST-*.xml'
-                    }
+                    archiveArtifacts artifacts: '**/target/site/', fingerprint: true
                 }
             }
         }
@@ -85,10 +83,10 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'develop') {
-                        // Generate the updated site for the project
-                        sh 'mvn site:site site:deploy -P jenkins -pl !y-a-foot-commons-tools'
+                        // Publish the updated site for the project
+                        sh 'mvn site:deploy -P jenkins -pl !y-a-foot-commons-tools'
                     } else {
-                        echo 'No site files generated for this branch'
+                        echo 'No site files published for this branch'
                     }
                 }
             }
