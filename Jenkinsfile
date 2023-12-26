@@ -44,7 +44,7 @@ pipeline {
             }
             post {
                 always {
-                    '**/target/*-reports/TEST-*.xml'
+                    junit '**/target/*-reports/TEST-*.xml'
                 }
             }
         }
