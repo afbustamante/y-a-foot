@@ -96,7 +96,7 @@
     <commons-io.version>2.15.0</commons-io.version>
 
     <!-- Keycloak -->
-    <keycloak.version>22.0.3</keycloak.version>
+    <keycloak.version>23.0.4</keycloak.version>
     <osgi-core.version>6.0.0</osgi-core.version>
 
     <!-- Logs -->
