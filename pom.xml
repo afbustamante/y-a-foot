@@ -96,8 +96,9 @@
     <commons-io.version>2.15.0</commons-io.version>
 
     <!-- Keycloak -->
-    <keycloak.version>22.0.3</keycloak.version>
+    <keycloak.version>23.0.4</keycloak.version>
     <osgi-core.version>6.0.0</osgi-core.version>
+    <osgi-annotation.version>8.0.0</osgi-annotation.version>
 
     <!-- Logs -->
     <slf4j.version>2.0.9</slf4j.version>
@@ -382,6 +383,11 @@
         <groupId>org.osgi</groupId>
         <artifactId>org.osgi.core</artifactId>
         <version>${osgi-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>osgi.annotation</artifactId>
+        <version>${osgi-annotation.version}</version>
       </dependency>
 
       <!-- Apache Commons -->
