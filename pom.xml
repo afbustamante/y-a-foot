@@ -123,7 +123,7 @@
     <checkstyle.version>10.12.4</checkstyle.version>
     <snakeyaml.version>2.2</snakeyaml.version>
     <log4j-api.version>2.20.0</log4j-api.version>
-    <avro.version>1.11.3</avro.version>
+    <avro.version>1.11.4</avro.version>
     <micrometer.version>1.11.6</micrometer.version>
 
     <!-- JaCoCo + Sonar -->
