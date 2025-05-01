@@ -9,12 +9,12 @@ friends, classmates and so on.
 
 Some frameworks and libraries used in this application:
 
-* Spring Boot 3.1
-* Spring Framework 6.0
-* Spring Security 6.0
+* Spring Boot 3.3
+* Spring Framework 6.1
+* Spring Security 6.3
 * OpenAPI 3.0
 * MyBatis 3.5
-* JUnit 5.9
+* JUnit 5.10
 * RabbitMQ 3.12
 
 ## Deployment
