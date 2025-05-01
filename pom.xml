@@ -96,7 +96,7 @@
     <commons-text.version>1.11.0</commons-text.version>
 
     <!-- Keycloak -->
-    <keycloak.version>26.0.5</keycloak.version>
+    <keycloak.version>26.1.3</keycloak.version>
     <osgi-core.version>6.0.0</osgi-core.version>
     <osgi-annotation.version>8.0.0</osgi-annotation.version>
 
