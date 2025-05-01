@@ -59,72 +59,73 @@
     <replacer-plugin.version>1.5.3</replacer-plugin.version>
 
     <!-- Spring Framework -->
-    <spring-boot.version>3.1.6</spring-boot.version>
-    <spring.version>6.0.14</spring.version>
-    <spring-security.version>6.1.5</spring-security.version>
-    <spring-amqp.version>3.0.10</spring-amqp.version>
+    <spring-boot.version>3.3.11</spring-boot.version>
+    <spring.version>6.1.19</spring.version>
+    <spring-security.version>6.3.9</spring-security.version>
+    <spring-amqp.version>3.1.11</spring-amqp.version>
 
     <!-- Jakarta EE -->
-    <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
-    <jakarta.mail-api.version>2.1.2</jakarta.mail-api.version>
-    <jakarta.ws.rs-api.version>3.1.0</jakarta.ws.rs-api.version>
-    <jakarta.activation-api.version>2.1.2</jakarta.activation-api.version>
+    <jakarta.activation-api.version>2.1.3</jakarta.activation-api.version>
     <jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
+    <jakarta.mail-api.version>2.1.3</jakarta.mail-api.version>
+    <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
     <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
-    <jakarta.xml.bind-api.version>4.0.1</jakarta.xml.bind-api.version>
+    <jakarta.ws.rs-api.version>3.1.0</jakarta.ws.rs-api.version>
+    <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
 
     <!-- Jakarta EE providers -->
     <angus-core.version>2.0.1</angus-core.version>
 
     <!-- Database -->
-    <postgresql.version>42.7.2</postgresql.version>
+    <postgresql.version>42.7.5</postgresql.version>
     <h2.version>2.2.224</h2.version>
-    <flyway.version>9.16.3</flyway.version>
+    <flyway.version>10.10.0</flyway.version>
 
     <!-- MyBatis -->
-    <mybatis.version>3.5.14</mybatis.version>
-    <mybatis-spring.version>3.0.3</mybatis-spring.version>
-    <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
+    <mybatis.version>3.5.19</mybatis.version>
+    <mybatis-spring.version>3.0.4</mybatis-spring.version>
+    <mybatis-spring-boot.version>3.0.4</mybatis-spring-boot.version>
 
     <!-- Apache Commons -->
-    <commons-text.version>1.11.0</commons-text.version>
-    <commons-lang3.version>3.13.0</commons-lang3.version>
+    <commons-codec.version>1.16.1</commons-codec.version>
     <commons-collections4.version>4.4</commons-collections4.version>
-    <commons-logging.version>1.2</commons-logging.version>
     <commons-dbcp2.version>2.11.0</commons-dbcp2.version>
-    <commons-codec.version>1.16.0</commons-codec.version>
     <commons-io.version>2.15.0</commons-io.version>
+    <commons-lang3.version>3.13.0</commons-lang3.version>
+    <commons-logging.version>1.2</commons-logging.version>
+    <commons-text.version>1.11.0</commons-text.version>
 
     <!-- Keycloak -->
-    <keycloak.version>25.0.5</keycloak.version>
+    <keycloak.version>26.0.5</keycloak.version>
     <osgi-core.version>6.0.0</osgi-core.version>
     <osgi-annotation.version>8.0.0</osgi-annotation.version>
 
     <!-- Logs -->
-    <slf4j.version>2.0.9</slf4j.version>
-    <logback.version>1.4.12</logback.version>
+    <slf4j.version>2.0.17</slf4j.version>
+    <logback.version>1.5.18</logback.version>
 
     <!-- Tests -->
-    <junit.jupiter.version>5.9.3</junit.jupiter.version>
-    <mockito.version>5.3.1</mockito.version>
+    <junit.jupiter.version>5.10.5</junit.jupiter.version>
+    <mockito.version>5.11.0</mockito.version>
     <spring-test-dbunit.version>1.3.0</spring-test-dbunit.version>
     <dbunit.version>2.7.3</dbunit.version>
 
     <!-- Other libraries -->
-    <lombok.version>1.18.30</lombok.version>
-    <mapstruct.version>1.5.5.Final</mapstruct.version>
-    <swagger-annotations.version>2.2.18</swagger-annotations.version>
-    <aspectjweaver.version>1.9.20.1</aspectjweaver.version>
-    <jackson-core.version>2.15.3</jackson-core.version>
-    <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-    <jboss-logging.version>3.5.3.Final</jboss-logging.version>
-    <jboss-logging-annotations.version>2.2.1.Final</jboss-logging-annotations.version>
-    <freemarker.version>2.3.32</freemarker.version>
-    <checkstyle.version>10.12.4</checkstyle.version>
-    <snakeyaml.version>2.2</snakeyaml.version>
-    <log4j-api.version>2.20.0</log4j-api.version>
+    <aspectjweaver.version>1.9.24</aspectjweaver.version>
     <avro.version>1.11.4</avro.version>
-    <micrometer.version>1.11.6</micrometer.version>
+    <checkstyle.version>10.12.4</checkstyle.version>
+    <freemarker.version>2.3.34</freemarker.version>
+    <hamcrest.version>2.2</hamcrest.version>
+    <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
+    <jackson-core.version>2.17.3</jackson-core.version>
+    <jboss-logging-annotations.version>2.2.1.Final</jboss-logging-annotations.version>
+    <jboss-logging.version>3.5.3.Final</jboss-logging.version>
+    <log4j-api.version>2.20.0</log4j-api.version>
+    <lombok.version>1.18.38</lombok.version>
+    <mapstruct.version>1.5.5.Final</mapstruct.version>
+    <micrometer.version>1.13.13</micrometer.version>
+    <snakeyaml.version>2.2</snakeyaml.version>
+    <swagger-annotations.version>2.2.18</swagger-annotations.version>
 
     <!-- JaCoCo + Sonar -->
     <sonar.junit.reportPaths>${basedir}/target/surefire-reports,${basedir}/target/failsafe-reports</sonar.junit.reportPaths>
@@ -585,6 +586,11 @@
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-observation</artifactId>
         <version>${micrometer.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest</artifactId>
+        <version>${hamcrest.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
