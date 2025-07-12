@@ -1,9 +1,6 @@
 pipeline {
-    agent any
-
-    tools {
-        jdk 'JDK-17'
-        maven 'Maven-3.9'
+    agent {
+        label 'jenkins-agent-1'
     }
 
     options {
@@ -67,10 +64,10 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'develop') {
                         // Run the Sonar analysis
-                        configFileProvider([configFile(fileId: '8d47e8c5-f619-4f36-a1dc-590dca78adb1', variable: 'SONAR_CONFIG')]) {
+                        configFileProvider([configFile(fileId: '7fe506fc-1798-4124-afb5-46ad50ffb60f', variable: 'SONAR_CONFIG')]) {
                             // some block
                             def props = readProperties file: "${SONAR_CONFIG}"
-                            sh "mvn sonar:sonar -P jenkins -Dsonar.host.url=${props['sonar.host.url']} -Dsonar.login=${props['sonar.login']} -Dsonar.organization=${props['sonar.organization']}"
+                            sh "mvn sonar:sonar -P jenkins -Dsonar.host.url=${props['sonar.host.url']} -Dsonar.login=${props['sonar.token']} -Dsonar.organization=${props['sonar.organization']}"
                         }
                     } else {
                         echo 'Skipped Sonar analysis'

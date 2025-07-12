@@ -54,7 +54,7 @@
     <maven-failsafe-plugin.version>3.0.0-M8</maven-failsafe-plugin.version>
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <swagger-codegen-maven-plugin.version>3.0.46</swagger-codegen-maven-plugin.version>
-    <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+    <sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
     <dependency-check-maven-plugin.version>8.0.1</dependency-check-maven-plugin.version>
     <replacer-plugin.version>1.5.3</replacer-plugin.version>
 
@@ -631,7 +631,7 @@
       <id>jenkins</id>
       <properties>
         <env>ci</env>
-        <distribution.url>file:///var/www/html/apps.andresbustamante.net/y-a-foot</distribution.url>
+        <distribution.url>file:///home/jenkins/web/apps.andresbustamante.net/y-a-foot</distribution.url>
       </properties>
     </profile>
   </profiles>
