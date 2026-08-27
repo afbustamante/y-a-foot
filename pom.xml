@@ -121,7 +121,6 @@
     <jackson-core.version>2.17.3</jackson-core.version>
     <jboss-logging-annotations.version>2.2.1.Final</jboss-logging-annotations.version>
     <jboss-logging.version>3.5.3.Final</jboss-logging.version>
-    <log4j-api.version>2.20.0</log4j-api.version>
     <lombok.version>1.18.38</lombok.version>
     <mapstruct.version>1.5.5.Final</mapstruct.version>
     <micrometer.version>1.13.13</micrometer.version>
@@ -537,11 +536,6 @@
         <groupId>io.swagger.core.v3</groupId>
         <artifactId>swagger-annotations</artifactId>
         <version>${swagger-annotations.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-api</artifactId>
-        <version>${log4j-api.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.logging</groupId>
